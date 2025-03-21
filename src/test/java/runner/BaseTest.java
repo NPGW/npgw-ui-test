@@ -45,7 +45,7 @@ public abstract class BaseTest {
 
     @BeforeMethod
     protected void beforeMethod(Method method, ITestResult testResult) {
-        context = browser.newContext(PlaywrightOptions.contextOptions(Paths.get(ARTEFACT_DIR)));
+        context = browser.newContext(PlaywrightOptions.contextOptions());
 
         if (ProjectProperties.isTracingMode()) {
             context.tracing().start(PlaywrightOptions.tracingStartOptions());

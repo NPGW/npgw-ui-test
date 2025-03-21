@@ -5,34 +5,43 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Tracing;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class PlaywrightOptions {
+    private static final VideoSettings VIDEO = new VideoSettings(1280, 720, Paths.get("target/video"));
+    private static final boolean isScreenshotsEnabled = true;
+    private static final boolean isSnapshotsEnabled = true;
+    private static final boolean isSourcesEnabled = true;
+
     public static BrowserType.LaunchOptions browserOptions() {
         return new BrowserType.LaunchOptions()
                 .setHeadless(ProjectProperties.isHeadlessMode())
                 .setSlowMo(ProjectProperties.getSlowMoMode());
     }
 
-    public static Browser.NewContextOptions contextOptions(Path recordVideoDir) {
+    public static Browser.NewContextOptions contextOptions() {
         Browser.NewContextOptions options = new Browser.NewContextOptions()
                 .setViewportSize(ProjectProperties.getViewportWidth(), ProjectProperties.getViewportHeight())
                 .setBaseURL(ProjectProperties.getBaseUrl());
 
         if (ProjectProperties.isVideoMode()) {
-            options.setRecordVideoDir(recordVideoDir)
-                    .setRecordVideoSize(1280, 720);
+            options.setRecordVideoDir(VIDEO.videoDirPath)
+                    .setRecordVideoSize(VIDEO.width, VIDEO.height);
         }
         return options;
     }
 
     public static Tracing.StartOptions tracingStartOptions() {
         return new Tracing.StartOptions()
-                .setScreenshots(true)
-                .setSnapshots(true)
-                .setSources(true);
+                .setScreenshots(isScreenshotsEnabled)
+                .setSnapshots(isSnapshotsEnabled)
+                .setSources(isSourcesEnabled);
     }
 
     public static Tracing.StopOptions tracingStopOptions(Path tracePath) {
         return new Tracing.StopOptions().setPath(tracePath);
+    }
+
+    private record VideoSettings(int width, int height, Path videoDirPath) {
     }
 }
