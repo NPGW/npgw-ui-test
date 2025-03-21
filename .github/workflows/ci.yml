@@ -64,9 +64,7 @@ jobs:
 
       - name: Store generated report
         id: deployment
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: allure-report/
+        uses: actions/upload-pages-artifact@v3.0.1
 
   publish-report:
     environment:
@@ -76,6 +74,7 @@ jobs:
     needs: run-tests
     if: always()
     name: Report publication
+
     steps:
       - name: Deploy to gitHub Pages
         id: deployment
