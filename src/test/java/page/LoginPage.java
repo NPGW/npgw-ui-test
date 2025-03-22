@@ -2,6 +2,7 @@ package page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import io.qameta.allure.Step;
 
 public final class LoginPage extends BasePage {
 
@@ -18,6 +19,7 @@ public final class LoginPage extends BasePage {
         rememberMeCheckbox = checkbox("Remember me");
     }
 
+    @Step("Ввести в поле Email '{userEmail}'")
     public LoginPage fillEmailField(String userEmail) {
         emailField.fill(userEmail);
         return this;
@@ -27,21 +29,25 @@ public final class LoginPage extends BasePage {
         return emailField;
     }
 
+    @Step("Ввести в поле Password '{userPassword}'")
     public LoginPage fillPasswordField(String userPassword) {
         passwordField.fill(userPassword);
         return this;
     }
 
+    @Step("Нажать на кнопку 'Login'")
     public DashboardPage clickLoginButton() {
         loginButton.click();
         return new DashboardPage(getPage());
     }
 
+    @Step("Отметить чекбокс 'Remember me'")
     public LoginPage checkRememberMeCheckbox() {
         rememberMeCheckbox.setChecked(true);
         return this;
     }
 
+    @Step("Снять отметку c чекбокса 'Remember me'")
     public LoginPage uncheckRememberMeCheckbox() {
         rememberMeCheckbox.setChecked(false);
         return this;

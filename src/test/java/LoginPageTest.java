@@ -1,3 +1,7 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import page.DashboardPage;
 import page.LoginPage;
@@ -29,6 +33,10 @@ public class LoginPageTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("81")
+    @Epic("Login page")
+    @Feature("Remember me")
+    @Description("User email is remembered after first successful login with checked 'Remember me'")
     public void testRememberMeCheckedSavesUserEmail() {
         LoginPage loginPage = new LoginPage(getPage())
                 .fillEmailField(Constants.USER_EMAIL)
