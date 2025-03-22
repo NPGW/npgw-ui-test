@@ -1,5 +1,5 @@
 import org.testng.annotations.Test;
-import page.HomePage;
+import page.DashboardPage;
 import page.LoginPage;
 import runner.BaseTest;
 import testdata.Constants;
@@ -19,13 +19,24 @@ public class LoginPageTest extends BaseTest {
 
     @Test
     public void testLogin() {
-
-        HomePage homePage = new LoginPage(getPage())
+        DashboardPage dashboardPage = new LoginPage(getPage())
                 .fillEmailField(Constants.USER_EMAIL)
                 .fillPasswordField(Constants.USER_PASSWORD)
                 .clickLoginButton();
 
-        assertThat(homePage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
-        assertThat(homePage.getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
+        assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
+        assertThat(dashboardPage.getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
+    }
+
+    @Test
+    public void testRememberMeCheckedSavesUserEmail() {
+        LoginPage loginPage = new LoginPage(getPage())
+                .fillEmailField(Constants.USER_EMAIL)
+                .fillPasswordField(Constants.USER_PASSWORD)
+                .checkRememberMeCheckbox()
+                .clickLoginButton()
+                .clickLogOutButton();
+
+        assertThat(loginPage.getEmailField()).hasValue(Constants.USER_EMAIL);
     }
 }
