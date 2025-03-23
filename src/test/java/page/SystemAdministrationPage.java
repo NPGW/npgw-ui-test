@@ -1,5 +1,6 @@
 package page;
 
+import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public final class SystemAdministrationPage extends BasePage {
 
-    private final Locator merchants = getPage().locator("data-key='merchants'");
+    private final Locator merchants = getPage().locator("[id^='react-aria'][id$='-tab-merchants']");
     private final Locator addMerchantsButton = getPage()
             .locator("button:has(svg[data-icon='circle-plus'])")
             .nth(1);
