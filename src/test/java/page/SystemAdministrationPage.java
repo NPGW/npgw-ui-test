@@ -8,6 +8,9 @@ import java.util.List;
 public final class SystemAdministrationPage extends BasePage {
 
     private final Locator merchants = getPage().locator("data-key='merchants'");
+    private final Locator addMerchantsButton = getPage()
+            .locator("button:has(svg[data-icon='circle-plus'])")
+            .nth(1);
     private final Locator resetFilter = getPage().locator("button:has(svg[data-icon='xmark'])");
     private final Locator refreshData = getPage().locator("button:has(svg[data-icon='arrows-rotate'])");
     private final Locator selectCompanyField = placeholder("Select company");
@@ -22,7 +25,7 @@ public final class SystemAdministrationPage extends BasePage {
         super(page);
     }
 
-    public SystemAdministrationPage goToMerchants() {
+    public SystemAdministrationPage goToMerchantsTab() {
         merchants.click();
         return this;
     }
@@ -94,6 +97,11 @@ public final class SystemAdministrationPage extends BasePage {
 
     public SystemAdministrationPage clickOnCloseButton() {
         closeMerchantCreationWindowButton.click();
+        return this;
+    }
+
+    public SystemAdministrationPage startAddingMerchant() {
+        addMerchantsButton.click();
         return this;
     }
 
