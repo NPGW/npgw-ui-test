@@ -2,11 +2,10 @@ package xyz.npgw.test;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
 
@@ -28,7 +27,7 @@ public class TransactionsPageTest extends BaseTest {
 // *********************** И сразу приземляемся на TransactionsPage
 
 
-        TransactionsPage transaction = new TransactionsPage(getPage());
+        TransactionsPage transaction = new DashboardPage(getPage()).getHeader().clickTransaction();
         assertThat(transaction.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
         assertThat(transaction.getPage()).hasTitle(Constants.TRANSACTIONS_URL_TITLE);
     }
