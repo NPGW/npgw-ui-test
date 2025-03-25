@@ -16,7 +16,7 @@ public class TransactionsPageTest extends BaseTest {
 
     @Test
     @Epic("Transactions page")
-    @Description("User navigate to 'Transactions page' after clicking on 'Transactions' menu on the header" )
+    @Description("User navigate to 'Transactions page' after clicking on 'Transactions' menu on the header")
     public void testNavigateToTransactionsPage() {
 
 // this code will be gone
