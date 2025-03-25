@@ -18,22 +18,22 @@ public class Header extends BasePage {
     }
 
     @Step("Click on 'Dashboard' menu in Header")
-    public void clickDashboard(Page page) {
+    public void clickDashboard() {
         dashboard.click();
     }
 
     @Step("Click on 'Transactions' menu in Header")
-    public void clickTransaction(Page page) {
+    public void clickTransaction() {
         transaction.click();
     }
 
     @Step("Click on 'Reports' menu in Header")
-    public void clickReports(Page page) {
+    public void clickReports() {
         reports.click();
     }
 
     @Step("Click on 'System administration' menu in Header")
-    public void clickSystemAdministration(Page page) {
+    public void clickSystemAdministration() {
         systemAdministration.click();
     }
 }

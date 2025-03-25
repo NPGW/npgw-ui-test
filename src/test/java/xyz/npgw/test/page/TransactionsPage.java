@@ -9,6 +9,6 @@ public class TransactionsPage extends BasePage {
     public TransactionsPage(Page page) {
         super(page);
         this.header = new Header(getPage());
-        header.clickTransaction(getPage());
+        header.clickTransaction();
     }
 }
