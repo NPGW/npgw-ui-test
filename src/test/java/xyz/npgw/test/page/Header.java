@@ -28,9 +28,9 @@ public class Header extends BasePage {
     }
 
     @Step("Click on 'Reports' menu in Header")
-    public void clickReports() {
+    public ReportsPage clickReports() {
         reports.click();
-
+        return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' menu in Header")
