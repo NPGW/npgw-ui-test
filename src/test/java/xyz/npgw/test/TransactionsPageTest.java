@@ -6,7 +6,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
 

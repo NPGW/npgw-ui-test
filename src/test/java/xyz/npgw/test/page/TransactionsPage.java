@@ -1,17 +1,11 @@
 package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.base.BasePage;
+import xyz.npgw.test.page.base.AuthenticatedPage;
 
-public class TransactionsPage extends BasePage {
-    private final Header header;
+public class TransactionsPage extends AuthenticatedPage {
 
     public TransactionsPage(Page page) {
         super(page);
-        this.header = new Header(getPage());
-    }
-
-    public Header getHeader() {
-        return header;
     }
 }
