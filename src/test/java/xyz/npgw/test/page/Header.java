@@ -17,12 +17,13 @@ public class Header extends BasePage {
     }
 
     @Step("Click on 'Dashboard' menu in Header")
-    public void clickDashboard() {
+    public DashboardPage clickDashboard() {
         dashboard.click();
+        return new DashboardPage(getPage());
     }
 
     @Step("Click on 'Transactions' menu in Header")
-    public TransactionsPage clickTransaction() {
+    public TransactionsPage clickTransactions() {
         transaction.click();
         return new TransactionsPage(getPage());
     }
@@ -34,7 +35,8 @@ public class Header extends BasePage {
     }
 
     @Step("Click on 'System administration' menu in Header")
-    public void clickSystemAdministration() {
+    public SystemAdministrationPage clickSystemAdministration() {
         systemAdministration.click();
+        return new SystemAdministrationPage(getPage());
     }
 }

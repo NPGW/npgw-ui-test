@@ -21,7 +21,7 @@ public class TransactionsPageTest extends BaseTest {
                 .uncheckRememberMeCheckbox()
                 .clickLoginButton()
                 .getHeader()
-                .clickTransaction();
+                .clickTransactions();
     }
 
     @Test

@@ -6,6 +6,7 @@ import xyz.npgw.test.page.Header;
 public class AuthenticatedPage extends BasePage {
 
     private final Header header;
+
     public AuthenticatedPage(Page page) {
         super(page);
         this.header = new Header(page);
