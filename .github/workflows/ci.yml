@@ -76,10 +76,10 @@ jobs:
           allure_results: './target/allure-results'
 
       - name: Queue deployment
-        uses: softprops/turnstyle@v1
+        uses: softprops/turnstyle@v2.3.1
         with:
           poll-interval-seconds: 20
-          timeout-seconds: 1200
+          initial-wait-seconds: 1200
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
