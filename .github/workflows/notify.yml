@@ -35,7 +35,7 @@ jobs:
       - name: Send Slack Notification
         run: |
           TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
-          REPORT_LINK="https://evgnick.github.io/JenkinsQA_2024_fall2/${{ steps.find_ci_run.outputs.run_number }}/"
+          REPORT_LINK="https://npgw.github.io/npgw-ui-test/${{ steps.find_ci_run.outputs.run_number }}/"
           CI_RUN_LINK="https://github.com/${{ github.repository }}/actions/runs/${{ steps.find_ci_run.outputs.run_id }}"
 
           MESSAGE="*Новый отчет Allure*\n📅 *Дата и время*: $TIMESTAMP\n⚙️ *Сборка*: ${{ steps.find_ci_run.outputs.run_number }}\n🔗 *<$REPORT_LINK|Открыть отчет>*\n🔗 *<$CI_RUN_LINK|Посмотреть запуск>*"
