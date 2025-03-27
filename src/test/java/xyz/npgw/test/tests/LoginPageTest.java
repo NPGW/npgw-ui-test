@@ -1,6 +1,10 @@
 package xyz.npgw.test.tests;
 
-import io.qameta.allure.*;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -39,7 +43,7 @@ public class LoginPageTest extends BaseTest {
 
     @Test
     @TmsLink("81")
-    @Epic("Login page")
+    @Epic("Login")
     @Feature("Remember me")
     @Description("User email is remembered after first successful login with checked 'Remember me'")
     public void testRememberMeCheckedSavesUserEmail() {
@@ -51,13 +55,13 @@ public class LoginPageTest extends BaseTest {
                 .getHeader()
                 .clickLogOutButton();
 
-        Allure.step("Verify: Login Page email field has value");
+        Allure.step("The user's email is in the email field");
         assertThat(loginPage.getEmailField()).hasValue(Constants.USER_EMAIL);
     }
 
     @Test
     @TmsLink("82")
-    @Epic("Login page")
+    @Epic("Login")
     @Feature("Remember me")
     @Description("User email is NOT remembered after first successful login with unchecked 'Remember me'")
     public void testRememberMeUncheckedDontSaveUserEmail() {
@@ -69,7 +73,7 @@ public class LoginPageTest extends BaseTest {
                 .getHeader()
                 .clickLogOutButton();
 
-        Allure.step("Verify: Login Page email field has NO value");
+        Allure.step("The user's email is not in the email field");
         assertThat(loginPage.getEmailField()).hasValue("");
     }
 }
