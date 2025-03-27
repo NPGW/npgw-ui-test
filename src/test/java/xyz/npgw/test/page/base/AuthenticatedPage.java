@@ -1,7 +1,6 @@
 package xyz.npgw.test.page.base;
 
 import com.microsoft.playwright.Page;
-
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.Header;
 import xyz.npgw.test.page.LoginPage;
