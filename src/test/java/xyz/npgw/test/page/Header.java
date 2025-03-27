@@ -7,36 +7,48 @@ import xyz.npgw.test.page.base.BasePage;
 
 public class Header extends BasePage {
 
-    private final Locator transaction = link("Transactions");
-    private final Locator dashboard = link("Dashboard");
-    private final Locator reports = link("Reports");
-    private final Locator systemAdministration = link("System administration");
+    private final Locator dashboardLink = link("Dashboard");
+    private final Locator transactionLink = link("Transactions");
+    private final Locator reportsLink = link("Reports");
+    private final Locator systemAdministrationLink = link("System administration");
+    private final Locator logOutButton = button("Log out");
 
     public Header(Page page) {
         super(page);
     }
 
     @Step("Click on 'Dashboard' menu in Header")
-    public DashboardPage clickDashboard() {
-        dashboard.click();
+    public DashboardPage clickDashboardLink() {
+        dashboardLink.click();
+
         return new DashboardPage(getPage());
     }
 
     @Step("Click on 'Transactions' menu in Header")
-    public TransactionsPage clickTransactions() {
-        transaction.click();
+    public TransactionsPage clickTransactionsLink() {
+        transactionLink.click();
+
         return new TransactionsPage(getPage());
     }
 
     @Step("Click on 'Reports' menu in Header")
-    public ReportsPage clickReports() {
-        reports.click();
+    public ReportsPage clickReportsLink() {
+        reportsLink.click();
+
         return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' menu in Header")
-    public SystemAdministrationPage clickSystemAdministration() {
-        systemAdministration.click();
+    public SystemAdministrationPage clickSystemAdministrationLink() {
+        systemAdministrationLink.click();
+
         return new SystemAdministrationPage(getPage());
+    }
+
+    @Step("Press 'Log out' button")
+    public LoginPage clickLogOutButton() {
+        logOutButton.click();
+
+        return new LoginPage(getPage());
     }
 }
