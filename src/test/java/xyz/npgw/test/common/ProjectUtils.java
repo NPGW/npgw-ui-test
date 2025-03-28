@@ -1,6 +1,8 @@
 package xyz.npgw.test.common;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.LoadState;
 import org.testng.ITestResult;
 import org.testng.annotations.Test;
 
@@ -24,6 +26,14 @@ public class ProjectUtils {
 
     public static String setNameFromDateAndTime() {
         return new SimpleDateFormat("_MMdd_HHmmss").format(new Date());
+    }
+
+    public static void login(Page page) {
+        page.getByPlaceholder("Enter your email").fill(Constants.USER_EMAIL);
+        page.getByPlaceholder("Enter your password").fill(Constants.USER_PASSWORD);
+        page.getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName("Remember me")).setChecked(false);
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login")).click();
+        page.waitForLoadState(LoadState.NETWORKIDLE);
     }
 
     public static void navigateToBaseURL(Page page) {

@@ -8,5 +8,4 @@ public final class DashboardPage extends AuthenticatedPage {
     public DashboardPage(Page page) {
         super(page);
     }
-
 }
