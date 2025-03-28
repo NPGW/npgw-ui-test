@@ -79,8 +79,6 @@ public abstract class BaseTest {
             Allure.step("Navigate to the base url");
             ProjectUtils.navigateToBaseURL(page);
         }
-
-
     }
 
     @AfterMethod(alwaysRun = true)

@@ -41,7 +41,7 @@ public class DashboardPageTest extends BaseTest {
                 .clickLogOutButton();
 
         Allure.step("Verify: Login Page URL");
-        assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL_AFTER_TOKEN_EXPIRATION);
+        assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
 
         Allure.step("Verify: Login Page Title");
         assertThat(loginPage.getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
