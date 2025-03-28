@@ -15,10 +15,6 @@ public class TransactionsPage extends AuthenticatedPage {
     private final Locator nextPageButton = button("next page button");
     private final Locator paginationItemTwoActiveButton = button("pagination item 2 active");
 
-    //page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("pagination item 1 active")).click();
-    //      assertThat(page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("pagination item 2"))).isVisible();
-    //      page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("pagination item 2")).click();
-
     public TransactionsPage(Page page) {
         super(page);
     }
