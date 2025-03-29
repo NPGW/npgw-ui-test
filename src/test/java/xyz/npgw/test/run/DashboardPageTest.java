@@ -16,11 +16,11 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class DashboardPageTest extends BaseTest {
 
     @Test
-    @TmsLink("")
+    @TmsLink("151")
     @Epic("Dashboard")
     @Feature("Navigation")
-    @Description("User navigate to 'Dashboard page' after clicking on 'Dashboard' link on the header")
-    public void testNavigateToDashboard() {
+    @Description("User navigate to 'Dashboard page' after login")
+    public void testNavigateToDashboardAfterLogin() {
         DashboardPage dashboardPage = new DashboardPage(getPage());
 
         Allure.step("Verify: Dashboard Page URL");
@@ -31,7 +31,7 @@ public class DashboardPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("150")
     @Epic("Dashboard")
     @Feature("Navigation")
     @Description("User navigate to 'Login page' after logout")
