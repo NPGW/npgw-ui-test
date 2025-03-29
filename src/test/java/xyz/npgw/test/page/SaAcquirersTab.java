@@ -9,7 +9,7 @@ public class SaAcquirersTab extends BasePageWithHeader {
     private final Locator addAcquirerImg  = locator("svg[data-icon='circle-plus']");
     private final Locator resetFilterImg  = locator("svg[data-icon='xmark']");
     private final Locator applyFilterImg  = locator("svg[data-icon='filter']");
-    private final Locator selectAcquirerPlaceholder  = locator("div[data-slot='input-wrapper']");//labelExact("Select acquirer");
+    private final Locator selectAcquirerPlaceholder  = labelExact("Select acquirer");
     private final Locator statusPlaceholder  = labelExact("Status");
 
     public SaAcquirersTab(Page page) {

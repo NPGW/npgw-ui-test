@@ -28,8 +28,6 @@ public class SaAcquirersTabTest extends BaseTest {
         Allure.step("Verify: Add Acquirer Img is visible");
         assertThat(saAcquirersTab.getAddAcquirerImg()).isVisible();
 
-        Locator f = saAcquirersTab.getSelectAcquirerPlaceholder(); //.getAttribute("placeholder");
-
         Allure.step("Verify: Select Acquirer placeholder is visible");
         assertThat(saAcquirersTab.getSelectAcquirerPlaceholder()).isVisible();
 
