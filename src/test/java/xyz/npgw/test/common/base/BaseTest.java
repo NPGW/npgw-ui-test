@@ -15,7 +15,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import xyz.npgw.test.common.BrowserFactory;
-import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.PlaywrightOptions;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.ProjectUtils;
@@ -65,19 +64,13 @@ public abstract class BaseTest {
         }
 
         page = context.newPage();
+
+        Allure.step("Navigate to the base url");
         ProjectUtils.navigateToBaseURL(page);
 
         if (!method.getDeclaringClass().getSimpleName().contains("LoginPageTest")) {
             Allure.step("Login to the site");
             ProjectUtils.login(page);
-            if (page.url().contains(Constants.DASHBOARD_PAGE_URL)) {
-                LOGGER.debug("Dashboard Page is opened");
-            } else {
-                LOGGER.error("Failed to open Dashboard Page. Check your credentials.");
-            }
-        } else {
-            Allure.step("Navigate to the base url");
-            ProjectUtils.navigateToBaseURL(page);
         }
     }
 
@@ -100,7 +93,6 @@ public abstract class BaseTest {
             if (ProjectProperties.isTracingMode()) {
                 context.tracing().stop(PlaywrightOptions.tracingStopOptions(traceFilePath));
             }
-
             context.close();
         }
 
@@ -125,7 +117,6 @@ public abstract class BaseTest {
         if (browser != null) {
             browser.close();
         }
-
         if (playwright != null) {
             playwright.close();
         }
