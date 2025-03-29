@@ -21,7 +21,7 @@ public class SystemAdministrationPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'System administration page' after clicking "
             + "on 'System administration' link on the header")
-    public void testNavigateToTransactionsPage() {
+    public void testNavigateToSystemAdministrationPage() {
         SystemAdministrationPage systemAdministrationPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink();
 

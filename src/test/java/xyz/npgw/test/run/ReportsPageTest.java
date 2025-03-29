@@ -16,11 +16,11 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class ReportsPageTest extends BaseTest {
 
     @Test
-    @TmsLink("")
+    @TmsLink("153")
     @Epic("Reports")
     @Feature("Navigation")
     @Description("User navigate to 'Reports page' after clicking on 'Reports' link on the header")
-    public void testNavigateToTransactionsPage() {
+    public void testNavigateToReportsPage() {
         ReportsPage reportsPage = new DashboardPage(getPage())
                 .getHeader().clickReportsLink();
 
