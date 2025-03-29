@@ -1,29 +1,27 @@
 package xyz.npgw.test.page;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.AuthenticatedPage;
+import xyz.npgw.test.page.component.FilterBlock;
 
 public final class DashboardPage extends AuthenticatedPage {
 
-    private final Locator logOutButton = button("Log out");
-    private final Locator transactionsLink = linkByName("Transactions");
-
+    private final FilterBlock filterBlock;
 
     public DashboardPage(Page page) {
         super(page);
+        filterBlock = new FilterBlock(page);
     }
 
     @Step("Press 'Log out' button")
     public LoginPage clickLogOutButton() {
-        logOutButton.click();
-        return new LoginPage(getPage());
+        return getHeader().clickLogOutButton();
     }
 
     @Step("Click Transactions Link")
     public TransactionsPage clickTransactionsLink() {
-        transactionsLink.click();
+        linkByName("Transactions").click();
         return new TransactionsPage(getPage());
     }
 }
