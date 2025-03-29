@@ -16,7 +16,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class SystemAdministrationPageTest extends BaseTest {
 
     @Test
-    @TmsLink("108")
+    @TmsLink("154")
     @Epic("SA/Team")
     @Feature("Navigation")
     @Description("User navigate to 'System administration page' after clicking "
