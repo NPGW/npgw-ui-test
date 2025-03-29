@@ -4,7 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
-import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.page.base.BasePage;
 
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
@@ -32,7 +31,7 @@ public final class LoginPage extends BasePage {
     }
 
     @Step("Enter the user's password in the 'Password' field")
-    public LoginPage fillPasswordField(@Param(mode = MASKED) String userPassword) {
+    public LoginPage fillPasswordField(@Param(name = "Password", mode = MASKED) String userPassword) {
         passwordField.fill(userPassword);
 
         return this;
@@ -57,14 +56,5 @@ public final class LoginPage extends BasePage {
         rememberMeCheckbox.setChecked(false);
 
         return this;
-    }
-
-    @Step("Login")
-    public DashboardPage login() {
-        fillEmailField(Constants.USER_EMAIL);
-        fillPasswordField(Constants.USER_PASSWORD);
-        clickLoginButton();
-
-        return new DashboardPage(getPage());
     }
 }
