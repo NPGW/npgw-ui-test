@@ -59,4 +59,8 @@ public abstract class BasePage {
     protected Locator labelExact(String text) {
         return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true));
     }
+
+    protected Locator textExact(String text) {
+        return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
+    }
 }
