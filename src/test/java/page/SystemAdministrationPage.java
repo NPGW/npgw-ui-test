@@ -1,23 +1,19 @@
-package xyz.npgw.test.page;
+package page;
 
+import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.base.BasePageWithHeader;
 
 import java.util.List;
 
-public class SystemAdministrationPage extends BasePageWithHeader {
+public final class SystemAdministrationPage extends BasePage {
 
-    public SystemAdministrationPage(Page page) {
-        super(page);
-    }
-
-    //private final Locator
-    private final Locator merchants = placeholder("Companies and business units");
-    private final Locator addBusinessUnitButton = locator("button:has(svg[data-icon='circle-plus'])")
+    private final Locator merchants = getPage().locator("[id^='react-aria'][id$='-tab-merchants']");
+    private final Locator addMerchantsButton = getPage()
+            .locator("button:has(svg[data-icon='circle-plus'])")
             .nth(1);
-    private final Locator resetFilter = locator("button:has(svg[data-icon='xmark'])");
-    private final Locator refreshData = locator("button:has(svg[data-icon='arrows-rotate'])");
+    private final Locator resetFilter = getPage().locator("button:has(svg[data-icon='xmark'])");
+    private final Locator refreshData = getPage().locator("button:has(svg[data-icon='arrows-rotate'])");
     private final Locator selectCompanyField = placeholder("Select company");
     private final Locator selectStatusField = placeholder("Status");
     private final Locator merchantName = placeholder("Merchant name");
@@ -25,15 +21,14 @@ public class SystemAdministrationPage extends BasePageWithHeader {
     private final Locator checkBoxEur = checkbox("EUR");
     private final Locator createMerchantButton = button("Create");
     private final Locator closeMerchantCreationWindowButton = button("Close");
-    private final Locator businessUnitName = placeholder("Business unit name");
+
+    public SystemAdministrationPage(Page page) {
+        super(page);
+    }
 
     public SystemAdministrationPage goToMerchantsTab() {
         merchants.click();
         return this;
-    }
-
-    public Locator getBusinessUnitName() {
-        return businessUnitName;
     }
 
     public SystemAdministrationPage resetFilters() {
@@ -107,7 +102,7 @@ public class SystemAdministrationPage extends BasePageWithHeader {
     }
 
     public SystemAdministrationPage startAddingMerchant() {
-        addBusinessUnitButton.click();
+        addMerchantsButton.click();
         return this;
     }
 
