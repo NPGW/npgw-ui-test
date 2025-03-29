@@ -10,14 +10,6 @@ import xyz.npgw.test.page.TransactionsPage;
 
 public class Header extends Element {
 
-    public DashboardPage signIn(String user, String pwd) {
-        return new LoginPage(getPage())
-                .fillEmailField(user)
-                .fillPasswordField(pwd)
-                .checkRememberMeCheckbox()
-                .clickLoginButton();
-    }
-
     public Header(Page page) {
         super(page, "header");
     }

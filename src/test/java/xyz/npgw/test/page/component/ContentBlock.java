@@ -29,6 +29,7 @@ public class ContentBlock extends Element {
         if (index == -1) {
             throw new NoSuchElementException("Column with selector '" + selector + "' not found.");
         }
+
         return header.nth(index);
     }
 }
