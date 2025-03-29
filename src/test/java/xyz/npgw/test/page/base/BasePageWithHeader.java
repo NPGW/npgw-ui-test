@@ -1,7 +1,7 @@
 package xyz.npgw.test.page.base;
 
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.Header;
+import xyz.npgw.test.page.component.Header;
 
 public abstract class BasePageWithHeader extends BasePage {
 
