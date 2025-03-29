@@ -10,7 +10,6 @@ import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
-import xyz.npgw.test.page.SaAcquirersTab;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
