@@ -2,7 +2,7 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.base.AuthenticatedPage;
+import xyz.npgw.test.page.base.BasePageWithHeader;
 
 public class SaAcquirersTab extends BasePageWithHeader {
 
