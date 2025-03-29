@@ -77,34 +77,4 @@ public class LoginPageTest extends BaseTest {
         Allure.step("The user's email is not in the email field");
         assertThat(loginPage.getEmailField()).hasValue("");
     }
-
-    public static class SaAcquirersTabTest extends BaseTest {
-
-        @Test
-        @TmsLink("134")
-        @Epic("SA/Acquirers")
-        @Feature("Acquirers list")
-        @Description("Verify: The visibility of elements in the 'Acquirers List' control panel")
-        public void testVisibilityAcquirersListControlTab() {
-            SaAcquirersTab saAcquirersTab = new DashboardPage(getPage())
-                    .getHeader()
-                    .clickSystemAdministrationLink()
-                    .clickAcquirersButton();
-
-            Allure.step("Verify: Add Acquirer Img is visible");
-            assertThat(saAcquirersTab.getAddAcquirerImg()).isVisible();
-
-            Allure.step("Verify: Select Acquirer placeholder is visible");
-            assertThat(saAcquirersTab.getSelectAcquirerPlaceholder()).isVisible();
-
-            Allure.step("Verify: Status placeholder is visible");
-            assertThat(saAcquirersTab.getStatusPlaceholder()).isVisible();
-
-            Allure.step("Verify: Reset Filter Img is visible");
-            assertThat(saAcquirersTab.getResetFilterImg()).isVisible();
-
-            Allure.step("Verify: Apply Filter Img is visible");
-            assertThat(saAcquirersTab.getApplyFilterImg()).isVisible();
-        }
-    }
 }

@@ -20,8 +20,8 @@ public class SaAcquirersTabTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Verify: The visibility of elements in the 'Acquirers List' control panel")
     public void testVisibilityAcquirersListControlTab() {
-        SaAcquirersTab saAcquirersTab = new DashboardPage(getPage()).getHeader()
-                .clickSystemAdministrationLink()
+        SaAcquirersTab saAcquirersTab = new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersButton();
 
         Allure.step("Verify: Add Acquirer Img is visible");
