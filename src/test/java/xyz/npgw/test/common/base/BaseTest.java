@@ -47,10 +47,10 @@ public abstract class BaseTest {
             if (playwright != null) {
                 playwright.close();
             }
-            LOGGER.error("Unsupported browser: {}", browserType);
             if (playwright != null) {
                 playwright.close();
             }
+            LOGGER.error("Unsupported browser: {}", browserType);
             System.exit(1);
         } catch (RuntimeException e) {
             LOGGER.error("Playwright.create() failed: {}", e.getMessage());
