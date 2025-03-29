@@ -36,7 +36,7 @@ public final class LoginPage extends BasePage {
     }
 
     @Step("Enter the user's password in the 'Password' field")
-    public LoginPage fillPasswordField(@Param(name="Password", mode=MASKED)String userPassword) {
+    public LoginPage fillPasswordField(@Param(name = "Password", mode = MASKED) String userPassword) {
         passwordField.fill(userPassword);
 
         return this;
