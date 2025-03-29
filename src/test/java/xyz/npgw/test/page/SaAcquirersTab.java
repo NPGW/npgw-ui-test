@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.base.AuthenticatedPage;
 
-public class SaAcquirersTab extends AuthenticatedPage {
+public class SaAcquirersTab extends BasePageWithHeader {
 
     private final Locator addAcquirerImg  = locator("svg[data-icon='circle-plus']");
     private final Locator resetFilterImg  = locator("svg[data-icon='xmark']");
