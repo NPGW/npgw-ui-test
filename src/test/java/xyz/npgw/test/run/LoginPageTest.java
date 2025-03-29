@@ -50,12 +50,12 @@ public class LoginPageTest extends BaseTest {
         LoginPage loginPage = new LoginPage(getPage())
                 .fillEmailField(Constants.USER_EMAIL)
                 .fillPasswordField(Constants.USER_PASSWORD)
-                .clickRememberMeCheckbox(true)
+                .checkRememberMeCheckbox()
                 .clickLoginButton()
                 .getHeader()
                 .clickLogOutButton();
 
-        Allure.step("The user's email is in the email field");
+        Allure.step("Verify: The user's email is in the email field");
         assertThat(loginPage.getEmailField()).hasValue(Constants.USER_EMAIL);
     }
 
@@ -68,12 +68,12 @@ public class LoginPageTest extends BaseTest {
         LoginPage loginPage = new LoginPage(getPage())
                 .fillEmailField(Constants.USER_EMAIL)
                 .fillPasswordField(Constants.USER_PASSWORD)
-                .clickRememberMeCheckbox(false)
+                .uncheckRememberMeCheckbox()
                 .clickLoginButton()
                 .getHeader()
                 .clickLogOutButton();
 
-        Allure.step("The user's email is not in the email field");
+        Allure.step("Verify: The user's email is not in the email field");
         assertThat(loginPage.getEmailField()).hasValue("");
     }
 }
