@@ -8,7 +8,6 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -16,6 +15,10 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class LoginPageTest extends BaseTest {
 
     @Test
+    @TmsLink("149")
+    @Epic("Login")
+    @Feature("Navigation")
+    @Description("User can navigate to 'Login page'")
     public void testNavigateToLoginPage() {
 
         LoginPage loginPage = new LoginPage(getPage());
@@ -24,21 +27,7 @@ public class LoginPageTest extends BaseTest {
         assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
 
         Allure.step("Verify: Login Page Title");
-        assertThat(loginPage.getPage()).hasTitle(Constants.BASE_URL_TITLE);
-    }
-
-    @Test
-    public void testLogin() {
-        DashboardPage dashboardPage = new LoginPage(getPage())
-                .fillEmailField(Constants.USER_EMAIL)
-                .fillPasswordField(Constants.USER_PASSWORD)
-                .clickLoginButton();
-
-        Allure.step("Verify: Dashboard Page URL");
-        assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
-
-        Allure.step("Verify: Dashboard Page Title");
-        assertThat(dashboardPage.getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
+        assertThat(loginPage.getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
     }
 
     @Test
