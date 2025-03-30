@@ -4,15 +4,15 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.base.BasePage;
 
-public class AddCompanyWindow extends BasePage {
+public class AddCompanyDialog extends BasePage {
 
     private final Locator addCompanyHeader = getPage().locator("text=Add company");
 
-    public AddCompanyWindow(Page page) {
+    public AddCompanyDialog(Page page) {
         super(page);
     }
 
-    public Locator getHeader() {
+    public Locator getAddCompanyDialogHeader() {
         return addCompanyHeader;
     }
 }

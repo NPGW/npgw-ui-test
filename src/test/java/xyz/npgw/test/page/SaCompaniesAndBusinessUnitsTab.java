@@ -13,10 +13,10 @@ public class SaCompaniesAndBusinessUnitsTab extends BasePageWithHeader {
         super(page);
     }
 
-    @Step("Click (+) with 'Add company' tooltip")
-    public AddCompanyWindow clickAddCompany() {
+    @Step("Click 'Add company' button")
+    public AddCompanyDialog clickAddCompanyButton() {
         addCompanyButton.click();
 
-        return new AddCompanyWindow(getPage());
+        return new AddCompanyDialog(getPage());
     }
 }

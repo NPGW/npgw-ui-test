@@ -7,12 +7,12 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.page.AddCompanyWindow;
+import xyz.npgw.test.page.AddCompanyDialog;
 import xyz.npgw.test.page.DashboardPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class AddCompanyWindowTest extends BaseTest {
+public class AddCompanyDialogTest extends BaseTest {
 
     @Test
     @TmsLink("160")
@@ -20,12 +20,12 @@ public class AddCompanyWindowTest extends BaseTest {
     @Feature("Title Verification")
     @Description("Verify that the 'Add Company' window displays the correct title in the header.")
     public void testVerifyAddCompanyWindowTitle() {
-        AddCompanyWindow addCompanyPage = new DashboardPage(getPage())
+        AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .clickCompaniesAndBusinessUnits()
-                .clickAddCompany();
+                .clickCompaniesAndBusinessUnitsButton()
+                .clickAddCompanyButton();
 
         Allure.step("Verify: the header contains the expected title text");
-        assertThat(addCompanyPage.getHeader()).isVisible();
+        assertThat(addCompanyPage.getAddCompanyDialogHeader()).isVisible();
     }
 }
