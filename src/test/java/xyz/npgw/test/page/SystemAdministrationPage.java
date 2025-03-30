@@ -27,4 +27,12 @@ public class SystemAdministrationPage extends BasePageWithHeader {
 
         return new SaAcquirersTab(getPage());
     }
+
+    @Step("Click 'Companies and business units'")
+    public SaCompaniesAndBusinessUnitsTab clickCompaniesAndBusinessUnits() {
+        getPage().waitForTimeout(4000);
+        companiesAndBusinessUnitsButton.click();
+
+        return new SaCompaniesAndBusinessUnitsTab(getPage());
+    }
 }
