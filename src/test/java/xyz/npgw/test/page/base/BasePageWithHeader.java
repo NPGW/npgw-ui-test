@@ -11,7 +11,7 @@ public abstract class BasePageWithHeader extends BasePage {
 
     public BasePageWithHeader(Page page) {
         super(page);
-        header = new Header(getPage());
+        header = new Header(page);
     }
 
     @Step("Click Dashboard Link")

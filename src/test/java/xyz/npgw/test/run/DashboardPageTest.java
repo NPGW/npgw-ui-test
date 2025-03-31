@@ -21,13 +21,13 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'Dashboard page' after login")
     public void testNavigateToDashboardAfterLogin() {
-        DashboardPage dashboardPage = new DashboardPage(getPage());
+        new DashboardPage(getPage());
 
         Allure.step("Verify: Dashboard Page URL");
-        assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
+        assertThat(getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
 
         Allure.step("Verify: Dashboard Page Title");
-        assertThat(dashboardPage.getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
+        assertThat(getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
     }
 
     @Test
@@ -36,14 +36,13 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'Login page' after logout")
     public void testNavigateToLoginPageAfterLogout() {
-
-        LoginPage loginPage = new DashboardPage(getPage())
+        new DashboardPage(getPage())
                 .clickLogOutButton();
 
         Allure.step("Verify: Login Page URL");
-        assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
+        assertThat(getPage()).hasURL(Constants.LOGIN_PAGE_URL);
 
         Allure.step("Verify: Login Page Title");
-        assertThat(loginPage.getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
+        assertThat(getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
     }
 }

@@ -8,11 +8,11 @@ public abstract class BasePage {
 
     private final Page page;
 
-    public BasePage(Page page) {
+    protected BasePage(Page page) {
         this.page = page;
     }
 
-    public Page getPage() {
+    protected Page getPage() {
         return page;
     }
 
@@ -49,14 +49,14 @@ public abstract class BasePage {
     }
 
     protected Locator tab(String text) {
-        return getPage().getByRole(AriaRole.TAB, new Page.GetByRoleOptions().setName(text));
+        return page.getByRole(AriaRole.TAB, new Page.GetByRoleOptions().setName(text));
     }
 
     protected Locator labelExact(String text) {
-        return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true));
+        return page.getByLabel(text, new Page.GetByLabelOptions().setExact(true));
     }
 
     protected Locator textExact(String text) {
-        return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
+        return page.getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 }

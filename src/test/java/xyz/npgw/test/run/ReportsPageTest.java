@@ -21,13 +21,13 @@ public class ReportsPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'Reports page' after clicking on 'Reports' link on the header")
     public void testNavigateToReportsPage() {
-        ReportsPage reportsPage = new DashboardPage(getPage())
+        new DashboardPage(getPage())
                 .clickReportsLink();
 
         Allure.step("Verify: Reports Page URL");
-        assertThat(reportsPage.getPage()).hasURL(Constants.REPORTS_PAGE_URL);
+        assertThat(getPage()).hasURL(Constants.REPORTS_PAGE_URL);
 
         Allure.step("Verify: Reports Page Title");
-        assertThat(reportsPage.getPage()).hasTitle(Constants.REPORTS_URL_TITLE);
+        assertThat(getPage()).hasTitle(Constants.REPORTS_URL_TITLE);
     }
 }

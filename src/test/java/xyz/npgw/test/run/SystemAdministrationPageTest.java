@@ -22,13 +22,13 @@ public class SystemAdministrationPageTest extends BaseTest {
     @Description("User navigate to 'System administration page' after clicking "
             + "on 'System administration' link on the header")
     public void testNavigateToSystemAdministrationPage() {
-        SystemAdministrationPage systemAdministrationPage = new DashboardPage(getPage())
+        new DashboardPage(getPage())
                 .clickSystemAdministrationLink();
 
         Allure.step("Verify: System administration Page URL");
-        assertThat(systemAdministrationPage.getPage()).hasURL(Constants.SA_PAGE_URL);
+        assertThat(getPage()).hasURL(Constants.SA_PAGE_URL);
 
         Allure.step("Verify: System administration Page Title");
-        assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SA_URL_TITLE);
+        assertThat(getPage()).hasTitle(Constants.SA_URL_TITLE);
     }
 }

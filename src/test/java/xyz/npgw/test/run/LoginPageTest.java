@@ -23,10 +23,10 @@ public class LoginPageTest extends BaseTest {
         LoginPage loginPage = new LoginPage(getPage());
 
         Allure.step("Verify: Login Page URL");
-        assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
+        assertThat(getPage()).hasURL(Constants.LOGIN_PAGE_URL);
 
         Allure.step("Verify: Login Page Title");
-        assertThat(loginPage.getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
+        assertThat(getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
     }
 
     @Test
