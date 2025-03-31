@@ -75,7 +75,8 @@ public class SaAcquirersTabTest extends BaseTest {
 
         Locator dropdownAcquirerList = saAcquirersTab.getDropdownAcquirerList();
 
-        Allure.step("Verify: Dropdown list is not empty.");
+        Allure.step(String.format(
+                "Verify: Dropdown list is not empty and contains (%d elements)", dropdownAcquirerList.count()));
         Assert.assertTrue(dropdownAcquirerList.count() > 0);
     }
 }
