@@ -1,10 +1,10 @@
 ---
-name: Task
+name: ATC task
 about: ATC test case
 title: "[ATC_<TC id>] <ATC title>"
-labels: Task
-assignees: ''
-projects: ["NPGW/npgw-ui-test"]
+type: Task
+labels: ATC
+projects: ["NPGW/projects/6"]
 
 ---
 
