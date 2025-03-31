@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
@@ -60,5 +61,21 @@ public class SaAcquirersTabTest extends BaseTest {
                 "Verify: Acquirers list is visible and contains elements (%d elements)", acquirersList.count()));
         assertThat(acquirersList.first()).isVisible();
         assertThat(acquirersList.last()).isVisible();
+    }
+
+    @Test
+    @TmsLink("157")
+    @Epic("SA/Acquirers")
+    @Feature("Select acquirer")
+    @Description("Verify: Selecting the 'Select acquirer' field opens a dropdown with Acquirers list.")
+    public void testSelectAcquirerDropdownFunctionality() {
+        SaAcquirersTab saAcquirersTab = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .clickAcquirersButton();
+
+        Locator dropdownAcquirerList = saAcquirersTab.getDropdownAcquirerList();
+
+        Allure.step("Verify: Dropdown list is not empty.");
+        Assert.assertTrue(dropdownAcquirerList.count() > 0);
     }
 }

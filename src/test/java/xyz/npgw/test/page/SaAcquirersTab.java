@@ -2,7 +2,11 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.BasePageWithHeader;
+
+import java.util.List;
 
 public class SaAcquirersTab extends BasePageWithHeader {
 
@@ -13,6 +17,8 @@ public class SaAcquirersTab extends BasePageWithHeader {
     private final Locator statusLabel  = labelExact("Status");
     private final Locator acquirersListHeader = textExact("Acquirers list");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
+    private final Locator selectAcquirerPlaceholder = placeholder("Search");
+    private final Locator dropdownAcquirerList = locator("div[data-slot='content'] li");
 
     public SaAcquirersTab(Page page) {
         super(page);
@@ -46,5 +52,17 @@ public class SaAcquirersTab extends BasePageWithHeader {
         getPage().waitForTimeout(1000);
 
         return acquirersList;
+    }
+
+    @Step("Click 'Select acquirer' placeholder")
+    public void clickSelectAcquirer() {
+        selectAcquirerPlaceholder.click();
+    }
+
+    public Locator getDropdownAcquirerList() {
+        clickSelectAcquirer();
+        dropdownAcquirerList.last().waitFor();
+
+        return dropdownAcquirerList;
     }
 }
