@@ -64,7 +64,7 @@ public class SaAcquirersTabTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("157")
+    @TmsLink("168")
     @Epic("SA/Acquirers")
     @Feature("Select acquirer")
     @Description("Verify: Selecting the 'Select acquirer' field opens a dropdown with Acquirers list.")
