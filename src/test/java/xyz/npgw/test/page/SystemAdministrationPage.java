@@ -29,7 +29,7 @@ public class SystemAdministrationPage extends BasePageWithHeader {
     }
 
     @Step("Click 'Companies and business units' button")
-    public SaCompaniesAndBusinessUnitsTab clickCompaniesAndBusinessUnitsButton() {
+    public SaCompaniesAndBusinessUnitsTab clickCompaniesAndBusinessUnitsTabButton() {
         getPage().waitForTimeout(4000);
         companiesAndBusinessUnitsTabButton.click();
 

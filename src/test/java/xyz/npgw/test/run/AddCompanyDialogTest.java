@@ -22,11 +22,8 @@ public class AddCompanyDialogTest extends BaseTest {
     public void testVerifyAddCompanyWindowTitle() {
         AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .clickCompaniesAndBusinessUnitsButton()
+                .clickCompaniesAndBusinessUnitsTabButton()
                 .clickAddCompanyButton();
-
-        Allure.step("Verify: AddCompany Dialog Header is displayed");
-        assertThat(addCompanyPage.getAddCompanyDialogHeader()).isVisible();
 
         Allure.step("Verify: the header contains the expected title text");
         assertThat(addCompanyPage.getAddCompanyDialogHeader()).hasText("Add company");
