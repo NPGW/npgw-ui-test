@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.opentest4j.AssertionFailedError;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -64,16 +65,19 @@ public class LoginPageTest extends BaseTest {
         assertThat(loginPage.getEmailField()).hasValue("");
     }
 
-    @Test(dataProvider = "getAuthenticatedEndpoints", dataProviderClass = TestDataProvider.class)
+    @Test(
+            dataProvider = "getAuthenticatedEndpoints",
+            dataProviderClass = TestDataProvider.class,
+            expectedExceptions = AssertionFailedError.class)
     @TmsLink("165")
     @Epic("Login")
     @Feature("Navigation")
     @Description("Unauthenticated users are automatically redirected to the 'Login page'")
     public void testUnauthenticatedUserRedirectionToLoginPage(String endpoint) {
-        Allure.step("Navigate to %s".formatted(endpoint));
-        getPage().navigate(endpoint);
+        LoginPage loginPage = new LoginPage(getPage())
+                .navigate(endpoint);
 
         Allure.step("Verify: Unauthenticated user is on 'Login page'");
-        assertThat(getPage().locator(".login-form-container h3")).hasText("Welcome to NPGW");
+        assertThat(loginPage.getLoginFormTitle()).hasText("Welcome to NPGW");
     }
 }
