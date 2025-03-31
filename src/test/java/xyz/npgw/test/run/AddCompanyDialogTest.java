@@ -25,7 +25,10 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCompaniesAndBusinessUnitsButton()
                 .clickAddCompanyButton();
 
-        Allure.step("Verify: the header contains the expected title text");
+        Allure.step("Verify: AddCompany Dialog Header is displayed");
         assertThat(addCompanyPage.getAddCompanyDialogHeader()).isVisible();
+
+        Allure.step("Verify: the header contains the expected title text");
+        assertThat(addCompanyPage.getAddCompanyDialogHeader()).hasText("Add company");
     }
 }
