@@ -72,7 +72,7 @@ public final class LoginPage extends BasePage {
         return this;
     }
 
-    @Step("navigate to '{url}' endpoint")
+    @Step("Navigate to '{url}' endpoint")
     public LoginPage navigate(String url) {
         getPage().navigate(url);
 
