@@ -58,7 +58,7 @@ public class SaAcquirersTabTest extends BaseTest {
         Locator acquirersList = saAcquirersTab.getAcquirersList();
 
         Allure.step(String.format(
-                "Verify: Acquirers list is visible and contains elements (%d elements)", acquirersList.count()));
+                "Verify: Acquirers list is visible and contains elements. INFO: (%d elements)", acquirersList.count()));
         assertThat(acquirersList.first()).isVisible();
         assertThat(acquirersList.last()).isVisible();
     }
@@ -76,7 +76,7 @@ public class SaAcquirersTabTest extends BaseTest {
         Locator dropdownAcquirerList = saAcquirersTab.getDropdownAcquirerList();
 
         Allure.step(String.format(
-                "Verify: Dropdown list is not empty and contains (%d elements)", dropdownAcquirerList.count()));
+                "Verify: Dropdown list is not empty. INFO: (%d elements)", dropdownAcquirerList.count()));
         Assert.assertTrue(dropdownAcquirerList.count() > 0);
     }
 }
