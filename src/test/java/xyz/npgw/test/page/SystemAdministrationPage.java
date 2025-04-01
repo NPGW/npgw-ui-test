@@ -22,7 +22,7 @@ public class SystemAdministrationPage extends BasePageWithHeader {
     }
 
     @Step("Click Acquirers Button")
-    public SaAcquirersTab clickAcquirersButton() {
+    public SaAcquirersTab clickAcquirersTabButton() {
         acquirersButton.click();
 
         return new SaAcquirersTab(getPage());

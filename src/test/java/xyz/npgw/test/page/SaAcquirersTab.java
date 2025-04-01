@@ -5,8 +5,6 @@ import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.BasePageWithHeader;
 
-import java.util.List;
-
 public class SaAcquirersTab extends BasePageWithHeader {
 
     private final Locator addAcquirerButton  = locator("svg[data-icon='circle-plus']");
@@ -54,12 +52,12 @@ public class SaAcquirersTab extends BasePageWithHeader {
     }
 
     @Step("Click 'Select acquirer' placeholder")
-    public void clickSelectAcquirer() {
+    public SaAcquirersTab clickSelectAcquirerPlaceholder() {
         selectAcquirerPlaceholder.click();
+        return this;
     }
 
-    public Locator getDropdownAcquirerList() {
-        clickSelectAcquirer();
+    public Locator getSelectAcquirersDropdownItems() {
         dropdownAcquirerList.last().waitFor();
 
         return dropdownAcquirerList;

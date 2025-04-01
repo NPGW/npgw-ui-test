@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
@@ -24,7 +23,7 @@ public class SaAcquirersTabTest extends BaseTest {
     public void testVisibilityAcquirersListControlTab() {
         SaAcquirersTab saAcquirersTab = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .clickAcquirersButton();
+                .clickAcquirersTabButton();
 
         Allure.step("Verify: Add Acquirer Button is visible");
         assertThat(saAcquirersTab.getAddAcquirerButton()).isVisible();
@@ -50,7 +49,7 @@ public class SaAcquirersTabTest extends BaseTest {
     public void testVisibilityHeaderAndAcquirersList() {
         SaAcquirersTab saAcquirersTab = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .clickAcquirersButton();
+                .clickAcquirersTabButton();
 
         Allure.step("Verify: Acquirers list header is visible");
         assertThat(saAcquirersTab.getAcquirersListHeader()).isVisible();
@@ -69,14 +68,14 @@ public class SaAcquirersTabTest extends BaseTest {
     @Feature("Select acquirer")
     @Description("Verify: Selecting the 'Select acquirer' field opens a dropdown with Acquirers list.")
     public void testSelectAcquirerDropdownFunctionality() {
-        SaAcquirersTab saAcquirersTab = new DashboardPage(getPage())
+        Locator dropdownAcquirerList = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .clickAcquirersButton();
-
-        Locator dropdownAcquirerList = saAcquirersTab.getDropdownAcquirerList();
+                .clickAcquirersTabButton()
+                .clickSelectAcquirerPlaceholder()
+                .getSelectAcquirersDropdownItems();
 
         Allure.step(String.format(
                 "Verify: Dropdown list is not empty. INFO: (%d elements)", dropdownAcquirerList.count()));
-        Assert.assertTrue(dropdownAcquirerList.count() > 0);
+        assertThat(dropdownAcquirerList).not().hasCount(0);
     }
 }
