@@ -59,7 +59,7 @@ public class SaAcquirersTab extends BasePageWithHeader {
     }
 
     public Locator getSelectAcquirersDropdownItems() {
-        dropdownAcquirerList.last().waitFor();
+        getPage().waitForTimeout(1000);
 
         return dropdownAcquirerList;
     }
