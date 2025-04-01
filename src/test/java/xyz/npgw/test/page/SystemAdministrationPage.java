@@ -24,6 +24,7 @@ public class SystemAdministrationPage extends BasePageWithHeader {
     @Step("Click Acquirers Button")
     public SaAcquirersTab clickAcquirersTabButton() {
         acquirersButton.click();
+        getPage().waitForLoadState();
 
         return new SaAcquirersTab(getPage());
     }
