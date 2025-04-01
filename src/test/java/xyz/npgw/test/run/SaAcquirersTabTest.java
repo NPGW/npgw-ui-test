@@ -71,8 +71,7 @@ public class SaAcquirersTabTest extends BaseTest {
         Locator dropdownAcquirerList = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .clickAcquirersTabButton()
-                .clickSelectAcquirerPlaceholder()
-                .getSelectAcquirersDropdownItems();
+                .clickSelectAcquirerPlaceholder();
 
         Allure.step(String.format(
                 "Verify: Dropdown list is not empty. INFO: (%d elements)", dropdownAcquirerList.count()));

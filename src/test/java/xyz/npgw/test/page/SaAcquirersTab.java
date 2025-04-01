@@ -52,14 +52,9 @@ public class SaAcquirersTab extends BasePageWithHeader {
     }
 
     @Step("Click 'Select acquirer' placeholder")
-    public SaAcquirersTab clickSelectAcquirerPlaceholder() {
+    public Locator clickSelectAcquirerPlaceholder() {
         selectAcquirerPlaceholder.click();
-
-        return this;
-    }
-
-    public Locator getSelectAcquirersDropdownItems() {
-        getPage().waitForTimeout(1000);
+        dropdownAcquirerList.last().waitFor();
 
         return dropdownAcquirerList;
     }
