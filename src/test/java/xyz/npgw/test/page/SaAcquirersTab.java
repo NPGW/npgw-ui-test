@@ -54,6 +54,7 @@ public class SaAcquirersTab extends BasePageWithHeader {
     @Step("Click 'Select acquirer' placeholder")
     public SaAcquirersTab clickSelectAcquirerPlaceholder() {
         selectAcquirerPlaceholder.click();
+
         return this;
     }
 
