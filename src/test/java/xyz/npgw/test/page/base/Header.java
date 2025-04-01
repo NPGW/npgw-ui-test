@@ -1,4 +1,4 @@
-package xyz.npgw.test.page.component;
+package xyz.npgw.test.page.base;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
@@ -9,45 +9,44 @@ import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.SystemAdministrationPage;
 import xyz.npgw.test.page.TransactionsPage;
 
-public class Header extends Element {
+public interface Header extends PageElements {
 
-    public Header(Page page) {
-        super(page, "header");
-    }
+    Page getPage();
 
     @Step("Click on 'Dashboard' menu in Header")
-    public DashboardPage clickDashboardLink() {
-        link("Dashboard").click();
+    default DashboardPage clickDashboardLink() {
+        linkByName("Dashboard").click();
 
         return new DashboardPage(getPage());
     }
 
     @Step("Click on 'Transactions' menu in Header")
-    public TransactionsPage clickTransactionsLink() {
-        link("Transactions").click();
+    default TransactionsPage clickTransactionsLink() {
+        linkByName("Transactions").click();
 
         return new TransactionsPage(getPage());
     }
 
     @Step("Click on 'Reports' menu in Header")
-    public ReportsPage clickReportsLink() {
-        link("Reports").click();
+    default ReportsPage clickReportsLink() {
+        linkByName("Reports").click();
 
         return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' menu in Header")
-    public SystemAdministrationPage clickSystemAdministrationLink() {
-        link("System administration").click();
+    default SystemAdministrationPage clickSystemAdministrationLink() {
+        linkByName("System administration").click();
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new SystemAdministrationPage(getPage());
     }
 
     @Step("Press 'Log out' button")
-    public LoginPage clickLogOutButton() {
+    default LoginPage clickLogOutButton() {
         button("Log out").click();
 
         return new LoginPage(getPage());
     }
 }
+
