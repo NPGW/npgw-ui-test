@@ -7,10 +7,10 @@ public class TestDataProvider {
     @DataProvider(name = "getAuthenticatedEndpoints")
     public static Object[][] getAuthenticatedEndpoints() {
         return new Object[][]{
-                {"/dashboard"},
-                {"/transactions"},
-                {"/reports"},
-                {"/system"},
+                {"GUEST", "/dashboard"},
+                {"GUEST", "/transactions"},
+                {"GUEST", "/reports"},
+                {"GUEST", "/system"},
         };
     }
 }

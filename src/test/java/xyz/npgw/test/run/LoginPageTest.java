@@ -5,8 +5,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Optional;
 import org.opentest4j.AssertionFailedError;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -78,8 +78,8 @@ public class LoginPageTest extends BaseTest {
     @Epic("Login")
     @Feature("Navigation")
     @Description("Unauthenticated users are automatically redirected to the 'Login page'")
-    public void testUnauthenticatedUserRedirectionToLoginPage(String endpoint) {
-        LoginPage loginPage = new LoginPage(getPage())
+    public void testUnauthenticatedUserRedirectionToLoginPage(String userRole, String endpoint) {
+        LoginPage loginPage = new AboutBlankPage(getPage())
                 .navigate(endpoint);
 
         Allure.step("Verify: Unauthenticated user is on 'Login page'");
