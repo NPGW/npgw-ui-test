@@ -70,10 +70,7 @@ public class LoginPageTest extends BaseTest {
         assertThat(loginPage.getEmailField()).hasValue("");
     }
 
-    @Test(
-            dataProvider = "getAuthenticatedEndpoints",
-            dataProviderClass = TestDataProvider.class,
-            expectedExceptions = AssertionFailedError.class)
+    @Test(dataProvider = "getAuthenticatedEndpoints", dataProviderClass = TestDataProvider.class)
     @TmsLink("165")
     @Epic("Login")
     @Feature("Navigation")
