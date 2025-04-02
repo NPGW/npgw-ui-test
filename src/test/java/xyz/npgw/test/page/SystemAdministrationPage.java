@@ -3,10 +3,10 @@ package xyz.npgw.test.page;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePageWithHeader;
+import xyz.npgw.test.page.base.BaseHeaderPage;
 import xyz.npgw.test.page.component.ContentBlock;
 
-public class SystemAdministrationPage extends BasePageWithHeader {
+public class SystemAdministrationPage extends BaseHeaderPage {
 
     private final ContentBlock table;
     private final Locator teamButton = tab("Team");

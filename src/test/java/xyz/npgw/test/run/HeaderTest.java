@@ -19,10 +19,10 @@ public class HeaderTest extends BaseTest {
     public void testNavigateToAllTabs() {
         new LoginPage(getPage())
                 .login(Constants.USER_EMAIL, Constants.USER_PASSWORD)
-                .clickDashboardLink()
-                .clickTransactionsLink()
-                .clickReportsLink()
-                .clickSystemAdministrationLink()
-                .clickLogOutButton();
+                .clickOnDashboard()
+                .clickOnTransactions()
+                .clickOnReports()
+                .clickOnSystemAdministration()
+                .clickOnLogOutButton();
     }
 }

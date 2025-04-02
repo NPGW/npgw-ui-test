@@ -3,10 +3,10 @@ package xyz.npgw.test.page;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePageWithHeader;
+import xyz.npgw.test.page.base.BaseHeaderPage;
 import xyz.npgw.test.page.component.ContentBlock;
 
-public class TransactionsPage extends BasePageWithHeader {
+public class TransactionsPage extends BaseHeaderPage {
 
     private final ContentBlock table;
     private final Locator currencySelector = button("ALL Currency");

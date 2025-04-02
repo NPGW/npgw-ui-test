@@ -1,10 +1,10 @@
 package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.base.BasePageWithHeader;
+import xyz.npgw.test.page.base.BaseHeaderPage;
 import xyz.npgw.test.page.component.ContentBlock;
 
-public class ReportsPage extends BasePageWithHeader {
+public class ReportsPage extends BaseHeaderPage {
 
     private final ContentBlock table;
 
