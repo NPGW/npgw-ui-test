@@ -93,9 +93,9 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("181")
     @Epic("Transactions")
     @Feature("Panel")
-    @Description("Verify that on Transactions Page after clicking on Transactions user can see Panel:" +
-            " Date range, Business unit, Currency, Payment method, Status, Amount, Reset filter, " +
-            "Apply data, Download file, Settings.")
+    @Description("Verify that on Transactions Page after clicking on Transactions user can see Panel:"
+            + " Date range, Business unit, Currency, Payment method, Status, Amount, Reset filter, "
+            + "Apply data, Download file, Settings.")
     public void testTheVisibilityOfTheControlPanelElementsOnTheTransactionsPage() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
