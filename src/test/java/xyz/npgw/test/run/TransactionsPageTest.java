@@ -23,6 +23,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("User navigate to 'Transactions page' after clicking on 'Transactions' link on the header")
     public void testNavigateToTransactionsPage() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
                 .clickTransactionsLink();
 
         Allure.step("Verify: Transactions Page URL");
@@ -39,6 +40,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Displaying the currency filter on the screen when selecting EUR.")
     public void testFilterByCurrency() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
                 .clickTransactionsLink()
                 .clickCurrencySelector()
                 .clickCurrency("EUR")
@@ -55,6 +57,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Displaying the number of rows on the screen when selecting Selector Rows.")
     public void testCountSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
                 .clickTransactionsLink();
 
         Allure.step("Verify: default row count - 25");
@@ -68,6 +71,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Displaying options when clicking on Selector Rows")
     public void testCountOptionsSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
                 .clickTransactionsLink()
                 .clickRowsPerPageButton();
 
@@ -82,6 +86,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Verifying that we can switch the page when we click next button")
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
                 .clickTransactionsLink()
                 .clickNextPageButton();
 

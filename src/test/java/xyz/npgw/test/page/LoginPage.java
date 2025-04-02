@@ -19,15 +19,6 @@ public final class LoginPage extends BasePage {
         super(page);
     }
 
-    @Step("Enter the user's email and password")
-    public DashboardPage login(String user, String pwd) {
-        return new LoginPage(getPage())
-                .fillEmailField(user)
-                .fillPasswordField(pwd)
-                .checkRememberMeCheckbox()
-                .clickLoginButton();
-    }
-
     @Step("Enter the user's email in the 'Email' field")
     public LoginPage fillEmailField(String userEmail) {
         emailField.fill(userEmail);
