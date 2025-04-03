@@ -4,6 +4,8 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.base.BasePage;
 
+import java.util.List;
+
 public class AddCompanyDialog extends BasePage {
 
     private final Locator addCompanyDialogHeader = locator("section header");
@@ -33,6 +35,12 @@ public class AddCompanyDialog extends BasePage {
     public Locator getFieldPlaceholderList() {
         getPage().waitForTimeout(2000);
         return fieldPlaceholderList;
+    }
+
+    public List<String> getFieldPlaceholders() {
+        return (List<String>) getFieldPlaceholderList().evaluateAll(
+                "elements => elements.map(el => el.getAttribute('placeholder'))"
+        );
     }
 
 

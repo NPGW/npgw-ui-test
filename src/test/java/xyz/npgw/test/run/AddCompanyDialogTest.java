@@ -69,7 +69,8 @@ public class AddCompanyDialogTest extends BaseTest {
         );
 
         // Сравниваем списки напрямую
-        assertEquals(expectedPlaceholders, actualPlaceholders);
+
+        assertEquals(expectedPlaceholders, addCompanyPage.getFieldPlaceholders());
     }
 //        System.out.println("Количество найденных полей: " + inputFields.count());
 //        // Извлекаем все плейсхолдеры в список
