@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.AddCompanyDialog;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.SaCompaniesAndBusinessUnitsTab;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -20,13 +21,29 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Title Verification")
     @Description("Verify that the 'Add Company' window displays the correct title in the header.")
     public void testVerifyAddCompanyWindowTitle() {
-        AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
+        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
                 .clickAddCompanyButton();
 
         Allure.step("Verify: the header contains the expected title text");
-        assertThat(addCompanyPage.getAddCompanyDialogHeader()).hasText("Add company");
+        assertThat(addCompanyDialog.getAddCompanyDialogHeader()).hasText("Add company");
+    }
+
+    @Test
+    @TmsLink("184")
+    @Feature("Close Button Functionality")
+    @Description("Verify that clicking the Close button successfully closes the 'Add Company' dialog.")
+    public void testVerifyCloseAddCompanyDialogWhenCloseButtonIsClicked() {
+        SaCompaniesAndBusinessUnitsTab saCompaniesAndBusinessUnitsTab = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .clickCompaniesAndBusinessUnitsTabButton()
+                .clickAddCompanyButton()
+                .clickCloseButton();
+
+        Allure.step("Verify: the 'Add Company' dialog is no longer visible");
+        assertThat(saCompaniesAndBusinessUnitsTab.getAddCompanyDialog()).not().isVisible();
     }
 }
