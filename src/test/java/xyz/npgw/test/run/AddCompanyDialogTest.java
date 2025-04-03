@@ -62,14 +62,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCompaniesAndBusinessUnitsTabButton()
                 .clickAddCompanyButton();
 
-        Locator inputFields = addCompanyPage.getFieldPlaceholderList();
-
-        List<String> actualPlaceholders = (List<String>) inputFields.evaluateAll(
-                "elements => elements.map(el => el.getAttribute('placeholder'))"
-        );
-
-        // Сравниваем списки напрямую
-
         assertEquals(expectedPlaceholders, addCompanyPage.getFieldPlaceholders());
     }
 //        System.out.println("Количество найденных полей: " + inputFields.count());

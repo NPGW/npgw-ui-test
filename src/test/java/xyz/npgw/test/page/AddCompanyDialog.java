@@ -2,6 +2,7 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import xyz.npgw.test.page.base.BasePage;
 
 import java.util.List;
@@ -32,13 +33,10 @@ public class AddCompanyDialog extends BasePage {
         return addCompanyDialogHeader;
     }
 
-    public Locator getFieldPlaceholderList() {
-        getPage().waitForTimeout(2000);
-        return fieldPlaceholderList;
-    }
-
     public List<String> getFieldPlaceholders() {
-        return (List<String>) getFieldPlaceholderList().evaluateAll(
+        fieldPlaceholderList.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+        return (List<String>) fieldPlaceholderList.evaluateAll(
                 "elements => elements.map(el => el.getAttribute('placeholder'))"
         );
     }
