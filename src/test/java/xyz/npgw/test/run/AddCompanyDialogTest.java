@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.AddCompanyDialog;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.testdata.TestDataProvider;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -28,5 +29,21 @@ public class AddCompanyDialogTest extends BaseTest {
 
         Allure.step("Verify: the header contains the expected title text");
         assertThat(addCompanyPage.getAddCompanyDialogHeader()).hasText("Add company");
+    }
+
+    @Test(dataProvider = "getInvalidCompanyNameLengths", dataProviderClass = TestDataProvider.class)
+    public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
+        AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .clickCompaniesAndBusinessUnitsTabButton()
+                .clickAddCompanyButton()
+                .fillCompanyNameField(name)
+                .fillCompanyTypeField("Company type")
+                .clickCreateButtonAndTriggerError();
+
+        Allure.step("error message for invalid company name: '{name}' is displayed");
+        assertThat(addCompanyPage.getErrorMessage()).containsText(
+                "Invalid companyName: '" + name + "'. It must contain between 4 and 100 characters");
     }
 }
