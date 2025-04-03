@@ -32,6 +32,10 @@ public class AddCompanyDialogTest extends BaseTest {
     }
 
     @Test(dataProvider = "getInvalidCompanyNameLengths", dataProviderClass = TestDataProvider.class)
+    @TmsLink("191")
+    @Epic("Companies and business units")
+    @Feature("Company Name Length Validation")
+    @Description("Verify that error message is shown for company name is shorter than 4 or longer than 100 characters.")
     public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
         AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
                 .getHeader()
