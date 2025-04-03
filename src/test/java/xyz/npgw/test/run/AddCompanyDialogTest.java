@@ -31,6 +31,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Verify that the 'Add Company' window displays the correct title in the header.")
     public void testVerifyAddCompanyWindowTitle() {
         AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
+                .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
                 .clickAddCompanyButton();
