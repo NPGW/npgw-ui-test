@@ -1,9 +1,9 @@
 package xyz.npgw.test.page;
 
+import io.qameta.allure.Step;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.base.BaseDialog;
-import io.qameta.allure.Step;
 import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
 
 public class AddCompanyDialog extends BaseDialog {
