@@ -9,8 +9,8 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.page.AcquirersPage;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.systemadministration.AcquirersPage;
 import xyz.npgw.test.testdata.StatusOption;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;

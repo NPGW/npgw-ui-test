@@ -3,8 +3,8 @@ package xyz.npgw.test.page.component;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.AcquirersPage;
 import xyz.npgw.test.page.base.BaseComponent;
+import xyz.npgw.test.page.systemadministration.AcquirersPage;
 
 public class SystemAdministrationMenuComponent extends BaseComponent {
 

@@ -1,11 +1,11 @@
-package xyz.npgw.test.page;
+package xyz.npgw.test.page.systemadministration;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePageWithHeader;
+import xyz.npgw.test.page.base.SystemAdministrationBasePage;
 
-public class AcquirersPage extends BasePageWithHeader {
+public class AcquirersPage extends SystemAdministrationBasePage {
 
     private final Locator addAcquirerButton = locator("svg[data-icon='circle-plus']");
     private final Locator resetFilterButton = locator("svg[data-icon='xmark']");
