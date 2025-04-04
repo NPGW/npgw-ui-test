@@ -2,16 +2,13 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.base.BaseDialog;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import xyz.npgw.test.page.base.BasePage;
 
-public class AddCompanyDialog extends BaseDialog {
 import java.util.List;
 
 public class AddCompanyDialog extends BasePage {
 
-    private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
 
@@ -26,8 +23,6 @@ public class AddCompanyDialog extends BasePage {
     public List<String> getAllFieldPlaceholders() {
         allFieldPlaceholders.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-        return (List<String>) allFieldPlaceholders.evaluateAll(
-                "elements => elements.map(el => el.getAttribute('placeholder'))"
-        );
+        return allFieldPlaceholders.all().stream().map(l -> l.getAttribute("placeholder")).toList();
     }
 }

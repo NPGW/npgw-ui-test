@@ -62,6 +62,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickAddCompanyButton();
 
         Allure.step("Verify: all placeholders are correct for each field");
-        assertEquals(expectedPlaceholders, addCompanyPage.getAllFieldPlaceholders());
+        assertEquals(addCompanyPage.getAllFieldPlaceholders(), expectedPlaceholders);
     }
 }
