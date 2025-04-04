@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.AddCompanyDialog;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.SaCompaniesAndBusinessUnitsTab;
+import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -36,7 +36,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Close Button Functionality")
     @Description("Verify that clicking the Close button successfully closes the 'Add Company' dialog.")
     public void testVerifyCloseAddCompanyDialogWhenCloseButtonIsClicked() {
-        SaCompaniesAndBusinessUnitsTab saCompaniesAndBusinessUnitsTab = new DashboardPage(getPage())
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
@@ -44,6 +44,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCloseButton();
 
         Allure.step("Verify: the 'Add Company' dialog is no longer visible");
-        assertThat(saCompaniesAndBusinessUnitsTab.getAddCompanyDialog()).not().isVisible();
+        assertThat(companiesAndBusinessUnitsPage.getAddCompanyDialog()).not().isVisible();
     }
 }

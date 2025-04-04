@@ -4,11 +4,10 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.base.BaseDialog;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePage;
+import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
 
 public class AddCompanyDialog extends BaseDialog {
 
-    private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator closeButton = button("Close").last();
 
@@ -21,9 +20,9 @@ public class AddCompanyDialog extends BaseDialog {
     }
 
     @Step("Click 'Close' button")
-    public SaCompaniesAndBusinessUnitsTab clickCloseButton() {
+    public CompaniesAndBusinessUnitsPage clickCloseButton() {
         closeButton.click();
 
-        return new SaCompaniesAndBusinessUnitsTab(getPage());
+        return new CompaniesAndBusinessUnitsPage(getPage());
     }
 }
