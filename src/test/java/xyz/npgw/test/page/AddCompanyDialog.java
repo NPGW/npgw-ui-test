@@ -5,8 +5,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.BasePage;
+import xyz.npgw.test.page.base.BaseDialog;
 
-public class AddCompanyDialog extends BasePage {
+public class AddCompanyDialog extends BaseDialog {
 
     private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator companyNameField = placeholder("Enter company name");
@@ -14,6 +15,7 @@ public class AddCompanyDialog extends BasePage {
     private final Locator createButton = button("Create");
     private final Locator errorMessage = locator("[role='alert']");
 
+    private final Locator addCompanyDialogHeader = locator("section header");
 
     public AddCompanyDialog(Page page) {
         super(page);
