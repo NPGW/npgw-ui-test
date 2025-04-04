@@ -2,11 +2,13 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import xyz.npgw.test.page.base.BaseDialog;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.BasePage;
 
-public class AddCompanyDialog extends BasePage {
+public class AddCompanyDialog extends BaseDialog {
 
+    private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator closeButton = button("Close").last();
 

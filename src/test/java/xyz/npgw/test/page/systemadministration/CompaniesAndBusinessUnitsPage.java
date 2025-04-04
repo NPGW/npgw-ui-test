@@ -1,17 +1,18 @@
-package xyz.npgw.test.page;
+package xyz.npgw.test.page.systemadministration;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePageWithHeader;
+import xyz.npgw.test.page.AddCompanyDialog;
+import xyz.npgw.test.page.base.SystemAdministrationWithTableBasePage;
 
-public class SaCompaniesAndBusinessUnitsTab extends BasePageWithHeader {
+public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTableBasePage {
 
     private final Locator addCompanyButton = locator("svg[data-icon='circle-plus']").first();
     private final Locator addCompanyDialog = dialog();
 
-    public SaCompaniesAndBusinessUnitsTab(Page page) {
+    public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
     }
 
