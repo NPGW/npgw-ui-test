@@ -8,7 +8,7 @@ import xyz.npgw.test.page.base.BasePage;
 
 public class AddCompanyDialog extends BasePage {
 
-    private final Locator addCompanyDialogHeader = getPage().locator("section header");
+    private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator companyNameField = placeholder("Enter company name");
     private final Locator companyTypeField = placeholder("Enter type");
     private final Locator createButton = button("Create");
@@ -45,7 +45,7 @@ public class AddCompanyDialog extends BasePage {
     }
 
     public Locator getErrorMessage() {
-        errorMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
+        errorMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         return errorMessage;
     }
