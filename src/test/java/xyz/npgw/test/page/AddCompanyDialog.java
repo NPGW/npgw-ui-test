@@ -4,9 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
-
-import xyz.npgw.test.page.base.BaseDialog;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import xyz.npgw.test.page.base.BasePage;
 
 import java.util.List;
