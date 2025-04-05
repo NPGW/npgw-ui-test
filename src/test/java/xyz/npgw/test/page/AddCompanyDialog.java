@@ -6,14 +6,19 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 
 import xyz.npgw.test.page.base.BaseDialog;
+import com.microsoft.playwright.options.WaitForSelectorState;
+import xyz.npgw.test.page.base.BasePage;
 
-public class AddCompanyDialog extends BaseDialog {
+import java.util.List;
+
+public class AddCompanyDialog extends BasePage {
 
     private final Locator addCompanyDialogHeader = locator("section header");
     private final Locator companyNameField = placeholder("Enter company name");
     private final Locator companyTypeField = placeholder("Enter type");
     private final Locator createButton = button("Create");
     private final Locator errorMessage = locator("[role='alert']");
+    private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
 
     public AddCompanyDialog(Page page) {
         super(page);
@@ -48,5 +53,11 @@ public class AddCompanyDialog extends BaseDialog {
         errorMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         return errorMessage;
+    }
+
+    public List<String> getAllFieldPlaceholders() {
+        allFieldPlaceholders.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+        return allFieldPlaceholders.all().stream().map(l -> l.getAttribute("placeholder")).toList();
     }
 }
