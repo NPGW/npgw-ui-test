@@ -3,15 +3,22 @@ package xyz.npgw.test.page.systemadministration;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.page.base.SystemAdministrationBasePage;
 
 public class AcquirersPage extends SystemAdministrationBasePage {
 
+    @Getter
     private final Locator addAcquirerButton = getLocatorBySelector("svg[data-icon='circle-plus']");
+    @Getter
     private final Locator resetFilterButton = getLocatorBySelector("svg[data-icon='xmark']");
+    @Getter
     private final Locator applyFilterButton = getLocatorBySelector("svg[data-icon='filter']");
+    @Getter
     private final Locator selectAcquirerLabel = getLabelByExactText("Select acquirer");
+    @Getter
     private final Locator statusLabel = getLabelByExactText("Status");
+    @Getter
     private final Locator acquirersListHeader = getLocatorByExactText("Acquirers list");
     private final Locator acquirersList = getLocatorBySelector("div[data-slot='base'] li");
     private final Locator selectAcquirerPlaceholder = getPlaceholderByText("Search");
@@ -19,30 +26,6 @@ public class AcquirersPage extends SystemAdministrationBasePage {
 
     public AcquirersPage(Page page) {
         super(page);
-    }
-
-    public Locator getAddAcquirerButton() {
-        return addAcquirerButton;
-    }
-
-    public Locator getResetFilterButton() {
-        return resetFilterButton;
-    }
-
-    public Locator getApplyFilterButton() {
-        return applyFilterButton;
-    }
-
-    public Locator getSelectAcquirerLabel() {
-        return selectAcquirerLabel;
-    }
-
-    public Locator getStatusLabel() {
-        return statusLabel;
-    }
-
-    public Locator getAcquirersListHeader() {
-        return acquirersListHeader;
     }
 
     public Locator getAcquirersList() {

@@ -4,28 +4,23 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.page.base.BasePage;
 
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 public final class LoginPage extends BasePage {
 
+    @Getter
     private final Locator emailField = getPlaceholderByText("Enter your email");
     private final Locator passwordField = getPlaceholderByText("Enter your password");
     private final Locator loginButton = getButtonByText("Login");
     private final Locator rememberMeCheckbox = getCheckboxByText("Remember me");
+    @Getter
     private final Locator loginFormTitle = getLocatorBySelector(".login-form-container h3");
 
     public LoginPage(Page page) {
         super(page);
-    }
-
-    public Locator getEmailField() {
-        return emailField;
-    }
-
-    public Locator getLoginFormTitle() {
-        return loginFormTitle;
     }
 
     @Step("Enter the user's email in the 'Email' field")
