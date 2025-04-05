@@ -15,21 +15,21 @@ public class HeaderComponent extends BaseComponent {
         super(page);
     }
 
-    @Step("Click on 'Transactions' menu in Header")
+    @Step("Click on 'Transactions' in the Header navigation menu")
     public TransactionsPage clickTransactionsLink() {
         getLinkByText("Transactions").click();
 
         return new TransactionsPage(getPage());
     }
 
-    @Step("Click on 'Reports' menu in Header")
+    @Step("Click on 'Reports' in the Header navigation menu")
     public ReportsPage clickReportsLink() {
         getLinkByText("Reports").click();
 
         return new ReportsPage(getPage());
     }
 
-    @Step("Click on 'System administration' menu in Header")
+    @Step("Click on 'System administration' in the Header navigation menu")
     public TeamPage clickSystemAdministrationLink() {
         getLinkByText("System administration").click();
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
@@ -37,7 +37,7 @@ public class HeaderComponent extends BaseComponent {
         return new TeamPage(getPage());
     }
 
-    @Step("Press 'Log out' button")
+    @Step("Press 'Log out' button on the Header")
     public LoginPage clickLogOutButton() {
         getButtonByText("Log out").click();
 
