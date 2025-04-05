@@ -58,7 +58,6 @@ public class AddCompanyDialogTest extends BaseTest {
         );
 
         AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
@@ -94,7 +93,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Validation of Required Fields")
     @Description("'Create' button is disabled when required fields are not filled.")
     public void testCreateButtonDisabledWhenRequiredFieldsAreEmpty(String name, String type) {
-        AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
+        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
@@ -103,9 +102,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .fillCompanyTypeField(type);
 
         Allure.step("Verify: 'Create' button is disabled when required fields are not filled.");
-        assertThat(addCompanyPage.getCreateButton()).isDisabled();
-        Allure.step("Verify: the header contains the expected title text");
-        assertThat(addCompanyDialog.getAddCompanyDialogHeader()).hasText("Add company");
+        assertThat(addCompanyDialog.getCreateButton()).isDisabled();
     }
 
     @Test
@@ -121,6 +118,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCloseButton();
 
         Allure.step("Verify: the 'Add Company' dialog is no longer visible");
-        assertThat(companiesAndBusinessUnitsPage.getAddCompanyDialog()).not().isVisible();
+        assertThat(companiesAndBusinessUnitsPage.getAddCompanyDialog()).isHidden();
     }
 }
