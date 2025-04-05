@@ -14,13 +14,13 @@ public class AddCompanyDialog extends BasePage {
 
     @Getter
     private final Locator addCompanyDialogHeader = getLocatorBySelector("section header");
-    private final Locator companyNameField = placeholder("Enter company name");
-    private final Locator companyTypeField = placeholder("Enter type");
+    private final Locator companyNameField = getPlaceholderByText("Enter company name");
+    private final Locator companyTypeField = getPlaceholderByText("Enter type");
     @Getter
-    private final Locator createButton = button("Create");
-    private final Locator errorMessage = locator("[role='alert']");
-    private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
-    private final Locator closeButton = textExact("Close");
+    private final Locator createButton = getButtonByText("Create");
+    private final Locator errorMessage = getLocatorBySelector("[role='alert']");
+    private final Locator allFieldPlaceholders = getLocatorBySelector("[data-slot='input']:not([placeholder='Search...'])");
+    private final Locator closeButton = getLocatorByExactText("Close");
 
     public AddCompanyDialog(Page page) {
         super(page);

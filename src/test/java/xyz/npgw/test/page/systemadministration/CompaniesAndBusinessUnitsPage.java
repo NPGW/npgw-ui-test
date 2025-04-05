@@ -11,7 +11,7 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
 
     private final Locator addCompanyButton = getLocatorBySelector("svg[data-icon='circle-plus']").first();
     @Getter
-    private final Locator addCompanyDialog = dialog();
+    private final Locator addCompanyDialog = getDialog();
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
