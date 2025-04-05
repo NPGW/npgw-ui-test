@@ -63,7 +63,7 @@ public class ProjectProperties {
             return Boolean.parseBoolean(getPropertyValue(propertyName));
         } else {
             log.error("Property '{}' doesn't have [true, false] value.", propertyName);
-            log.error("The default value 'true' for '{}' hase been set.", propertyName);
+            log.error("The default value 'true' for '{}' has been set.", propertyName);
             return true;
         }
     }
