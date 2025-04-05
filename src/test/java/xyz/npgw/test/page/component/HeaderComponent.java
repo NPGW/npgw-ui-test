@@ -1,8 +1,11 @@
 package xyz.npgw.test.page.component;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
+import lombok.Getter;
+import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.TransactionsPage;
@@ -10,6 +13,9 @@ import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.systemadministration.TeamPage;
 
 public class HeaderComponent extends BaseComponent {
+
+    @Getter
+    private final Locator logo = textExact("NPGW");
 
     public HeaderComponent(Page page) {
         super(page);
@@ -42,5 +48,12 @@ public class HeaderComponent extends BaseComponent {
         button("Log out").click();
 
         return new LoginPage(getPage());
+    }
+
+    @Step("Click on 'Dashboard' menu in Header")
+    public DashboardPage clickDashboardLink() {
+        link("Dashboard").click();
+
+        return new DashboardPage(getPage());
     }
 }
