@@ -70,7 +70,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @TmsLink("191")
     @Epic("Companies and business units")
     @Feature("Company Name Length Validation")
-    @Description("Verify that error message is shown for company name is shorter than 4 or longer than 100 characters.")
+    @Description("Error message is shown for company name is shorter than 4 or longer than 100 characters.")
     public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
         AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
                 .getHeader()
@@ -90,7 +90,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @TmsLink("206")
     @Epic("Companies and business units")
     @Feature("Validation of Required Fields")
-    @Description("Verify that the 'Create' button is disabled when required fields are not filled.")
+    @Description("'Create' button is disabled when required fields are not filled.")
     public void testCreateButtonDisabledWhenRequiredFieldsAreEmpty(String name, String type) {
         AddCompanyDialog addCompanyPage = new DashboardPage(getPage())
                 .getHeader()
