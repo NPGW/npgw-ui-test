@@ -10,11 +10,11 @@ import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 public final class LoginPage extends BasePage {
 
-    private final Locator emailField = placeholder("Enter your email");
-    private final Locator passwordField = placeholder("Enter your password");
-    private final Locator loginButton = button("Login");
-    private final Locator rememberMeCheckbox = checkbox("Remember me");
-    private final Locator loginFormTitle = locator(".login-form-container h3");
+    private final Locator emailField = getPlaceholderByText("Enter your email");
+    private final Locator passwordField = getPlaceholderByText("Enter your password");
+    private final Locator loginButton = getButtonByText("Login");
+    private final Locator rememberMeCheckbox = getCheckboxByText("Remember me");
+    private final Locator loginFormTitle = getLocatorBySelector(".login-form-container h3");
 
     public LoginPage(Page page) {
         super(page);

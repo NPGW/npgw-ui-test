@@ -17,21 +17,21 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click on 'Transactions' menu in Header")
     public TransactionsPage clickTransactionsLink() {
-        link("Transactions").click();
+        getLinkByText("Transactions").click();
 
         return new TransactionsPage(getPage());
     }
 
     @Step("Click on 'Reports' menu in Header")
     public ReportsPage clickReportsLink() {
-        link("Reports").click();
+        getLinkByText("Reports").click();
 
         return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-        link("System administration").click();
+        getLinkByText("System administration").click();
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new TeamPage(getPage());
@@ -39,7 +39,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Press 'Log out' button")
     public LoginPage clickLogOutButton() {
-        button("Log out").click();
+        getButtonByText("Log out").click();
 
         return new LoginPage(getPage());
     }

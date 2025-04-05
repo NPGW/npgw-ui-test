@@ -7,7 +7,7 @@ import xyz.npgw.test.page.base.SystemAdministrationWithTableBasePage;
 
 public class TeamPage extends SystemAdministrationWithTableBasePage {
 
-    private final Locator companiesAndBusinessUnitsTabButton = tab("Companies and business units");
+    private final Locator companiesAndBusinessUnitsTabButton = getTabByText("Companies and business units");
 
     public TeamPage(Page page) {
         super(page);

@@ -7,20 +7,20 @@ import xyz.npgw.test.page.base.BasePageWithHeaderAndTable;
 
 public class TransactionsPage extends BasePageWithHeaderAndTable {
 
-    private final Locator rowsPerPageButton = button("Rows Per Page");
-    private final Locator rowsPerPageOptions = dialog();
-    private final Locator nextPageButton = button("next page button");
-    private final Locator paginationItemTwoActiveButton = button("pagination item 2 active");
-    private final Locator dateRangePicker = group("DateRange");
-    private final Locator businessUnitSelector = textExact("Business unit").locator("../../..");
-    private final Locator currencySelector = labelExact("Currency");
-    private final Locator paymentMethodSelector = labelExact("Payment method");
-    private final Locator statusSelector = labelExact("Status");
-    private final Locator amountButton = button("Amount");
-    private final Locator resetFilterButton = locator("svg[data-icon='xmark']");
-    private final Locator applyDataButton = locator("svg[data-icon='filter']");
-    private final Locator settingsButton = locator("svg[data-icon='gear']");
-    private final Locator downloadButton = locator("svg[data-icon='download']");
+    private final Locator rowsPerPageButton = getButtonByText("Rows Per Page");
+    private final Locator rowsPerPageOptions = getDialog();
+    private final Locator nextPageButton = getButtonByText("next page button");
+    private final Locator paginationItemTwoActiveButton = getButtonByText("pagination item 2 active");
+    private final Locator dateRangePicker = getGroupByText("DateRange");
+    private final Locator businessUnitSelector = getLocatorByExactText("Business unit").locator("../../..");
+    private final Locator currencySelector = getLabelByExactText("Currency");
+    private final Locator paymentMethodSelector = getLabelByExactText("Payment method");
+    private final Locator statusSelector = getLabelByExactText("Status");
+    private final Locator amountButton = getButtonByText("Amount");
+    private final Locator resetFilterButton = getLocatorBySelector("svg[data-icon='xmark']");
+    private final Locator applyDataButton = getLocatorBySelector("svg[data-icon='filter']");
+    private final Locator settingsButton = getLocatorBySelector("svg[data-icon='gear']");
+    private final Locator downloadButton = getLocatorBySelector("svg[data-icon='download']");
 
     public TransactionsPage(Page page) {
         super(page);
@@ -35,7 +35,7 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
 
     @Step("Click Options Currency {value}")
     public TransactionsPage clickCurrency(String value) {
-        optionByExactName(value).click();
+        getLabelByExactText(value).click();
 
         return this;
     }

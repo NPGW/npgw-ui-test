@@ -6,7 +6,7 @@ import xyz.npgw.test.page.base.BaseDialog;
 
 public class AddCompanyDialog extends BaseDialog {
 
-    private final Locator addCompanyDialogHeader = locator("section header");
+    private final Locator addCompanyDialogHeader = getLocatorBySelector("section header");
 
     public AddCompanyDialog(Page page) {
         super(page);
