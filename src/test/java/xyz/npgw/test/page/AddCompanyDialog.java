@@ -9,7 +9,7 @@ import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
 public class AddCompanyDialog extends BaseDialog {
 
     private final Locator addCompanyDialogHeader = locator("section header");
-    private final Locator closeButton = button("Close").last();
+    private final Locator closeButton = textExact("Close");
 
     public AddCompanyDialog(Page page) {
         super(page);
