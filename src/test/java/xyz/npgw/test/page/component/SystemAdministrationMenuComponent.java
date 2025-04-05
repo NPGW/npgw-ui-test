@@ -8,7 +8,7 @@ import xyz.npgw.test.page.systemadministration.AcquirersPage;
 
 public class SystemAdministrationMenuComponent extends BaseComponent {
 
-    private final Locator acquirersTab = tab("Acquirers");
+    private final Locator acquirersTab = getTabByText("Acquirers");
 
     public SystemAdministrationMenuComponent(Page page) {
         super(page);
