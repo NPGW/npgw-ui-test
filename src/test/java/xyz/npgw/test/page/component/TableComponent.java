@@ -9,25 +9,25 @@ import java.util.NoSuchElementException;
 
 public class TableComponent extends BaseComponent {
 
-    private final Locator header = getPage().getByRole(AriaRole.COLUMNHEADER);
+    private final Locator columnHeader = getPage().getByRole(AriaRole.COLUMNHEADER);
     private final Locator rows = getPage().getByRole(AriaRole.ROW);
 
     public TableComponent(Page page) {
         super(page);
     }
 
-    public Locator getTableHeader() {
-        return header;
+    public Locator getColumnHeader() {
+        return columnHeader;
     }
 
-    public Locator getRowsWithoutHeader() {
-        return rows.filter(new Locator.FilterOptions().setHasNot(header));
+    public Locator getRowsWithoutColumnHeader() {
+        return rows.filter(new Locator.FilterOptions().setHasNot(columnHeader));
     }
 
     public Locator getColumnBySelector(String selector) {
         int index = -1;
-        for (int i = 0; i < header.count(); i++) {
-            if (header.nth(i).innerText().equals(selector)) {
+        for (int i = 0; i < columnHeader.count(); i++) {
+            if (columnHeader.nth(i).innerText().equals(selector)) {
                 index = i;
                 break;
             }
@@ -36,6 +36,6 @@ public class TableComponent extends BaseComponent {
             throw new NoSuchElementException("Column with selector '" + selector + "' not found.");
         }
 
-        return header.nth(index);
+        return columnHeader.nth(index);
     }
 }
