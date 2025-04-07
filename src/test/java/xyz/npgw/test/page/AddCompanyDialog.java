@@ -18,7 +18,6 @@ public class AddCompanyDialog extends BasePage {
     private final Locator companyTypeField = placeholder("Enter type");
     @Getter
     private final Locator createButton = button("Create");
-    private final Locator errorMessage = locator("[role='alert']");
     private final Locator alertMessage = locator("[role='alert']");
     private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
     private final Locator closeButton = textExact("Close");
@@ -134,19 +133,6 @@ public class AddCompanyDialog extends BasePage {
         createButton.click();
 
         return this;
-    }
-
-    @Step("Click on the 'Create' button")
-    public AddCompanyDialog clickCreateButton() {
-        createButton.click();
-
-        return this;
-    }
-
-    public Locator getErrorMessage() {
-        errorMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        return errorMessage;
     }
 
     public Locator getAlertMessage() {

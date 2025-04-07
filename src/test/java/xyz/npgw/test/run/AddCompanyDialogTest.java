@@ -95,7 +95,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: error message for invalid company name: '{name}' is displayed");
-        assertThat(addCompanyDialog.getErrorMessage()).containsText(
+        assertThat(addCompanyDialog.getAlertMessage()).containsText(
                 "Invalid companyName: '%s'. It must contain between 4 and 100 characters".formatted(name));
     }
 
@@ -149,7 +149,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: error message is displayed about invalid characters in the company name");
-        assertThat(addCompanyDialog.getErrorMessage()).containsText(
+        assertThat(addCompanyDialog.getAlertMessage()).containsText(
                 ("Invalid companyName: 'Company%s'. "
                         + "It may only contain letters, digits, ampersands, hyphens, commas, periods, and spaces")
                         .formatted(character));
@@ -172,7 +172,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: company creation success message is displayed");
-        assertThat(companiesAndBusinessUnitsPage.getSuccessMessage()).containsText(
+        assertThat(companiesAndBusinessUnitsPage.getAlertMessage()).containsText(
                 "Company was created successfully");
     }
 
@@ -199,7 +199,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add Company")
     @Description("Company creation with Cyrillic symbols")
     public void testAddCompanyWithCyrillicSymbols() {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
@@ -220,7 +220,8 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(addCompanyDialog.getAlertMessage()).hasText("SUCCESSCompany was created successfully");
+        assertThat(companiesAndBusinessUnitsPage.getAlertMessage()).hasText(
+                "SUCCESSCompany was created successfully");
     }
 
     @Test
@@ -229,12 +230,15 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add Company")
     @Description("Company creation with Latin symbols")
     public void testAddCompanyWithAllFilledFields() {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
+        final String companyName = "Google";
+        deleteCompany(companyName);
+
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
                 .clickAddCompanyButton()
-                .fillCompanyNameField("Google2")
+                .fillCompanyNameField(companyName)
                 .fillCompanyTypeField("LLC")
                 .fillCompanyDescriptionField("Description of company business model")
                 .fillCompanyWebsiteField("google.com")
@@ -250,7 +254,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(addCompanyDialog.getAlertMessage()).hasText("SUCCESSCompany was created successfully");
+        assertThat(companiesAndBusinessUnitsPage.getAlertMessage()).hasText(
+                "SUCCESSCompany was created successfully");
     }
 }
-

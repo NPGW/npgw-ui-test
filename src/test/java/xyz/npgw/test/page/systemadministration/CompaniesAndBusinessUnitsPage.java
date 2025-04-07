@@ -13,7 +13,7 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
     private final Locator addCompanyButton = locator("button[data-testid='AddCompanyButton']");
     @Getter
     private final Locator addCompanyDialog = dialog();
-    private final Locator successMessage = locator("[role='alert']");
+    private final Locator alertMessage = locator("[role='alert']");
     private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator selectCompanyDropdown = locator("[aria-label='Show suggestions']:nth-child(2)");
     private final Locator lastDropdownOption = locator("[role='option']:last-child");
@@ -30,10 +30,10 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
         return new AddCompanyDialog(getPage());
     }
 
-    public Locator getSuccessMessage() {
-        successMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+    public Locator getAlertMessage() {
+        alertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-        return successMessage;
+        return alertMessage;
     }
 
     @Step("Click 'Select company' dropdown")
