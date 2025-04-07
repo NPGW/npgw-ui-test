@@ -39,7 +39,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Press 'Log out' button on the Header")
     public LoginPage clickLogOutButton() {
-        getButtonByText("Log out").click();
+        getButtonByName("Log out").click();
 
         return new LoginPage(getPage());
     }

@@ -10,17 +10,17 @@ import xyz.npgw.test.page.base.BasePageWithHeaderAndTable;
 @Getter
 public class TransactionsPage extends BasePageWithHeaderAndTable {
 
-    private final Locator rowsPerPageButton = getButtonByText("Rows Per Page");
+    private final Locator rowsPerPageButton = getButtonByName("Rows Per Page");
     private final Locator rowsPerPageOptions = getDialog();
     @Getter(AccessLevel.NONE)
-    private final Locator nextPageButton = getButtonByText("next page button");
-    private final Locator paginationItemTwoActiveButton = getButtonByText("pagination item 2 active");
-    private final Locator dateRangePicker = getGroupByText("DateRange");
+    private final Locator nextPageButton = getButtonByName("next page button");
+    private final Locator paginationItemTwoActiveButton = getButtonByName("pagination item 2 active");
+    private final Locator dateRangePicker = getGroupByName("DateRange");
     private final Locator businessUnitSelector = getLocatorByExactText("Business unit").locator("../../..");
     private final Locator currencySelector = getLabelByExactText("Currency");
     private final Locator paymentMethodSelector = getLabelByExactText("Payment method");
     private final Locator statusSelector = getLabelByExactText("Status");
-    private final Locator amountButton = getButtonByText("Amount");
+    private final Locator amountButton = getButtonByName("Amount");
     private final Locator resetFilterButton = getLocatorBySelector("svg[data-icon='xmark']");
     private final Locator applyDataButton = getLocatorBySelector("svg[data-icon='filter']");
     private final Locator settingsButton = getLocatorBySelector("svg[data-icon='gear']");

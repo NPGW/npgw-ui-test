@@ -14,8 +14,8 @@ public final class LoginPage extends BasePage {
     @Getter
     private final Locator emailField = getPlaceholderByText("Enter your email");
     private final Locator passwordField = getPlaceholderByText("Enter your password");
-    private final Locator loginButton = getButtonByText("Login");
-    private final Locator rememberMeCheckbox = getCheckboxByText("Remember me");
+    private final Locator loginButton = getButtonByName("Login");
+    private final Locator rememberMeCheckbox = getCheckboxByName("Remember me");
     @Getter
     private final Locator loginFormTitle = getLocatorBySelector(".login-form-container h3");
 

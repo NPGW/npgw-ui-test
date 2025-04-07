@@ -20,11 +20,11 @@ public abstract class BaseModel {
         return getPage().getByPlaceholder(text);
     }
 
-    protected Locator getButtonByText(String text) {
+    protected Locator getButtonByName(String text) {
         return getPage().getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(text));
     }
 
-    protected Locator getCheckboxByText(String text) {
+    protected Locator getCheckboxByName(String text) {
         return getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(text));
     }
 
@@ -36,7 +36,7 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.DIALOG);
     }
 
-    protected Locator getTabByText(String text) {
+    protected Locator getTabByName(String text) {
         return getPage().getByRole(AriaRole.TAB, new Page.GetByRoleOptions().setName(text));
     }
 
@@ -48,7 +48,7 @@ public abstract class BaseModel {
         return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 
-    protected Locator getGroupByText(String text) {
+    protected Locator getGroupByName(String text) {
         return getPage().getByRole(AriaRole.GROUP, new Page.GetByRoleOptions().setName(text));
     }
 

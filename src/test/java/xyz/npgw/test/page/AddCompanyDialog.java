@@ -17,7 +17,7 @@ public class AddCompanyDialog extends BasePage {
     private final Locator companyNameField = getPlaceholderByText("Enter company name");
     private final Locator companyTypeField = getPlaceholderByText("Enter type");
     @Getter
-    private final Locator createButton = getButtonByText("Create");
+    private final Locator createButton = getButtonByName("Create");
     private final Locator errorMessage = getLocatorBySelector("[role='alert']");
     private final Locator allFieldPlaceholders = getLocatorBySelector("[data-slot='input']:not([placeholder='Search...'])");
     private final Locator closeButton = getLocatorByExactText("Close");
