@@ -13,10 +13,10 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
     private final Locator addCompanyButton = getLocatorBySelector("button[data-testid='AddCompanyButton']");
     @Getter
     private final Locator addCompanyDialog = getDialog();
-    private final Locator alertMessage = locator("[role='alert']");
-    private final Locator companyNameDropdownList = locator("[role='option']");
-    private final Locator selectCompanyDropdown = locator("[aria-label='Show suggestions']:nth-child(2)");
-    private final Locator lastDropdownOption = locator("[role='option']:last-child");
+    private final Locator alertMessage = getLocatorBySelector("[role='alert']");
+    private final Locator companyNameDropdownList = getLocatorBySelector("[role='option']");
+    private final Locator selectCompanyDropdown = getLocatorBySelector("[aria-label='Show suggestions']:nth-child(2)");
+    private final Locator lastDropdownOption = getLocatorBySelector("[role='option']:last-child");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
