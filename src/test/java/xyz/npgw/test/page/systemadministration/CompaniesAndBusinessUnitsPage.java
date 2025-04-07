@@ -9,7 +9,7 @@ import xyz.npgw.test.page.base.SystemAdministrationWithTableBasePage;
 
 public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTableBasePage {
 
-    private final Locator addCompanyButton = getLocatorBySelector("svg[data-icon='circle-plus']").first();
+    private final Locator addCompanyButton = getLocatorBySelector("button[data-testid='AddCompanyButton']");
     @Getter
     private final Locator addCompanyDialog = getDialog();
 
