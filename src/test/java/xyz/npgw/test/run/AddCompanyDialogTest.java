@@ -180,14 +180,16 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Company Verification")
     @Description("Added company appears in the 'Select company' dropdown list")
     public void testVerifyCompanyPresenceInDropdown() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+        boolean isCompanyListedInDropdown = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
-                .clickSelectCompanyDropdown();
+                .clickSelectCompanyDropdown()
+                .isCompanyInDropdown(COMPANY_NAME);
 
         Allure.step("Verify: company is present in the 'Select company' dropdown list");
-        Assert.assertTrue(companiesAndBusinessUnitsPage.isCompanyInDropdown(COMPANY_NAME));
+        Assert.assertTrue(isCompanyListedInDropdown,
+                "Expected company to be present in the dropdown, but it was not found.");
     }
 }
 
