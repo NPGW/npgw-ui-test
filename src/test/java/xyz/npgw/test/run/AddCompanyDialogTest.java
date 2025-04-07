@@ -7,13 +7,12 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.AddCompanyDialog;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
-import xyz.npgw.test.testdata.Constants;
-import xyz.npgw.test.testdata.TestDataProvider;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -27,7 +26,7 @@ public class AddCompanyDialogTest extends BaseTest {
     private static final String COMPANY_NAME = "CompanyName";
 
     private void deleteCompany(String name) {
-        getRequest().delete(Constants.BASE_URL + "/portal-v1/company/"
+        getRequest().delete(ProjectProperties.getBaseUrl() + "/portal-v1/company/"
                 + URLEncoder.encode(name, StandardCharsets.UTF_8));
     }
 
