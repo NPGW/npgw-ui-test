@@ -17,22 +17,22 @@ public class AddCompanyDialog extends BasePage {
     private final Locator companyNameField = getPlaceholderByText("Enter company name");
     private final Locator companyTypeField = getPlaceholderByText("Enter type");
     @Getter
-    private final Locator createButton = button("Create");
-    private final Locator errorMessage = locator("[role='alert']");
-    private final Locator alertMessage = locator("[role='alert']");
-    private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
-    private final Locator closeButton = textExact("Close");
-    private final Locator companyDescriptionField = placeholder("Enter company description");
-    private final Locator companyWebsiteField = placeholder("Enter company website");
-    private final Locator companyPrimaryContactField = placeholder("Enter company primary contact");
-    private final Locator companyEmailField = placeholder("Enter company email");
-    private final Locator companyCountryField = placeholder("Enter country");
-    private final Locator companyStateField = placeholder("Enter state");
-    private final Locator companyZipField = placeholder("Enter ZIP");
-    private final Locator companyCityField = placeholder("Enter city");
-    private final Locator companyPhoneField = placeholder("Enter phone");
-    private final Locator companyMobileField = placeholder("Enter mobile");
-    private final Locator companyFaxField = placeholder("Enter fax");
+    private final Locator createButton = getButtonByName("Create");
+    private final Locator errorMessage = getLocatorBySelector("[role='alert']");
+    private final Locator alertMessage = getLocatorBySelector("[role='alert']");
+    private final Locator allFieldPlaceholders = getLocatorBySelector("[data-slot='input']:not([placeholder='Search...'])");
+    private final Locator closeButton = getLocatorByExactText("Close");
+    private final Locator companyDescriptionField = getPlaceholderByText("Enter company description");
+    private final Locator companyWebsiteField = getPlaceholderByText("Enter company website");
+    private final Locator companyPrimaryContactField = getPlaceholderByText("Enter company primary contact");
+    private final Locator companyEmailField = getPlaceholderByText("Enter company email");
+    private final Locator companyCountryField = getPlaceholderByText("Enter country");
+    private final Locator companyStateField = getPlaceholderByText("Enter state");
+    private final Locator companyZipField = getPlaceholderByText("Enter ZIP");
+    private final Locator companyCityField = getPlaceholderByText("Enter city");
+    private final Locator companyPhoneField = getPlaceholderByText("Enter phone");
+    private final Locator companyMobileField = getPlaceholderByText("Enter mobile");
+    private final Locator companyFaxField = getPlaceholderByText("Enter fax");
 
     public AddCompanyDialog(Page page) {
         super(page);
