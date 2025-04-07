@@ -5,19 +5,30 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.AddCompanyDialog;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
+import xyz.npgw.test.testdata.Constants;
 import xyz.npgw.test.testdata.TestDataProvider;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class AddCompanyDialogTest extends BaseTest {
+
+    private static final String COMPANY_NAME = "CompanyName";
+
+    private void deleteCompany(String name) {
+        getRequest().delete(Constants.BASE_URL + "/portal-v1/company/"
+                + URLEncoder.encode(name, StandardCharsets.UTF_8));
+    }
 
     @Test
     @TmsLink("160")
@@ -120,4 +131,41 @@ public class AddCompanyDialogTest extends BaseTest {
         Allure.step("Verify: the 'Add Company' dialog is no longer visible");
         assertThat(companiesAndBusinessUnitsPage.getAddCompanyDialog()).isHidden();
     }
+
+    @Test
+    @TmsLink("223")
+    @Feature("Company Creation")
+    @Description("Company can be added by filling out required fields")
+    public void testAddCompanyByFillRequiredFields() {
+        deleteCompany(COMPANY_NAME);
+
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .clickCompaniesAndBusinessUnitsTabButton()
+                .clickAddCompanyButton()
+                .fillCompanyNameField(COMPANY_NAME)
+                .fillCompanyTypeField("Company type")
+                .clickCreateButton();
+
+        Allure.step("Verify: company creation success message is displayed");
+        assertThat(companiesAndBusinessUnitsPage.getSuccessMessage()).containsText(
+                "Company was created successfully");
+    }
+
+    @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
+    @TmsLink("224")
+    @Feature("Company Verification")
+    @Description("Added company appears in the 'Select company' dropdown list")
+    public void testVerifyCompanyPresenceInDropdown() {
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .clickCompaniesAndBusinessUnitsTabButton()
+                .clickSelectCompanyDropdown();
+
+        Allure.step("Verify: company is present in the 'Select company' dropdown list");
+        Assert.assertTrue(companiesAndBusinessUnitsPage.isCompanyInDropdown(COMPANY_NAME));
+    }
 }
+

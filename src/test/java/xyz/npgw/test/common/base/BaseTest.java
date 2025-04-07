@@ -9,6 +9,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.RequestOptions;
 import io.qameta.allure.Allure;
+import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
@@ -41,6 +42,7 @@ public abstract class BaseTest {
     private String browserType;
     private BrowserContext context;
     private Page page;
+    @Getter
     private APIRequestContext request;
 
     @Parameters("browserType")

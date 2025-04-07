@@ -65,4 +65,11 @@ public class AddCompanyDialog extends BasePage {
 
         return new CompaniesAndBusinessUnitsPage(getPage());
     }
+
+    @Step("Click on the 'Create' button")
+    public CompaniesAndBusinessUnitsPage clickCreateButton() {
+        createButton.click();
+
+        return new CompaniesAndBusinessUnitsPage(getPage());
+    }
 }
