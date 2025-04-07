@@ -38,7 +38,7 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
 
     @Step("Click 'Select company' dropdown")
     public CompaniesAndBusinessUnitsPage clickSelectCompanyDropdown() {
-       getPage().waitForTimeout(1000);
+        getPage().waitForTimeout(1000);
         selectCompanyDropdown.click();
 
         return this;
