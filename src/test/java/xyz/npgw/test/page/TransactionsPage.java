@@ -2,10 +2,13 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BasePageWithHeaderAndTable;
+
+import java.util.List;
 
 @Getter
 public class TransactionsPage extends BasePageWithHeaderAndTable {
@@ -25,6 +28,7 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
     private final Locator applyDataButton = locator("svg[data-icon='filter']");
     private final Locator settingsButton = locator("svg[data-icon='gear']");
     private final Locator downloadButton = locator("svg[data-icon='download']");
+    private final Locator statusSelectorOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
 
     public TransactionsPage(Page page) {
         super(page);
@@ -72,5 +76,16 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
         nextPageButton.click();
 
         return this;
+    }
+
+    @Step("Click Status Selector")
+    public TransactionsPage clickStatusSelector() {
+        statusSelector.click();
+
+        return this;
+    }
+
+    public List<String> getStatusSelectorOptions() {
+        return statusSelectorOptions.all().stream().map(Locator::innerText).toList();
     }
 }
