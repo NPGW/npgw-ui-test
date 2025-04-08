@@ -67,4 +67,9 @@ public abstract class BaseModel {
     protected Locator option(Locator locator) {
         return locator.getByRole(AriaRole.OPTION);
     }
+
+    protected Locator optionContainsName(String name) {
+        return getPage().getByRole(AriaRole.OPTION)
+                .filter(new Locator.FilterOptions().setHasText(name));
+    }
 }
