@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.Assert;
 import org.opentest4j.AssertionFailedError;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
@@ -176,21 +175,23 @@ public class AddCompanyDialogTest extends BaseTest {
                 "Company was created successfully");
     }
 
-    @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
+    @Test//(dependsOnMethods = "testAddCompanyByFillRequiredFields")
     @TmsLink("224")
     @Feature("Company Verification")
     @Description("Added company appears in the 'Select company' dropdown list")
     public void testVerifyCompanyPresenceInDropdown() {
-        boolean isCompanyListedInDropdown = new DashboardPage(getPage())
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
                 .clickSelectCompanyDropdown()
-                .isCompanyInDropdown(COMPANY_NAME);
+                        .clickCompanyInDropdown(COMPANY_NAME);
+                //.isCompanyInDropdown(COMPANY_NAME);
 
         Allure.step("Verify: company is present in the 'Select company' dropdown list");
-        Assert.assertTrue(isCompanyListedInDropdown,
-                "Expected company to be present in the dropdown, but it was not found.");
+        assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput()).hasValue(COMPANY_NAME);
+//        Assert.assertTrue(isCompanyListedInDropdown,
+//                "Expected company to be present in the dropdown, but it was not found.");
     }
 
     @Test(expectedExceptions = AssertionFailedError.class)
