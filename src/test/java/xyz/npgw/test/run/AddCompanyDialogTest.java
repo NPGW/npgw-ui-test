@@ -195,7 +195,7 @@ public class AddCompanyDialogTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testVerifyCompanyPresenceInDropdown")
-    @TmsLink("")
+    @TmsLink("232")
     @Epic("Companies and business units")
     @Feature("Company Creation")
     @Description("Error is displayed when trying to create a company with an already existing name")
