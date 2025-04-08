@@ -111,12 +111,12 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(actualOptions).hasCount(StatusOption.values().length);
 
         Allure.step("Verify: Option 1 has value 'All'");
-        assertThat(actualOptions.nth(0)).hasValue(StatusOption.ALL.getValue());
+        assertThat(actualOptions.nth(0)).containsText(StatusOption.ALL.getValue());
 
         Allure.step("Verify: Option 2 has value 'Active'");
-        assertThat(actualOptions.nth(1)).hasValue(StatusOption.ACTIVE.getValue());
+        assertThat(actualOptions.nth(1)).containsText(StatusOption.ACTIVE.getValue());
 
         Allure.step("Verify: Option 3 has value 'Inactive'");
-        assertThat(actualOptions.nth(2)).hasValue(StatusOption.INACTIVE.getValue());
+        assertThat(actualOptions.nth(2)).containsText(StatusOption.INACTIVE.getValue());
     }
 }
