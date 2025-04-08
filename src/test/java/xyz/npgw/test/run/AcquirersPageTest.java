@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.systemadministration.AcquirersPage;
-import xyz.npgw.test.testdata.StatusOption;
+import xyz.npgw.test.common.StatusOptions;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -108,15 +108,15 @@ public class AcquirersPageTest extends BaseTest {
         Locator actualOptions = acquirersPage.getAcquirerStatusOptions();
 
         Allure.step("Verify: Dropdown acquirer status list has 3 options");
-        assertThat(actualOptions).hasCount(StatusOption.values().length);
+        assertThat(actualOptions).hasCount(StatusOptions.values().length);
 
         Allure.step("Verify: Option 1 has value 'All'");
-        assertThat(actualOptions.nth(0)).containsText(StatusOption.ALL.getValue());
+        assertThat(actualOptions.nth(0)).containsText(StatusOptions.ALL.getValue());
 
         Allure.step("Verify: Option 2 has value 'Active'");
-        assertThat(actualOptions.nth(1)).containsText(StatusOption.ACTIVE.getValue());
+        assertThat(actualOptions.nth(1)).containsText(StatusOptions.ACTIVE.getValue());
 
         Allure.step("Verify: Option 3 has value 'Inactive'");
-        assertThat(actualOptions.nth(2)).containsText(StatusOption.INACTIVE.getValue());
+        assertThat(actualOptions.nth(2)).containsText(StatusOptions.INACTIVE.getValue());
     }
 }

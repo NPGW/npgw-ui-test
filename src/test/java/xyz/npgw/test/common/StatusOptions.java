@@ -1,12 +1,12 @@
-package xyz.npgw.test.testdata;
+package xyz.npgw.test.common;
 
-public enum StatusOption {
+public enum StatusOptions {
     ALL("All"),
     ACTIVE("Active"),
     INACTIVE("Inactive");
     private final String value;
 
-    StatusOption(String value) {
+    StatusOptions(String value) {
         this.value = value;
     }
 
