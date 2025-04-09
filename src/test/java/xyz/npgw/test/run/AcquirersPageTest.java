@@ -6,10 +6,14 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.systemadministration.AcquirersPage;
+
+import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -86,26 +90,39 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("187")
+    @Epic("SA/Acquirers")
+    @Feature("Status")
+    @Description("Verify: The 'Status' dropdown toggles and contains options All, Active, Inactive.")
+    public void testOpenStatusDropdown() {
+        Locator actualOptions = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemAdministrationMenuComponent()
+                .clickAcquirersTab()
+                .clickAcquirerStatusPlaceholder()
+                .getAcquirerStatusOptions();
+
+        assertThat(actualOptions).hasText(new String[] {"All", "Active", "Inactive"});
+    }
+
+    @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("")
     @Epic("SA/Acquirers")
     @Feature("Status")
     @Description("Verify: Filter acquirers by status.")
-    public void testFilterAcquirersByStatus() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+    public void testFilterAcquirersByStatus(String status) {
+        Locator acquirersList = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemAdministrationMenuComponent()
-                .clickAcquirersTab();
+                .clickAcquirersTab()
+                .clickAcquirerStatusPlaceholder()
+                .selectAcquirerStatus(status)
+                .getAcquirersList();
 
-        Locator acquirersList = acquirersPage.getAcquirersList();
-
-        acquirersPage.clickAcquirerStatusPlaceholder();
-        acquirersPage.selectAcquirerStatus("Active");
-
-        Locator activeAcquirersList = acquirersPage.getAcquirersList();
-
-        System.out.print(activeAcquirersList);
-
-
+        for (Locator acquirer : acquirersList.all()) {
+            assertThat(acquirer).containsText(status);
+        }
     }
 }

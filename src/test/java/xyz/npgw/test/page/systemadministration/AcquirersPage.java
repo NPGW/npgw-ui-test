@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import xyz.npgw.test.page.base.SystemAdministrationBasePage;
 
 public class AcquirersPage extends SystemAdministrationBasePage {
@@ -16,11 +17,9 @@ public class AcquirersPage extends SystemAdministrationBasePage {
     @Getter
     private final Locator applyFilterButton = locator("svg[data-icon='filter']");
 
-
     @Getter
     private final Locator acquirersListHeader = textExact("Acquirers list");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
-
 
     @Getter
     private final Locator selectAcquirerLabel = labelExact("Select acquirer");
@@ -67,10 +66,11 @@ public class AcquirersPage extends SystemAdministrationBasePage {
         return this;
     }
 
-    public AcquirersPage selectAcquirerStatus(String status) {
+    public AcquirersPage selectAcquirerStatus(@NotNull String status) {
         Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
         option.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         option.click();
+        dropdownAcquirerStatusList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return this;
     }

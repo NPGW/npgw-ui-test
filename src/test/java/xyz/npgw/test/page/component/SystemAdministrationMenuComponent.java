@@ -15,7 +15,7 @@ public class SystemAdministrationMenuComponent extends BaseComponent {
     }
 
     @Step("Click Acquirers Tab")
-    public AcquirersPage clickAcquirersTab() {
+public AcquirersPage clickAcquirersTab() {
         acquirersTab.click();
 
         return new AcquirersPage(getPage());
