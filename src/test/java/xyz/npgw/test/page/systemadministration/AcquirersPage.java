@@ -68,7 +68,6 @@ public class AcquirersPage extends SystemAdministrationBasePage {
 
     public AcquirersPage selectAcquirerStatus(@NotNull String status) {
         Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
-        option.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         option.click();
         dropdownAcquirerStatusList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
