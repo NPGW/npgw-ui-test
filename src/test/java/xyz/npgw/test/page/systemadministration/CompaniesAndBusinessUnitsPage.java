@@ -17,6 +17,8 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
     private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator selectCompanyDropdown = locator("[aria-label='Show suggestions']:nth-child(2)");
     private final Locator lastDropdownOption = locator("[role='option']:last-child");
+    @Getter
+    private final Locator selectCompanyInput = placeholder("Search...");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -44,7 +46,34 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
         return this;
     }
 
-    public boolean isCompanyInDropdown(String companyName) {
+//    public boolean isCompanyInDropdown(String companyName) {
+//        String lastSeenText = "";
+//
+//        while (true) {
+//            Locator options = companyNameDropdownList;
+//            int count = options.count();
+//
+//            for (int i = 0; i < count; i++) {
+//                String text = options.nth(i).innerText().trim();
+//                if (text.equals(companyName)) {
+//                    return true;
+//                }
+//            }
+//
+//            String currentLastText = options.nth(count - 1).innerText().trim();
+//            if (currentLastText.equals(lastSeenText)) {
+//                break;
+//            }
+//
+//            lastSeenText = currentLastText;
+//
+//            lastDropdownOption.scrollIntoViewIfNeeded();
+//        }
+//
+//        return false;
+//    }
+
+    public CompaniesAndBusinessUnitsPage clickCompanyInDropdown(String companyName) {
         String lastSeenText = "";
 
         while (true) {
@@ -54,7 +83,8 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
             for (int i = 0; i < count; i++) {
                 String text = options.nth(i).innerText().trim();
                 if (text.equals(companyName)) {
-                    return true;
+                    options.nth(i).click();
+                    return this;
                 }
             }
 
@@ -68,6 +98,6 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
             lastDropdownOption.scrollIntoViewIfNeeded();
         }
 
-        return false;
+        throw new RuntimeException("Company '" + companyName + "' not found in dropdown.");
     }
 }
