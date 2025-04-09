@@ -6,14 +6,11 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.systemadministration.AcquirersPage;
-
-import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -103,7 +100,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickAcquirerStatusPlaceholder()
                 .getAcquirerStatusOptions();
 
-        assertThat(actualOptions).hasText(new String[] {"All", "Active", "Inactive"});
+        assertThat(actualOptions).hasText(new String[]{"All", "Active", "Inactive"});
     }
 
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
