@@ -5,7 +5,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 import xyz.npgw.test.page.base.SystemAdministrationBasePage;
 
 public class AcquirersPage extends SystemAdministrationBasePage {
@@ -66,7 +65,7 @@ public class AcquirersPage extends SystemAdministrationBasePage {
         return this;
     }
 
-    public AcquirersPage selectAcquirerStatus(@NotNull String status) {
+    public AcquirersPage selectAcquirerStatus(String status) {
         Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
         option.click();
         dropdownAcquirerStatusList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
