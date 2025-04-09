@@ -19,6 +19,31 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
     private final Locator lastDropdownOption = locator("[role='option']:last-child");
     @Getter
     private final Locator selectCompanyInput = placeholder("Search...");
+    @Getter
+    private final Locator descriptionDataFilled = labelExact("Description");
+    @Getter
+    private final Locator websiteDataFilled = labelExact("Website");
+    @Getter
+    private final Locator primaryContactDataFilled = labelExact("Primary contact");
+    @Getter
+    private final Locator emailDataFilled = labelExact("Email");
+    @Getter
+    private final Locator phoneDataFilled = labelExact("Phone");
+    @Getter
+    private final Locator mobileDataFilled = labelExact("Mobile");
+    @Getter
+    private final Locator faxDataFilled = labelExact("Fax");
+    @Getter
+    private final Locator countryDataFilled = labelExact("Country");
+    @Getter
+    private final Locator zipDataFilled = labelExact("ZIP");
+    @Getter
+    private final Locator cityDataFilled = labelExact("City");
+    @Getter
+    private final Locator apiActiveDataFilledCheckbox = labelExact("API active");
+    @Getter
+    private final Locator portalActiveDataFilledCheckbox = labelExact("Portal active");
+
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -45,33 +70,6 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
 
         return this;
     }
-
-//    public boolean isCompanyInDropdown(String companyName) {
-//        String lastSeenText = "";
-//
-//        while (true) {
-//            Locator options = companyNameDropdownList;
-//            int count = options.count();
-//
-//            for (int i = 0; i < count; i++) {
-//                String text = options.nth(i).innerText().trim();
-//                if (text.equals(companyName)) {
-//                    return true;
-//                }
-//            }
-//
-//            String currentLastText = options.nth(count - 1).innerText().trim();
-//            if (currentLastText.equals(lastSeenText)) {
-//                break;
-//            }
-//
-//            lastSeenText = currentLastText;
-//
-//            lastDropdownOption.scrollIntoViewIfNeeded();
-//        }
-//
-//        return false;
-//    }
 
     public CompaniesAndBusinessUnitsPage clickCompanyInDropdown(String companyName) {
         String lastSeenText = "";

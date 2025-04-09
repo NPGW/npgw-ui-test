@@ -32,6 +32,8 @@ public class AddCompanyDialog extends BasePage {
     private final Locator companyPhoneField = placeholder("Enter phone");
     private final Locator companyMobileField = placeholder("Enter mobile");
     private final Locator companyFaxField = placeholder("Enter fax");
+    private final Locator apiActiveCheckbox = checkbox("API active");
+    private final Locator portalActiveCheckbox = checkbox("Portal active");
 
     public AddCompanyDialog(Page page) {
         super(page);
@@ -159,5 +161,28 @@ public class AddCompanyDialog extends BasePage {
         createButton.click();
 
         return new CompaniesAndBusinessUnitsPage(getPage());
+    }
+
+    public AddCompanyDialog setApiActiveCheckbox(boolean isActive) {
+        boolean isCurrentlyChecked = apiActiveCheckbox.isChecked();
+
+        if (isActive && !isCurrentlyChecked) {
+            apiActiveCheckbox.check();
+        } else if (!isActive && isCurrentlyChecked) {
+            apiActiveCheckbox.uncheck();
+        }
+
+        return this;
+    }
+
+    public AddCompanyDialog setPortalActiveCheckbox(boolean isActive) {
+        boolean isCurrentlyChecked = portalActiveCheckbox.isChecked();
+
+        if (isActive && !isCurrentlyChecked) {
+            portalActiveCheckbox.check();
+        } else if (!isActive && isCurrentlyChecked) {
+            portalActiveCheckbox.uncheck();
+        }
+        return this;
     }
 }
