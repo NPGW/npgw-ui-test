@@ -40,7 +40,7 @@ jobs:
       - name: Run tests
         run: mvn test
         env:
-          APP_OPTIONS: |-
+          APP_OPTIONS:
             baseURL=${{ secrets.BASE_URL }};
             SUPER.email=${{ secrets.USER_EMAIL }};
             SUPER.password=${{ secrets.USER_PASSWORD }};
@@ -53,7 +53,7 @@ jobs:
             tracingMode=true;
             videoMode=true;
             viewportWidth=1920;
-            viewportHeight=1080;
+            viewportHeight=1080
           CI_RUN: true
 
       - name: Create test report
