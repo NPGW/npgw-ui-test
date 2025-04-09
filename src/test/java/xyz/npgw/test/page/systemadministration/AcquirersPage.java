@@ -65,6 +65,7 @@ public class AcquirersPage extends SystemAdministrationBasePage {
         return this;
     }
 
+    @Step("Select Acquirer Status '{status}'")
     public AcquirersPage selectAcquirerStatus(String status) {
         Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
         option.click();
