@@ -105,7 +105,7 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
-    @TmsLink("")
+    @TmsLink("243")
     @Epic("SA/Acquirers")
     @Feature("Status")
     @Description("Filter acquirers by status.")
