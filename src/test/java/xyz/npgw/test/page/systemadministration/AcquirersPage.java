@@ -2,6 +2,7 @@ package xyz.npgw.test.page.systemadministration;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.SystemAdministrationBasePage;
@@ -66,4 +67,11 @@ public class AcquirersPage extends SystemAdministrationBasePage {
         return this;
     }
 
+    public AcquirersPage selectAcquirerStatus(String status) {
+        Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
+        option.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        option.click();
+
+        return this;
+    }
 }
