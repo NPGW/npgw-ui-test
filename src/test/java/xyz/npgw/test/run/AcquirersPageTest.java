@@ -20,7 +20,7 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("134")
     @Epic("SA/Acquirers")
     @Feature("Acquirers list")
-    @Description("Verify: The visibility of elements in the 'Acquirers List' control panel")
+    @Description("The visibility of elements in the 'Acquirers List' control panel")
     public void testVisibilityAcquirersListControlTab() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
@@ -48,7 +48,7 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("157")
     @Epic("SA/Acquirers")
     @Feature("Acquirers list")
-    @Description("Verify: The visibility of the 'Acquirers List' header, which contains a list of Acquirers.")
+    @Description("The visibility of the 'Acquirers List' header, which contains a list of Acquirers.")
     public void testVisibilityHeaderAndAcquirersList() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
@@ -71,7 +71,7 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("168")
     @Epic("SA/Acquirers")
     @Feature("Select acquirer")
-    @Description("Verify: Selecting the 'Select acquirer' field opens a dropdown with Acquirers list.")
+    @Description("Selecting the 'Select acquirer' field opens a dropdown with Acquirers list.")
     public void testSelectAcquirerDropdownFunctionality() {
         Locator dropdownAcquirerList = new DashboardPage(getPage())
                 .getHeader()
@@ -90,7 +90,7 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("187")
     @Epic("SA/Acquirers")
     @Feature("Status")
-    @Description("Verify: The 'Status' dropdown toggles and contains options All, Active, Inactive.")
+    @Description("The 'Status' dropdown toggles and contains options All, Active, Inactive.")
     public void testOpenStatusDropdown() {
         Locator actualOptions = new DashboardPage(getPage())
                 .getHeader()
@@ -100,6 +100,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickAcquirerStatusPlaceholder()
                 .getAcquirerStatusOptions();
 
+        Allure.step("Verify: The 'Status' dropdown toggles and contains options All, Active, Inactive.");
         assertThat(actualOptions).hasText(new String[]{"All", "Active", "Inactive"});
     }
 
@@ -107,7 +108,7 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("")
     @Epic("SA/Acquirers")
     @Feature("Status")
-    @Description("Verify: Filter acquirers by status.")
+    @Description("Filter acquirers by status.")
     public void testFilterAcquirersByStatus(String status) {
         Locator acquirersList = new DashboardPage(getPage())
                 .getHeader()
@@ -118,6 +119,7 @@ public class AcquirersPageTest extends BaseTest {
                 .selectAcquirerStatus(status)
                 .getAcquirersList();
 
+        Allure.step(String.format("Verify: The 'Acquirers' list shows only '%s' items after filtering.", status));
         for (Locator acquirer : acquirersList.all()) {
             assertThat(acquirer).containsText(status);
         }
