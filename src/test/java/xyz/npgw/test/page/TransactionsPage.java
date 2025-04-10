@@ -30,6 +30,7 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
     private final Locator downloadButton = locator("svg[data-icon='download']");
     private final Locator statusSelectorOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
 
+
     public TransactionsPage(Page page) {
         super(page);
     }
