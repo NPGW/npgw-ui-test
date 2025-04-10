@@ -28,6 +28,10 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(name));
     }
 
+    protected Locator linkByName(String name) {
+        return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(name));
+    }
+
     protected Locator optionByLabelExactText(String text) {
         return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true)).getByText(text);
     }
@@ -56,8 +60,12 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.GROUP, new Page.GetByRoleOptions().setName(name));
     }
 
-    protected Locator link(String name) {
-        return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(name));
+    protected Locator link() {
+        return getPage().getByRole(AriaRole.LINK);
+    }
+
+    protected Locator altText(String text) {
+        return getPage().getByAltText(text);
     }
 
     protected Locator option(Locator locator) {
