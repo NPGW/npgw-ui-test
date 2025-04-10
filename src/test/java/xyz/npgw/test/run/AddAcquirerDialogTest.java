@@ -19,7 +19,7 @@ import static org.testng.Assert.assertEquals;
 public class AddAcquirerDialogTest extends BaseTest {
 
     @Test()
-    @TmsLink("")
+    @TmsLink("249")
     @Epic("SA/Acquirers")
     @Feature("Add acquirer")
     @Description(
