@@ -49,11 +49,11 @@ jobs:
             USER.email=${{ secrets.COMPANY_ANALYST_EMAIL }};
             USER.password=${{ secrets.USER_PASSWORD }};
             browserType=chromium;
+            viewportWidth=1920;
+            viewportHeight=1080;
             headlessMode=true;
             tracingMode=true;
-            videoMode=true;
-            viewportWidth=1920;
-            viewportHeight=1080
+            videoMode=true
           CI_RUN: true
 
       - name: Create test report

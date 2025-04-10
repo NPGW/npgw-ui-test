@@ -3,15 +3,17 @@ package xyz.npgw.test.page.base;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import lombok.Getter;
 
 public abstract class BaseModel {
 
-    @Getter
     private final Page page;
 
     public BaseModel(Page page) {
         this.page = page;
+    }
+
+    public Page getPage() {
+        return page;
     }
 
     protected Locator placeholder(String placeholder) {
@@ -22,12 +24,12 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(name));
     }
 
-    protected Locator checkbox(String name) {
-        return getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(name));
+    protected Locator checkbox(String text) {
+        return getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(text));
     }
 
-    protected Locator linkByName(String name) {
-        return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(name));
+    protected Locator linkByName(String text) {
+        return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(text));
     }
 
     protected Locator optionByExactName(String text) {
@@ -42,8 +44,8 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.DIALOG);
     }
 
-    protected Locator tab(String name) {
-        return getPage().getByRole(AriaRole.TAB, new Page.GetByRoleOptions().setName(name));
+    protected Locator tab(String text) {
+        return getPage().getByRole(AriaRole.TAB, new Page.GetByRoleOptions().setName(text));
     }
 
     protected Locator labelExact(String text) {
@@ -54,8 +56,8 @@ public abstract class BaseModel {
         return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 
-    protected Locator group(String name) {
-        return getPage().getByRole(AriaRole.GROUP, new Page.GetByRoleOptions().setName(name));
+    protected Locator group(String text) {
+        return getPage().getByRole(AriaRole.GROUP, new Page.GetByRoleOptions().setName(text));
     }
 
     protected Locator link() {
