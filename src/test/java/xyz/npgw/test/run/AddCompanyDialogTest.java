@@ -161,6 +161,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
     @Test
     @TmsLink("223")
+    @Epic("Companies and business units")
     @Feature("Add company")
     @Description("Company can be added by filling out required fields")
     public void testAddCompanyByFillRequiredFields() {
@@ -182,6 +183,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
     @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
     @TmsLink("224")
+    @Epic("Companies and business units")
     @Feature("Add company")
     @Description("Added company appears in the 'Select company' dropdown list")
     public void testVerifyCompanyPresenceInDropdown() {
