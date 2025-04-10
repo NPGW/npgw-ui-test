@@ -10,8 +10,7 @@ public class CompanyUtils {
 
     public static Company readCompanyInformationFromJson(String filePath) throws IOException {
         InputStream inputStream = CompanyUtils.class.getClassLoader().getResourceAsStream(filePath);
-        ObjectMapper objectMapper = new ObjectMapper();
 
-        return objectMapper.readValue(inputStream, Company.class);
+        return new ObjectMapper().readValue(inputStream, Company.class);
     }
 }

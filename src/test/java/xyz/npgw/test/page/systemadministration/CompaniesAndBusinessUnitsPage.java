@@ -20,29 +20,29 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
     @Getter
     private final Locator selectCompanyInput = placeholder("Search...");
     @Getter
-    private final Locator descriptionDataFilled = labelExact("Description");
+    private final Locator descriptionFromCompanyInfoSection = labelExact("Description");
     @Getter
-    private final Locator websiteDataFilled = labelExact("Website");
+    private final Locator websiteFromCompanyInfoSection = labelExact("Website");
     @Getter
-    private final Locator primaryContactDataFilled = labelExact("Primary contact");
+    private final Locator primaryContactFromCompanyInfoSection = labelExact("Primary contact");
     @Getter
-    private final Locator emailDataFilled = labelExact("Email");
+    private final Locator emailFromCompanyInfoSection = labelExact("Email");
     @Getter
-    private final Locator phoneDataFilled = labelExact("Phone");
+    private final Locator phoneFromCompanyInfoSection = labelExact("Phone");
     @Getter
-    private final Locator mobileDataFilled = labelExact("Mobile");
+    private final Locator mobileFromCompanyInfoSection = labelExact("Mobile");
     @Getter
-    private final Locator faxDataFilled = labelExact("Fax");
+    private final Locator faxFromCompanyInfoSection = labelExact("Fax");
     @Getter
-    private final Locator countryDataFilled = labelExact("Country");
+    private final Locator countryFromCompanyInfoSection = labelExact("Country");
     @Getter
-    private final Locator zipDataFilled = labelExact("ZIP");
+    private final Locator zipFromCompanyInfoSection = labelExact("ZIP");
     @Getter
-    private final Locator cityDataFilled = labelExact("City");
+    private final Locator cityFromCompanyInfoSection = labelExact("City");
     @Getter
-    private final Locator apiActiveDataFilledCheckbox = labelExact("API active");
+    private final Locator apiActiveCheckboxFromCompanyInfoSection = labelExact("API active");
     @Getter
-    private final Locator portalActiveDataFilledCheckbox = labelExact("Portal active");
+    private final Locator portalActiveCheckboxFromCompanyInfoSection = labelExact("Portal active");
 
 
     public CompaniesAndBusinessUnitsPage(Page page) {

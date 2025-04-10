@@ -164,11 +164,9 @@ public class AddCompanyDialog extends BasePage {
     }
 
     public AddCompanyDialog setApiActiveCheckbox(boolean isActive) {
-        boolean isCurrentlyChecked = apiActiveCheckbox.isChecked();
-
-        if (isActive && !isCurrentlyChecked) {
+        if (isActive) {
             apiActiveCheckbox.check();
-        } else if (!isActive && isCurrentlyChecked) {
+        } else {
             apiActiveCheckbox.uncheck();
         }
 
@@ -176,13 +174,12 @@ public class AddCompanyDialog extends BasePage {
     }
 
     public AddCompanyDialog setPortalActiveCheckbox(boolean isActive) {
-        boolean isCurrentlyChecked = portalActiveCheckbox.isChecked();
-
-        if (isActive && !isCurrentlyChecked) {
+        if (isActive) {
             portalActiveCheckbox.check();
-        } else if (!isActive && isCurrentlyChecked) {
+        } else {
             portalActiveCheckbox.uncheck();
         }
+
         return this;
     }
 }

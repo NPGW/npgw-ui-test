@@ -333,51 +333,51 @@ public class AddCompanyDialogTest extends BaseTest {
                 .hasValue(company.getCompanyName());
 
         Allure.step("Verify: description field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getDescriptionDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getDescriptionFromCompanyInfoSection())
                 .hasValue(company.getDescription());
 
         Allure.step("Verify: website field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getWebsiteDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getWebsiteFromCompanyInfoSection())
                 .hasValue(company.getWebsite());
 
         Allure.step("Verify: primary contact field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getPrimaryContactDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getPrimaryContactFromCompanyInfoSection())
                 .hasValue(company.getPrimaryContact());
 
         Allure.step("Verify: email field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getEmailDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getEmailFromCompanyInfoSection())
                 .hasValue(company.getCompanyEmail());
 
         Allure.step("Verify: phone field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getPhoneDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getPhoneFromCompanyInfoSection())
                 .hasValue(company.getPhone());
 
         Allure.step("Verify: mobile field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getMobileDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getMobileFromCompanyInfoSection())
                 .hasValue(company.getMobile());
 
         Allure.step("Verify: fax field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getFaxDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getFaxFromCompanyInfoSection())
                 .hasValue(company.getFax());
 
         Allure.step("Verify: country field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getCountryDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getCountryFromCompanyInfoSection())
                 .hasValue(company.getCountry());
 
         Allure.step("Verify: ZIP code field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getZipDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getZipFromCompanyInfoSection())
                 .hasValue(company.getZip());
 
         Allure.step("Verify: city field is correctly filled");
-        assertThat(companiesAndBusinessUnitsPage.getCityDataFilled())
+        assertThat(companiesAndBusinessUnitsPage.getCityFromCompanyInfoSection())
                 .hasValue(company.getCity());
 
         Allure.step("Verify: 'API active' checkbox is checked");
-        assertThat(companiesAndBusinessUnitsPage.getApiActiveDataFilledCheckbox())
+        assertThat(companiesAndBusinessUnitsPage.getApiActiveCheckboxFromCompanyInfoSection())
                 .isChecked();
 
         Allure.step("Verify: 'Portal active' checkbox is checked");
-        assertThat(companiesAndBusinessUnitsPage.getPortalActiveDataFilledCheckbox())
+        assertThat(companiesAndBusinessUnitsPage.getPortalActiveCheckboxFromCompanyInfoSection())
                 .isChecked();
     }
 }
