@@ -3,17 +3,15 @@ package xyz.npgw.test.page.base;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import lombok.Getter;
 
 public abstract class BaseModel {
 
+    @Getter
     private final Page page;
 
     public BaseModel(Page page) {
         this.page = page;
-    }
-
-    public Page getPage() {
-        return page;
     }
 
     protected Locator placeholder(String placeholder) {
