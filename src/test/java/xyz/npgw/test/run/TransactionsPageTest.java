@@ -1,7 +1,5 @@
 package xyz.npgw.test.run;
 
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -168,6 +166,6 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Selector Status Options are visible");
         assertEquals(transactionsPage.getStatusSelectorOptions(), options);
         Allure.step("Verify: Default selected option in status selector is 'ALL'");
-        assertThat(transactionsPage.getPage().getByRole(AriaRole.OPTION, new Page.GetByRoleOptions().setName("ALL"))).hasAttribute("aria-selected", "true");
+        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 }
