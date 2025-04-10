@@ -40,7 +40,7 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
 
     @Step("Click Options Currency {value}")
     public TransactionsPage clickCurrency(String value) {
-        optionByLabelExactText(value).click();
+        optionByExactName(value).click();
 
         return this;
     }

@@ -30,7 +30,7 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(name));
     }
 
-    protected Locator optionByLabelExactText(String text) {
+    protected Locator optionByExactName(String text) {
         return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true)).getByText(text);
     }
 
