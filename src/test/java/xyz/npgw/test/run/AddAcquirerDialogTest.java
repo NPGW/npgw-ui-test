@@ -64,9 +64,6 @@ public class AddAcquirerDialogTest extends BaseTest {
         Allure.step("Verify: the 'Select Zone' placeholder is visible");
         assertThat(addAcquirerDialog.getSelectTimezone()).isVisible();
 
-        Allure.step("Verify: the 'Select Zone' placeholder is visible");
-        assertThat(addAcquirerDialog.getSelectTimezone()).isVisible();
-
         addAcquirerDialog.clickCloseButton();
 
         Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
