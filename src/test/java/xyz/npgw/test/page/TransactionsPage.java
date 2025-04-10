@@ -3,23 +3,32 @@ package xyz.npgw.test.page;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePageWithHeader;
-import xyz.npgw.test.page.component.ContentBlock;
+import lombok.AccessLevel;
+import lombok.Getter;
+import xyz.npgw.test.page.base.BasePageWithHeaderAndTable;
 
-public class TransactionsPage extends BasePageWithHeader {
+@Getter
+public class TransactionsPage extends BasePageWithHeaderAndTable {
 
-    private final ContentBlock table;
-    private final Locator currencySelector = button("ALL Currency");
-    private final Locator applyDataIcon = locator("button:nth-child(9)");
-    private final Locator currencyColumnHeader = columnHeader("Currency");
     private final Locator rowsPerPageButton = button("Rows Per Page");
     private final Locator rowsPerPageOptions = dialog();
+    @Getter(AccessLevel.NONE)
     private final Locator nextPageButton = button("next page button");
     private final Locator paginationItemTwoActiveButton = button("pagination item 2 active");
+    private final Locator dateRangePicker = group("DateRange");
+    private final Locator businessUnitSelector = textExact("Business unit").locator("../../..");
+    private final Locator currencySelector = labelExact("Currency");
+    private final Locator paymentMethodSelector = labelExact("Payment method");
+    private final Locator statusSelector = labelExact("Status");
+    private final Locator amountButton = button("Amount");
+    private final Locator resetFilterButton = locator("svg[data-icon='xmark']");
+    private final Locator applyDataButton = locator("svg[data-icon='filter']");
+    private final Locator settingsButton = locator("svg[data-icon='gear']");
+    private final Locator downloadButton = locator("svg[data-icon='download']");
+
 
     public TransactionsPage(Page page) {
         super(page);
-        table = new ContentBlock(page);
     }
 
     @Step("Click Currency Selector")
@@ -37,14 +46,10 @@ public class TransactionsPage extends BasePageWithHeader {
     }
 
     @Step("Click Icon Apply Data")
-    public TransactionsPage clickApplyDataIcon() {
-        applyDataIcon.click();
+    public TransactionsPage clickApplyDataButton() {
+        applyDataButton.click();
 
         return this;
-    }
-
-    public Locator getCurrencyColumnHeader() {
-        return currencyColumnHeader;
     }
 
     public boolean getTableRow(String value) {
@@ -56,10 +61,6 @@ public class TransactionsPage extends BasePageWithHeader {
         return true;
     }
 
-    public Locator getRowsPerPageButton() {
-        return rowsPerPageButton;
-    }
-
     @Step("Click Button Rows Per Page")
     public TransactionsPage clickRowsPerPageButton() {
         rowsPerPageButton.click();
@@ -67,18 +68,10 @@ public class TransactionsPage extends BasePageWithHeader {
         return this;
     }
 
-    public Locator getRowsPerPageOptions() {
-        return rowsPerPageOptions;
-    }
-
     @Step("Click next Page Button")
     public TransactionsPage clickNextPageButton() {
         nextPageButton.click();
 
         return this;
-    }
-
-    public Locator getPaginationItemTwoActiveButton() {
-        return paginationItemTwoActiveButton;
     }
 }

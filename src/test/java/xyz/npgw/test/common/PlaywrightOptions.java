@@ -44,7 +44,7 @@ public class PlaywrightOptions {
 
     public static APIRequest.NewContextOptions apiContextOptions(String idToken) {
         return new APIRequest.NewContextOptions()
-                .setBaseURL(Constants.BASE_URL)
+                .setBaseURL(ProjectProperties.getBaseUrl())
                 .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(idToken)));
     }
 
