@@ -124,22 +124,4 @@ public class AcquirersPageTest extends BaseTest {
             assertThat(acquirer).containsText(status);
         }
     }
-
-    @Test()
-    @TmsLink("")
-    @Epic("SA/Acquirers")
-    @Feature("Add acquirer")
-    @Description("Verify that clicking the 'Add acquirer' button opens a form containing all required input fields.")
-    public void testAddAcquirerFormOpensWithFields() {
-//        Locator acquirersList =
-                new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemAdministrationMenuComponent()
-                .clickAcquirersTab();
-
-
-
-
-    }
 }
