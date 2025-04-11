@@ -122,6 +122,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
     @Test
     @TmsLink("184")
+    @Epic("Companies and business units")
     @Feature("Close Button Functionality")
     @Description("Verify that clicking the Close button successfully closes the 'Add Company' dialog.")
     public void testVerifyCloseAddCompanyDialogWhenCloseButtonIsClicked() {
@@ -156,6 +157,32 @@ public class AddCompanyDialogTest extends BaseTest {
                 ("Invalid companyName: 'Company%s'. "
                         + "It may only contain letters, digits, ampersands, hyphens, commas, periods, and spaces")
                         .formatted(character));
+    }
+
+    @Test(dataProvider = "getInvalidCompanyNamesByLengthAndChar", dataProviderClass = TestDataProvider.class)
+    @TmsLink("261")
+    @Epic("Companies and business units")
+    @Feature("Company Name Validation")
+    @Description("Error message when trying to create a company with invalid length and special characters.")
+    public void testErrorForInvalidCompanyNameLengthAndCharacters(String name, String character) {
+        String fullName = name + character;
+
+        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .clickCompaniesAndBusinessUnitsTabButton()
+                .clickAddCompanyButton()
+                .fillCompanyNameField(fullName)
+                .fillCompanyTypeField(COMPANY_TYPE)
+                .clickCreateButtonAndTriggerError();
+        System.out.println(addCompanyDialog.getAlertMessage().allInnerTexts());
+
+        Allure.step("Verify: error message for invalid length and character in company name");
+        assertThat(addCompanyDialog.getAlertMessage()).containsText(
+                ("Invalid companyName: '%s'. It must contain between 4 and 100 characters "
+                        + "Invalid companyName: '%s'. It may only contain letters, digits, ampersands, "
+                        + "hyphens, commas, periods, and spaces").formatted(fullName, fullName)
+        );
     }
 
     @Test
@@ -363,6 +390,10 @@ public class AddCompanyDialogTest extends BaseTest {
         Allure.step("Verify: country field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getCountryFromCompanyInfoSection())
                 .hasValue(company.getCountry());
+
+        Allure.step("Verify: state field is correctly filled");
+        assertThat(companiesAndBusinessUnitsPage.getStateFromCompanyInfoSection())
+                .hasValue(company.getState());
 
         Allure.step("Verify: ZIP code field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getZipFromCompanyInfoSection())
