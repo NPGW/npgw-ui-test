@@ -51,6 +51,6 @@ public class AddAcquirerDialog extends BasePage {
     }
 
     public Locator getStatusRadiobutton(String value) {
-        return statusSwitch.locator("label:has(input[value='" + value + "'])");
+        return statusSwitch.locator("label:has(input[value='" + value.toUpperCase() + "'])");
     }
 }

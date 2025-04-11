@@ -88,6 +88,6 @@ public class AddAcquirerDialogTest extends BaseTest {
         acquirerDialog.clickStatusRadiobutton(status);
 
         Allure.step(String.format("Verify: The radiobutton %s clicked.", status));
-        assertThat(acquirerDialog.getStatusRadiobutton(status.toUpperCase())).hasAttribute("data-selected", "true");
+        assertThat(acquirerDialog.getStatusRadiobutton(status)).hasAttribute("data-selected", "true");
     }
 }
