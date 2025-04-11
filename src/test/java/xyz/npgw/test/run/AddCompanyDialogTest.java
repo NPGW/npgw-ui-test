@@ -175,7 +175,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 .fillCompanyNameField(fullName)
                 .fillCompanyTypeField(COMPANY_TYPE)
                 .clickCreateButtonAndTriggerError();
-        System.out.println(addCompanyDialog.getAlertMessage().allInnerTexts());
 
         Allure.step("Verify: error message for invalid length and character in company name");
         assertThat(addCompanyDialog.getAlertMessage()).containsText(
