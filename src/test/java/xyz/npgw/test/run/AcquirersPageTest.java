@@ -146,7 +146,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickAcquirersTab()
                 .clickEditButtonForAcquirer("acquirer1")
                 .clearInputFields()
-                .getPlaceholdersOrTextForFields();
+                .getPlaceholdersOrTextsFromFields();
 
         Allure.step("Verify placeholders match expected values for all fields");
         assertEquals(actualPlaceholders, expectedPlaceholders);

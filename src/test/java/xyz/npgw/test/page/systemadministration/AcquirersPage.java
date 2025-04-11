@@ -6,7 +6,9 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.SystemAdministrationBasePage;
-import xyz.npgw.test.page.component.FormComponent;
+import xyz.npgw.test.page.dialog.AddAcquirerDialog;
+import xyz.npgw.test.page.dialog.BaseDialog;
+import xyz.npgw.test.page.dialog.EditAcquirersDialog;
 
 public class AcquirersPage extends SystemAdministrationBasePage {
 
@@ -85,10 +87,9 @@ public class AcquirersPage extends SystemAdministrationBasePage {
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public FormComponent clickEditButtonForAcquirer(String name) {
-        optionByName(name)
-                .getByText("Edit").click();
+    public BaseDialog clickEditButtonForAcquirer(String name) {
+        optionByName(name).getByText("Edit").click();
 
-        return new AcquirersForm(getPage());
+        return new EditAcquirersDialog(getPage());
     }
 }

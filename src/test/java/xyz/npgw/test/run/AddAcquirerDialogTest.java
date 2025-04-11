@@ -8,8 +8,8 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dialog.AddAcquirerDialog;
 import xyz.npgw.test.page.systemadministration.AcquirersPage;
-import xyz.npgw.test.page.systemadministration.AddAcquirerDialog;
 
 import java.util.List;
 
