@@ -44,8 +44,8 @@ public class TestDataProvider {
     @DataProvider
     public static Object[][] getAcquirersStatus() {
         return new Object[][]{
-                {"Active", "ACTIVE"},
-                {"Inactive", "INACTIVE"},
+                {"Active"},
+                {"Inactive"},
         };
     }
 }

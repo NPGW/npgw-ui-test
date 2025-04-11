@@ -76,7 +76,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Epic("SA/Acquirers")
     @Feature("Add acquirer")
     @Description("Verifies that the status radio buttons ('Active' and 'Inactive') toggle correctly.")
-    public void testToggleStatusRadioButtonsCorrectly(String status, String value) {
+    public void testToggleStatusRadioButtonsCorrectly(String status) {
 
         AddAcquirerDialog acquirerDialog = new DashboardPage(getPage())
                 .getHeader()
@@ -88,6 +88,6 @@ public class AddAcquirerDialogTest extends BaseTest {
         acquirerDialog.clickStatusRadiobutton(status);
 
         Allure.step(String.format("Verify: The radiobutton %s clicked.", status));
-        assertThat(acquirerDialog.getStatusRadiobutton(value)).hasAttribute("data-selected", "true");
+        assertThat(acquirerDialog.getStatusRadiobutton(status.toUpperCase())).hasAttribute("data-selected", "true");
     }
 }
