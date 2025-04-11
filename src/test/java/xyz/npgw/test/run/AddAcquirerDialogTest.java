@@ -75,7 +75,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @TmsLink("255")
     @Epic("SA/Acquirers")
     @Feature("Add acquirer")
-    @Description("Verifies that the status radio buttons (\"Active\" and \"Inactive\") toggle correctly.")
+    @Description("Verifies that the status radio buttons ('Active' and 'Inactive') toggle correctly.")
     public void testToggleStatusRadioButtonsCorrectly(String status, String value) {
 
         AddAcquirerDialog acquirerDialog = new DashboardPage(getPage())
