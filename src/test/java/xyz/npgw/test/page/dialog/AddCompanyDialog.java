@@ -16,7 +16,7 @@ public class AddCompanyDialog extends BaseDialog {
     private final Locator companyNameField = placeholder("Enter company name");
     private final Locator companyTypeField = placeholder("Enter type");
     @Getter
-    private final Locator createButton = button("Create");
+    private final Locator createButton = buttonByName("Create");
     private final Locator alertMessage = locator("[role='alert']");
     private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
     private final Locator companyDescriptionField = placeholder("Enter company description");

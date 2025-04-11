@@ -39,4 +39,15 @@ public class AddAcquirerDialog extends BaseDialog {
 
         return new AcquirersPage(getPage());
     }
+
+    @Step("Click '{option}' radiobutton")
+    public AddAcquirerDialog clickStatusRadiobutton(String option) {
+        labelExact(option).click();
+
+        return this;
+    }
+
+    public Locator getStatusRadiobutton(String value) {
+        return statusSwitch.locator("label:has(input[value='" + value.toUpperCase() + "'])");
+    }
 }
