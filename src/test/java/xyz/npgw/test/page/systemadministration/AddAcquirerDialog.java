@@ -44,8 +44,7 @@ public class AddAcquirerDialog extends BasePage {
 
     @Step("Click '{option}' radiobutton")
     public AddAcquirerDialog clickStatusRadiobutton(String option) {
-        Locator statusRadioButton = labelExact(option);
-        statusRadioButton.click();
+        labelExact(option).click();
 
         return this;
     }
