@@ -1,5 +1,6 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -78,16 +79,17 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Description("Verifies that the status radio buttons ('Active' and 'Inactive') toggle correctly.")
     public void testToggleStatusRadioButtonsCorrectly(String status) {
 
-        AddAcquirerDialog acquirerDialog = new DashboardPage(getPage())
+        Locator statusRadiobutton = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemAdministrationMenuComponent()
                 .clickAcquirersTab()
-                .clickAddAcquirer();
-
-        acquirerDialog.clickStatusRadiobutton(status);
+                .clickAddAcquirer()
+                .clickStatusRadiobutton(status)
+                .clickStatusRadiobutton(status)
+                .getStatusRadiobutton(status);
 
         Allure.step(String.format("Verify: The radiobutton %s clicked.", status));
-        assertThat(acquirerDialog.getStatusRadiobutton(status)).hasAttribute("data-selected", "true");
+        assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 }
