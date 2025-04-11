@@ -27,7 +27,7 @@ public class EditCompanyDialog extends BaseDialog {
     private final Locator companyPhoneField = placeholder("Enter phone");
     private final Locator companyMobileField = placeholder("Enter mobile");
     private final Locator companyFaxField = placeholder("Enter fax");
-    private final Locator saveChangesButton = button("Save changes");
+    private final Locator saveChangesButton = buttonByName("Save changes");
 
     public EditCompanyDialog(Page page) {
         super(page);
