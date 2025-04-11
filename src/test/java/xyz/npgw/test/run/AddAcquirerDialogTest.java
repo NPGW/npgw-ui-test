@@ -86,7 +86,6 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickStatusRadiobutton(status)
-                .clickStatusRadiobutton(status)
                 .getStatusRadiobutton(status);
 
         Allure.step(String.format("Verify: The radiobutton %s clicked.", status));
