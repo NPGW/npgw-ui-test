@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BasePageWithHeaderAndTable;
 
+import java.util.List;
+
 @Getter
 public class TransactionsPage extends BasePageWithHeaderAndTable {
 
@@ -21,10 +23,12 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
     private final Locator paymentMethodSelector = labelExact("Payment method");
     private final Locator statusSelector = labelExact("Status");
     private final Locator amountButton = buttonByName("Amount");
-    private final Locator resetFilterButton = locator("svg[data-icon='xmark']");
-    private final Locator applyDataButton = locator("svg[data-icon='filter']");
-    private final Locator settingsButton = locator("svg[data-icon='gear']");
-    private final Locator downloadButton = locator("svg[data-icon='download']");
+    private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
+    private final Locator applyDataButton = getByTestId("ApplyFilterButtonTransactionsPage");
+    private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
+    private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage");
+    private final Locator statusSelectorOptions = listboxByRole().locator(optionByRole());
+    private final Locator activeOption = listboxByRole().locator("[aria-selected='true']");
     private final Locator amountFromField = labelExact("From").locator("..");
     private final Locator amountToField = labelExact("To").locator("..");
     private final Locator clearAmountFromButton = amountFromField.locator("//button[@aria-label='clear input']");
@@ -40,7 +44,6 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
     private final Locator amountApplied = textExact("Amount: 101 - 4999");
     private final Locator amountAppliedClearButton = buttonByName("close chip");
 
-
     public TransactionsPage(Page page) {
         super(page);
     }
@@ -54,7 +57,7 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
 
     @Step("Click Options Currency {value}")
     public TransactionsPage clickCurrency(String value) {
-        optionByExactName(value).click();
+        optionLabelByExactText(value).click();
 
         return this;
     }
@@ -174,5 +177,16 @@ public class TransactionsPage extends BasePageWithHeaderAndTable {
         amountAppliedClearButton.click();
 
         return this;
+    }
+
+    @Step("Click Status Selector")
+    public TransactionsPage clickStatusSelector() {
+        statusSelector.click();
+
+        return this;
+    }
+
+    public List<String> getStatusSelectorOptions() {
+        return statusSelectorOptions.all().stream().map(Locator::innerText).toList();
     }
 }
