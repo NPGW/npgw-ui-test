@@ -6,9 +6,10 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.AddBusinessUnitDialog;
-import xyz.npgw.test.page.AddCompanyDialog;
+import org.testng.Assert;
 import xyz.npgw.test.page.base.SystemAdministrationWithTableBasePage;
+import xyz.npgw.test.page.dialog.AddBusinessUnitDialog;
+import xyz.npgw.test.page.dialog.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.EditCompanyDialog;
 
 public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTableBasePage {
@@ -56,8 +57,6 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
     private final Locator apiActiveCheckboxFromCompanyInfoSection = labelExact("API active");
     @Getter
     private final Locator portalActiveCheckboxFromCompanyInfoSection = labelExact("Portal active");
-
-
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -115,6 +114,7 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
         return new AddBusinessUnitDialog(getPage());
     }
 
+    @Step("Click '{companyName}' company in dropdown")
     public CompaniesAndBusinessUnitsPage clickCompanyInDropdown(String companyName) {
         String lastSeenText = "";
 
@@ -140,8 +140,11 @@ public class CompaniesAndBusinessUnitsPage extends SystemAdministrationWithTable
             lastDropdownOption.scrollIntoViewIfNeeded();
         }
 
-        throw new RuntimeException("Company '" + companyName + "' not found in dropdown.");
+        Assert.fail("Company '" + companyName + "' not found in dropdown.");
+
+        return this;
     }
+
     @Step("Click 'Edit company' button")
     public EditCompanyDialog clickEditCompanyButton() {
         //getPage().waitForLoadState(LoadState.NETWORKIDLE);

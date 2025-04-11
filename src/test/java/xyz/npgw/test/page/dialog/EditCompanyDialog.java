@@ -2,20 +2,13 @@ package xyz.npgw.test.page.dialog;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BaseDialog;
 import xyz.npgw.test.page.systemadministration.CompaniesAndBusinessUnitsPage;
-
-import java.util.List;
 
 public class EditCompanyDialog extends BaseDialog {
 
     private final Locator companyNameField = placeholder("Enter company name");
     private final Locator companyTypeField = placeholder("Enter type");
-    private final Locator alertMessage = locator("[role='alert']");
-    private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
-    private final Locator closeButton = textExact("Close");
     private final Locator companyDescriptionField = placeholder("Enter company description");
     private final Locator companyWebsiteField = placeholder("Enter company website");
     private final Locator companyPrimaryContactField = placeholder("Enter company primary contact");
@@ -124,31 +117,10 @@ public class EditCompanyDialog extends BaseDialog {
         return this;
     }
 
-
-    public Locator getAlertMessage() {
-        alertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        return alertMessage;
-    }
-
-    public List<String> getAllFieldPlaceholders() {
-        allFieldPlaceholders.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        return allFieldPlaceholders.all().stream().map(l -> l.getAttribute("placeholder")).toList();
-    }
-
-    @Step("Click 'Close' button")
-    public CompaniesAndBusinessUnitsPage clickCloseButton() {
-        closeButton.click();
-
-        return new CompaniesAndBusinessUnitsPage(getPage());
-    }
-
     @Step("Click 'Save changes' button")
     public CompaniesAndBusinessUnitsPage clickSaveChangesButton() {
         saveChangesButton.click();
 
         return new CompaniesAndBusinessUnitsPage(getPage());
     }
-
 }
