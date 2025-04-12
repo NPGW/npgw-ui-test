@@ -1,3 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Displaying the currency filter on the screen when selecting EUR.","0","testFilterByCurrency","Surefire suite","Fri Apr 11 01:08:01 GMT 2025","unknown","Fri Apr 11 01:08:01 GMT 2025","xyz.npgw.test.run.TransactionsPageTest","Surefire test","xyz.npgw.test.run.TransactionsPageTest","testFilterByCurrency"
-"Verifying that we can switch the page when we click next button","2","testPaginationNextButton","Surefire suite","Fri Apr 11 01:08:01 GMT 2025","unknown","Fri Apr 11 01:08:01 GMT 2025","xyz.npgw.test.run.TransactionsPageTest","Surefire test","xyz.npgw.test.run.TransactionsPageTest","testPaginationNextButton"
