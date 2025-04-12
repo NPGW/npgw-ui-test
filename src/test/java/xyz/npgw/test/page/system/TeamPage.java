@@ -5,7 +5,7 @@ import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.trait.TableTrait;
 
-public class TeamPage extends SystemBasePage implements TableTrait {
+public class TeamPage extends BaseSystemPage implements TableTrait {
 
     private final Locator companiesAndBusinessUnitsTabButton = tab("Companies and business units");
 

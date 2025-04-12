@@ -9,7 +9,7 @@ import xyz.npgw.test.page.dialog.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.dialog.EditAcquirerDialog;
 
-public class AcquirersPage extends SystemBasePage {
+public class AcquirersPage extends BaseSystemPage {
 
     @Getter
     private final Locator addAcquirerButton = locator("svg[data-icon='circle-plus']");
