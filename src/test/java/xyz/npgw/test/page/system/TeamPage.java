@@ -3,9 +3,6 @@ package xyz.npgw.test.page.system;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePage;
-import xyz.npgw.test.page.base.trait.HeaderTrait;
-import xyz.npgw.test.page.base.trait.SystemMenuTrait;
 import xyz.npgw.test.page.base.trait.TableTrait;
 
 public class TeamPage extends SystemBasePage implements TableTrait {
