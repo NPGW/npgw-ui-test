@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
-import xyz.npgw.test.common.util.CompanyTestData;
+import xyz.npgw.test.common.util.Company;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.AddCompanyDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
@@ -314,9 +314,24 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add company")
     @Description("Validates successful company creation and correct field persistence (E2E test).")
     public void testAddCompanyEndToEndTest() {
-        CompanyTestData companyTestData = CompanyTestData.validCompanyTestData();
+        Company company = new Company(
+                "CompanyNameTest",
+                "Company Type Test",
+                "Description Test",
+                "https://www.test.com",
+                "James Smith",
+                "test@yahoo.com",
+                "USA",
+                "PA",
+                "19876",
+                "Warwick",
+                "2151111111",
+                "2152222222",
+                "222333444",
+                true,
+                true);
 
-        deleteCompany(companyTestData.companyName());
+        deleteCompany(company.companyName());
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .getHeader()
@@ -337,21 +352,21 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getCreateButton()).isDisabled();
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = addCompanyDialog
-                .fillCompanyNameField(companyTestData.companyName())
-                .fillCompanyTypeField(companyTestData.companyType())
-                .fillCompanyDescriptionField(companyTestData.description())
-                .fillCompanyWebsiteField(companyTestData.website())
-                .fillCompanyPrimaryContactField(companyTestData.primaryContact())
-                .fillCompanyEmailField(companyTestData.companyEmail())
-                .fillCompanyCountryField(companyTestData.country())
-                .fillCompanyStateField(companyTestData.state())
-                .fillCompanyZipField(companyTestData.zip())
-                .fillCompanyCityField(companyTestData.city())
-                .fillCompanyPhoneField(companyTestData.phone())
-                .fillCompanyMobileField(companyTestData.mobile())
-                .fillCompanyFaxField(companyTestData.fax())
-                .setApiActiveCheckbox(companyTestData.apiActive())
-                .setPortalActiveCheckbox(companyTestData.portalActive())
+                .fillCompanyNameField(company.companyName())
+                .fillCompanyTypeField(company.companyType())
+                .fillCompanyDescriptionField(company.description())
+                .fillCompanyWebsiteField(company.website())
+                .fillCompanyPrimaryContactField(company.primaryContact())
+                .fillCompanyEmailField(company.companyEmail())
+                .fillCompanyCountryField(company.country())
+                .fillCompanyStateField(company.state())
+                .fillCompanyZipField(company.zip())
+                .fillCompanyCityField(company.city())
+                .fillCompanyPhoneField(company.phone())
+                .fillCompanyMobileField(company.mobile())
+                .fillCompanyFaxField(company.fax())
+                .setApiActiveCheckbox(company.apiActive())
+                .setPortalActiveCheckbox(company.portalActive())
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed after company creation");
@@ -360,55 +375,55 @@ public class AddCompanyDialogTest extends BaseTest {
 
         companiesAndBusinessUnitsPage
                 .clickSelectCompanyDropdown()
-                .clickCompanyInDropdown(companyTestData.companyName());
+                .clickCompanyInDropdown(company.companyName());
 
         Allure.step("Verify: selected company is shown in the input field");
         assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput())
-                .hasValue(companyTestData.companyName());
+                .hasValue(company.companyName());
 
         Allure.step("Verify: description field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getDescriptionFromCompanyInfoSection())
-                .hasValue(companyTestData.description());
+                .hasValue(company.description());
 
         Allure.step("Verify: website field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getWebsiteFromCompanyInfoSection())
-                .hasValue(companyTestData.website());
+                .hasValue(company.website());
 
         Allure.step("Verify: primary contact field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getPrimaryContactFromCompanyInfoSection())
-                .hasValue(companyTestData.primaryContact());
+                .hasValue(company.primaryContact());
 
         Allure.step("Verify: email field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getEmailFromCompanyInfoSection())
-                .hasValue(companyTestData.companyEmail());
+                .hasValue(company.companyEmail());
 
         Allure.step("Verify: phone field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getPhoneFromCompanyInfoSection())
-                .hasValue(companyTestData.phone());
+                .hasValue(company.phone());
 
         Allure.step("Verify: mobile field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getMobileFromCompanyInfoSection())
-                .hasValue(companyTestData.mobile());
+                .hasValue(company.mobile());
 
         Allure.step("Verify: fax field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getFaxFromCompanyInfoSection())
-                .hasValue(companyTestData.fax());
+                .hasValue(company.fax());
 
         Allure.step("Verify: country field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getCountryFromCompanyInfoSection())
-                .hasValue(companyTestData.country());
+                .hasValue(company.country());
 
         Allure.step("Verify: state field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getStateFromCompanyInfoSection())
-                .hasValue(companyTestData.state());
+                .hasValue(company.state());
 
         Allure.step("Verify: ZIP code field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getZipFromCompanyInfoSection())
-                .hasValue(companyTestData.zip());
+                .hasValue(company.zip());
 
         Allure.step("Verify: city field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getCityFromCompanyInfoSection())
-                .hasValue(companyTestData.city());
+                .hasValue(company.city());
 
         Allure.step("Verify: 'API active' checkbox is checked");
         assertThat(companiesAndBusinessUnitsPage.getApiActiveCheckboxFromCompanyInfoSection())
