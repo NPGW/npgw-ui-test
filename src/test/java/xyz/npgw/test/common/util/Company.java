@@ -8,14 +8,14 @@ public record Company(
         String website,
         String primaryContact,
         String companyEmail,
+        boolean apiActive,
+        boolean portalActive,
         String country,
         String state,
         String zip,
         String city,
         String phone,
         String mobile,
-        String fax,
-        boolean apiActive,
-        boolean portalActive
+        String fax
 ){}
 

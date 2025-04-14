@@ -315,21 +315,13 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Validates successful company creation and correct field persistence (E2E test).")
     public void testAddCompanyEndToEndTest() {
         Company company = new Company(
-                "CompanyNameTest",
-                "Company Type Test",
+                "CompanyNameTest", "Company Type Test",
                 "Description Test",
-                "https://www.test.com",
-                "James Smith",
-                "test@yahoo.com",
-                "USA",
-                "PA",
-                "19876",
-                "Warwick",
-                "2151111111",
-                "2152222222",
-                "222333444",
-                true,
-                true);
+                "https://www.test.com", "James Smith", "test@yahoo.com",
+                true, true,
+                "USA", "PA",
+                "19876", "Warwick",
+                "2151111111", "2152222222", "222333444");
 
         deleteCompany(company.companyName());
 
@@ -358,6 +350,8 @@ public class AddCompanyDialogTest extends BaseTest {
                 .fillCompanyWebsiteField(company.website())
                 .fillCompanyPrimaryContactField(company.primaryContact())
                 .fillCompanyEmailField(company.companyEmail())
+                .setApiActiveCheckbox(company.apiActive())
+                .setPortalActiveCheckbox(company.portalActive())
                 .fillCompanyCountryField(company.country())
                 .fillCompanyStateField(company.state())
                 .fillCompanyZipField(company.zip())
@@ -365,8 +359,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 .fillCompanyPhoneField(company.phone())
                 .fillCompanyMobileField(company.mobile())
                 .fillCompanyFaxField(company.fax())
-                .setApiActiveCheckbox(company.apiActive())
-                .setPortalActiveCheckbox(company.portalActive())
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed after company creation");
@@ -397,6 +389,14 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getEmailFromCompanyInfoSection())
                 .hasValue(company.companyEmail());
 
+        Allure.step("Verify: 'API active' checkbox is checked");
+        assertThat(companiesAndBusinessUnitsPage.getApiActiveCheckboxFromCompanyInfoSection())
+                .isChecked();
+
+        Allure.step("Verify: 'Portal active' checkbox is checked");
+        assertThat(companiesAndBusinessUnitsPage.getPortalActiveCheckboxFromCompanyInfoSection())
+                .isChecked();
+
         Allure.step("Verify: phone field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getPhoneFromCompanyInfoSection())
                 .hasValue(company.phone());
@@ -424,13 +424,5 @@ public class AddCompanyDialogTest extends BaseTest {
         Allure.step("Verify: city field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getCityFromCompanyInfoSection())
                 .hasValue(company.city());
-
-        Allure.step("Verify: 'API active' checkbox is checked");
-        assertThat(companiesAndBusinessUnitsPage.getApiActiveCheckboxFromCompanyInfoSection())
-                .isChecked();
-
-        Allure.step("Verify: 'Portal active' checkbox is checked");
-        assertThat(companiesAndBusinessUnitsPage.getPortalActiveCheckboxFromCompanyInfoSection())
-                .isChecked();
     }
 }
