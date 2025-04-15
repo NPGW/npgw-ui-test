@@ -3,11 +3,14 @@ package xyz.npgw.test.page.dialog;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.page.system.TeamPage;
 
 import java.util.Arrays;
+
+import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 public class AddUserDialog extends BaseDialog {
 
@@ -23,7 +26,7 @@ public class AddUserDialog extends BaseDialog {
     }
 
     @Step("Enter user password")
-    public AddUserDialog fillPasswordField(String password) {
+    public AddUserDialog fillPasswordField(@Param(name = "Password", mode = MASKED) String password) {
         getPage().getByPlaceholder("Enter user password").fill(password);
 
         return this;
