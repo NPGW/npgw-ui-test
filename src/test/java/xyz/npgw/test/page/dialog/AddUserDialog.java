@@ -99,6 +99,7 @@ public class AddUserDialog extends BaseDialog {
 
     @Step("Check 'Create' button")
     public TeamPage clickCreateButton() {
+        getPage().waitForTimeout(1000);
         getPage().getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Create")).click();
 
         return new TeamPage(getPage());
