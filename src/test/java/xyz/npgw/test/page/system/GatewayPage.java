@@ -7,12 +7,8 @@ import lombok.Getter;
 
 public class GatewayPage extends BaseSystemPage {
 
-    private final Locator selectAcquirerLabel = labelExact("Select acquirer");
-    @Getter
     private final Locator currencyLabel = labelExact("Currency");
-    @Getter
     private final Locator gatewayCurrencyPlaceholder = locator("div[data-slot='innerWrapper'] span");
-    @Getter
     private final Locator dropdownGatewayCurrencyList = locator("div[data-slot='listbox']");
     @Getter
     private final Locator gatewayCurrencyOptions = option(dropdownGatewayCurrencyList);
