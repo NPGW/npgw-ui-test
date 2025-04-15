@@ -8,10 +8,10 @@ import lombok.Getter;
 public class GatewayPage extends BaseSystemPage {
 
     private final Locator currencyLabel = labelExact("Currency");
-    private final Locator gatewayCurrencyPlaceholder = locator("div[data-slot='innerWrapper'] span");
-    private final Locator dropdownGatewayCurrencyList = locator("div[data-slot='listbox']");
+    private final Locator currencyPlaceholder = locator("div[data-slot='innerWrapper'] span");
+    private final Locator dropdownCurrencyList = locator("div[data-slot='listbox']");
     @Getter
-    private final Locator gatewayCurrencyOptions = option(dropdownGatewayCurrencyList);
+    private final Locator currencyOptions = option(dropdownCurrencyList);
 
 
     public GatewayPage(Page page) {
@@ -19,9 +19,9 @@ public class GatewayPage extends BaseSystemPage {
     }
 
     @Step("Click Currency placeholder")
-    public GatewayPage clickGatewayCurrencyPlaceholder() {
+    public GatewayPage clickCurrencyPlaceholder() {
         currencyLabel.waitFor();
-        gatewayCurrencyPlaceholder.click();
+        currencyPlaceholder.click();
 
         return this;
     }
