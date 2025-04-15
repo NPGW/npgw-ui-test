@@ -1,17 +1,22 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.Company;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.AddBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
+import xyz.npgw.test.common.provider.TestDataProvider;
+
+import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -105,5 +110,53 @@ public class AddBusinessUnitTest extends BaseTest {
 
         Allure.step("The table is empty and 'No rows to display.' is displayed");
         assertThat(companiesAndBusinessUnitsPage.getBusinessUnitEmptyList()).hasText("No rows to display.");
+    }
+
+    @Ignore
+    @Test(dataProvider = "merchantFormData", dataProviderClass = TestDataProvider.class)
+    @TmsLink("218")
+    @Epic("Companies and business units")
+    @Feature("Add merchant")
+    @Description("Add a new Merchant with 'Add business unit' button")
+    public void testAddNewMerchants(String status, List<String> currencies) {
+        Company company = new Company(new Faker());
+
+        CompaniesAndBusinessUnitsPage companiesPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .clickCompaniesAndBusinessUnitsTabButton()
+                .clickAddCompanyButton()
+                .fillCompanyNameField(company.companyName())
+                .fillCompanyTypeField(company.companyType())
+                .clickCreateButton()
+                .waitUntilAlertIsGone()
+                .selectCompanyInTheFilter(company.companyName());
+
+        AddBusinessUnitDialog dialog = companiesPage.clickOnAddBusinessUnitButton()
+                .setBusinessUnitName(company.companyType());
+
+        if (status.equalsIgnoreCase("Inactive")) {
+            dialog.selectInactiveState();
+        } else {
+            dialog.selectActiveState();
+        }
+
+        if (currencies.contains("USD")) {
+            dialog.checkUsdCurrency();
+        }
+        if (currencies.contains("EUR")) {
+            dialog.checkEurCurrency();
+        }
+
+        dialog.clickOnCreateButton().waitUntilAlertIsGone();
+
+        Locator row = getPage().locator("td").locator("xpath=..");
+        assertThat(row).containsText(company.companyType());
+        assertThat(row).containsText(status);
+        assertThat(row).containsText("id.merchant.");
+
+        for (String currency : currencies) {
+            assertThat(row).containsText(currency);
+        }
     }
 }
