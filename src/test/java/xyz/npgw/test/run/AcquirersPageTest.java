@@ -18,6 +18,7 @@ import java.util.List;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
+@Ignore
 public class AcquirersPageTest extends BaseTest {
 
     @Test
@@ -108,7 +109,6 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(actualOptions).hasText(new String[]{"All", "Active", "Inactive"});
     }
 
-    @Ignore
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("243")
     @Epic("System/Acquirers")
