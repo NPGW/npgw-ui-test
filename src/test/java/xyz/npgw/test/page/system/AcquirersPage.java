@@ -34,9 +34,9 @@ public class AcquirersPage extends BaseSystemPage {
     @Getter
     private final Locator acquirerStatusValue = locator("div[data-slot='innerWrapper'] span");
     @Getter
-    private final Locator AcquirerStatusDropdown = locator("div[data-slot='listbox']");
+    private final Locator acquirerStatusDropdown = locator("div[data-slot='listbox']");
     @Getter
-    private final Locator acquirerStatusOptions = option(AcquirerStatusDropdown);
+    private final Locator acquirerStatusOptions = option(acquirerStatusDropdown);
 
     public AcquirersPage(Page page) {
         super(page);
@@ -77,7 +77,7 @@ public class AcquirersPage extends BaseSystemPage {
                 .click();
         Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
         option.click();
-        AcquirerStatusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+        acquirerStatusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return this;
     }

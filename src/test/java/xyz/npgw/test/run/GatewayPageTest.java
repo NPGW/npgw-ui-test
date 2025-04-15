@@ -58,13 +58,13 @@ public class GatewayPageTest extends BaseTest {
                     .selectCurrency(currency)
                     .getCurrencyValue();
 
-            Allure.step("Verify placeholder matches expected value: " + currency);
+            Allure.step("Verify currency has value: " + currency);
             assertThat(actualCurrency).hasText(currency);
 
             gatewayPage.clickCurrencyPlaceholder()
                     .selectCurrency(currency);
 
-            Allure.step("Verify again placeholder matches expected value: " + currency);
+            Allure.step("Verify currency has the same value: " + currency);
             assertThat(actualCurrency).hasText(currency);
         }
     }
