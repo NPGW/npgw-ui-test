@@ -1,6 +1,8 @@
 package xyz.npgw.test.common.provider;
 
 import org.testng.annotations.DataProvider;
+import xyz.npgw.test.common.UserRole;
+import xyz.npgw.test.common.util.User;
 
 public class TestDataProvider {
 
@@ -55,6 +57,18 @@ public class TestDataProvider {
         return new Object[][]{
                 {"Active"},
                 {"Inactive"},
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getUsers() {
+        return new Object[][]{
+                {new User("super", true,
+                        UserRole.SUPER, new String[]{}, "super@test.com", "Qwerty123!")},
+                {new User("testframework", true,
+                        UserRole.ADMIN, new String[]{}, "admin@test.com", "Qwerty123!")},
+                {new User("testframework", true,
+                        UserRole.USER, new String[]{"businessUnitName"}, "user@test.com", "Qwerty123!")}
         };
     }
 }
