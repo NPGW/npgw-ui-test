@@ -9,4 +9,9 @@ public record User(
         String[] merchantIds,
         String email,
         String password) {
+
+    @Override
+    public String toString() {
+        return "User: %s %s".formatted(email, userRole) ;
+    }
 }
