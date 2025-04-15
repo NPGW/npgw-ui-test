@@ -15,7 +15,6 @@ public class GatewayPage extends BaseSystemPage {
     @Getter
     private final Locator currencyOptions = option(dropdownCurrencyList);
 
-
     public GatewayPage(Page page) {
         super(page);
     }
