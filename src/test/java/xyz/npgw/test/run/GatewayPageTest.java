@@ -30,7 +30,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSystemMenu()
                 .clickGatewayTab()
                 .clickCurrencyPlaceholder()
-                .getCurrencyOptions();
+                .getCurrencyOptionsList();
 
         Allure.step("Verify: The 'Currency' dropdown toggles and contains options All, USD, EUR.");
         assertThat(actualOptions).hasText(new String[]{"ALL", "USD", "EUR"});

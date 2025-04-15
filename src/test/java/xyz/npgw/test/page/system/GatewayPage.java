@@ -11,9 +11,9 @@ public class GatewayPage extends BaseSystemPage {
     private final Locator currencyLabel = labelExact("Currency");
     @Getter
     private final Locator currencyPlaceholder = locator("div[data-slot='innerWrapper'] span");
-    private final Locator dropdownCurrencyList = locator("div[data-slot='listbox']");
+    private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     @Getter
-    private final Locator currencyOptions = option(dropdownCurrencyList);
+    private final Locator currencyOptionsList = option(currencyDropdown);
 
     public GatewayPage(Page page) {
         super(page);
@@ -31,7 +31,7 @@ public class GatewayPage extends BaseSystemPage {
     public GatewayPage selectCurrency(String currency) {
         Locator option = getPage().locator("li[data-key='" + currency.toUpperCase() + "']");
         option.click();
-        dropdownCurrencyList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+        currencyDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return this;
     }
