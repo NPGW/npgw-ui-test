@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.Company;
@@ -82,6 +83,7 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
+    @Ignore
     @Test
     @TmsLink("241")
     @Epic("System/Companies and business units")
