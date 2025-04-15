@@ -13,7 +13,7 @@ public class GatewayPage extends BaseSystemPage {
     private final Locator currencyPlaceholder = locator("div[data-slot='innerWrapper'] span");
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     @Getter
-    private final Locator currencyOptionsList = option(currencyDropdown);
+    private final Locator currencyOptions = option(currencyDropdown);
 
     public GatewayPage(Page page) {
         super(page);
