@@ -72,7 +72,7 @@ public class TestDataProvider {
                         "admin@test.com", ProjectProperties.getAdminPassword())},
                 {new User("testframework", true,
                         UserRole.USER, new String[]{"businessUnitName"},
-                        "user@test.com", ProjectProperties.getAdminPassword())}
+                        "user@test.com", ProjectProperties.getUserPassword())}
         };
     }
 }
