@@ -90,7 +90,7 @@ public class AddUserDialog extends BaseDialog {
                         .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(s))
                         .all()
                         .forEach(item -> {
-                            item.check();
+                            item.setChecked(true);
                             assertThat(item).isChecked();
                         }));
 

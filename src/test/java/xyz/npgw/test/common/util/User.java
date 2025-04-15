@@ -12,6 +12,6 @@ public record User(
 
     @Override
     public String toString() {
-        return "User: %s %s".formatted(email, userRole) ;
+        return "User: %s %s".formatted(email, userRole);
     }
 }
