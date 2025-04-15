@@ -19,7 +19,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class GatewayPageTest extends BaseTest {
 
     @Test
-    @TmsLink("282")
+    @TmsLink("283")
     @Epic("System/Gateway")
     @Feature("Currency")
     @Description("The 'Currency' dropdown toggles and contains options All, USD, EUR.")
