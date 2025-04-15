@@ -44,7 +44,7 @@ public class GatewayPageTest extends BaseTest {
     public void testRetainCurrencyWhenReSelectingSameOption() {
         Assert.fail("Test is temporarily disabled — waiting bug fixed");
 
-        List<String> expectedOptions = List.of("USD", "EUR");
+        List<String> expectedOptions = List.of("ALL", "USD", "EUR");
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .getHeader()
