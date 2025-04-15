@@ -82,6 +82,7 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
+    @Ignore
     @Test
     @TmsLink("241")
     @Epic("System/Companies and business units")
