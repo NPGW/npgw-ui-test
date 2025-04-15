@@ -173,14 +173,13 @@ public class AcquirersPageTest extends BaseTest {
             Locator actualStatus = acquirersPage
                     .clickAcquirerStatusPlaceholder()
                     .selectAcquirerStatus(status)
-                    .getAcquirerStatusPlaceholder();
+                    .getAcquirerStatusValue();
 
             Allure.step("Verify placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
 
             acquirersPage.clickAcquirerStatusPlaceholder()
-                    .selectAcquirerStatus(status)
-                    .getAcquirerStatusPlaceholder();
+                    .selectAcquirerStatus(status);
 
             Allure.step("Verify again placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);

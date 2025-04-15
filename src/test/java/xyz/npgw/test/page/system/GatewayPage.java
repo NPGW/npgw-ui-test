@@ -10,7 +10,7 @@ public class GatewayPage extends BaseSystemPage {
 
     private final Locator currencyLabel = labelExact("Currency");
     @Getter
-    private final Locator currencyPlaceholder = locator("div[data-slot='innerWrapper'] span");
+    private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     @Getter
     private final Locator currencyOptions = option(currencyDropdown);
@@ -22,15 +22,16 @@ public class GatewayPage extends BaseSystemPage {
     @Step("Click Currency placeholder")
     public GatewayPage clickCurrencyPlaceholder() {
         currencyLabel.waitFor();
-        currencyPlaceholder.click();
+        currencyValue.click();
 
         return this;
     }
 
     @Step("Select Currency '{currency}'")
     public GatewayPage selectCurrency(String currency) {
-        Locator option = getPage().locator("li[data-key='" + currency.toUpperCase() + "']");
-        option.click();
+        currencyOptions
+                .filter(new Locator.FilterOptions().setHasText(currency))
+                .click();
         currencyDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return this;
