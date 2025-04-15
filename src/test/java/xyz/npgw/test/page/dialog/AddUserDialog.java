@@ -1,6 +1,5 @@
 package xyz.npgw.test.page.dialog;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
@@ -10,6 +9,7 @@ import xyz.npgw.test.page.system.TeamPage;
 
 import java.util.Arrays;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 public class AddUserDialog extends BaseDialog {
@@ -89,7 +89,10 @@ public class AddUserDialog extends BaseDialog {
                 s -> getPage()
                         .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(s))
                         .all()
-                        .forEach(Locator::check));
+                        .forEach(item -> {
+                            item.check();
+                            assertThat(item).isChecked();
+                        }));
 
         return this;
     }
