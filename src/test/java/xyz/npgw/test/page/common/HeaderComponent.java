@@ -29,7 +29,8 @@ public class HeaderComponent extends BaseComponent {
     private final Locator logOutButtonUserMenu = locator("//a[@role='menuitem']");
 
     public HeaderComponent(Page page) {
-        super(page);}
+        super(page);
+    }
 
     @Step("Click on 'Transactions' menu in Header")
     public TransactionsPage clickTransactionsLink() {
