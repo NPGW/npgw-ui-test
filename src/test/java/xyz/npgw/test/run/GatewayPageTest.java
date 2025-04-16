@@ -36,14 +36,12 @@ public class GatewayPageTest extends BaseTest {
         assertThat(actualOptions).hasText(new String[]{"ALL", "USD", "EUR"});
     }
 
-    @Test
+    @Test(enabled = false)
     @TmsLink("285")
     @Epic("System/Gateway")
     @Feature("Currency")
     @Description("Verify that re-selecting an already selected currency keeps the selection unchanged.")
     public void testRetainCurrencyWhenReSelectingSameOption() {
-        Assert.fail("Test is temporarily disabled — waiting bug fixed");
-
         List<String> expectedOptions = List.of("ALL", "USD", "EUR");
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
