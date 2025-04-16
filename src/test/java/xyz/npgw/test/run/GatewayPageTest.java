@@ -53,9 +53,11 @@ public class GatewayPageTest extends BaseTest {
                 .clickGatewayTab();
 
         for (String currency : expectedOptions) {
-            Locator actualCurrency = gatewayPage
+            gatewayPage
                     .clickCurrencyValue()
-                    .selectCurrency(currency)
+                    .selectCurrency(currency);
+
+            Locator actualCurrency = gatewayPage
                     .getCurrencyValue();
 
             Allure.step("Verify currency has value: " + currency);
