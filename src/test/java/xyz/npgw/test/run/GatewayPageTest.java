@@ -57,17 +57,14 @@ public class GatewayPageTest extends BaseTest {
                     .clickCurrencyValue()
                     .selectCurrency(currency);
 
-            Locator actualCurrency = gatewayPage
-                    .getCurrencyValue();
-
             Allure.step("Verify currency has value: " + currency);
-            assertThat(actualCurrency).hasText(currency);
+            assertThat(gatewayPage.getCurrencyValue()).hasText(currency);
 
             gatewayPage.clickCurrencyValue()
                     .selectCurrency(currency);
 
             Allure.step("Verify currency has the same value: " + currency);
-            assertThat(actualCurrency).hasText(currency);
+            assertThat(gatewayPage.getCurrencyValue()).hasText(currency);
         }
     }
 }
