@@ -52,22 +52,14 @@ public class AddBusinessUnitDialog extends BaseDialog {
 
     @Step("Set USD checkbox to: {isUsd}")
     public AddBusinessUnitDialog setUsdCheckbox(boolean isUsd) {
-        if (isUsd) {
-            usdCheckbox.check();
-        } else {
-            usdCheckbox.uncheck();
-        }
+        usdCheckbox.setChecked(isUsd);
 
         return this;
     }
 
-    @Step("Set EUR checkbox to: {isEul}")
-    public AddBusinessUnitDialog setEurCheckbox(boolean isEul) {
-        if (isEul) {
-            eurCheckbox.check();
-        } else {
-            eurCheckbox.uncheck();
-        }
+    @Step("Set EUR checkbox to: {isEur}")
+    public AddBusinessUnitDialog setEurCheckbox(boolean isEur) {
+        eurCheckbox.setChecked(isEur);
 
         return this;
     }

@@ -13,9 +13,8 @@ import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.Company;
 import xyz.npgw.test.common.util.Merchant;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.dialog.AddBusinessUnitDialog;
-import xyz.npgw.test.page.dialog.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
+import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 import java.net.URLEncoder;
@@ -437,7 +436,7 @@ public class AddCompanyDialogTest extends BaseTest {
     public void testAddBusinessUnitEndToEndTest() {
         Merchant merchant = new Merchant(
                 "MerchantNameTest",
-                true, true,
+                false, true,
                 false
         );
 
