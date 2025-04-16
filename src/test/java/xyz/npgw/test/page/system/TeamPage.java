@@ -6,7 +6,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
-import xyz.npgw.test.page.base.trait.TableTrait;
+import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.AddUserDialog;
 
 @Log4j2
