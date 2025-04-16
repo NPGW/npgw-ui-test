@@ -2,6 +2,8 @@ package xyz.npgw.test.common.provider;
 
 import org.testng.annotations.DataProvider;
 
+import java.util.List;
+
 public class TestDataProvider {
 
     @DataProvider
@@ -55,6 +57,20 @@ public class TestDataProvider {
         return new Object[][]{
                 {"Active"},
                 {"Inactive"},
+        };
+    }
+
+    @DataProvider(name = "merchantFormData")
+    public Object[][] merchantFormData() {
+        return new Object[][] {
+                {"Active", List.of()},
+                {"Active", List.of("USD")},
+                {"Active", List.of("EUR")},
+                {"Active", List.of("USD", "EUR")},
+                {"Inactive", List.of()},
+                {"Inactive", List.of("USD")},
+                {"Inactive", List.of("EUR")},
+                {"Inactive", List.of("USD", "EUR")},
         };
     }
 }
