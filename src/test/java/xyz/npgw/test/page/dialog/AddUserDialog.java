@@ -1,5 +1,6 @@
 package xyz.npgw.test.page.dialog;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
@@ -91,6 +92,9 @@ public class AddUserDialog extends BaseDialog {
         Arrays.stream(businessUnits).forEach(
                 s -> {
                     log.info("business unit - {}", s);
+                    getPage()
+                            .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(s)).last().waitFor();
+
                     getPage()
                             .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(s))
                             .all()
