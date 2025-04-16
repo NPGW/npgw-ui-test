@@ -52,19 +52,22 @@ public class GatewayPageTest extends BaseTest {
                 .getSystemMenu()
                 .clickGatewayTab();
 
+        Locator actualCurrency = gatewayPage.getCurrencyValue();
+
         for (String currency : expectedOptions) {
             gatewayPage
                     .clickCurrencyValue()
                     .selectCurrency(currency);
 
             Allure.step("Verify currency has value: " + currency);
-            assertThat(gatewayPage.getCurrencyValue()).hasText(currency);
+            assertThat(actualCurrency).hasText(currency);
 
-            gatewayPage.clickCurrencyValue()
+            gatewayPage
+                    .clickCurrencyValue()
                     .selectCurrency(currency);
 
             Allure.step("Verify currency has the same value: " + currency);
-            assertThat(gatewayPage.getCurrencyValue()).hasText(currency);
+            assertThat(actualCurrency).hasText(currency);
         }
     }
 }
