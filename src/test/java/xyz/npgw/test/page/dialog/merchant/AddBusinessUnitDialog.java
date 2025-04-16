@@ -1,9 +1,10 @@
-package xyz.npgw.test.page.dialog;
+package xyz.npgw.test.page.dialog.merchant;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 public class AddBusinessUnitDialog extends BaseDialog {

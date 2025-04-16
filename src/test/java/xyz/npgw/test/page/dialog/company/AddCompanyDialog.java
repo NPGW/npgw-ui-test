@@ -1,4 +1,4 @@
-package xyz.npgw.test.page.dialog;
+package xyz.npgw.test.page.dialog.company;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -11,8 +11,6 @@ import java.util.List;
 
 public final class AddCompanyDialog extends CompanyDialog<AddCompanyDialog> {
 
-    @Getter
-    private final Locator addCompanyDialogHeader = locator("section header");
     @Getter
     private final Locator createButton = buttonByName("Create");
     private final Locator alertMessage = locator("[role='alert']");
