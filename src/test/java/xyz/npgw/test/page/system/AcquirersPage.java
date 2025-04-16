@@ -75,8 +75,6 @@ public class AcquirersPage extends BaseSystemPage {
         acquirerStatusOptions
                 .filter(new Locator.FilterOptions().setHasText(status))
                 .click();
-        Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
-        option.click();
         acquirerStatusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return this;
