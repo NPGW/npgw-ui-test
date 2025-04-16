@@ -8,14 +8,19 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.component.HeaderComponent;
+import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class HeaderComponentTest extends BaseTest {
+
+    private static final String NEW_PASSWORD = "QWEdsa123@";
 
     @Test
     @TmsLink("209")
@@ -59,7 +64,59 @@ public class HeaderComponentTest extends BaseTest {
                 .getHeader()
                 .clickLogoButton();
 
-        Allure.step("Verify: Transactions Page URL");
+        Allure.step("Verify: Dashboard Page URL");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
+    }
+
+    @Test
+    @TmsLink("289")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Check if the user can change the password through the profile settings in the user menu")
+    public void testChangePassword() {
+
+        DashboardPage loginPage = new AboutBlankPage(getPage())
+                .navigate("/login")
+                .fillEmailField(ProjectProperties.getUserEmail())
+                .fillPasswordField(ProjectProperties.getUserPassword())
+                .clickLoginButton()
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickProfileSettingsButton()
+                .getHeader().fillPasswordField(NEW_PASSWORD)
+                .getHeader().fillRepeatPasswordField(NEW_PASSWORD)
+                .getHeader().clickSaveButton()
+                .getHeader().clickLogOutButton()
+                .fillEmailField(ProjectProperties.getUserEmail())
+                .fillPasswordField(NEW_PASSWORD)
+                .clickLoginButton()
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickProfileSettingsButton()
+                .getHeader().fillPasswordField(ProjectProperties.getUserPassword())
+                .getHeader().fillRepeatPasswordField(ProjectProperties.getUserPassword())
+                .getHeader().clickSaveButton()
+                .getHeader().clickLogOutButton()
+                .fillEmailField(ProjectProperties.getUserEmail())
+                .fillPasswordField(ProjectProperties.getUserPassword())
+                .clickLoginButton();
+
+        Allure.step("Verify: Dashboard Page URL");
+        assertThat(loginPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
+    }
+
+    @Test
+    @TmsLink("300")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Log out via button in the user menu")
+    public void testLogOutViaButtonInUserMenu() {
+
+        LoginPage loginPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickUserMenuButton()
+                .getHeader()
+                .clickLogOutButtonUserMenu();
+
+        Allure.step("Verify: Login Page URL");
+        assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
     }
 }
