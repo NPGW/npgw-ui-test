@@ -4,6 +4,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.page.system.TeamPage;
 
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
+@Log4j2
 public class AddUserDialog extends BaseDialog {
 
     public AddUserDialog(Page page) {
@@ -85,14 +87,19 @@ public class AddUserDialog extends BaseDialog {
 
     @Step("Set 'Allowed business units'")
     public AddUserDialog setAllowedBusinessUnits(String[] businessUnits) {
+        log.info("business units array - {}", Arrays.toString(businessUnits));
         Arrays.stream(businessUnits).forEach(
-                s -> getPage()
-                        .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(s))
-                        .all()
-                        .forEach(item -> {
-                            item.setChecked(true);
-                            assertThat(item).isChecked();
-                        }));
+                s -> {
+                    log.info("business unit - {}", s);
+                    getPage()
+                            .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(s))
+                            .all()
+                            .forEach(item -> {
+                                log.info("set checked item with inner text - {}", item.innerText());
+                                item.setChecked(true);
+                                assertThat(item).isChecked();
+                            });
+                });
 
         return this;
     }
