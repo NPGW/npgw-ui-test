@@ -28,14 +28,14 @@ public class GatewayPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickGatewayTab()
-                .clickCurrencyPlaceholder()
+                .clickCurrencyValue()
                 .getCurrencyOptions();
 
         Allure.step("Verify: The 'Currency' dropdown toggles and contains options All, USD, EUR.");
         assertThat(actualOptions).hasText(new String[]{"ALL", "USD", "EUR"});
     }
 
-    @Test(enabled = false)
+    @Test(expectedExceptions = AssertionError.class)
     @TmsLink("285")
     @Epic("System/Gateway")
     @Feature("Currency")
@@ -54,14 +54,14 @@ public class GatewayPageTest extends BaseTest {
 
         for (String currency : expectedOptions) {
             Locator actualCurrency = gatewayPage
-                    .clickCurrencyPlaceholder()
+                    .clickCurrencyValue()
                     .selectCurrency(currency)
                     .getCurrencyValue();
 
             Allure.step("Verify currency has value: " + currency);
             assertThat(actualCurrency).hasText(currency);
 
-            gatewayPage.clickCurrencyPlaceholder()
+            gatewayPage.clickCurrencyValue()
                     .selectCurrency(currency);
 
             Allure.step("Verify currency has the same value: " + currency);

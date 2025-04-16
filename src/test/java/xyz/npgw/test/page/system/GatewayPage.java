@@ -19,8 +19,8 @@ public class GatewayPage extends BaseSystemPage {
         super(page);
     }
 
-    @Step("Click Currency placeholder")
-    public GatewayPage clickCurrencyPlaceholder() {
+    @Step("Click Currency value")
+    public GatewayPage clickCurrencyValue() {
         currencyLabel.waitFor();
         currencyValue.click();
 
