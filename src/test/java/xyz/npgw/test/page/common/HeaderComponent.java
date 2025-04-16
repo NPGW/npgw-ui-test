@@ -26,7 +26,7 @@ public class HeaderComponent extends BaseComponent {
     private final Locator passwordField = placeholder("Enter new password");
     private final Locator repeatPasswordField = placeholder("Repeat new password");
     private final Locator saveButton = locator("button:has-text('Save')");
-    private final Locator logOutButtonUserMenu = locator("//a[@role='menuitem']");
+    private final Locator logOutButtonUserMenu = menuItemByName("Log Out");
 
     public HeaderComponent(Page page) {
         super(page);
