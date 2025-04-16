@@ -106,6 +106,7 @@ public class HeaderComponent extends BaseComponent {
     @Step("Press 'Log out' button in User menu")
     public LoginPage clickLogOutButtonUserMenu() {
         logOutButtonUserMenu.click();
+        getPage().waitForURL("**/");
 
         return new LoginPage(getPage());
     }
