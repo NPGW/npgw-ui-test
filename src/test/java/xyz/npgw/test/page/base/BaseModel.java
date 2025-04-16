@@ -86,7 +86,7 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.OPTION);
     }
 
-    protected Locator menuItemByName(String text){
+    protected Locator menuItemByName(String text) {
         return getPage().getByRole(AriaRole.MENUITEM, new Page.GetByRoleOptions().setName(text));
     }
 }
