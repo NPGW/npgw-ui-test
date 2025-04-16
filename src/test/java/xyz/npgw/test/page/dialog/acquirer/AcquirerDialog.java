@@ -11,7 +11,7 @@ import xyz.npgw.test.page.system.AcquirersPage;
 import java.util.List;
 
 @Getter
-public abstract class AcquirerDialog<CurrentDialog extends AcquirerDialog<CurrentDialog>> extends BaseDialog {
+public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>> extends BaseDialog {
 
     private final Locator selectCountryLabel = labelExact("Select country");
     private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
@@ -24,12 +24,12 @@ public abstract class AcquirerDialog<CurrentDialog extends AcquirerDialog<Curren
     }
 
     @Step("Click on the 'Select country' dropdownList")
-    public CurrentDialog clickSelectCountry(String name) {
+    public CurrentDialogT clickSelectCountry(String name) {
         selectCountryLabel.locator("..")
                 .locator("svg[role=presentation]")
                 .last()
                 .click();
-        return (CurrentDialog) this;
+        return (CurrentDialogT) this;
     }
 
     @Step("Click on the 'Close' icon to close form")
@@ -53,10 +53,10 @@ public abstract class AcquirerDialog<CurrentDialog extends AcquirerDialog<Curren
     }
 
     @Step("Click on the '{option}' radiobutton")
-    public CurrentDialog clickStatusRadiobutton(String option) {
+    public CurrentDialogT clickStatusRadiobutton(String option) {
         labelExact(option).click();
 
-        return (CurrentDialog) this;
+        return (CurrentDialogT) this;
     }
 
     public Locator getStatusRadiobutton(String value) {
