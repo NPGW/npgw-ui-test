@@ -34,13 +34,15 @@ public class AddBusinessUnitDialog extends BaseDialog {
     }
 
     public void checkUsdCurrency() {
-        usdCheckbox.click();
-
+        if (!usdCheckbox.isChecked()) {
+            usdCheckbox.click();
+        }
     }
 
     public void checkEurCurrency() {
-        eurCheckbox.click();
-
+        if (!eurCheckbox.isChecked()) {
+            eurCheckbox.click();
+        }
     }
 
     public void selectActiveState() {

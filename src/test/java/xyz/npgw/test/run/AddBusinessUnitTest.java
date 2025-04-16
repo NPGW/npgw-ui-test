@@ -112,7 +112,7 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getBusinessUnitEmptyList()).hasText("No rows to display.");
     }
 
-    @Ignore
+    @Ignore("Currency, Status, Actions fields aren't filled with data so it'll fail everytime")
     @Test(dataProvider = "merchantFormData", dataProviderClass = TestDataProvider.class)
     @TmsLink("218")
     @Epic("Companies and business units")
@@ -121,7 +121,7 @@ public class AddBusinessUnitTest extends BaseTest {
     public void testAddNewMerchants(String status, List<String> currencies) {
         Company company = new Company(new Faker());
 
-        CompaniesAndBusinessUnitsPage companiesPage = new DashboardPage(getPage())
+        AddBusinessUnitDialog dialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
@@ -130,9 +130,8 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .selectCompanyInTheFilter(company.companyName());
-
-        AddBusinessUnitDialog dialog = companiesPage.clickOnAddBusinessUnitButton()
+                .selectCompanyInTheFilter(company.companyName())
+                .clickOnAddBusinessUnitButton()
                 .setBusinessUnitName(company.companyType());
 
         if (status.equalsIgnoreCase("Inactive")) {
