@@ -42,7 +42,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify that re-selecting an already selected currency keeps the selection unchanged.")
     public void testRetainCurrencyWhenReSelectingSameOption() {
 
-        Allure.step("This test is temporarily disabled and won't run in CI till bug fixed.");
+        Allure.step("This test is temporarily disabled till bug fixed.");
 
         List<String> expectedOptions = List.of("ALL", "USD", "EUR");
 
