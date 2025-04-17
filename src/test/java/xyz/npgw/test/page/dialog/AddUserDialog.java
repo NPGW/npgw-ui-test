@@ -12,7 +12,7 @@ import xyz.npgw.test.page.system.TeamPage;
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 @Log4j2
-public class AddUserDialog extends BaseDialog {
+public class AddUserDialog extends BaseDialog<TeamPage> {
 
     public AddUserDialog(Page page) {
         super(page);
