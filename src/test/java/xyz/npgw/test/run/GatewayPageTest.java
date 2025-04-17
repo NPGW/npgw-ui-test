@@ -119,7 +119,7 @@ public class GatewayPageTest extends BaseTest {
         Allure.step("'Business units list' title is still visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
 
-        Allure.step("'Business units list' has 'No items'");
+        Allure.step("'Business units list' has 'No items.'");
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
     }
 }
