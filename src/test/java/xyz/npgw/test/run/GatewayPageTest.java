@@ -95,16 +95,16 @@ public class GatewayPageTest extends BaseTest {
 
         Locator selectCompanyPlaceholder = gatewayPage.getSelectCompanyPlaceholder();
 
-        Allure.step("Dropdown is not visible");
+        Allure.step("Verify: Dropdown is not visible");
         assertThat(gatewayPage.getCompanyDropdown()).not().isVisible();
 
         Allure.step(String.format("Verify: Placeholder has value '%s'", companyName));
         assertThat(selectCompanyPlaceholder).hasValue(companyName);
 
-        Allure.step("'Business units list' title is visible");
+        Allure.step("Verify: 'Business units list' title is visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
 
-        Allure.step("List contains two Business units: " + Arrays.toString(businessUnitsList));
+        Allure.step("Verify: List contains two Business units: " + Arrays.toString(businessUnitsList));
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(businessUnitsList);
 
         gatewayPage.clickSelectCompanyClearIcon()
@@ -115,10 +115,10 @@ public class GatewayPageTest extends BaseTest {
             assertThat(selectCompanyPlaceholder).hasValue("");
         });
 
-        Allure.step("'Business units list' title is still visible");
+        Allure.step("Verify: 'Business units list' title is still visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
 
-        Allure.step("'Business units list' has 'No items.'");
+        Allure.step("Verify: 'Business units list' has 'No items.'");
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
     }
 }
