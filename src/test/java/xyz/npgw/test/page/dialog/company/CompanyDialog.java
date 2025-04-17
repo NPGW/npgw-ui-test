@@ -33,6 +33,7 @@ public abstract class CompanyDialog<T extends CompanyDialog<T>> extends BaseDial
 
     @Override
     protected CompaniesAndBusinessUnitsPage getReturnPage() {
+
         return new CompaniesAndBusinessUnitsPage(getPage());
     }
 
