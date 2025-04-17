@@ -85,7 +85,6 @@ public class GatewayPageTest extends BaseTest {
         String companyName = "Company 112172";
         String[] businessUnitsList = new String[]{"Merchant for C112172", "Merchant 1 for C112172"};
 
-
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
