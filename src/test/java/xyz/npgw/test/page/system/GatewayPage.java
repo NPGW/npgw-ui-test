@@ -19,7 +19,8 @@ public class GatewayPage extends BaseSystemPage {
     private final Locator selectCompanyContainer = locator("div[data-slot='input-wrapper']")
             .filter(new Locator.FilterOptions()
                     .setHas(selectCompanyPlaceholder));
-    private final Locator companyDropdownToggleArrow = selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
+    private final Locator companyDropdownToggleArrow =
+            selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
 
     private final Locator selectCompanyClearIcon = selectCompanyContainer
             .locator("button[aria-label='Show suggestions']:first-child");
