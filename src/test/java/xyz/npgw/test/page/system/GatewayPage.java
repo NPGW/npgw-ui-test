@@ -19,7 +19,7 @@ public class GatewayPage extends BaseSystemPage {
     private final Locator selectCompanyContainer = locator("div[data-slot='input-wrapper']")
             .filter(new Locator.FilterOptions()
                     .setHas(selectCompanyPlaceholder));
-    private final Locator companyDropdownToggleArrow =
+    private final Locator selectCompanyDropdownChevron =
             selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
 
     private final Locator selectCompanyClearIcon = selectCompanyContainer
@@ -59,7 +59,8 @@ public class GatewayPage extends BaseSystemPage {
 
     @Step("Click 'Select company' placeholder")
     public GatewayPage clickSelectCompanyPlaceholder() {
-        businessUnitsListHeader.waitFor();
+//        businessUnitsListHeader.waitFor();
+        selectCompanyPlaceholder.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
         selectCompanyPlaceholder.click();
 
         return this;
@@ -101,12 +102,12 @@ public class GatewayPage extends BaseSystemPage {
         selectCompanyClearIcon.dispatchEvent("click");
 
         return this;
-    }
 
-    @Step("Click company dropdown toggle arrow '˅˄'")
-    public GatewayPage clickCompanyDropdownToggleArrow() {
-        companyDropdownToggleArrow.click();
 
-        return this;
+        @Step("Click company dropdown toggle arrow '˅˄'")
+        public GatewayPage clickCompanyDropdownToggleArrow () {
+            selectCompanyDropdownChevron.click();
+
+            return this;
+        }
     }
-}
