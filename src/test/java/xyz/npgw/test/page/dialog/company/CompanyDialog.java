@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
 
+@SuppressWarnings("unchecked")
 public abstract class CompanyDialog<T extends CompanyDialog<T>> extends BaseDialog {
 
     @Getter
