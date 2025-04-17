@@ -108,12 +108,8 @@ public class GatewayPageTest extends BaseTest {
         Allure.step("List contains two Business units: " + Arrays.toString(businessUnitsList));
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(businessUnitsList);
 
-        gatewayPage.clickSelectCompanyClearIcon(); // Падает на этом месте
-
-        getPage().waitForTimeout(1000);
-
-
-        gatewayPage.clickCompanyDropdownToggleArrow();
+        gatewayPage.clickSelectCompanyClearIcon()
+                .clickCompanyDropdownToggleArrow();
 
         Allure.step("Verify: Placeholder has value 'Search...'", () -> {
             Assert.assertEquals(selectCompanyPlaceholder.getAttribute("placeholder"), "Search...");

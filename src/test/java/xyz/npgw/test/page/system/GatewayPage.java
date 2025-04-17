@@ -2,13 +2,10 @@ package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.Position;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import org.testng.Assert;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class GatewayPage extends BaseSystemPage {
 
@@ -17,22 +14,15 @@ public class GatewayPage extends BaseSystemPage {
     private final Locator businessUnitsListHeader = textExact("Business units list");
     @Getter
     private final Locator businessUnitsList = locator("div[data-slot='base'] li");
-
     @Getter
     private final Locator selectCompanyPlaceholder = locator("input[aria-label='Select company']");
     private final Locator selectCompanyContainer = locator("div[data-slot='input-wrapper']")
             .filter(new Locator.FilterOptions()
-            .setHas(selectCompanyPlaceholder));
-
-    // selectCompanyClearIcon
-    /* Хотела так
-    private final Locator selectCompanyClearIcon = selectCompanyContainer
-        .locator("button[aria-label='Show suggestions']:first-child");
-    */
-
-    // А так временно сделала - копирует вариант выше просто написано все вместе
-    private final Locator selectCompanyClearIcon = locator("div[data-slot='input-wrapper']:has(input[aria-label='Select company']) button[aria-label='Show suggestions']:first-child");
+                    .setHas(selectCompanyPlaceholder));
     private final Locator companyDropdownToggleArrow = selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
+
+    private final Locator selectCompanyClearIcon = selectCompanyContainer
+            .locator("button[aria-label='Show suggestions']:first-child");
     @Getter
     private final Locator companyDropdown = locator("div[data-slot='content']");
     private final Locator companyDropdownOptions = companyDropdown.locator("li");
@@ -107,12 +97,7 @@ public class GatewayPage extends BaseSystemPage {
 
     @Step("Click select Company clear icon")
     public GatewayPage clickSelectCompanyClearIcon() {
-        getPage().waitForTimeout(5000);
-        assertThat(selectCompanyClearIcon).isVisible();
-        assertThat(selectCompanyClearIcon).isEnabled();
-        assertThat(selectCompanyClearIcon).not().isDisabled();
-
-        selectCompanyClearIcon.click(); //Все видит, но не кликает
+        selectCompanyClearIcon.dispatchEvent("click");
 
         return this;
     }
@@ -124,4 +109,3 @@ public class GatewayPage extends BaseSystemPage {
         return this;
     }
 }
-
