@@ -1,10 +1,6 @@
 package xyz.npgw.test.run;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.TmsLink;
+import io.qameta.allure.*;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -169,7 +165,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 
-    @Ignore
     @Test
     @TmsLink("263")
     @Epic("Transactions")
@@ -201,5 +196,30 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Amount button is visible after reset");
         assertThat(transactionsPage.getAmountButton()).isVisible();
+    }
+
+    @Test
+    @TmsLink("311")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("Filtering transactions by Amount")
+    public void testFilterTransactionsByAmount() {
+        int amountFrom = 10;
+        int amountTo = 500;
+
+        List<String> amountValues = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickAmountButton()
+                .fillAmountFromField(String.valueOf(amountFrom))
+                .fillAmountToField(String.valueOf(amountTo))
+                .clickAmountApplyButton()
+                .getTable()
+                .getColumnValues("Amount");
+
+        Allure.step("Verify: Amount column has values within the specified amount range");
+        assertTrue(amountValues.stream()
+                .map(Integer::parseInt)
+                .allMatch(value -> value >= amountFrom && value <= amountTo));
     }
 }

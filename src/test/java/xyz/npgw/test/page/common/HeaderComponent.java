@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.util.ResponseUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.ReportsPage;
@@ -17,6 +19,7 @@ public class HeaderComponent extends BaseComponent {
 
     private final Locator img = altText("logo");
     private final Locator logo = link().filter(new Locator.FilterOptions().setHas(img));
+    private final Locator transactionsLink = linkByName("Transactions");
 
     public HeaderComponent(Page page) {
         super(page);
@@ -24,7 +27,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click on 'Transactions' menu in Header")
     public TransactionsPage clickTransactionsLink() {
-        linkByName("Transactions").click();
+        ResponseUtils.clickAndWaitForResponse(getPage(), transactionsLink, Constants.TRANSACTION_HISTORY_ENDPOINT);
 
         return new TransactionsPage(getPage());
     }
