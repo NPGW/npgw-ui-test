@@ -102,12 +102,12 @@ public class GatewayPage extends BaseSystemPage {
         selectCompanyClearIcon.dispatchEvent("click");
 
         return this;
-
-
-        @Step("Click company dropdown toggle arrow '˅˄'")
-        public GatewayPage clickCompanyDropdownToggleArrow () {
-            selectCompanyDropdownChevron.click();
-
-            return this;
-        }
     }
+
+    @Step("Click company dropdown toggle arrow '˅˄'")
+    public GatewayPage clickSelectCompanyDropdownChevron() {
+        selectCompanyDropdownChevron.click();
+
+        return this;
+    }
+}
