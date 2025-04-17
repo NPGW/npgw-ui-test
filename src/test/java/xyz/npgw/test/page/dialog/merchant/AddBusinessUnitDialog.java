@@ -11,7 +11,6 @@ public class AddBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnitsP
 
     @Getter
     private final Locator companyNameField = locator("input[aria-label='Company name']");
-    private final Locator closeButton = textExact("Close");
     private final Locator addMerchantDialog = dialog();
     private final Locator createButton = buttonByName("Create");
     private final Locator merchantNameField = placeholder("Enter merchant name");
@@ -32,12 +31,6 @@ public class AddBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnitsP
 
     @Override
     protected CompaniesAndBusinessUnitsPage getReturnPage() {
-
-        return new CompaniesAndBusinessUnitsPage(getPage());
-    }
-
-    public CompaniesAndBusinessUnitsPage clickOnCloseButton() {
-        closeButton.click();
 
         return new CompaniesAndBusinessUnitsPage(getPage());
     }
