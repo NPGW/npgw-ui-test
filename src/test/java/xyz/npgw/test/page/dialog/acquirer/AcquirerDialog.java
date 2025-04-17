@@ -11,7 +11,8 @@ import xyz.npgw.test.page.system.AcquirersPage;
 import java.util.List;
 
 @Getter
-public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>> extends BaseDialog<AcquirersPage> {
+public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>>
+        extends BaseDialog<AcquirersPage> {
 
     private final Locator selectCountryLabel = labelExact("Select country");
     private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
