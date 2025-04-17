@@ -95,7 +95,7 @@ public class GatewayPageTest extends BaseTest {
 
         Locator selectCompanyPlaceholder = gatewayPage.getSelectCompanyPlaceholder();
 
-        Allure.step("Verify: Dropdown is not visible");
+        Allure.step("Verify: The dropdown is closed.");
         assertThat(gatewayPage.getCompanyDropdown()).not().isVisible();
 
         Allure.step(String.format("Verify: Placeholder has value '%s'", companyName));
