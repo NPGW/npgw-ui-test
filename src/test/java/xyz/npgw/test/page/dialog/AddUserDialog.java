@@ -18,6 +18,12 @@ public class AddUserDialog extends BaseDialog {
         super(page);
     }
 
+    @Override
+    protected TeamPage getReturnPage() {
+
+        return new TeamPage(getPage());
+    }
+
     @Step("Enter user email")
     public AddUserDialog fillEmailField(String email) {
         getPage().getByPlaceholder("Enter user email").fill(email);

@@ -7,7 +7,7 @@ import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
-public class AddBusinessUnitDialog extends BaseDialog {
+public class AddBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnitsPage> {
 
     @Getter
     private final Locator companyNameField = locator("input[aria-label='Company name']");
@@ -28,6 +28,12 @@ public class AddBusinessUnitDialog extends BaseDialog {
 
     public AddBusinessUnitDialog(Page page) {
         super(page);
+    }
+
+    @Override
+    protected CompaniesAndBusinessUnitsPage getReturnPage() {
+
+        return new CompaniesAndBusinessUnitsPage(getPage());
     }
 
     public CompaniesAndBusinessUnitsPage clickOnCloseButton() {
