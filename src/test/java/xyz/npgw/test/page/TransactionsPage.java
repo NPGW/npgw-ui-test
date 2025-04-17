@@ -61,7 +61,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
 
     @Step("Click Options Currency {value}")
     public TransactionsPage clickCurrency(String value) {
-        optionLabelByExactText(value).click();
+        labelExact(value).click();
 
         return this;
     }
