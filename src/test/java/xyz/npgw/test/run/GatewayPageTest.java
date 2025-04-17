@@ -78,8 +78,8 @@ public class GatewayPageTest extends BaseTest {
     @Epic("System/Gateway")
     @Feature("Currency")
     @Description(
-            "Check that selecting a company populates the 'Business units list'," +
-                    " and when no company is selected, the list is empty with 'No items.'")
+            "Check that selecting a company populates the 'Business units list',"
+                    + " and when no company is selected, the list is empty with 'No items.'")
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
 
         String companyName = "Company 112172";
