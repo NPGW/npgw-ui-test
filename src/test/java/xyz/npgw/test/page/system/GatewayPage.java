@@ -2,7 +2,7 @@ package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.Position;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
@@ -106,11 +106,9 @@ public class GatewayPage extends BaseSystemPage {
 
     @Step("Click select Company clear icon")
     public GatewayPage clickSelectCompanyClearIcon() {
-        getPage().waitForTimeout(2000); //Временно добавлено
-        selectCompanyClearIcon.click();
+        getPage().getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Show suggestions")).first().dispatchEvent("click");
         businessUnitsListHeader.click();
 
         return this;
     }
 }
-
