@@ -79,7 +79,7 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Currency")
     @Description(
             "Check that selecting a company populates the 'Business units list'," +
-                    " and when no company is selected, the list is empty with 'No items'.")
+                    " and when no company is selected, the list is empty with 'No items.'")
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
 
         String companyName = "Company 112172";
@@ -110,7 +110,10 @@ public class GatewayPageTest extends BaseTest {
 
         gatewayPage.clickSelectCompanyClearIcon(); // Падает на этом месте
 
-        getPage().waitForTimeout(7000);
+        getPage().waitForTimeout(1000);
+
+
+        gatewayPage.clickCompanyDropdownToggleArrow();
 
         Allure.step("Verify: Placeholder has value 'Search...'", () -> {
             Assert.assertEquals(selectCompanyPlaceholder.getAttribute("placeholder"), "Search...");
