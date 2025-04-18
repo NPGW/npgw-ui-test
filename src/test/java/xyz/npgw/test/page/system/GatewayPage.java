@@ -59,8 +59,7 @@ public class GatewayPage extends BaseSystemPage {
 
     @Step("Click 'Select company' placeholder")
     public GatewayPage clickSelectCompanyPlaceholder() {
-//        businessUnitsListHeader.waitFor();
-        selectCompanyPlaceholder.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
+        businessUnitsListHeader.waitFor();
         selectCompanyPlaceholder.click();
 
         return this;
