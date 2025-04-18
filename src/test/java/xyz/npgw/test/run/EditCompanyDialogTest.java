@@ -15,7 +15,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditCompanyDialogTest extends BaseTest {
 
-    @Test(expectedExceptions = AssertionFailedError.class)
+    @Test
     @TmsLink("266")
     @Epic("System/Companies and business units")
     @Feature("Edit company")
