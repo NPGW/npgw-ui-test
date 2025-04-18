@@ -120,8 +120,9 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Add a new Merchant with 'Add business unit' button")
     public void testAddNewMerchants(String status, List<String> currencies) {
         Company company = new Company(new Faker());
+        Locator createdBusinessUnitRow = getPage().locator("td").locator("xpath=..");
 
-        AddBusinessUnitDialog dialog = new DashboardPage(getPage())
+        CompaniesAndBusinessUnitsPage dialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTabButton()
@@ -132,30 +133,19 @@ public class AddBusinessUnitTest extends BaseTest {
                 .waitUntilAlertIsGone()
                 .selectCompanyInTheFilter(company.companyName())
                 .clickOnAddBusinessUnitButton()
-                .setBusinessUnitName(company.companyType());
+                .setBusinessUnitName(company.companyType())
+                .setBusinessUnitName(company.companyType())
+                .selectState(status)
+                .selectCurrencies(currencies)
+                .clickOnCreateButton()
+                .waitUntilAlertIsGone();
 
-        if (status.equalsIgnoreCase("Inactive")) {
-            dialog.selectInactiveState();
-        } else {
-            dialog.selectActiveState();
-        }
-
-        if (currencies.contains("USD")) {
-            dialog.checkUsdCurrency();
-        }
-        if (currencies.contains("EUR")) {
-            dialog.checkEurCurrency();
-        }
-
-        dialog.clickOnCreateButton().waitUntilAlertIsGone();
-
-        Locator row = getPage().locator("td").locator("xpath=..");
-        assertThat(row).containsText(company.companyType());
-        assertThat(row).containsText(status);
-        assertThat(row).containsText("id.merchant.");
+        assertThat(createdBusinessUnitRow).containsText(company.companyType());
+        assertThat(createdBusinessUnitRow).containsText(status);
+        assertThat(createdBusinessUnitRow).containsText("id.merchant.");
 
         for (String currency : currencies) {
-            assertThat(row).containsText(currency);
+            assertThat(createdBusinessUnitRow).containsText(currency);
         }
     }
 }

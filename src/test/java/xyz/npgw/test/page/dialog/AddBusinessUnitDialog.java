@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import lombok.Getter;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
+import java.util.List;
+
 public class AddBusinessUnitDialog extends BaseDialog {
 
     @Getter
@@ -34,24 +36,41 @@ public class AddBusinessUnitDialog extends BaseDialog {
     }
 
     public void checkUsdCurrency() {
-        if (!usdCheckbox.isChecked()) {
-            usdCheckbox.click();
-        }
+        usdCheckbox.setChecked(true);
     }
 
     public void checkEurCurrency() {
-        if (!eurCheckbox.isChecked()) {
-            eurCheckbox.click();
+        eurCheckbox.setChecked(true);
+    }
+
+    public AddBusinessUnitDialog selectActiveState() {
+        activeRadioButton.click();
+
+        return this;
+    }
+
+    public AddBusinessUnitDialog selectInactiveState() {
+        inactiveRadioButton.click();
+
+        return this;
+    }
+
+    public AddBusinessUnitDialog selectState(String status) {
+        if (status.equalsIgnoreCase("Inactive")) {
+            return selectInactiveState();
+        } else {
+            return selectActiveState();
         }
     }
 
-    public void selectActiveState() {
-        activeRadioButton.click();
-    }
-
-    public void selectInactiveState() {
-        inactiveRadioButton.click();
-
+    public AddBusinessUnitDialog selectCurrencies(List<String> currencies) {
+        if (currencies.contains("USD")) {
+            checkUsdCurrency();
+        }
+        if (currencies.contains("EUR")) {
+            checkEurCurrency();
+        }
+        return this;
     }
 
     public CompaniesAndBusinessUnitsPage clickOnCreateButton() {
