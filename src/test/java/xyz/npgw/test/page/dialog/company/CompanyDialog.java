@@ -5,9 +5,10 @@ import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
+import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 @SuppressWarnings("unchecked")
-public abstract class CompanyDialog<T extends CompanyDialog<T>> extends BaseDialog {
+public abstract class CompanyDialog<T extends CompanyDialog<T>> extends BaseDialog<CompaniesAndBusinessUnitsPage> {
 
     @Getter
     private final Locator companyNameField = placeholder("Enter company name");
@@ -29,6 +30,12 @@ public abstract class CompanyDialog<T extends CompanyDialog<T>> extends BaseDial
 
     public CompanyDialog(Page page) {
         super(page);
+    }
+
+    @Override
+    protected CompaniesAndBusinessUnitsPage getReturnPage() {
+
+        return new CompaniesAndBusinessUnitsPage(getPage());
     }
 
     @Step("Fill company name field")

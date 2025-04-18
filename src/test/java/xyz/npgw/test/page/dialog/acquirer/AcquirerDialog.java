@@ -12,7 +12,8 @@ import java.util.List;
 
 @Getter
 @SuppressWarnings("unchecked")
-public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>> extends BaseDialog {
+public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>>
+        extends BaseDialog<AcquirersPage> {
 
     private final Locator selectCountryLabel = labelExact("Select country");
     private final Locator allFieldPlaceholders = locator("[data-slot='input']:not([placeholder='Search...'])");
@@ -22,6 +23,12 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     public AcquirerDialog(Page page) {
         super(page);
+    }
+
+    @Override
+    protected AcquirersPage getReturnPage() {
+
+        return new AcquirersPage(getPage());
     }
 
     @Step("Click on the 'Select country' dropdownList")
@@ -36,13 +43,6 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     @Step("Click on the 'Close' icon to close form")
     public AcquirersPage clickCloseIcon() {
         getCloseIcon().click();
-
-        return new AcquirersPage(getPage());
-    }
-
-    @Step("Click on the 'Close' button to close form")
-    public AcquirersPage clickCloseButton() {
-        getCloseButton().click();
 
         return new AcquirersPage(getPage());
     }
