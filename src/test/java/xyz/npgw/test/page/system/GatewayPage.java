@@ -15,10 +15,14 @@ public class GatewayPage extends BaseSystemPage {
     private final Locator businessUnitsList = locator("div[data-slot='base'] li");
     @Getter
     private final Locator selectCompanyPlaceholder = locator("input[aria-label='Select company']");
-    private final Locator selectCompanyContainer = locator("div[data-slot='input-wrapper']").filter(new Locator.FilterOptions().setHas(selectCompanyPlaceholder));
-    private final Locator selectCompanyDropdownChevron = selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
+    private final Locator selectCompanyContainer =
+            locator("div[data-slot='input-wrapper']")
+                    .filter(new Locator.FilterOptions().setHas(selectCompanyPlaceholder));
+    private final Locator selectCompanyDropdownChevron =
+            selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
 
-    private final Locator selectCompanyClearIcon = selectCompanyContainer.locator("button[aria-label='Show suggestions']:first-child");
+    private final Locator selectCompanyClearIcon =
+            selectCompanyContainer.locator("button[aria-label='Show suggestions']:first-child");
     @Getter
     private final Locator companyDropdown = locator("div[data-slot='content']");
     private final Locator companyDropdownOptions = companyDropdown.locator("li");
@@ -30,7 +34,8 @@ public class GatewayPage extends BaseSystemPage {
 
     public GatewayPage(Page page) {
         super(page);
-        businessUnitsListHeader.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
+        businessUnitsListHeader
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
     }
 
     @Step("Click Currency value")
