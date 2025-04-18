@@ -121,4 +121,5 @@ public class GatewayPageTest extends BaseTest {
         Allure.step("Verify: 'Business units list' has 'No items.'");
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
     }
+
 }
