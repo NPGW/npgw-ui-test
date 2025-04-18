@@ -9,7 +9,7 @@ import xyz.npgw.test.page.system.AcquirersPage;
 
 @Getter
 public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>>
-        extends BaseDialog<AcquirersPage,CurrentDialogT> {
+        extends BaseDialog<AcquirersPage, CurrentDialogT> {
 
     private final Locator selectCountryLabel = labelExact("Select country");
     private final Locator statusSwitch = locator("div[role='radiogroup']");

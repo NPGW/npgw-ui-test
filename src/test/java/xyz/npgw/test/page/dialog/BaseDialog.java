@@ -12,7 +12,8 @@ import xyz.npgw.test.page.system.BaseSystemPage;
 import java.util.List;
 
 @Getter
-public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDialogT extends BaseDialog> extends BaseModel {
+public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDialogT extends BaseDialog>
+        extends BaseModel {
 
     private final Locator dialogHeader = locator("section header");
     private final Locator banner = dialog().getByRole(AriaRole.BANNER);
@@ -39,7 +40,8 @@ public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDial
     }
 
     public List<String> getAllFieldPlaceholders() {
-        allPlaceholdersWithoutSearch.first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        allPlaceholdersWithoutSearch
+                .first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         return allPlaceholdersWithoutSearch.all().stream().map(l -> l.getAttribute("placeholder")).toList();
     }
