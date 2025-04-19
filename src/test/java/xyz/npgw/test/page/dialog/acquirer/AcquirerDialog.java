@@ -8,6 +8,7 @@ import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 @Getter
+@SuppressWarnings("unchecked")
 public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<CurrentDialogT>>
         extends BaseDialog<AcquirersPage, CurrentDialogT> {
 
