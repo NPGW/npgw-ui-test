@@ -17,8 +17,6 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     private final Locator allowedCurrenciesCheckboxes = locator("div[role='group']");
 
     private final Locator selectCountry = labelExact("Select country");
-
-    private final Locator selectTimezoneLabel = buttonByName("Timezone");
     private final Locator selectTimezone = labelExact("Timezone").locator("span[data-slot='value']");
 
     private final Locator selectDropdown = dialog();
@@ -54,7 +52,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Click on the 'Select timezone' chevron")
     public CurrentDialogT clickSelectTimezone() {
-        selectTimezoneLabel
+        buttonByName("Timezone")
                 .locator("svg[role=presentation]")
                 .click();
 
