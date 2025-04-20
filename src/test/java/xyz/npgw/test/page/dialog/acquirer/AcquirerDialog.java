@@ -48,16 +48,14 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
                 .locator("svg[role=presentation]")
                 .first()
                 .dispatchEvent("click");
-
         return (CurrentDialogT) this;
     }
 
     @Step("Click on the 'Select timezone' chevron")
     public CurrentDialogT clickSelectTimezone() {
-        buttonByName("Timezone")
+        selectTimezoneLabel
                 .locator("svg[role=presentation]")
                 .click();
-
         return (CurrentDialogT) this;
     }
 
@@ -86,7 +84,6 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
                 .locator("li")
                 .filter(new Locator.FilterOptions().setHasText(timezone))
                 .click();
-
         return (CurrentDialogT) this;
     }
 }
