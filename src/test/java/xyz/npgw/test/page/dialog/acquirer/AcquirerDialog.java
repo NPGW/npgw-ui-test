@@ -16,7 +16,6 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     private final Locator statusSwitch = locator("div[role='radiogroup']");
     private final Locator allowedCurrenciesCheckboxes = locator("div[role='group']");
 
-    private final Locator selectCountryLabel = labelExact("Select country");
     private final Locator selectCountry = labelExact("Select country");
 
     private final Locator selectTimezoneLabel = buttonByName("Timezone");
@@ -36,7 +35,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Click on the 'Select country' chevron")
     public CurrentDialogT clickSelectCountry() {
-        selectCountryLabel.locator("..")
+        selectCountry.locator("..")
                 .locator("svg[role=presentation]")
                 .last()
                 .click();
@@ -45,7 +44,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Click 'select country' clear icon")
     public CurrentDialogT clickSelectCountryClearIcon() {
-        selectCountryLabel.locator("..")
+        selectCountry.locator("..")
                 .locator("svg[role=presentation]")
                 .first()
                 .dispatchEvent("click");

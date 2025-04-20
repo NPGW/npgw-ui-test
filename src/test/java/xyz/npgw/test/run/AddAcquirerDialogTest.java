@@ -19,7 +19,6 @@ import java.util.List;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
-
 public class AddAcquirerDialogTest extends BaseTest {
 
     @Test
@@ -63,7 +62,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(addAcquirerDialog.getAllowedCurrenciesCheckboxes()).hasText("Allowed currenciesUSDEUR");
 
         Allure.step("Verify: the 'Select Country' placeholder is visible");
-        assertThat(addAcquirerDialog.getSelectCountryLabel()).isVisible();
+        assertThat(addAcquirerDialog.getSelectCountry()).isVisible();
 
         Allure.step("Verify: the 'Select Zone' placeholder is visible");
         assertThat(addAcquirerDialog.getSelectTimezone()).isVisible();
@@ -114,7 +113,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .clickAddAcquirer();
 
         Allure.step("Verify: Country fields has default 'Search...' text", () -> {
-            Assert.assertEquals(addAcquirerDialog.getSelectCountryLabel().getAttribute("placeholder"), "Search...");
+            Assert.assertEquals(addAcquirerDialog.getSelectCountry().getAttribute("placeholder"), "Search...");
             assertThat(addAcquirerDialog.getSelectCountry()).hasValue("");
         });
         Allure.step("Verify: Timezone fields has default 'Select timezone' text");
