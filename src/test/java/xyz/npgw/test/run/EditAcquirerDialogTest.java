@@ -1,23 +1,17 @@
 package xyz.npgw.test.run;
 
-import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
-import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.List;
 
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class EditAcquirerDialogTest extends BaseTest {
