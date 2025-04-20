@@ -11,12 +11,6 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
     private final Locator createButton = buttonByName("Create");
 
-
-
-
-
-
-
     public AddAcquirerDialog(Page page) {
         super(page);
     }
@@ -27,6 +21,4 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
         return new AcquirersPage(getPage());
     }
-
-
 }
