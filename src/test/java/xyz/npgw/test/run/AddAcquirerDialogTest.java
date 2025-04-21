@@ -194,9 +194,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickSelectCountry()
-                .clickCountryInDropdown(oneTimezoneCountry);
-
-        addAcquirerDialog
+                .clickCountryInDropdown(oneTimezoneCountry)
                 .clickSelectTimezone()
                 .clickTimezoneInDropdown(icelandTimezone);
 
