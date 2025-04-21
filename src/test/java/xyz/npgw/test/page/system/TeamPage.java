@@ -10,7 +10,7 @@ import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
 
 @Log4j2
-public class TeamPage extends BaseSystemPage implements TableTrait {
+public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
 
     private final Locator companiesAndBusinessUnitsTabButton = tab("Companies and business units");
     private final Locator alertMessage = locator("div[role='alert']");
