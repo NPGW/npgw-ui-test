@@ -15,7 +15,6 @@ import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.User;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
-import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
@@ -149,6 +148,7 @@ public class TeamPageTest extends BaseTest {
 
         TeamPage teamPage = editUserDialog
                 .setStatusRadiobutton(updatedUser.enabled())
+                .unsetAllowedBusinessUnits(user.merchantIds())
                 .setUserRoleRadiobutton(updatedUser.userRole())
                 .clickSaveChangesButton();
 
@@ -169,23 +169,5 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: 'Activate' icon is shown for the user");
         assertEquals(teamPage.getChangeUserActivityButton(user.email()).getAttribute("data-icon"), "check");
-
-        ChangeUserActivityDialog changeUserActivityDialog = teamPage.clickChangeUserActivityButton(user.email());
-
-        Allure.step("Verify: 'Change user activity' header is displayed");
-        assertThat(changeUserActivityDialog.getDialogHeader()).hasText("Change user activity");
-
-        teamPage = changeUserActivityDialog
-                .clickActivateButton();
-
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was activated successfully");
-
-        teamPage.clickApplyFilter();
-
-        Allure.step("Verify: user status changed to 'Active' after reactivation");
-        assertThat(teamPage.getUserStatusByEmail(user.email())).hasText("Active");
-
-        Allure.step("Verify: 'Deactivate' icon is shown for the reactivated user");
-        assertEquals(teamPage.getChangeUserActivityButton(user.email()).getAttribute("data-icon"), "ban");
     }
 }

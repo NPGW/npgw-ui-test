@@ -51,7 +51,6 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     @Step("Set 'User role' radiobutton checked for '{userRole}'")
     public CurrentDialogT setUserRoleRadiobutton(UserRole userRole) {
         getPage().getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName(userRole.getName())).check();
-        getPage().waitForTimeout(1000);
 
         return (CurrentDialogT) this;
     }
@@ -86,6 +85,19 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
             businessUnitLocator.last().waitFor();
             getPage().waitForTimeout(1000);
             businessUnitLocator.all().forEach(item -> item.setChecked(true));
+        }
+
+        return (CurrentDialogT) this;
+    }
+
+    @Step("Unset checked 'Allowed business units' checkboxes by business units names")
+    public CurrentDialogT unsetAllowedBusinessUnits(String[] businessUnits) {
+        for (String businessUnit : businessUnits) {
+            Locator businessUnitLocator = getPage()
+                    .getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(businessUnit));
+
+            businessUnitLocator.last().waitFor();
+            businessUnitLocator.all().forEach(item -> item.setChecked(false));
         }
 
         return (CurrentDialogT) this;
