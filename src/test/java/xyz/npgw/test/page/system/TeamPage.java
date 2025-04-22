@@ -31,7 +31,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
 
     @Step("Click 'Companies and business units' button")
     public CompaniesAndBusinessUnitsPage clickCompaniesAndBusinessUnitsTabButton() {
-        getPage().waitForTimeout(1000);
         companiesAndBusinessUnitsTabButton.click();
 
         return new CompaniesAndBusinessUnitsPage(getPage());
