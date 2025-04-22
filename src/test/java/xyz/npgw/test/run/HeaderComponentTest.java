@@ -67,7 +67,7 @@ public class HeaderComponentTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
-    @Test(invocationCount = 10)
+    @Test
     @TmsLink("289")
     @Epic("Header")
     @Feature("User menu")
