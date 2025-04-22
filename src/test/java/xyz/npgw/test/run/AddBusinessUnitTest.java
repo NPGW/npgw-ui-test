@@ -1,7 +1,5 @@
 package xyz.npgw.test.run;
 
-import com.microsoft.playwright.APIRequestContext;
-import com.microsoft.playwright.Playwright;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -12,7 +10,6 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.Company;
-import xyz.npgw.test.common.util.CompanyApiUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
