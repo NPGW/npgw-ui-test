@@ -187,6 +187,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 
+    @Ignore("Добавить ожидание для нажатия Transactions")
     @Test
     @TmsLink("263")
     @Epic("Transactions")
@@ -243,5 +244,23 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(amountValues.stream()
                 .map(Integer::parseInt)
                 .allMatch(value -> value >= amountFrom && value <= amountTo));
+    }
+
+    @Test
+    @TmsLink("335")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("error message 'From should be lesser than To' appears")
+    public void testErrorMessageByAmount() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickAmountButton()
+                .fillAmountFromField("500")
+                .fillAmountToField("10");
+
+        Allure.step("Verify: error message 'From should be lesser than To' appears");
+        assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
 }
