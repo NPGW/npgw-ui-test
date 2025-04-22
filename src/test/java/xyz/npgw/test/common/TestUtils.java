@@ -67,7 +67,8 @@ public class TestUtils {
 
     public static void deleteCompany(APIRequestContext request, String companyName) {
         request.delete(
-                ProjectProperties.getBaseUrl() +"/portal-v1/company/%s".formatted(URLEncoder.encode(companyName, StandardCharsets.UTF_8)));
+                ProjectProperties.getBaseUrl() + "/portal-v1/company/%s"
+                        .formatted(URLEncoder.encode(companyName, StandardCharsets.UTF_8)));
     }
 
     private static boolean getCompany(APIRequestContext request, String companyName) {
