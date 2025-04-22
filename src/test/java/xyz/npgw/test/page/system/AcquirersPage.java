@@ -5,7 +5,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
@@ -73,7 +72,7 @@ public class AcquirersPage extends BaseSystemPage {
     @Step("Select Acquirer Status '{status}'")
     public AcquirersPage selectAcquirerStatus(String status) {
         acquirerStatusOptions
-                .filter(new Locator.FilterOptions().setHasText(status))
+                .getByText(status, new Locator.GetByTextOptions().setExact(true))
                 .click();
         acquirerStatusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
@@ -88,7 +87,7 @@ public class AcquirersPage extends BaseSystemPage {
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public BaseDialog clickEditButtonForAcquirer(String name) {
+    public EditAcquirerDialog clickEditButtonForAcquirer(String name) {
         optionByName(name).getByText("Edit").click();
 
         return new EditAcquirerDialog(getPage());

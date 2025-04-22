@@ -8,7 +8,8 @@ import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialogT>> extends BaseDialog<TeamPage> {
+public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialogT>>
+        extends BaseDialog<TeamPage, CurrentDialogT> {
 
     private final Locator activeRadioButton = radioButton("Active");
     private final Locator inactiveRadioButton = radioButton("Inactive");
