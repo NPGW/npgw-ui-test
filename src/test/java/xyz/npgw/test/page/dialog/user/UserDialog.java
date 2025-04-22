@@ -51,6 +51,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     @Step("Set 'User role' radiobutton checked for '{userRole}'")
     public CurrentDialogT setUserRoleRadiobutton(UserRole userRole) {
         getPage().getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName(userRole.getName())).check();
+        getPage().waitForTimeout(1000);
 
         return (CurrentDialogT) this;
     }
