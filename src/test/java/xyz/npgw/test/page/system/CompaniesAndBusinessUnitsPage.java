@@ -71,6 +71,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Add company' button")
     public AddCompanyDialog clickAddCompanyButton() {
+        addCompanyButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         addCompanyButton.click();
 
         return new AddCompanyDialog(getPage());
