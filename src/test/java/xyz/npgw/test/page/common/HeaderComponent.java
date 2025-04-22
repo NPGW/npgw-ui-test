@@ -72,6 +72,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Press 'User menu' button")
     public DashboardPage clickUserMenuButton() {
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
         userMenuButton.click();
 
         return new DashboardPage(getPage());

@@ -25,6 +25,7 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Verify 'Add business unit' button activation once some company is selected")
     public void testVerifyAvailabilityOfBusinessUnitButton() {
         Company company = new Company(new Faker());
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
@@ -41,10 +42,6 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isEnabled();
         Allure.step("'Edit selected company' button is available");
         assertThat(companiesAndBusinessUnitsPage.getEditCompanyButton()).isEnabled();
-
-        Allure.step("Delete test company");
-
-        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
     @Test
@@ -69,6 +66,7 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Verify that 'Company name' field is prefilled and impossible to change")
     public void testCompanyNameFieldDefaultState() {
         Company company = new Company(new Faker());
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         AddBusinessUnitDialog addBusinessUnitDialog = new DashboardPage(getPage())
                 .getHeader()
@@ -94,6 +92,7 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Verify that a new Merchant wasn't added once click 'Close' button")
     public void testCloseButtonAndDiscardChanges() {
         Company company = new Company(new Faker());
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
