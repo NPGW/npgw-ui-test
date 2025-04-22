@@ -52,7 +52,6 @@ public class HeaderComponent extends BaseComponent {
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
         systemAdministrationButton.click();
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new TeamPage(getPage());
     }
@@ -108,7 +107,6 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Press 'Log out' button in User menu")
     public LoginPage clickLogOutButtonUserMenu() {
-
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
         logOutButtonUserMenu.click();
         getPage().waitForURL("**/");

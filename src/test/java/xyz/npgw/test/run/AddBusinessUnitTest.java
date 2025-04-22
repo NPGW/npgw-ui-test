@@ -1,5 +1,7 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.APIRequestContext;
+import com.microsoft.playwright.Playwright;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -7,8 +9,10 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.Company;
+import xyz.npgw.test.common.util.CompanyApiUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
@@ -40,6 +44,10 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isEnabled();
         Allure.step("'Edit selected company' button is available");
         assertThat(companiesAndBusinessUnitsPage.getEditCompanyButton()).isEnabled();
+
+        Allure.step("Delete test company");
+
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
     @Test
