@@ -14,6 +14,8 @@ import xyz.npgw.test.page.dialog.user.AddUserDialog;
 import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 
+import java.util.NoSuchElementException;
+
 @Log4j2
 public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
 
@@ -27,15 +29,22 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
         super(page);
     }
 
-    public Locator getCompanyNameInDropdownOption(String companyName){
+    public Locator getCompanyNameInDropdownOption(String companyName) {
         return dropdownOptionList.filter(new Locator.FilterOptions().setHas(textExact(companyName)));
     }
 
     @Step("Select '{companyName}' company using filter")
     public TeamPage selectCompany(String companyName) {
+        String lastName = "";
+
         selectCompanyField.fill(companyName);
         while (getCompanyNameInDropdownOption(companyName).all().size() != 1) {
+            if (dropdownOptionList.last().innerText().equals(lastName)) {
+                throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
+            }
             dropdownOptionList.last().scrollIntoViewIfNeeded();
+
+            lastName = dropdownOptionList.last().innerText();
         }
         ResponseUtils.clickAndWaitForResponse(getPage(), getCompanyNameInDropdownOption(companyName), Constants.USER_LIST_ENDPOINT);
 
