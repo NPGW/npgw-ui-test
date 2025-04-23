@@ -20,7 +20,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
     private final Locator dropdownOptionList = getPage().getByRole(AriaRole.OPTION);
     @Getter
     private final Locator selectCompanyField = placeholder("Search...");
-    private final Locator applyFilter = locator("[data-icon='filter']");
+    private final Locator applyFilterButton = getPage().getByTestId("ApplyFilterButtonTeamPage");
     private final Locator addUserButton = getPage().getByTestId("AddUserButtonTeamPage");
 
     public TeamPage(Page page) {
@@ -38,15 +38,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
             dropdownOptionList.last().scrollIntoViewIfNeeded();
         }
         ResponseUtils.clickAndWaitForResponse(getPage(), getCompanyNameInDropdownOption(companyName), Constants.USER_LIST_ENDPOINT);
-
-        return this;
-    }
-
-    @Step("Select a company into 'Select company' filter field")
-    public TeamPage selectCompanyInTheFilter(String name) {
-        selectCompanyField.click();
-        selectCompanyField.fill(name);
-        getCompanyNameInDropdownOption(name).first().click();
 
         return this;
     }
@@ -91,8 +82,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
 
     @Step("Click 'Apply filter")
     public TeamPage clickApplyFilter() {
-        applyFilter.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        applyFilter.click();
+        applyFilterButton.click();
 
         return this;
     }

@@ -97,7 +97,7 @@ public class TeamPageTest extends BaseTest {
         AddUserDialog addUserDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .selectCompanyInTheFilter(user.companyName())
+                .selectCompany(user.companyName())
                 .clickAddUserButton();
 
         Allure.step("Verify: 'Add user' header is displayed");
@@ -109,7 +109,8 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton();
+                .clickCreateButton()
+                .clickApplyFilter(); // шаг добавлен т.к. обновления не каждый раз появляются на ui автоматически не смотря на отработку нужных API calls
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
@@ -139,7 +140,7 @@ public class TeamPageTest extends BaseTest {
         EditUserDialog editUserDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .selectCompanyInTheFilter(user.companyName())
+                .selectCompany(user.companyName())
                 .clickEditUser(user.email());
 
         Allure.step("Verify: 'Edit user' header is displayed");
@@ -149,7 +150,8 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(updatedUser.enabled())
                 .unsetAllowedBusinessUnits(user.merchantIds())
                 .setUserRoleRadiobutton(updatedUser.userRole())
-                .clickSaveChangesButton();
+                .clickSaveChangesButton()
+                .clickApplyFilter(); // шаг добавлен т.к. обновления не каждый раз появляются на ui автоматически не смотря на отработку нужных API calls
 
         Allure.step("Verify: success alert appears after user update");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
