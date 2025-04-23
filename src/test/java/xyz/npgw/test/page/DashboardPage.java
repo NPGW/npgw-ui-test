@@ -10,7 +10,6 @@ import xyz.npgw.test.page.common.HeaderPage;
 public final class DashboardPage extends HeaderPage {
 
     private final Locator dateRange = getPage().getByRole(AriaRole.SPINBUTTON);
-    private final Locator applyFilter = locator("[data-icon='filter']");
     @Getter
     private final Locator dataRangeErrorMessage = locator("[data-slot='error-message']");
 
@@ -32,7 +31,7 @@ public final class DashboardPage extends HeaderPage {
     }
 
     @Step("Set end date: {endDate}")
-    public DashboardPage setEndDate(String endDate) {
+    public DashboardPage setEndDateAndPressTab(String endDate) {
         Locator day = dateRange.nth(3);
         Locator month = dateRange.nth(4);
         Locator year = dateRange.nth(5);
@@ -40,13 +39,7 @@ public final class DashboardPage extends HeaderPage {
         day.fill(endDate.split("-")[0]);
         month.fill(endDate.split("-")[1]);
         year.fill(endDate.split("-")[2]);
-
-        return this;
-    }
-
-    @Step("Click 'Apply filter")
-    public DashboardPage clickApplyFilter() {
-        applyFilter.click();
+        year.press("Tab");
 
         return this;
     }

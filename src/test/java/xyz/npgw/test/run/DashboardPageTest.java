@@ -38,8 +38,7 @@ public class DashboardPageTest extends BaseTest {
     public void testErrorMessageForReversedDateRange() {
         DashboardPage dashboardPage = new DashboardPage(getPage())
                 .setStartDate("01-04-2025")
-                .setEndDate("01-04-2024")
-                .clickApplyFilter();
+                .setEndDateAndPressTab("01-04-2024");
 
         Allure.step("Verify: error message is shown for invalid date range");
         assertThat(dashboardPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
