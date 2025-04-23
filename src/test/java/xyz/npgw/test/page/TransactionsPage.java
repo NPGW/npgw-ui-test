@@ -63,7 +63,6 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     public TransactionsPage clickCurrency(String value) {
         optionByName(value).waitFor();
         ResponseUtils.clickAndWaitForResponse(getPage(), optionByName(value), Constants.TRANSACTION_HISTORY_ENDPOINT);
-        getPage().waitForTimeout(500);
 
         return this;
     }
@@ -161,7 +160,6 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     @Step("Click 'Apply' amount button")
     public TransactionsPage clickAmountApplyButton() {
         ResponseUtils.clickAndWaitForResponse(getPage(), amountApplyButton, Constants.TRANSACTION_HISTORY_ENDPOINT);
-        getPage().waitForTimeout(500);
 
         return this;
     }

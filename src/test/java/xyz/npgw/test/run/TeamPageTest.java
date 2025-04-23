@@ -72,8 +72,7 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .clickSelectCompanyDropdown()
-                .clickCompanyInDropdown(user.companyName())
+                .selectCompany(user.companyName())
                 .clickAddUserButton()
                 .fillEmailField(user.email())
                 .fillPasswordField(user.password())
@@ -116,7 +115,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompanyInput()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: new user's email is displayed in the table");
         assertThat(teamPage.getUsernameByEmail(user.email())).hasText(user.email());
@@ -156,7 +155,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompanyInput()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: updated user's email is still displayed correctly");
         assertThat(teamPage.getUsernameByEmail(user.email())).hasText(user.email());
