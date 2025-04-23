@@ -263,4 +263,21 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: error message 'From should be lesser than To' appears");
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
+
+    @Test
+    @TmsLink("340")
+    @Epic("Transactions")
+    @Feature("Data range")
+    @Description("Error message is displayed when start date is after end date.")
+    public void testErrorMessageForReversedDateRange() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .setStartDate("01-04-2025")
+                .setEndDate("01-04-2024")
+                .clickApplyDataButton();
+
+        Allure.step("Verify: error message is shown for invalid date range");
+        assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
+    }
 }

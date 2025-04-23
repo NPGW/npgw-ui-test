@@ -28,19 +28,4 @@ public class DashboardPageTest extends BaseTest {
         Allure.step("Verify: Dashboard Page Title");
         assertThat(dashboardPage.getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
     }
-
-
-    @Test
-    @TmsLink("340")
-    @Epic("Dashboard")
-    @Feature("Data range")
-    @Description("Error message is displayed when start date is after end date.")
-    public void testErrorMessageForReversedDateRange() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
-                .setStartDate("01-04-2025")
-                .setEndDateAndPressTab("01-04-2024");
-
-        Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(dashboardPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
-    }
 }
