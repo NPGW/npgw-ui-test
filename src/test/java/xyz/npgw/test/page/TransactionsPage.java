@@ -228,8 +228,6 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
         month.fill(endDate.split("-")[1]);
         year.fill(endDate.split("-")[2]);
 
-        year.press("Tab");
-
         return this;
     }
 }

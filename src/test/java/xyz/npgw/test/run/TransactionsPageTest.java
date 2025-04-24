@@ -295,8 +295,8 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader()
                 .clickTransactionsLink()
                 .setStartDate("01-04-2025")
-                .setEndDate("01-04-2024");
-//                .clickApplyDataButton();
+                .setEndDate("01-04-2024")
+                .clickApplyDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
         assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");

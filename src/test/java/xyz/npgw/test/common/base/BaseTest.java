@@ -55,6 +55,8 @@ public abstract class BaseTest {
     protected void beforeMethod(Method method, ITestResult testResult, Object[] args) {
         Browser.NewContextOptions options = new Browser
                 .NewContextOptions()
+                .setLocale("en-GB")
+                .setTimezoneId("Europe/Paris")
                 .setViewportSize(ProjectProperties.getViewportWidth(), ProjectProperties.getViewportHeight())
                 .setBaseURL(ProjectProperties.getBaseUrl());
 
