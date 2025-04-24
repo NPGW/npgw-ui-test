@@ -2,6 +2,7 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,7 +28,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     private final Locator statusSelector = labelExact("Status");
     private final Locator amountButton = buttonByName("Amount");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
-    private final Locator applyDataButton = getByTestId("ApplyFilterButtonTransactionsPage");
+    private final Locator applyFilterButton = getByTestId("ApplyFilterButtonTransactionsPage");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
     private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage");
     private final Locator statusSelectorOptions = listboxByRole().locator(optionByRole());
@@ -47,6 +48,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     private final Locator amountApplied = textExact("Amount: 101 - 4999");
     private final Locator amountAppliedClearButton = buttonByName("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
+    private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
 
     public TransactionsPage(Page page) {
         super(page);
@@ -69,8 +71,8 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     }
 
     @Step("Click Icon Apply Data")
-    public TransactionsPage clickApplyDataButton() {
-        applyDataButton.click();
+    public TransactionsPage clickApplyFilterButton() {
+        applyFilterButton.click();
 
         return this;
     }
@@ -188,6 +190,36 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     }
 
     public List<String> getStatusSelectorOptions() {
+
         return statusSelectorOptions.all().stream().map(Locator::innerText).toList();
+    }
+
+    public TransactionsPage clickSettingsButton() {
+        settingsButton.click();
+
+        return this;
+    }
+
+    public List<String> getVisibleColumnsLabels() {
+
+        return settingsVisibleColumns
+                .all()
+                .stream()
+                .map(l -> l.getAttribute("aria-label"))
+                .toList();
+    }
+
+    private void uncheckIfSelected(Locator locator) {
+        if ("true".equals(locator.getAttribute("data-selected"))) {
+            locator.click();
+        }
+    }
+
+    public TransactionsPage uncheckAllCheckboxInSettings() {
+        settingsVisibleColumns
+                .all()
+                .forEach(this::uncheckIfSelected);
+
+        return this;
     }
 }

@@ -21,6 +21,16 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsPageTest extends BaseTest {
 
+    private static final List<String> COLUMNS_HEADERS = List.of(
+            "Creation Date",
+            "Merchant ID",
+            "NPGW Reference",
+            "Merchant Reference",
+            "Amount",
+            "Currency",
+            "Payment Method",
+            "Status");
+
     @Test
     @TmsLink("108")
     @Epic("Transactions")
@@ -49,7 +59,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .clickCurrencySelector()
                 .clickCurrency(currency)
-                .clickApplyDataButton();
+                .clickApplyFilterButton();
 
         Allure.step("Verify: Filter displays the selected currency");
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
@@ -152,7 +162,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getResetFilterButton()).isVisible();
 
         Allure.step("Verify: Apply data button is visible");
-        assertThat(transactionsPage.getApplyDataButton()).isVisible();
+        assertThat(transactionsPage.getApplyFilterButton()).isVisible();
 
         Allure.step("Verify: Settings button is visible");
         assertThat(transactionsPage.getSettingsButton()).isVisible();
@@ -263,4 +273,47 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: error message 'From should be lesser than To' appears");
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
+
+    @Test
+    @TmsLink("349")
+    @Epic("Transactions")
+    @Feature("Settings")
+    @Description("Verify full lists of Columnheaders and Visible columns from Settings")
+    public void testVerifyColumnheadersAndSettingsVisibleColumns() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader().clickTransactionsLink();
+
+        List<String> columnheadersList = transactionsPage
+                .getTable().getColumnheadersText();
+
+        List<String> visibleColumnsLabels = transactionsPage
+                .clickSettingsButton()
+                .getVisibleColumnsLabels();
+
+        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
+        assertEquals(columnheadersList, COLUMNS_HEADERS);
+        Allure.step("Verify: All columnheaders are displayed in the Settings");
+        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
+    }
+
+    @Test
+    @TmsLink("349")
+    @Epic("Transactions")
+    @Feature("Settings")
+    @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
+    public void testCheckUncheckSettingsVisibleColumns() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader().clickTransactionsLink()
+                .clickSettingsButton();
+
+        transactionsPage.uncheckAllCheckboxInSettings();
+getPage().pause();
+//        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
+//        assertEquals(columnheadersList, COLUMNS_HEADERS);
+//        Allure.step("Verify: All columnheaders are displayed in the Settings");
+//        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
+    }
+
 }

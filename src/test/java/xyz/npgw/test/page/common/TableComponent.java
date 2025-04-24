@@ -14,17 +14,19 @@ import java.util.stream.Collectors;
 @Getter
 public class TableComponent extends BaseComponent {
 
-    private final Locator tableHeader = getPage().getByRole(AriaRole.COLUMNHEADER);
+    private final Locator columnheader = getPage().getByRole(AriaRole.COLUMNHEADER);
+
     private final Locator tableRows = getPage()
-            .getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHasNot(tableHeader));
+            .getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHasNot(columnheader));
 
     public TableComponent(Page page) {
         super(page);
     }
 
     private int getColumnHeaderIndexByName(String columnHeaderName) {
-        for (int i = 0; i < tableHeader.count(); i++) {
-            if (tableHeader.nth(i).innerText().equals(columnHeaderName)) {
+        System.out.println("columnheader.count() = " + columnheader.count());
+        for (int i = 0; i < columnheader.count(); i++) {
+            if (columnheader.nth(i).innerText().equals(columnHeaderName)) {
                 return i;
             }
         }
@@ -38,5 +40,14 @@ public class TableComponent extends BaseComponent {
         return tableRows.all().stream()
                 .map(row -> row.getByRole(AriaRole.GRIDCELL).nth(columnIndex).textContent())
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getColumnheadersText() {
+
+        return columnheader
+                .all()
+                .stream()
+                .map(Locator::innerText)
+                .toList();
     }
 }
