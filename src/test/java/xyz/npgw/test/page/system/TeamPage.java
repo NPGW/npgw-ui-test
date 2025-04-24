@@ -22,8 +22,8 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
     private final Locator dropdownOptionList = getPage().getByRole(AriaRole.OPTION);
     @Getter
     private final Locator selectCompanyField = placeholder("Search...");
-    private final Locator applyFilterButton = getPage().getByTestId("ApplyFilterButtonTeamPage");
-    private final Locator addUserButton = getPage().getByTestId("AddUserButtonTeamPage");
+    private final Locator applyFilterButton = getByTestId("ApplyFilterButtonTeamPage");
+    private final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
 
     public TeamPage(Page page) {
         super(page);
@@ -46,7 +46,8 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
 
             lastName = dropdownOptionList.last().innerText();
         }
-        ResponseUtils.clickAndWaitForResponse(getPage(), getCompanyNameInDropdownOption(companyName), Constants.USER_LIST_ENDPOINT);
+        ResponseUtils.clickAndWaitForResponse(
+                getPage(), getCompanyNameInDropdownOption(companyName), Constants.USER_LIST_ENDPOINT);
 
         return this;
     }

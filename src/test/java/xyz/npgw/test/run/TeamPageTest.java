@@ -112,7 +112,7 @@ public class TeamPageTest extends BaseTest {
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
-                .clickApplyFilter(); // шаг добавлен т.к. обновления не каждый раз появляются на ui автоматически не смотря на отработку нужных API calls
+                .clickApplyFilter(); // Шаг добавлен т.к. обновленные данные не каждый раз появляются на ui
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
@@ -154,7 +154,7 @@ public class TeamPageTest extends BaseTest {
                 .unsetAllowedBusinessUnits(user.merchantIds())
                 .setUserRoleRadiobutton(updatedUser.userRole())
                 .clickSaveChangesButton()
-                .clickApplyFilter(); // шаг добавлен т.к. обновления не каждый раз появляются на ui автоматически не смотря на отработку нужных API calls
+                .clickApplyFilter(); // Шаг добавлен т.к. обновленные данные не каждый раз появляются на ui
 
         Allure.step("Verify: success alert appears after user update");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
