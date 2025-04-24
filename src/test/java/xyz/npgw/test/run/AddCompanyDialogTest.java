@@ -236,6 +236,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput()).hasValue(COMPANY_NAME);
     }
 
+    @Ignore("depends on ignored test")
     @Test(dependsOnMethods = "testVerifyCompanyPresenceInDropdown")
     @TmsLink("232")
     @Epic("System/Companies and business units")
