@@ -15,7 +15,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditCompanyDialogTest extends BaseTest {
 
-    @Ignore("element not found> locator div[role='alert']")
+    @Ignore("ERRORCompany {Kate1} not found.")
     @Test
     @TmsLink("266")
     @Epic("System/Companies and business units")
