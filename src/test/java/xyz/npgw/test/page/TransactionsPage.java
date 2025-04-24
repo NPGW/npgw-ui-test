@@ -48,6 +48,10 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     private final Locator amountApplied = textExact("Amount: 101 - 4999");
     private final Locator amountAppliedClearButton = buttonByName("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
+    private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
+    @Getter(AccessLevel.NONE)
+    private final Locator dateRange = spinButton();
+    private final Locator dataRangeErrorMessage = locator("[data-slot='error-message']");
     private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
 
     public TransactionsPage(Page page) {
@@ -65,7 +69,6 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     public TransactionsPage clickCurrency(String value) {
         optionByName(value).waitFor();
         ResponseUtils.clickAndWaitForResponse(getPage(), optionByName(value), Constants.TRANSACTION_HISTORY_ENDPOINT);
-        getPage().waitForTimeout(500);
 
         return this;
     }
@@ -163,7 +166,6 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     @Step("Click 'Apply' amount button")
     public TransactionsPage clickAmountApplyButton() {
         ResponseUtils.clickAndWaitForResponse(getPage(), amountApplyButton, Constants.TRANSACTION_HISTORY_ENDPOINT);
-        getPage().waitForTimeout(500);
 
         return this;
     }
@@ -192,6 +194,43 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     public List<String> getStatusSelectorOptions() {
 
         return statusSelectorOptions.all().stream().map(Locator::innerText).toList();
+    }
+
+    @Step("Click Payment Method Selector")
+    public TransactionsPage clickPaymentMethodSelector() {
+        paymentMethodSelector.click();
+
+        return this;
+    }
+
+    public List<String> getPaymentMethodOptions() {
+        return paymentMethodOptions.all().stream().map(Locator::innerText).toList();
+    }
+
+    @Step("Set start date: {startDate}")
+    public TransactionsPage setStartDate(String startDate) {
+        Locator day = dateRange.nth(0);
+        Locator month = dateRange.nth(1);
+        Locator year = dateRange.nth(2);
+
+        day.fill(startDate.split("-")[0]);
+        month.fill(startDate.split("-")[1]);
+        year.fill(startDate.split("-")[2]);
+
+        return this;
+    }
+
+    @Step("Set end date: {endDate}")
+    public TransactionsPage setEndDate(String endDate) {
+        Locator day = dateRange.nth(3);
+        Locator month = dateRange.nth(4);
+        Locator year = dateRange.nth(5);
+
+        day.fill(endDate.split("-")[0]);
+        month.fill(endDate.split("-")[1]);
+        year.fill(endDate.split("-")[2]);
+
+        return this;
     }
 
     public TransactionsPage clickSettingsButton() {

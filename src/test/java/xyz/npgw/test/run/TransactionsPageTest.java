@@ -197,7 +197,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 
-    @Ignore("Добавить ожидание для нажатия Transactions")
     @Test
     @TmsLink("263")
     @Epic("Transactions")
@@ -272,6 +271,45 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: error message 'From should be lesser than To' appears");
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
+    }
+
+    @Test
+    @TmsLink("342")
+    @Epic("Transactions")
+    @Feature("Status")
+    @Description("Verify that user can see Payment Method Options")
+    public void testTheVisibilityOfThePaymentMethodOptions() {
+
+        List<String> options = List.of("ALL",
+                "VISA",
+                "Mastercard");
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickPaymentMethodSelector();
+
+        Allure.step("Verify: Payment Method Options are visible");
+        assertEquals(transactionsPage.getPaymentMethodOptions(), options);
+        Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
+        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
+    }
+
+    @Test
+    @TmsLink("340")
+    @Epic("Transactions")
+    @Feature("Data range")
+    @Description("Error message is displayed when start date is after end date.")
+    public void testErrorMessageForReversedDateRange() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .setStartDate("01-04-2025")
+                .setEndDate("01-04-2024")
+                .clickApplyDataButton();
+
+        Allure.step("Verify: error message is shown for invalid date range");
+        assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
     }
 
     @Test

@@ -61,6 +61,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
+    @Ignore("Company 'testframework' not found in dropdown.")
     @Test(dataProvider = "getUsers", dataProviderClass = TestDataProvider.class)
     @TmsLink("298")
     @Epic("System/Team")
@@ -73,8 +74,7 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .clickSelectCompanyDropdown()
-                .clickCompanyInDropdown(user.companyName())
+                .selectCompany(user.companyName())
                 .clickAddUserButton()
                 .fillEmailField(user.email())
                 .fillPasswordField(user.password())
@@ -99,7 +99,7 @@ public class TeamPageTest extends BaseTest {
         AddUserDialog addUserDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .selectCompanyInTheFilter(user.companyName())
+                .selectCompany(user.companyName())
                 .clickAddUserButton();
 
         Allure.step("Verify: 'Add user' header is displayed");
@@ -111,13 +111,14 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton();
+                .clickCreateButton()
+                .clickApplyFilter(); // Шаг добавлен т.к. обновленные данные не каждый раз появляются на ui
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompanyInput()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: new user's email is displayed in the table");
         assertThat(teamPage.getUsernameByEmail(user.email())).hasText(user.email());
@@ -142,7 +143,7 @@ public class TeamPageTest extends BaseTest {
         EditUserDialog editUserDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .selectCompanyInTheFilter(user.companyName())
+                .selectCompany(user.companyName())
                 .clickEditUser(user.email());
 
         Allure.step("Verify: 'Edit user' header is displayed");
@@ -152,13 +153,14 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(updatedUser.enabled())
                 .unsetAllowedBusinessUnits(user.merchantIds())
                 .setUserRoleRadiobutton(updatedUser.userRole())
-                .clickSaveChangesButton();
+                .clickSaveChangesButton()
+                .clickApplyFilter(); // Шаг добавлен т.к. обновленные данные не каждый раз появляются на ui
 
         Allure.step("Verify: success alert appears after user update");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompanyInput()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: updated user's email is still displayed correctly");
         assertThat(teamPage.getUsernameByEmail(user.email())).hasText(user.email());

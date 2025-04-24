@@ -37,7 +37,6 @@ public class HeaderComponent extends BaseComponent {
     @Step("Click on 'Transactions' menu in Header")
     public TransactionsPage clickTransactionsLink() {
         ResponseUtils.clickAndWaitForResponse(getPage(), transactionsButton, Constants.TRANSACTION_HISTORY_ENDPOINT);
-        getPage().waitForTimeout(500);
 
         return new TransactionsPage(getPage());
     }
@@ -51,8 +50,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-        systemAdministrationButton.click();
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
+        ResponseUtils.clickAndWaitForResponse(getPage(), systemAdministrationButton, Constants.COMPANY_ENDPOINT);
 
         return new TeamPage(getPage());
     }
@@ -114,5 +112,11 @@ public class HeaderComponent extends BaseComponent {
         getPage().waitForURL("**/");
 
         return new LoginPage(getPage());
+    }
+
+    public boolean isLogoImageLoaded() {
+        return (boolean) getImg().evaluate(
+                "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
+                        + " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
     }
 }
