@@ -118,6 +118,7 @@ public class HeaderComponent extends BaseComponent {
 
     public boolean isLogoImageLoaded() {
         return (boolean) getImg().evaluate(
-                "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0 && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
+                "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0" +
+                        " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
     }
 }
