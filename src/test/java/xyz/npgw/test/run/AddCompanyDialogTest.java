@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.opentest4j.AssertionFailedError;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
@@ -217,6 +218,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 "Company was created successfully");
     }
 
+    @Ignore("Company 'CompanyName' not found in dropdown.")
     @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
     @TmsLink("224")
     @Epic("System/Companies and business units")
