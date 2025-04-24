@@ -73,6 +73,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Press 'User menu' button")
     public DashboardPage clickUserMenuButton() {
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
         userMenuButton.click();
 
         return new DashboardPage(getPage());
@@ -108,11 +109,16 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Press 'Log out' button in User menu")
     public LoginPage clickLogOutButtonUserMenu() {
-
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
         logOutButtonUserMenu.click();
         getPage().waitForURL("**/");
 
         return new LoginPage(getPage());
+    }
+
+    public boolean isLogoImageLoaded() {
+        return (boolean) getImg().evaluate(
+                "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
+                        + " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
     }
 }
