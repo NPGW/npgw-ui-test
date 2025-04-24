@@ -9,6 +9,7 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
+import com.microsoft.playwright.options.ColorScheme;
 import com.microsoft.playwright.options.RequestOptions;
 import io.qameta.allure.Allure;
 import lombok.AccessLevel;
@@ -57,6 +58,7 @@ public abstract class BaseTest {
                 .NewContextOptions()
                 .setLocale("en-GB")
                 .setTimezoneId("Europe/Paris")
+                .setColorScheme(ColorScheme.DARK)
                 .setViewportSize(ProjectProperties.getViewportWidth(), ProjectProperties.getViewportHeight())
                 .setBaseURL(ProjectProperties.getBaseUrl());
 
