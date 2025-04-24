@@ -264,7 +264,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("#342")
+    @TmsLink("342")
     @Epic("Transactions")
     @Feature("Status")
     @Description("Verify that user can see Payment Method Options")
@@ -283,5 +283,22 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(transactionsPage.getPaymentMethodOptions(), options);
         Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
         assertThat(transactionsPage.getActiveOption()).containsText("ALL");
+    }
+
+    @Test
+    @TmsLink("340")
+    @Epic("Transactions")
+    @Feature("Data range")
+    @Description("Error message is displayed when start date is after end date.")
+    public void testErrorMessageForReversedDateRange() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .setStartDate("01-04-2025")
+                .setEndDate("01-04-2024")
+                .clickApplyDataButton();
+
+        Allure.step("Verify: error message is shown for invalid date range");
+        assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
     }
 }
