@@ -285,6 +285,6 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Payment Method Options are visible");
         assertEquals(transactionsPage.getPaymentMethodOptions(), options);
         Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
-        assertThat(transactionsPage.getPage().getByRole(AriaRole.OPTION, new Page.GetByRoleOptions().setName("ALL"))).hasAttribute("aria-selected", "true");
+        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 }
