@@ -50,7 +50,6 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
     private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
 
-
     public TransactionsPage(Page page) {
         super(page);
     }
