@@ -1,6 +1,9 @@
 package xyz.npgw.test.common.provider;
 
 import org.testng.annotations.DataProvider;
+import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.UserRole;
+import xyz.npgw.test.common.util.User;
 
 import java.util.List;
 
@@ -57,6 +60,29 @@ public class TestDataProvider {
         return new Object[][]{
                 {"Active"},
                 {"Inactive"},
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getUsers() {
+        return new Object[][]{
+                {new User("super", true,
+                        UserRole.SUPER, new String[]{},
+                        "super@test.com", ProjectProperties.getSuperPassword())},
+                {new User("testframework", true,
+                        UserRole.ADMIN, new String[]{},
+                        "admin@test.com", ProjectProperties.getAdminPassword())},
+                {new User("testframework", true,
+                        UserRole.USER, new String[]{"businessUnitName"},
+                        "user@test.com", ProjectProperties.getUserPassword())}
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getCurrency() {
+        return new Object[][]{
+                {"EUR"},
+                {"USD"},
         };
     }
 

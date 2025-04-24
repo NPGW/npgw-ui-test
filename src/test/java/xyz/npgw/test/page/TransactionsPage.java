@@ -2,16 +2,19 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
-import xyz.npgw.test.page.base.BaseHeaderPage;
-import xyz.npgw.test.page.base.trait.TableTrait;
+import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.util.ResponseUtils;
+import xyz.npgw.test.page.common.HeaderPage;
+import xyz.npgw.test.page.common.TableTrait;
 
 import java.util.List;
 
 @Getter
-public class TransactionsPage extends BaseHeaderPage implements TableTrait {
+public class TransactionsPage extends HeaderPage implements TableTrait {
 
     private final Locator rowsPerPageButton = buttonByName("Rows Per Page");
     private final Locator rowsPerPageOptions = dialog();
@@ -44,6 +47,8 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
     private final Locator amountClearButton = textExact("Clear");
     private final Locator amountApplied = textExact("Amount: 101 - 4999");
     private final Locator amountAppliedClearButton = buttonByName("close chip");
+    private final Locator amountErrorMessage = locator("[data-slot='error-message']");
+    private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
 
     public TransactionsPage(Page page) {
         super(page);
@@ -58,7 +63,8 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
 
     @Step("Click Options Currency {value}")
     public TransactionsPage clickCurrency(String value) {
-        optionLabelByExactText(value).click();
+        optionByName(value).waitFor();
+        ResponseUtils.clickAndWaitForResponse(getPage(), optionByName(value), Constants.TRANSACTION_HISTORY_ENDPOINT);
 
         return this;
     }
@@ -68,15 +74,6 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
         applyDataButton.click();
 
         return this;
-    }
-
-    public boolean getTableRow(String value) {
-        for (Locator item : getPage().locator("tbody tr").all()) {
-            if (!item.locator("td").nth(5).textContent().equals(value)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Step("Click Button Rows Per Page")
@@ -102,16 +99,20 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
 
     @Step("Fill 'From' amount value")
     public TransactionsPage fillAmountFromField(String value) {
+        amountFromInputField.click();
+        amountFromInputField.clear();
         amountFromInputField.fill(value);
+        amountFromField.press("Enter");
 
         return this;
     }
 
-
     @Step("Fill 'To' amount value")
     public TransactionsPage fillAmountToField(String value) {
+        amountToInputField.click();
         amountToInputField.clear();
         amountToInputField.fill(value);
+        amountToField.press("Enter");
 
         return this;
     }
@@ -129,7 +130,6 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
 
         return this;
     }
-
 
     @Step("Click 'From' amount increase arrow ")
     public TransactionsPage clickAmountFromIncreaseArrow() {
@@ -161,7 +161,7 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
 
     @Step("Click 'Apply' amount button")
     public TransactionsPage clickAmountApplyButton() {
-        amountApplyButton.click();
+        ResponseUtils.clickAndWaitForResponse(getPage(), amountApplyButton, Constants.TRANSACTION_HISTORY_ENDPOINT);
 
         return this;
     }
@@ -189,5 +189,16 @@ public class TransactionsPage extends BaseHeaderPage implements TableTrait {
 
     public List<String> getStatusSelectorOptions() {
         return statusSelectorOptions.all().stream().map(Locator::innerText).toList();
+    }
+
+    @Step("Click Payment Method Selector")
+    public TransactionsPage clickPaymentMethodSelector() {
+        paymentMethodSelector.click();
+
+        return this;
+    }
+
+    public List<String> getPaymentMethodOptions() {
+        return paymentMethodOptions.all().stream().map(Locator::innerText).toList();
     }
 }

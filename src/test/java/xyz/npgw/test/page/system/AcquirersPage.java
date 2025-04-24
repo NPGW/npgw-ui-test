@@ -5,11 +5,10 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.dialog.AddAcquirerDialog;
-import xyz.npgw.test.page.dialog.BaseDialog;
-import xyz.npgw.test.page.dialog.EditAcquirerDialog;
+import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
+import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
-public class AcquirersPage extends BaseSystemPage {
+public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
 
     @Getter
     private final Locator addAcquirerButton = locator("svg[data-icon='circle-plus']");
@@ -32,11 +31,11 @@ public class AcquirersPage extends BaseSystemPage {
     @Getter
     private final Locator statusLabel = labelExact("Status");
     @Getter
-    private final Locator acquirerStatusPlaceholder = locator("div[data-slot='innerWrapper'] span");
+    private final Locator acquirerStatusValue = locator("div[data-slot='innerWrapper'] span");
     @Getter
-    private final Locator dropdownAcquirerStatusList = locator("div[data-slot='listbox']");
+    private final Locator acquirerStatusDropdown = locator("div[data-slot='listbox']");
     @Getter
-    private final Locator acquirerStatusOptions = option(dropdownAcquirerStatusList);
+    private final Locator acquirerStatusOptions = option(acquirerStatusDropdown);
 
     public AcquirersPage(Page page) {
         super(page);
@@ -65,16 +64,17 @@ public class AcquirersPage extends BaseSystemPage {
     @Step("Click Status placeholder")
     public AcquirersPage clickAcquirerStatusPlaceholder() {
         selectAcquirerLabel.waitFor();
-        acquirerStatusPlaceholder.click();
+        acquirerStatusValue.click();
 
         return this;
     }
 
     @Step("Select Acquirer Status '{status}'")
     public AcquirersPage selectAcquirerStatus(String status) {
-        Locator option = getPage().locator("li[data-key='" + status.toUpperCase() + "']");
-        option.click();
-        dropdownAcquirerStatusList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+        acquirerStatusOptions
+                .getByText(status, new Locator.GetByTextOptions().setExact(true))
+                .click();
+        acquirerStatusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return this;
     }
@@ -87,7 +87,7 @@ public class AcquirersPage extends BaseSystemPage {
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public BaseDialog clickEditButtonForAcquirer(String name) {
+    public EditAcquirerDialog clickEditButtonForAcquirer(String name) {
         optionByName(name).getByText("Edit").click();
 
         return new EditAcquirerDialog(getPage());

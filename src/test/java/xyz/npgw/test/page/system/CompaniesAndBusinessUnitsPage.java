@@ -7,11 +7,11 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import org.testng.Assert;
-import xyz.npgw.test.page.dialog.AddBusinessUnitDialog;
-import xyz.npgw.test.page.dialog.AddCompanyDialog;
-import xyz.npgw.test.page.dialog.EditCompanyDialog;
+import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
+import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
+import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 
-public class CompaniesAndBusinessUnitsPage extends BaseSystemPage {
+public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage> {
 
     private final Locator addCompanyButton = locator("button[data-testid='AddCompanyButton']");
     @Getter
@@ -56,6 +56,10 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage {
     private final Locator apiActiveCheckboxFromCompanyInfoSection = labelExact("API active");
     @Getter
     private final Locator portalActiveCheckboxFromCompanyInfoSection = labelExact("Portal active");
+    @Getter
+    private final Locator businessUnitNameData = locator("[role='row'] span").first();
+    @Getter
+    private final Locator merchantIdData = locator("[role='row'] span").nth(1);
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -86,12 +90,6 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage {
         getPage().locator("li[role='option']:has-text('%s')".formatted(name)).first().click();
 
         return this;
-    }
-
-    public Locator getAlertMessage() {
-        alertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        return alertMessage;
     }
 
     @Step("Click 'Select company' dropdown")

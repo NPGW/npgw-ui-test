@@ -30,10 +30,6 @@ public abstract class BaseModel {
         return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(text));
     }
 
-    protected Locator optionLabelByExactText(String text) {
-        return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true)).getByText(text);
-    }
-
     protected Locator locator(String selector) {
         return getPage().locator(selector);
     }
@@ -84,5 +80,13 @@ public abstract class BaseModel {
 
     protected Locator optionByRole() {
         return getPage().getByRole(AriaRole.OPTION);
+    }
+
+    protected Locator menuItemByName(String text) {
+        return getPage().getByRole(AriaRole.MENUITEM, new Page.GetByRoleOptions().setName(text));
+    }
+
+    protected Locator radioButton(String name) {
+        return getPage().getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName(name).setExact(true));
     }
 }

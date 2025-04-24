@@ -7,23 +7,24 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseModel;
+import xyz.npgw.test.page.system.BaseSystemPage;
 
 import java.util.List;
 
-public abstract class BaseDialog extends BaseModel {
+@Getter
+public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDialogT extends BaseDialog>
+        extends BaseModel {
 
-    @Getter
+    private final Locator dialogHeader = locator("section header");
     private final Locator banner = dialog().getByRole(AriaRole.BANNER);
-    @Getter
     private final Locator closeButton = dialog().getByText("Close");
-    @Getter
     private final Locator closeIcon = dialog().getByLabel("Close");
-    @Getter
     private final Locator requiredFields = dialog().locator("[required]");
-    @Getter
     private final Locator allInputFields = dialog().getByRole(AriaRole.TEXTBOX);
     private final Locator fieldsWithPlaceholder = dialog()
             .locator("input[placeholder], textarea[placeholder], span[data-slot='value']");
+    private final Locator allPlaceholdersWithoutSearch = locator("[data-slot='input']:not([placeholder='Search...'])");
+    private final Locator alertMessage = locator("[role='alert']");
 
     public BaseDialog(Page page) {
         super(page);
@@ -38,20 +39,38 @@ public abstract class BaseDialog extends BaseModel {
         }).toList();
     }
 
-    public List<String> getPlaceholdersFromInputFields() {
-        allInputFields.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+    public List<String> getAllFieldPlaceholders() {
+        allPlaceholdersWithoutSearch
+                .first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
-        return allInputFields.all().stream().map(locator -> locator.getAttribute("placeholder")).toList();
+        return allPlaceholdersWithoutSearch.all().stream().map(l -> l.getAttribute("placeholder")).toList();
     }
 
     @Step("Clear all form input fields")
-    public BaseDialog clearInputFields() {
+    public CurrentDialogT clearInputFields() {
         allInputFields.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         allInputFields.all().forEach(locator -> {
             locator.clear();
             banner.click();
         });
-        return this;
+        return (CurrentDialogT) this;
     }
+
+    protected abstract ReturnPageT getReturnPage();
+
+    @Step("Click on the 'Close' button to close form")
+    public ReturnPageT clickCloseButton() {
+        closeButton.click();
+
+        return getReturnPage();
+    }
+
+    @Step("Click on the 'Close' icon to close form")
+    public ReturnPageT clickCloseIcon() {
+        closeIcon.click();
+
+        return getReturnPage();
+    }
+
 }

@@ -9,6 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
@@ -37,22 +38,39 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getPage()).hasTitle(Constants.TRANSACTIONS_URL_TITLE);
     }
 
-    @Ignore
-    @Test
+    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("128")
     @Epic("Transactions")
-    @Feature("Displaying currency filter: EUR")
-    @Description("Displaying the currency filter on the screen when selecting EUR.")
-    public void testFilterByCurrency() {
+    @Feature("Currency")
+    @Description("Displaying selected currency")
+    public void testFilterDisplaysSelectedCurrency(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickTransactionsLink()
                 .clickCurrencySelector()
-                .clickCurrency("EUR")
+                .clickCurrency(currency)
                 .clickApplyDataButton();
 
-        Allure.step("Verify: currency filter - EUR");
-        assertTrue(transactionsPage.getTableRow("EUR"));
+        Allure.step("Verify: Filter displays the selected currency");
+        assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
+    }
+
+    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
+    @TmsLink("319")
+    @Epic("Transactions")
+    @Feature("Currency")
+    @Description("Filtering transactions by Currency")
+    public void testFilterTransactionsByCurrency(String currency) {
+        List<String> currencyValues = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickCurrencySelector()
+                .clickCurrency(currency)
+                .getTable()
+                .getColumnValues("Currency");
+
+        Allure.step("Verify: All values in the Currency column match the selected currency");
+        assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
     }
 
     @Test
@@ -169,7 +187,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 
-    @Ignore
     @Test
     @TmsLink("263")
     @Epic("Transactions")
@@ -201,5 +218,70 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Amount button is visible after reset");
         assertThat(transactionsPage.getAmountButton()).isVisible();
+    }
+
+    @Test
+    @TmsLink("311")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("Filtering transactions by Amount")
+    public void testFilterTransactionsByAmount() {
+        int amountFrom = 10;
+        int amountTo = 500;
+
+        List<String> amountValues = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickAmountButton()
+                .fillAmountFromField(String.valueOf(amountFrom))
+                .fillAmountToField(String.valueOf(amountTo))
+                .clickAmountApplyButton()
+                .getTable()
+                .getColumnValues("Amount");
+
+        Allure.step("Verify: Amount column has values within the specified amount range");
+        assertTrue(amountValues.stream()
+                .map(Integer::parseInt)
+                .allMatch(value -> value >= amountFrom && value <= amountTo));
+    }
+
+    @Test
+    @TmsLink("335")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("error message 'From should be lesser than To' appears")
+    public void testErrorMessageByAmount() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickAmountButton()
+                .fillAmountFromField("500")
+                .fillAmountToField("10");
+
+        Allure.step("Verify: error message 'From should be lesser than To' appears");
+        assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
+    }
+
+    @Test
+    @TmsLink("#342")
+    @Epic("Transactions")
+    @Feature("Status")
+    @Description("Verify that user can see Payment Method Options")
+    public void testTheVisibilityOfThePaymentMethodOptions() {
+
+        List<String> options = List.of("ALL",
+                "VISA",
+                "Mastercard");
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickPaymentMethodSelector();
+
+        Allure.step("Verify: Payment Method Options are visible");
+        assertEquals(transactionsPage.getPaymentMethodOptions(), options);
+        Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
+        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 }

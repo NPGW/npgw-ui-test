@@ -15,7 +15,6 @@ import xyz.npgw.test.page.system.AcquirersPage;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class AcquirersPageTest extends BaseTest {
 
@@ -129,30 +128,6 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("239")
-    @Epic("System/Acquirers")
-    @Feature("Edit acquirers")
-    @Description("Verifies that all form field placeholders are set correctly")
-    public void testVerifyPlaceholdersEditForm() {
-        List<String> expectedPlaceholders = List.of(
-                "Enter acquirer name", "Enter acquirer code", "Enter challenge URL", "Enter fingerprint URL",
-                "Enter resource URL", "Enter notification queue", "Enter priority", "Enter acquirer config",
-                "Search...", "Select timezone");
-
-        List<String> actualPlaceholders = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
-                .clickEditButtonForAcquirer("acquirer1")
-                .clearInputFields()
-                .getPlaceholdersOrTextsFromFields();
-
-        Allure.step("Verify placeholders match expected values for all fields");
-        assertEquals(actualPlaceholders, expectedPlaceholders);
-    }
-
-    @Test
     @TmsLink("268")
     @Epic("System/Acquirers")
     @Feature("Status")
@@ -167,18 +142,19 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu()
                 .clickAcquirersTab();
 
+        Locator actualStatus = acquirersPage.getAcquirerStatusValue();
+
         for (String status : expectedOptions) {
-            Locator actualStatus = acquirersPage
+            acquirersPage
                     .clickAcquirerStatusPlaceholder()
-                    .selectAcquirerStatus(status)
-                    .getAcquirerStatusPlaceholder();
+                    .selectAcquirerStatus(status);
 
             Allure.step("Verify placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
 
-            acquirersPage.clickAcquirerStatusPlaceholder()
-                    .selectAcquirerStatus(status)
-                    .getAcquirerStatusPlaceholder();
+            acquirersPage
+                    .clickAcquirerStatusPlaceholder()
+                    .selectAcquirerStatus(status);
 
             Allure.step("Verify again placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
