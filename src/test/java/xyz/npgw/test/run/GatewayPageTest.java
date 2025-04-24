@@ -84,7 +84,7 @@ public class GatewayPageTest extends BaseTest {
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
 
         String companyName = "Company 112172";
-        String[] expectedBusinessUnitsList = new String[]{"Merchant for C112172", "Merchant 1 for C112172"};
+        String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant for C112172"};
         int expectedCount = expectedBusinessUnitsList.length;
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
