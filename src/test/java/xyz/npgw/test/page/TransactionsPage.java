@@ -250,7 +250,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
 
     private void uncheckIfSelected(Locator locator) {
         if ("true".equals(locator.getAttribute("data-selected"))) {
-            locator.click();
+            locator.uncheck();
         }
     }
 
@@ -261,4 +261,11 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
 
         return this;
     }
+
+    public TransactionsPage uncheckAmount() {
+        getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName("Amount")).setChecked(false);
+
+        return this;
+    }
+
 }

@@ -306,7 +306,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .setStartDate("01-04-2025")
                 .setEndDate("01-04-2024")
-                .clickApplyDataButton();
+                .clickApplyFilterButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
         assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
@@ -346,7 +346,7 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader().clickTransactionsLink()
                 .clickSettingsButton();
 
-        transactionsPage.uncheckAllCheckboxInSettings();
+        transactionsPage.uncheckAmount();
 getPage().pause();
 //        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
 //        assertEquals(columnheadersList, COLUMNS_HEADERS);
