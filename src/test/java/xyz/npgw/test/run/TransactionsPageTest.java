@@ -345,15 +345,28 @@ public class TransactionsPageTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .clickSettingsButton();
+                .clickSettingsButton()
+                .uncheckAllCheckboxInSettings()
+                .getHeader().clickTransactionsLink();
 
-        transactionsPage.uncheckAllCheckboxInSettings();
-        transactionsPage.checkAllCheckboxInSettings();
-getPage().pause();
-//        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
-//        assertEquals(columnheadersList, COLUMNS_HEADERS);
-//        Allure.step("Verify: All columnheaders are displayed in the Settings");
-//        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
+        List<String> columnheadersListAfterUncheckAllColumnheaders = transactionsPage
+                .getTable().getColumnheadersText();
+
+        transactionsPage
+                .clickSettingsButton()
+                .checkAllCheckboxInSettings()
+                .getHeader().clickTransactionsLink();
+
+        List<String> columnheadersListAfterCheckAllColumnheaders = transactionsPage
+                .getTable().getColumnheadersText();
+
+        Allure.step("Verify: Columnheaders are not displayed in the Transactions table "
+                + "after it's unchecking in the Settings");
+        assertEquals(columnheadersListAfterUncheckAllColumnheaders.size(), 0);
+
+        Allure.step("Verify: All columnheaders are displayed in the Transactions table "
+                + "after it's checking in the Settings");
+        assertEquals(columnheadersListAfterCheckAllColumnheaders, COLUMNS_HEADERS);
     }
 
 }
