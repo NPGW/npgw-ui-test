@@ -248,24 +248,4 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
                 .toList();
     }
 
-    private void uncheckIfSelected(Locator locator) {
-        if ("true".equals(locator.getAttribute("data-selected"))) {
-            locator.uncheck();
-        }
-    }
-
-    public TransactionsPage uncheckAllCheckboxInSettings() {
-        settingsVisibleColumns
-                .all()
-                .forEach(this::uncheckIfSelected);
-
-        return this;
-    }
-
-    public TransactionsPage uncheckAmount() {
-        getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName("Amount")).setChecked(false);
-
-        return this;
-    }
-
 }

@@ -316,7 +316,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("349")
     @Epic("Transactions")
     @Feature("Settings")
-    @Description("Verify full lists of Columnheaders and Visible columns from Settings")
+    @Description("Verify full lists of Columnheaders in table and Visible columns from Settings")
     public void testVerifyColumnheadersAndSettingsVisibleColumns() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -333,25 +333,6 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(columnheadersList, COLUMNS_HEADERS);
         Allure.step("Verify: All columnheaders are displayed in the Settings");
         assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
-    }
-
-    @Test
-    @TmsLink("349")
-    @Epic("Transactions")
-    @Feature("Settings")
-    @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
-    public void testCheckUncheckSettingsVisibleColumns() {
-
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader().clickTransactionsLink()
-                .clickSettingsButton();
-
-        transactionsPage.uncheckAmount();
-getPage().pause();
-//        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
-//        assertEquals(columnheadersList, COLUMNS_HEADERS);
-//        Allure.step("Verify: All columnheaders are displayed in the Settings");
-//        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
     }
 
 }
