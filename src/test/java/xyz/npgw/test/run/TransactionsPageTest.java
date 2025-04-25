@@ -340,13 +340,14 @@ public class TransactionsPageTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Settings")
     @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
-    public void testCheckUncheckSettingsVisibleColumns() {
+    public void testCheckUncheckSettingsVisibleColumnsAndResult() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickSettingsButton();
 
-        transactionsPage.uncheckAmount();
+        transactionsPage.uncheckAllCheckboxInSettings();
+        transactionsPage.checkAllCheckboxInSettings();
 getPage().pause();
 //        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
 //        assertEquals(columnheadersList, COLUMNS_HEADERS);

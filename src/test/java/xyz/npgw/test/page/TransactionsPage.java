@@ -248,11 +248,18 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
                 .toList();
     }
 
-    private void uncheckIfSelected(Locator locator) {
-        if ("true".equals(locator.getAttribute("data-selected"))) {
-            locator.uncheck();
+    private void uncheckIfSelected(Locator checkbox) {
+        if ( (boolean) checkbox.evaluate("el => el.checked") ) {
+            checkbox.dispatchEvent("click");
         }
     }
+
+    private void checkIfNotSelected(Locator checkbox) {
+        if ( !(boolean) checkbox.evaluate("el => el.checked") ) {
+            checkbox.dispatchEvent("click");
+        }
+    }
+
 
     public TransactionsPage uncheckAllCheckboxInSettings() {
         settingsVisibleColumns
@@ -262,8 +269,10 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
         return this;
     }
 
-    public TransactionsPage uncheckAmount() {
-        getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName("Amount")).setChecked(false);
+    public TransactionsPage checkAllCheckboxInSettings() {
+        settingsVisibleColumns
+                .all()
+                .forEach(this::checkIfNotSelected);
 
         return this;
     }
