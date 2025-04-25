@@ -24,7 +24,6 @@ public class TableComponent extends BaseComponent {
     }
 
     private int getColumnHeaderIndexByName(String columnHeaderName) {
-        System.out.println("columnheader.count() = " + columnheader.count());
         for (int i = 0; i < columnheader.count(); i++) {
             if (columnheader.nth(i).innerText().equals(columnHeaderName)) {
                 return i;
