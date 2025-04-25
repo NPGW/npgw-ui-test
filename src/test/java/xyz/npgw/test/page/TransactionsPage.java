@@ -235,6 +235,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
 
     public TransactionsPage clickSettingsButton() {
         settingsButton.click();
+        textExact("Visible columns").waitFor();
 
         return this;
     }
