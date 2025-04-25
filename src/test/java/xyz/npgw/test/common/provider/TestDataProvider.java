@@ -99,18 +99,4 @@ public class TestDataProvider {
                 {"Inactive", List.of("USD", "EUR")},
         };
     }
-
-    @DataProvider
-    public Object[][] visibleColumns() {
-        return new Object[][]{
-                {"Creation Date"},
-                {"Merchant ID"},
-                {"NPGW Reference"},
-                {"Merchant Reference"},
-                {"Amount"},
-                {"Currency"},
-                {"Payment Method"},
-                {"Status"},
-        };
-    }
 }

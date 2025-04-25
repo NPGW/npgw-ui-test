@@ -348,39 +348,6 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(columnheadersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
-    @Test(dataProvider = "visibleColumns", dataProviderClass = TestDataProvider.class)
-    @TmsLink("359")
-    @Epic("Transactions")
-    @Feature("Settings")
-    @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
-    public void testCheckUncheckOneVisibleColumnDP(String visibleColumn) {
-
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader().clickTransactionsLink()
-                .clickSettingsButton()
-                .checkAllCheckboxInSettings()
-                .uncheckVisibleColumn(visibleColumn);
-
-        List<String> headersListAfterUncheckOne = transactionsPage
-                .clickRefreshDataButton()
-                .getTable().getColumnheadersText();
-
-        Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions table. And it's - '{name}'");
-        assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1) &&
-                (!headersListAfterUncheckOne.contains(visibleColumn)));
-
-        List<String> headersListAfterCheckOnlyOne = transactionsPage
-                .clickSettingsButton()
-                .uncheckAllCheckboxInSettings()
-                .checkVisibleColumn(visibleColumn)
-                .clickRefreshDataButton()
-                .getTable().getColumnheadersText();
-
-        Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{name}'");
-        assertTrue((headersListAfterCheckOnlyOne.size() == 1) &&
-                (headersListAfterCheckOnlyOne.contains(visibleColumn)));
-    }
-
     @Test
     @TmsLink("359")
     @Epic("Transactions")
