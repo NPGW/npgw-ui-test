@@ -112,7 +112,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getRowsPerPageOptions()).hasText("102550100");
     }
 
-    @Ignore
     @Test
     @TmsLink("130")
     @Epic("Transactions")
@@ -312,6 +311,33 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: error message is shown for invalid date range");
         assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
     }
+
+    @Test
+    @TmsLink("350")
+    @Epic("Transactions")
+    @Feature("Transactions table header")
+    @Description("Verify full lists of Columnheaders in table and Visible columns from Settings")
+    public void testVerifyAllColumnheadersAndSettingsVisibleColumns() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader().clickTransactionsLink()
+                .clickSettingsButton()
+                .checkAllCheckboxInSettings();
+
+        List<String> visibleColumnsLabels = transactionsPage
+                .getVisibleColumnsLabels();
+
+        List<String> columnheadersList = transactionsPage
+                .clickSettingsButton()
+                .getTable().getColumnheadersText();
+
+        Allure.step("Verify: All columnheaders are displayed in the Settings");
+        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
+
+        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
+        assertEquals(columnheadersList, COLUMNS_HEADERS);
+    }
+
 
     @Test
     @TmsLink("349")
