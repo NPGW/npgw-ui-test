@@ -249,13 +249,13 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     }
 
     private void uncheckIfSelected(Locator checkbox) {
-        if ( (boolean) checkbox.evaluate("el => el.checked") ) {
+        if ((boolean) checkbox.evaluate("el => el.checked")) {
             checkbox.dispatchEvent("click");
         }
     }
 
     private void checkIfNotSelected(Locator checkbox) {
-        if ( !(boolean) checkbox.evaluate("el => el.checked") ) {
+        if (!(boolean) checkbox.evaluate("el => el.checked")) {
             checkbox.dispatchEvent("click");
         }
     }
