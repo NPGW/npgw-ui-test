@@ -313,9 +313,9 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("349")
+    @TmsLink("350")
     @Epic("Transactions")
-    @Feature("Settings")
+    @Feature("Transactions table header")
     @Description("Verify full lists of Columnheaders in table and Visible columns from Settings")
     public void testVerifyColumnheadersAndSettingsVisibleColumns() {
 
