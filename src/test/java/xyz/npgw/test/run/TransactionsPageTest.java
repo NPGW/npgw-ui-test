@@ -349,7 +349,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test(dataProvider = "visibleColumns", dataProviderClass = TestDataProvider.class)
-    @TmsLink("353")
+    @TmsLink("359")
     @Epic("Transactions")
     @Feature("Settings")
     @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
@@ -382,7 +382,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("353")
+    @TmsLink("359")
     @Epic("Transactions")
     @Feature("Settings")
     @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
