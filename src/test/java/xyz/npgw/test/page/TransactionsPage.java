@@ -248,4 +248,33 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
                 .toList();
     }
 
+    private void uncheckIfSelected(Locator checkbox) {
+        if ( (boolean) checkbox.evaluate("el => el.checked") ) {
+            checkbox.dispatchEvent("click");
+        }
+    }
+
+    private void checkIfNotSelected(Locator checkbox) {
+        if ( !(boolean) checkbox.evaluate("el => el.checked") ) {
+            checkbox.dispatchEvent("click");
+        }
+    }
+
+
+    public TransactionsPage uncheckAllCheckboxInSettings() {
+        settingsVisibleColumns
+                .all()
+                .forEach(this::uncheckIfSelected);
+
+        return this;
+    }
+
+    public TransactionsPage checkAllCheckboxInSettings() {
+        settingsVisibleColumns
+                .all()
+                .forEach(this::checkIfNotSelected);
+
+        return this;
+    }
+
 }
