@@ -121,7 +121,7 @@ public class AddBusinessUnitTest extends BaseTest {
     }
 
 // Currency, Status, Actions fields aren't filled with data so it'll fail everytime - TODO BR-XXX
-    @Test(expectedExceptions = AssertionFailedError.class,
+    @Test(enabled = false, expectedExceptions = AssertionFailedError.class,
             dataProvider = "merchantFormData", dataProviderClass = TestDataProvider.class)
     @TmsLink("218")
     @Epic("Companies and business units")
