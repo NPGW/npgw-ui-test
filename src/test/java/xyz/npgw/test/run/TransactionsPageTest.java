@@ -59,7 +59,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .clickCurrencySelector()
                 .clickCurrency(currency)
-                .clickApplyFilterButton();
+                .clickRefreshDataButton();
 
         Allure.step("Verify: Filter displays the selected currency");
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
@@ -161,7 +161,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getResetFilterButton()).isVisible();
 
         Allure.step("Verify: Apply data button is visible");
-        assertThat(transactionsPage.getApplyFilterButton()).isVisible();
+        assertThat(transactionsPage.getRefreshDataButton()).isVisible();
 
         Allure.step("Verify: Settings button is visible");
         assertThat(transactionsPage.getSettingsButton()).isVisible();
@@ -306,7 +306,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .setStartDate("01-04-2025")
                 .setEndDate("01-04-2024")
-                .clickApplyFilterButton();
+                .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
         assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
@@ -317,7 +317,7 @@ public class TransactionsPageTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Transactions table header")
     @Description("Verify full lists of Columnheaders in table and Visible columns from Settings")
-    public void testVerifyAllColumnheadersAndSettingsVisibleColumns() {
+    public void testCheckUncheckAllVisibleColumns() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
@@ -328,7 +328,13 @@ public class TransactionsPageTest extends BaseTest {
                 .getVisibleColumnsLabels();
 
         List<String> columnheadersList = transactionsPage
+                .clickRefreshDataButton()
+                .getTable().getColumnheadersText();
+
+        List<String> columnheadersListAfterUncheckAllVisibleColumns = transactionsPage
                 .clickSettingsButton()
+                .uncheckAllCheckboxInSettings()
+                .clickRefreshDataButton()
                 .getTable().getColumnheadersText();
 
         Allure.step("Verify: All columnheaders are displayed in the Settings");
@@ -336,63 +342,90 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: All columnheaders are displayed in the Transactions table");
         assertEquals(columnheadersList, COLUMNS_HEADERS);
+
+        Allure.step("Verify: Columnheaders are not displayed in the Transactions table "
+                + "after it's unchecking in the Settings");
+        assertEquals(columnheadersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
-
-    @Test
-    @TmsLink("349")
-    @Epic("Transactions")
-    @Feature("Settings")
-    @Description("Verify full lists of Columnheaders and Visible columns from Settings")
-    public void testVerifyColumnheadersAndSettingsVisibleColumns() {
-
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader().clickTransactionsLink();
-
-        List<String> columnheadersList = transactionsPage
-                .getTable().getColumnheadersText();
-
-        List<String> visibleColumnsLabels = transactionsPage
-                .clickSettingsButton()
-                .getVisibleColumnsLabels();
-
-        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
-        assertEquals(columnheadersList, COLUMNS_HEADERS);
-        Allure.step("Verify: All columnheaders are displayed in the Settings");
-        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
-    }
-
-    @Test
-    @TmsLink("349")
+    @Test(dataProvider = "visibleColumns", dataProviderClass = TestDataProvider.class)
+    @TmsLink("353")
     @Epic("Transactions")
     @Feature("Settings")
     @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
-    public void testCheckUncheckSettingsVisibleColumnsAndResult() {
+    public void testCheckUncheckOneVisibleColumnDP(String visibleColumn) {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickSettingsButton()
-                .uncheckAllCheckboxInSettings()
-                .getHeader().clickTransactionsLink();
-
-        List<String> columnheadersListAfterUncheckAllColumnheaders = transactionsPage
-                .getTable().getColumnheadersText();
-
-        transactionsPage
-                .clickSettingsButton()
                 .checkAllCheckboxInSettings()
-                .getHeader().clickTransactionsLink();
+                .uncheckVisibleColumn(visibleColumn);
 
-        List<String> columnheadersListAfterCheckAllColumnheaders = transactionsPage
+        List<String> headersListAfterUncheckOne = transactionsPage
+                .clickRefreshDataButton()
                 .getTable().getColumnheadersText();
 
-        Allure.step("Verify: Columnheaders are not displayed in the Transactions table "
-                + "after it's unchecking in the Settings");
-        assertEquals(columnheadersListAfterUncheckAllColumnheaders.size(), 0);
+        Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions table. And it's - '{name}'");
+        assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1) &&
+                (!headersListAfterUncheckOne.contains(visibleColumn)));
 
-        Allure.step("Verify: All columnheaders are displayed in the Transactions table "
-                + "after it's checking in the Settings");
-        assertEquals(columnheadersListAfterCheckAllColumnheaders, COLUMNS_HEADERS);
+        List<String> headersListAfterCheckOnlyOne = transactionsPage
+                .clickSettingsButton()
+                .uncheckAllCheckboxInSettings()
+                .checkVisibleColumn(visibleColumn)
+                .clickRefreshDataButton()
+                .getTable().getColumnheadersText();
+
+        Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{name}'");
+        assertTrue((headersListAfterCheckOnlyOne.size() == 1) &&
+                (headersListAfterCheckOnlyOne.contains(visibleColumn)));
     }
 
+    @Test
+    @TmsLink("353")
+    @Epic("Transactions")
+    @Feature("Settings")
+    @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
+    public void testCheckUncheckOneVisibleColumn() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader().clickTransactionsLink()
+                .clickSettingsButton()
+                .checkAllCheckboxInSettings();
+
+        for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
+            String currentHeader = COLUMNS_HEADERS.get(i);
+            List<String> headersListAfterUncheckOne = transactionsPage
+                    .uncheckVisibleColumn(currentHeader)
+                    .clickRefreshDataButton()
+                    .getTable().getColumnheadersText();
+
+            Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions table. And it's - '{name}'");
+            assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1) &&
+                    (!headersListAfterUncheckOne.contains(currentHeader)));
+
+            transactionsPage
+                    .clickSettingsButton()
+                    .checkVisibleColumn(currentHeader);
+        }
+
+        transactionsPage
+                .uncheckAllCheckboxInSettings();
+
+        for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
+            String currentHeader = COLUMNS_HEADERS.get(i);
+            List<String> headersListAfterCheckOnlyOne = transactionsPage
+                    .checkVisibleColumn(currentHeader)
+                    .clickRefreshDataButton()
+                    .getTable().getColumnheadersText();
+
+            Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{name}'");
+            assertTrue((headersListAfterCheckOnlyOne.size() == 1) &&
+                    (headersListAfterCheckOnlyOne.contains(currentHeader)));
+
+            transactionsPage
+                    .clickSettingsButton()
+                    .uncheckVisibleColumn(currentHeader);
+        }
+    }
 }
