@@ -17,10 +17,10 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
     @Getter
     private final Locator resetFilterButton = locator("svg[data-icon='xmark']");
     @Getter
-    private final Locator applyFilterButton = locator("svg[data-icon='filter']");
+    private final Locator refreshDataButton = getByTestId("ApplyFilterButtonAcquirersPage");
 
     @Getter
-    private final Locator acquirersListHeader = textExact("Acquirers list");
+    private final Locator acquirerNameHeader = textExact("Acquirer name");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
 
     @Getter

@@ -19,7 +19,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class AcquirersPageTest extends BaseTest {
 
-    @Ignore("fail after latest update")
     @Test
     @TmsLink("134")
     @Epic("System/Acquirers")
@@ -44,11 +43,10 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: Reset Filter Button is visible");
         assertThat(acquirersPage.getResetFilterButton()).isVisible();
 
-        Allure.step("Verify: Apply Filter Button is visible");
-        assertThat(acquirersPage.getApplyFilterButton()).isVisible();
+        Allure.step("Verify: Refresh data Button is visible");
+        assertThat(acquirersPage.getRefreshDataButton()).isVisible();
     }
 
-    @Ignore("fail after latest update")
     @Test
     @TmsLink("157")
     @Epic("System/Acquirers")
@@ -61,8 +59,8 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu()
                 .clickAcquirersTab();
 
-        Allure.step("Verify: Acquirers list header is visible");
-        assertThat(acquirersPage.getAcquirersListHeader()).isVisible();
+        Allure.step("Verify: 'Acquirer name' header is visible");
+        assertThat(acquirersPage.getAcquirerNameHeader()).isVisible();
 
         Locator acquirersList = acquirersPage.getAcquirersList();
 
