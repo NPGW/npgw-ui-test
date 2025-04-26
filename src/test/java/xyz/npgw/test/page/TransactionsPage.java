@@ -45,14 +45,16 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     private final Locator amountToDecreaseArrow = amountToField.locator("//button[@aria-label='Decrease To']");
     private final Locator amountApplyButton = buttonByName("Apply");
     private final Locator amountClearButton = textExact("Clear");
-    private final Locator amountApplied = textExact("Amount: 101 - 4999");
-    private final Locator amountAppliedClearButton = buttonByName("close chip");
+    private final Locator amountAppliedClearButton = labelExact("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
     private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
     @Getter(AccessLevel.NONE)
     private final Locator dateRange = spinButton();
     private final Locator dataRangeErrorMessage = locator("[data-slot='error-message']");
     private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
+    public Locator amountApplied(int from, int to) {
+        return textExact("Amount: " + from + " - " + to);
+    }
 
     public TransactionsPage(Page page) {
         super(page);
@@ -102,20 +104,20 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     }
 
     @Step("Fill 'From' amount value")
-    public TransactionsPage fillAmountFromField(String value) {
+    public TransactionsPage fillAmountFromField(int value) {
         amountFromInputField.click();
         amountFromInputField.clear();
-        amountFromInputField.fill(value);
+        amountFromInputField.fill(String.valueOf(value));
         amountFromField.press("Enter");
 
         return this;
     }
 
     @Step("Fill 'To' amount value")
-    public TransactionsPage fillAmountToField(String value) {
+    public TransactionsPage fillAmountToField(int value) {
         amountToInputField.click();
         amountToInputField.clear();
-        amountToInputField.fill(value);
+        amountToInputField.fill(String.valueOf(value));
         amountToField.press("Enter");
 
         return this;

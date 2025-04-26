@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -196,33 +195,36 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getActiveOption()).containsText("ALL");
     }
 
-    @Ignore("fail after latest update")
     @Test
     @TmsLink("263")
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Choose amount popup functionality")
     public void testChooseAmountPopUp() {
+        int firstFrom = 10;
+        int secondFrom = 20;
+        int from = 100;
+        int to = 5000;
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickTransactionsLink()
                 .clickAmountButton()
-                .fillAmountFromField("10")
-                .fillAmountFromField("20")
+                .fillAmountFromField(firstFrom)
+                .fillAmountFromField(secondFrom)
                 .clickAmountClearButton()
-                .fillAmountFromField("100")
+                .fillAmountFromField(from)
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromDecreaseArrow()
                 .clickClearAmountToButton()
-                .fillAmountToField("5000")
+                .fillAmountToField(to)
                 .clickAmountToIncreaseArrow()
                 .clickAmountToDecreaseArrow()
                 .clickAmountToDecreaseArrow()
                 .clickAmountApplyButton();
 
         Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.getAmountApplied()).isVisible();
+        assertThat(transactionsPage.amountApplied(from + 1 + 1 - 1, to + 1 - 1 - 1)).isVisible();
 
         transactionsPage.clickAmountAppliedClearButton();
 
@@ -243,8 +245,8 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader()
                 .clickTransactionsLink()
                 .clickAmountButton()
-                .fillAmountFromField(String.valueOf(amountFrom))
-                .fillAmountToField(String.valueOf(amountTo))
+                .fillAmountFromField(amountFrom)
+                .fillAmountToField(amountTo)
                 .clickAmountApplyButton()
                 .getTable()
                 .getColumnValues("Amount");
@@ -266,8 +268,8 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader()
                 .clickTransactionsLink()
                 .clickAmountButton()
-                .fillAmountFromField("500")
-                .fillAmountToField("10");
+                .fillAmountFromField(500)
+                .fillAmountToField(10);
 
         Allure.step("Verify: error message 'From should be lesser than To' appears");
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
