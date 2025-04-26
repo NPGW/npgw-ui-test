@@ -327,25 +327,25 @@ public class TransactionsPageTest extends BaseTest {
         List<String> visibleColumnsLabels = transactionsPage
                 .getVisibleColumnsLabels();
 
-        List<String> columnheadersList = transactionsPage
+        List<String> headersList = transactionsPage
                 .clickRefreshDataButton()
-                .getTable().getColumnheadersText();
+                .getTable().getColumnHeadersText();
 
-        List<String> columnheadersListAfterUncheckAllVisibleColumns = transactionsPage
+        List<String> headersListAfterUncheckAllVisibleColumns = transactionsPage
                 .clickSettingsButton()
                 .uncheckAllCheckboxInSettings()
                 .clickRefreshDataButton()
-                .getTable().getColumnheadersText();
+                .getTable().getColumnHeadersText();
 
         Allure.step("Verify: All columnheaders are displayed in the Settings");
         assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
 
         Allure.step("Verify: All columnheaders are displayed in the Transactions table");
-        assertEquals(columnheadersList, COLUMNS_HEADERS);
+        assertEquals(headersList, COLUMNS_HEADERS);
 
         Allure.step("Verify: Columnheaders are not displayed in the Transactions table "
                 + "after it's unchecking in the Settings");
-        assertEquals(columnheadersListAfterUncheckAllVisibleColumns.size(), 0);
+        assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
     @Test
@@ -360,39 +360,36 @@ public class TransactionsPageTest extends BaseTest {
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings();
 
-        for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
-            String currentHeader = COLUMNS_HEADERS.get(i);
+        COLUMNS_HEADERS.forEach(item -> {
             List<String> headersListAfterUncheckOne = transactionsPage
-                    .uncheckVisibleColumn(currentHeader)
+                    .uncheckVisibleColumn(item)
                     .clickRefreshDataButton()
-                    .getTable().getColumnheadersText();
+                    .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions. And it's - '{name}'");
+            Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions. And it's - '{item}'");
             assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1)
-                    && (!headersListAfterUncheckOne.contains(currentHeader)));
+                    && !headersListAfterUncheckOne.contains(item));
 
             transactionsPage
                     .clickSettingsButton()
-                    .checkVisibleColumn(currentHeader);
-        }
+                    .checkVisibleColumn(item);
+        });
 
         transactionsPage
                 .uncheckAllCheckboxInSettings();
 
-        for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
-            String currentHeader = COLUMNS_HEADERS.get(i);
+        COLUMNS_HEADERS.forEach(item -> {
             List<String> headersListAfterCheckOnlyOne = transactionsPage
-                    .checkVisibleColumn(currentHeader)
+                    .checkVisibleColumn(item)
                     .clickRefreshDataButton()
-                    .getTable().getColumnheadersText();
+                    .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{name}'");
-            assertTrue((headersListAfterCheckOnlyOne.size() == 1)
-                    && (headersListAfterCheckOnlyOne.contains(currentHeader)));
+            Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{item}'");
+            assertTrue((headersListAfterCheckOnlyOne.size() == 1) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
                     .clickSettingsButton()
-                    .uncheckVisibleColumn(currentHeader);
-        }
+                    .uncheckVisibleColumn(item);
+        });
     }
 }
