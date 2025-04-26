@@ -201,30 +201,26 @@ public class TransactionsPageTest extends BaseTest {
     @Feature("Amount")
     @Description("Choose amount popup functionality")
     public void testChooseAmountPopUp() {
-        int firstFrom = 10;
-        int secondFrom = 20;
-        int from = 100;
-        int to = 5000;
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickTransactionsLink()
                 .clickAmountButton()
-                .fillAmountFromField(firstFrom)
-                .fillAmountFromField(secondFrom)
+                .fillAmountFromField("10")
+                .fillAmountFromField("20")
                 .clickAmountClearButton()
-                .fillAmountFromField(from)
+                .fillAmountFromField("100")
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromDecreaseArrow()
                 .clickClearAmountToButton()
-                .fillAmountToField(to)
+                .fillAmountToField("5000")
                 .clickAmountToIncreaseArrow()
                 .clickAmountToDecreaseArrow()
                 .clickAmountToDecreaseArrow()
                 .clickAmountApplyButton();
 
         Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.amountApplied(from + 1 + 1 - 1, to + 1 - 1 - 1)).isVisible();
+        assertThat(transactionsPage.amountApplied("Amount: 101 - 4999")).isVisible();
 
         transactionsPage.clickAmountAppliedClearButton();
 
@@ -245,8 +241,8 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader()
                 .clickTransactionsLink()
                 .clickAmountButton()
-                .fillAmountFromField(amountFrom)
-                .fillAmountToField(amountTo)
+                .fillAmountFromField(String.valueOf(amountFrom))
+                .fillAmountToField(String.valueOf(amountTo))
                 .clickAmountApplyButton()
                 .getTable()
                 .getColumnValues("Amount");
@@ -268,8 +264,8 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader()
                 .clickTransactionsLink()
                 .clickAmountButton()
-                .fillAmountFromField(500)
-                .fillAmountToField(10);
+                .fillAmountFromField("500")
+                .fillAmountToField("10");
 
         Allure.step("Verify: error message 'From should be lesser than To' appears");
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");

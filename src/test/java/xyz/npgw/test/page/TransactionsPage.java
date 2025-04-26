@@ -52,8 +52,8 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     private final Locator dateRange = spinButton();
     private final Locator dataRangeErrorMessage = locator("[data-slot='error-message']");
     private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
-    public Locator amountApplied(int from, int to) {
-        return textExact("Amount: " + from + " - " + to);
+    public Locator amountApplied(String amount) {
+        return textExact(amount);
     }
 
     public TransactionsPage(Page page) {
@@ -104,20 +104,20 @@ public class TransactionsPage extends HeaderPage implements TableTrait {
     }
 
     @Step("Fill 'From' amount value")
-    public TransactionsPage fillAmountFromField(int value) {
+    public TransactionsPage fillAmountFromField(String value) {
         amountFromInputField.click();
         amountFromInputField.clear();
-        amountFromInputField.fill(String.valueOf(value));
+        amountFromInputField.fill(value);
         amountFromField.press("Enter");
 
         return this;
     }
 
     @Step("Fill 'To' amount value")
-    public TransactionsPage fillAmountToField(int value) {
+    public TransactionsPage fillAmountToField(String value) {
         amountToInputField.click();
         amountToInputField.clear();
-        amountToInputField.fill(String.valueOf(value));
+        amountToInputField.fill(value);
         amountToField.press("Enter");
 
         return this;
