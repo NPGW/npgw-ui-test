@@ -17,7 +17,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
     @Getter
     private final Locator resetFilterButton = locator("svg[data-icon='xmark']");
     @Getter
-    private final Locator RefreshDataButton = getByTestId("ApplyFilterButtonAcquirersPage");
+    private final Locator refreshDataButton = getByTestId("ApplyFilterButtonAcquirersPage");
 
     @Getter
     private final Locator acquirersListHeader = textExact("Acquirers list");
