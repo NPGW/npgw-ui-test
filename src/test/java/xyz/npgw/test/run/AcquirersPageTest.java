@@ -131,7 +131,6 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Ignore("fail after latest update")
     @Test
     @TmsLink("268")
     @Epic("System/Acquirers")
