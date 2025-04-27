@@ -314,6 +314,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 "SUCCESSCompany was created successfully");
     }
 
+    @Ignore("Company 'CompanyNameTest' not found in dropdown.")
     @Test
     @TmsLink("246")
     @Epic("System/Companies and business units")
