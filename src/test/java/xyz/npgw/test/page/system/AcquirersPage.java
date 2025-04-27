@@ -97,7 +97,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
         return new EditAcquirerDialog(getPage());
     }
 
-    @Step("Click the 'Rows Per Page' dropdown button")
+    @Step("Click the 'Rows Per Page' dropdown Chevron")
     public AcquirersPage clickRowsPerPageDropdown() {
         rowsPerPage.locator("svg").click();
 
