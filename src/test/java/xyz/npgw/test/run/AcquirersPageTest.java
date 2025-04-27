@@ -179,7 +179,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getRowsPerPage()).hasText("25");
 
         acquirersPage
-                .clickRowsPerPageDropdown();
+                .clickRowsPerPageChevron();
 
         Allure.step("Verify: Dropdown is visible");
         assertThat(acquirersPage.getRowsPerPageDropdown()).isVisible();
@@ -201,7 +201,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickAcquirersTab();
 
         acquirersPage
-                .clickRowsPerPageDropdown()
+                .clickRowsPerPageChevron()
                 .selectRowsPerPageOption("10");
 
         Allure.step("Verify: The Rows Per Page' value is set to 25");
