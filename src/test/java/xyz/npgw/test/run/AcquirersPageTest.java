@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
@@ -18,6 +19,15 @@ import java.util.List;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class AcquirersPageTest extends BaseTest {
+
+    private static final List<String> COLUMNS_HEADERS = List.of(
+            "Acquirer name",
+            "Acquirer code",
+            "Currencies",
+            "Acquirer config",
+            "System config",
+            "Status",
+            "Actions");
 
     @Test
     @TmsLink("134")
@@ -210,5 +220,30 @@ public class AcquirersPageTest extends BaseTest {
             Allure.step(String.format("Verify: The Rows Per Page' value is set to '%s'", option));
             assertThat(acquirersPage.getRowsPerPage()).hasText(option);
         }
+    }
+
+    @Test()
+    @TmsLink("")
+    @Epic("System/Acquirers")
+    @Feature("Rows Per Page")
+    @Description("Verify that selecting a 'Rows Per Page' option displays the correct number of rows in the table.")
+    public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
+
+        String[] expectedOptions = new String[]{"10", "25", "50", "100"};
+        int[] pageRowNumber = new int[]{};
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab()
+                .clickRowsPerPageChevron()
+                .selectRowsPerPageOption("10");
+
+        int rowCount = acquirersPage.getTable().getTableRows().count();
+
+        Allure.step("Verify: The table contains less than 11 rows", () -> {
+            Assert.assertTrue(acquirersPage.getTable().getTableRows().count() <= 10, "Row count should be less than 11");
+        });
     }
 }

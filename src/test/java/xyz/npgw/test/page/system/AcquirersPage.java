@@ -5,10 +5,11 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
-public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
+public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements TableTrait {
 
     @Getter
     private final Locator addAcquirerButton = locator("svg[data-icon='circle-plus']");
@@ -108,8 +109,10 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
         return rowsPerPageDropdown.locator("li");
     }
 
+    @Step("Select Rows Per Page '{status}'")
     public AcquirersPage selectRowsPerPageOption(String option) {
         rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();
+        getTable().getTableRows().last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         return this;
     }
