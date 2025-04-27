@@ -189,7 +189,7 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test()
-    @TmsLink("")
+    @TmsLink("382")
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
