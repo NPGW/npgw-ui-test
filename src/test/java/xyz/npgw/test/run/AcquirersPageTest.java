@@ -89,7 +89,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(dropdownAcquirerList).not().hasCount(0);
     }
 
-    @Test(enabled = false)
+    @Test
     @TmsLink("187")
     @Epic("System/Acquirers")
     @Feature("Status")
@@ -162,7 +162,31 @@ public class AcquirersPageTest extends BaseTest {
             assertThat(actualStatus).hasText(status);
         }
     }
+  
+    @Test()
+    @TmsLink("380")
+    @Epic("System/Acquirers")
+    @Feature("Rows Per Page")
+    @Description("Verify the default 'Rows Per Page' value is 25 and the dropdown contains the correct options.")
+    public void testVerifyRowsPerPageDropdownOptions() {
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab();
 
+        Allure.step("Verify: The default 'Rows Per Page' value is set to 25");
+        assertThat(acquirersPage.getRowsPerPage()).hasText("25");
+
+        acquirersPage
+                .clickRowsPerPageChevron();
+
+        Allure.step("Verify: Dropdown is visible");
+        assertThat(acquirersPage.getRowsPerPageDropdown()).isVisible();
+
+        Allure.step("Verify: The dropdown contains all four options: 10, 25, 50, 100");
+        assertThat(acquirersPage.getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
+    }
 
     @Test()
     @TmsLink("382")
