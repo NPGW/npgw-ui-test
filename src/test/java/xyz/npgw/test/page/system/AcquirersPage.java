@@ -98,7 +98,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
     }
 
     @Step("Click the 'Rows Per Page' dropdown Chevron")
-    public AcquirersPage clickRowsPerPageDropdown() {
+    public AcquirersPage clickRowsPerPageChevron() {
         rowsPerPage.locator("svg").click();
 
         return this;

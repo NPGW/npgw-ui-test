@@ -179,7 +179,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getRowsPerPage()).hasText("25");
 
         acquirersPage
-                .clickRowsPerPageDropdown();
+                .clickRowsPerPageChevron();
 
         Allure.step("Verify: Dropdown is visible");
         assertThat(acquirersPage.getRowsPerPageDropdown()).isVisible();
