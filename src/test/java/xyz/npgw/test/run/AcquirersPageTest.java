@@ -187,4 +187,24 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: The dropdown contains all four options: 10, 25, 50, 100");
         assertThat(acquirersPage.getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
     }
+
+    @Test()
+    @TmsLink("")
+    @Epic("System/Acquirers")
+    @Feature("Rows Per Page")
+    @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
+    public void testVerifySelectingRowsPerPageOptionUpdatesFieldValue() {
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab();
+
+        acquirersPage
+                .clickRowsPerPageDropdown()
+                .selectRowsPerPageOption("10");
+
+        Allure.step("Verify: The Rows Per Page' value is set to 25");
+        assertThat(acquirersPage.getRowsPerPage()).hasText("25");
+    }
 }
