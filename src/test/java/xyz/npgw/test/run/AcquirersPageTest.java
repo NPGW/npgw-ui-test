@@ -169,7 +169,7 @@ public class AcquirersPageTest extends BaseTest {
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
-    public void testVerifySelectingRowsPerPageOptionUpdatesFieldValue() {
+    public void testSelectingRowsPerPageOptionUpdatesFieldValue() {
         String[] expectedOptions = new String[]{"10", "25", "50", "100"};
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
