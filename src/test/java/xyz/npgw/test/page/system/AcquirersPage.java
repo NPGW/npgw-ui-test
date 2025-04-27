@@ -109,7 +109,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
     }
 
     public AcquirersPage selectRowsPerPageOption(String option) {
-        rowsPerPageDropdown.getByText(option).click();
+        rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();
 
         return this;
     }

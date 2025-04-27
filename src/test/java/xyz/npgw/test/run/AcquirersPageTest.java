@@ -194,17 +194,21 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
     public void testVerifySelectingRowsPerPageOptionUpdatesFieldValue() {
+        String[] expectedOptions = new String[]{"10", "25", "50", "100"};
+
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab();
 
-        acquirersPage
-                .clickRowsPerPageChevron()
-                .selectRowsPerPageOption("10");
+        for (String option : expectedOptions) {
+            acquirersPage
+                    .clickRowsPerPageChevron()
+                    .selectRowsPerPageOption(option);
 
-        Allure.step("Verify: The Rows Per Page' value is set to 25");
-        assertThat(acquirersPage.getRowsPerPage()).hasText("25");
+            Allure.step(String.format("Verify: The Rows Per Page' value is set to '%s'", option));
+            assertThat(acquirersPage.getRowsPerPage()).hasText(option);
+        }
     }
 }
