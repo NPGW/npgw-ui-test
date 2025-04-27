@@ -38,7 +38,12 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
         String lastName = "";
 
         selectCompanyField.fill(companyName);
-        while (getCompanyNameInDropdownOption(companyName).all().size() != 1) {
+
+        if (dropdownOptionList.all().isEmpty()) {
+            throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
+        }
+
+        while (getCompanyNameInDropdownOption(companyName).all().isEmpty()) {
             if (dropdownOptionList.last().innerText().equals(lastName)) {
                 throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
             }
@@ -46,8 +51,8 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
 
             lastName = dropdownOptionList.last().innerText();
         }
-        ResponseUtils.clickAndWaitForResponse(
-                getPage(), getCompanyNameInDropdownOption(companyName), Constants.USER_LIST_ENDPOINT);
+
+        getCompanyNameInDropdownOption(companyName).first().click();
 
         return this;
     }

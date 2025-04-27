@@ -364,7 +364,8 @@ public class TransactionsPageTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions. And it's - '{item}'");
+            Allure.step(String.format(
+                    "Verify: Only One '%s' column header is NOT displayed in the Transactions table", item));
             assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1)
                     && !headersListAfterUncheckOne.contains(item));
 
@@ -382,7 +383,7 @@ public class TransactionsPageTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{item}'");
+            Allure.step(String.format("Verify: Only One '%s' column header is displayed in the Transactions table", item));
             assertTrue((headersListAfterCheckOnlyOne.size() == 1) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
