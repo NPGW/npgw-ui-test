@@ -10,6 +10,7 @@ import org.testng.Assert;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
+import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 
 public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage> {
 
@@ -60,6 +61,9 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator businessUnitNameData = locator("[role='row'] span").first();
     @Getter
     private final Locator merchantIdData = locator("[role='row'] span").nth(1);
+    @Getter
+    private final Locator editBusinessUnitButton = getByTestId("EditBusinessUnitButton");
+
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -150,5 +154,14 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         editCompanyButton.click();
 
         return new EditCompanyDialog(getPage());
+    }
+
+    @Step("Click 'Edit Business Unit' button")
+    public EditBusinessUnitDialog clickEditBusinessUnitButton() {
+        editBusinessUnitButton.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.ATTACHED));
+        editBusinessUnitButton.click();
+
+        return new EditBusinessUnitDialog(getPage());
     }
 }
