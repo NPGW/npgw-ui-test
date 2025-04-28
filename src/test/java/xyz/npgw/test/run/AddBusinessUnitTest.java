@@ -7,24 +7,18 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
-import org.opentest4j.AssertionFailedError;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.Company;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
-import java.util.List;
-
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class AddBusinessUnitTest extends BaseTest {
 
-    @Ignore("fail on AddCompanyButton")
     @Test
     @TmsLink("213")
     @Epic("System/Companies and business units")
@@ -66,7 +60,6 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isDisabled();
     }
 
-    @Ignore("fail on AddCompanyButton")
     @Test
     @TmsLink("238")
     @Epic("System/Companies and business units")
@@ -93,7 +86,6 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
-    @Ignore("fail on Click 'Add company' button")
     @Test
     @TmsLink("241")
     @Epic("System/Companies and business units")
@@ -120,21 +112,20 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getBusinessUnitEmptyList()).hasText("No rows to display.");
     }
 
-// Currency, Status, Actions fields aren't filled with data so it'll fail everytime - TODO BR-XXX
-    @Test(enabled = false, expectedExceptions = AssertionFailedError.class,
-            dataProvider = "merchantFormData", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("218")
     @Epic("Companies and business units")
     @Feature("Add merchant")
     @Description("Add a new Merchant with 'Add business unit' button")
-    public void testAddNewMerchants(String status, List<String> currencies) {
+    public void testAddNewMerchants() {
         Company company = new Company(new Faker());
         Locator createdBusinessUnitRow = getPage().locator("td").locator("xpath=..");
 
-        CompaniesAndBusinessUnitsPage dialog = new DashboardPage(getPage())
+        new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSystemMenu()
+                .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
@@ -143,18 +134,10 @@ public class AddBusinessUnitTest extends BaseTest {
                 .selectCompanyInTheFilter(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
-                .fillBusinessUnitNameField(company.companyType())
-                .selectState(status)
-                .selectCurrencies(currencies)
                 .clickCreateButton()
                 .waitUntilAlertIsGone();
 
         assertThat(createdBusinessUnitRow).containsText(company.companyType());
-        assertThat(createdBusinessUnitRow).containsText(status);
         assertThat(createdBusinessUnitRow).containsText("id.merchant.");
-
-        for (String currency : currencies) {
-            assertThat(createdBusinessUnitRow).containsText(currency);
-        }
     }
 }

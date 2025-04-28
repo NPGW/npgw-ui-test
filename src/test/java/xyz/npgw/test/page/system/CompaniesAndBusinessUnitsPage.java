@@ -24,7 +24,6 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator successAlert = alert("SUCCESS");
     @Getter
     private final Locator addCompanyDialog = dialog();
-    private final Locator alertMessage = locator("[role='alert']");
     private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator selectCompanyDropdown = locator("[aria-label='Show suggestions']:nth-child(2)");
     private final Locator lastDropdownOption = locator("[role='option']:last-child");
@@ -78,7 +77,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     }
 
     public CompaniesAndBusinessUnitsPage waitUntilAlertIsGone() {
-        successAlert.waitFor();
+        successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         return this;
     }
