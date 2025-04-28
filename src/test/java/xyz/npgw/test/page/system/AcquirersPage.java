@@ -24,11 +24,11 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> {
     @Getter
     private final Locator acquirerNameHeader = textExact("Acquirer name");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
-    private final Locator acquirersStatus =locator("span.flex-1.text-inherit");
+    private final Locator acquirersStatus = locator("span.flex-1.text-inherit");
     @Getter
-    private final Locator rowsPerPage  = locator("button[aria-label='Rows Per Page']");
+    private final Locator rowsPerPage = locator("button[aria-label='Rows Per Page']");
     @Getter
-    private final Locator rowsPerPageDropdown  = locator("div[data-slot='listbox']");
+    private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
 
     @Getter
     private final Locator selectAcquirerLabel = labelExact("Select acquirer");
