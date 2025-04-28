@@ -24,15 +24,15 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     private final Locator acquirerNameHeader = textExact("Acquirer name");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
     @Getter
-    private final Locator rowsPerPage  = locator("button[aria-label='Rows Per Page']");
+    private final Locator rowsPerPage = locator("button[aria-label='Rows Per Page']");
     @Getter
-    private final Locator rowsPerPageDropdown  = locator("div[data-slot='listbox']");
-
+    private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
+    @Getter
+    private final Locator paginationCount = buttonByName("pagination item");
     @Getter
     private final Locator selectAcquirerLabel = labelExact("Select acquirer");
     private final Locator selectAcquirerPlaceholder = placeholder("Search");
     private final Locator dropdownAcquirerList = locator("div[data-slot='content'] li");
-
     @Getter
     private final Locator statusLabel = labelExact("Status");
     @Getter
@@ -109,10 +109,17 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         return rowsPerPageDropdown.locator("li");
     }
 
-    @Step("Select Rows Per Page '{status}'")
+    @Step("Select Rows Per Page '{option}'")
     public AcquirersPage selectRowsPerPageOption(String option) {
         rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();
         getTable().getTableRows().last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
+        return this;
+    }
+
+    @Step("Click on page '{pagination}'")
+    public AcquirersPage clickOnPaginationPage(String pagination) {
+        buttonByName("pagination item " + pagination).click();
 
         return this;
     }

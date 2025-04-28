@@ -14,7 +14,9 @@ import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.AcquirersPage;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -172,13 +174,13 @@ public class AcquirersPageTest extends BaseTest {
             assertThat(actualStatus).hasText(status);
         }
     }
-  
+
     @Test()
     @TmsLink("380")
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
     @Description("Verify the default 'Rows Per Page' value is 25 and the dropdown contains the correct options.")
-    public void testVerifyRowsPerPageDropdownOptions() {
+    public void testRowsPerPageDropdownOptions() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
@@ -223,27 +225,45 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test()
-    @TmsLink("")
+    @TmsLink("385")
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
     @Description("Verify that selecting a 'Rows Per Page' option displays the correct number of rows in the table.")
     public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
 
-        String[] expectedOptions = new String[]{"10", "25", "50", "100"};
-        int[] pageRowNumber = new int[]{};
+        int[] expectedOptions = new int[]{10, 25, 50, 100};
+        Map<Integer, Integer> totalRows = new HashMap<>();
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu()
-                .clickAcquirersTab()
-                .clickRowsPerPageChevron()
-                .selectRowsPerPageOption("10");
+                .clickAcquirersTab();
 
-        int rowCount = acquirersPage.getTable().getTableRows().count();
+        for (int option : expectedOptions) {
+            int rowOnPage = 0;
 
-        Allure.step("Verify: The table contains less than 11 rows", () -> {
-            Assert.assertTrue(acquirersPage.getTable().getTableRows().count() <= 10, "Row count should be less than 11");
-        });
+            acquirersPage
+                    .clickRowsPerPageChevron()
+                    .selectRowsPerPageOption(String.valueOf(option));
+
+            for (int i = acquirersPage.getPaginationCount().count(); i >= 1; i--) {
+                acquirersPage.clickOnPaginationPage(String.valueOf(i));
+
+                int actualRowCount = acquirersPage.getTable().getTableRows().count();
+                rowOnPage += actualRowCount;
+
+                Allure.step(String.format("Verify: The table contains '%s' rows less than '%s'", actualRowCount, option + 1));
+                Assert.assertTrue(actualRowCount <= option);
+            }
+            totalRows.put(option, rowOnPage);
+        }
+
+        boolean allTotalsSame = totalRows.values().stream()
+                .distinct()
+                .count() == 1;
+
+        Allure.step("Verify: Total rows count is the same for each 'Rows Per Page' option");
+        Assert.assertTrue(allTotalsSame, "Total rows should be the same for all 'Rows Per Page' options");
     }
 }
