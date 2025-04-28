@@ -99,4 +99,14 @@ public class TestDataProvider {
                 {"Inactive", List.of("USD", "EUR")},
         };
     }
+
+    @DataProvider
+    public static Object[][] getPageRowsOption() {
+        return new Object[][]{
+                {"10"},
+                {"25"},
+                {"50"},
+                {"100"},
+        };
+    }
 }

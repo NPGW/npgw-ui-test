@@ -224,12 +224,12 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Test()
+    @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("385")
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
     @Description("Verify that selecting a 'Rows Per Page' option displays the correct number of rows in the table.")
-    public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
+    public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows(String pageRows) {
 
         int[] expectedOptions = new int[]{10, 25, 50, 100};
         Map<Integer, Integer> totalRows = new HashMap<>();
