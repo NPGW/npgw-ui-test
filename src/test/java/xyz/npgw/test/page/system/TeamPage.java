@@ -52,6 +52,10 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait {
             lastName = dropdownOptionList.last().innerText();
         }
 
+//        .first() - из-за того, что компания "super" отображается в отфильтрованном списке два раза,
+//        это баг(!!), правильно - один раз (или ноль).
+//        На суть теста .first() не влияет и позволяет "не заметить" баг.
+//
         getCompanyNameInDropdownOption(companyName).first().click();
 
         return this;
