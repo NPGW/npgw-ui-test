@@ -253,7 +253,8 @@ public class AcquirersPageTest extends BaseTest {
                 int actualRowCount = acquirersPage.getTable().getTableRows().count();
                 rowOnPage += actualRowCount;
 
-                Allure.step(String.format("Verify: The table contains '%s' rows less than '%s'", actualRowCount, option + 1));
+                Allure.step(String.format(
+                        "Verify: The table contains '%s' rows less than '%s'", actualRowCount, option + 1));
                 Assert.assertTrue(actualRowCount <= option);
             }
             totalRows.put(option, rowOnPage);
