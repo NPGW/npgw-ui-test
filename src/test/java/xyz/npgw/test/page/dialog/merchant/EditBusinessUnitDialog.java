@@ -12,6 +12,6 @@ public class EditBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnits
 
     @Override
     protected CompaniesAndBusinessUnitsPage getReturnPage() {
-        return null;
+        return new CompaniesAndBusinessUnitsPage(getPage());
     }
 }
