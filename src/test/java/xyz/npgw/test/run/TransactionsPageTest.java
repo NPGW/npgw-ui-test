@@ -383,7 +383,8 @@ public class TransactionsPageTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step(String.format("Verify: Only One '%s' column header is displayed in the Transactions table", item));
+            Allure.step(String.format(
+                    "Verify: Only One '%s' column header is displayed in the Transactions table", item));
             assertTrue((headersListAfterCheckOnlyOne.size() == 1) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
