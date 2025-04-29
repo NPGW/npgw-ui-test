@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.opentest4j.AssertionFailedError;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
@@ -207,7 +206,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 "Company was created successfully");
     }
 
-    @Ignore("Company 'CompanyName' not found in dropdown.")
     @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
     @TmsLink("224")
     @Epic("System/Companies and business units")
@@ -218,14 +216,12 @@ public class AddCompanyDialogTest extends BaseTest {
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .clickSelectCompanyDropdown()
-                .clickCompanyInDropdown(COMPANY_NAME);
+                .getSelectCompany().selectCompany(COMPANY_NAME);
 
         Allure.step("Verify: company is present in the 'Select company' field");
-        assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput()).hasValue(COMPANY_NAME);
+        assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getSelectCompanyField()).hasValue(COMPANY_NAME);
     }
 
-    @Ignore("depends on ignored test")
     @Test(dependsOnMethods = "testVerifyCompanyPresenceInDropdown")
     @TmsLink("232")
     @Epic("System/Companies and business units")
@@ -358,11 +354,10 @@ public class AddCompanyDialogTest extends BaseTest {
                 .hasText("SUCCESSCompany was created successfully");
 
         companiesAndBusinessUnitsPage
-                .clickSelectCompanyDropdown()
-                .clickCompanyInDropdown(company.companyName());
+                .getSelectCompany().selectCompany(company.companyName());
 
         Allure.step("Verify: selected company is shown in the input field");
-        assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput())
+        assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getSelectCompanyField())
                 .hasValue(company.companyName());
 
         Allure.step("Verify: description field is correctly filled");
@@ -439,8 +434,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isDisabled();
 
         AddBusinessUnitDialog addBusinessUnitDialog = companiesAndBusinessUnitsPage
-                .clickSelectCompanyDropdown()
-                .clickCompanyInDropdown(company.companyName())
+                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton();
 
         Allure.step("Verify: 'Add business unit' dialog is opened");
@@ -463,7 +457,8 @@ public class AddCompanyDialogTest extends BaseTest {
                 "Business unit was created successfully");
 
         Allure.step("Verify: Selected company is preserved after creation");
-        assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput()).hasValue(company.companyName());
+        assertThat(companiesAndBusinessUnitsPage
+                .getSelectCompany().getSelectCompanyField()).hasValue(company.companyName());
 
         Allure.step("Verify: New business unit name appears in the list");
         assertThat(companiesAndBusinessUnitsPage.getBusinessUnitNameData()).hasText(merchant.merchantName());
