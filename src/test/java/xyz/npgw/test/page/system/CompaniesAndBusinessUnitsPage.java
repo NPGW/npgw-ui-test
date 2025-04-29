@@ -26,7 +26,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator addCompanyDialog = dialog();
     private final Locator alertMessage = locator("[role='alert']");
     private final Locator companyNameDropdownList = locator("[role='option']");
-    private final Locator selectCompanyDropdown = locator("[aria-label='Show suggestions']:nth-child(2)");
+    private final Locator selectCompanyDropdownChevron = locator("[aria-label='Show suggestions']:nth-child(2)");
     private final Locator lastDropdownOption = locator("[role='option']:last-child");
     @Getter
     private final Locator selectCompanyInput = placeholder("Search...");
@@ -93,9 +93,8 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     }
 
     @Step("Click 'Select company' dropdown")
-    public CompaniesAndBusinessUnitsPage clickSelectCompanyDropdown() {
-        getPage().waitForTimeout(1000);
-        selectCompanyDropdown.click();
+    public CompaniesAndBusinessUnitsPage clickSelectCompanyInput() {
+        selectCompanyInput.click();
 
         return this;
     }

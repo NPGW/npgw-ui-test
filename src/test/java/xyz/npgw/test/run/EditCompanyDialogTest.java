@@ -26,7 +26,7 @@ public class EditCompanyDialogTest extends BaseTest {
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .clickSelectCompanyDropdown()
+                .clickSelectCompanyInput()
                 .clickCompanyInDropdown("Kate")
                 .clickEditCompanyButton()
                 .fillCompanyNameField("Kate1")

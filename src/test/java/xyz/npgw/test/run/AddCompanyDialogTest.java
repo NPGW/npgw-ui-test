@@ -216,7 +216,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .clickSelectCompanyDropdown()
+                .clickSelectCompanyInput()
                 .clickCompanyInDropdown(COMPANY_NAME);
 
         Allure.step("Verify: company is present in the 'Select company' field");
@@ -355,7 +355,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .hasText("SUCCESSCompany was created successfully");
 
         companiesAndBusinessUnitsPage
-                .clickSelectCompanyDropdown()
+                .clickSelectCompanyInput()
                 .clickCompanyInDropdown(company.companyName());
 
         Allure.step("Verify: selected company is shown in the input field");
@@ -436,7 +436,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isDisabled();
 
         AddBusinessUnitDialog addBusinessUnitDialog = companiesAndBusinessUnitsPage
-                .clickSelectCompanyDropdown()
+                .clickSelectCompanyInput()
                 .clickCompanyInDropdown(company.companyName())
                 .clickOnAddBusinessUnitButton();
 
