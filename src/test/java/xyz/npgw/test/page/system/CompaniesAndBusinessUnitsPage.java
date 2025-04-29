@@ -21,6 +21,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator editCompanyButton = getByTestId("EditCompanyButton");
     @Getter
     private final Locator businessUnitEmptyList = locator("[role='gridcell']");
+    private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator successAlert = alert("SUCCESS");
     @Getter
     private final Locator addCompanyDialog = dialog();
@@ -96,6 +97,37 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         addBusinessUnitButton.click();
 
         return new AddBusinessUnitDialog(getPage());
+    }
+
+    @Step("Click '{companyName}' company in dropdown")
+    public CompaniesAndBusinessUnitsPage clickCompanyInDropdown(String companyName) {
+        String lastSeenText = "";
+
+        while (true) {
+            Locator options = companyNameDropdownList;
+            int count = options.count();
+
+            for (int i = 0; i < count; i++) {
+                String text = options.nth(i).innerText().trim();
+                if (text.equals(companyName)) {
+                    options.nth(i).click();
+                    return this;
+                }
+            }
+
+            String currentLastText = options.nth(count - 1).innerText().trim();
+            if (currentLastText.equals(lastSeenText)) {
+                break;
+            }
+
+            lastSeenText = currentLastText;
+
+            companyNameDropdownList.last().scrollIntoViewIfNeeded();
+        }
+
+        Assert.fail("Company '" + companyName + "' not found in dropdown.");
+
+        return this;
     }
 
     @Step("Click 'Edit company' button")
