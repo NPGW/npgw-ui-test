@@ -31,13 +31,15 @@ public class AddBusinessUnitTest extends BaseTest {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSystemMenu()
+                .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .getSelectCompany().selectCompany(company.companyName());
+                .getSelectCompany()
+                .selectCompany(company.companyName());
 
         Allure.step("'Add business unit' button is available");
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isEnabled();
@@ -72,13 +74,15 @@ public class AddBusinessUnitTest extends BaseTest {
         AddBusinessUnitDialog addBusinessUnitDialog = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSystemMenu()
+                .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .getSelectCompany().selectCompany(company.companyName())
+                .getSelectCompany()
+                .selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton();
 
         Allure.step("Verify that Company name field is read-only and prefilled created company");
@@ -98,13 +102,15 @@ public class AddBusinessUnitTest extends BaseTest {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSystemMenu()
+                .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .getSelectCompany().selectCompany(company.companyName())
+                .getSelectCompany()
+                .selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .clickCloseButton();
 
@@ -131,7 +137,8 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .getSelectCompany().selectCompany(company.companyName())
+                .getSelectCompany()
+                .selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
                 .clickCreateButton()

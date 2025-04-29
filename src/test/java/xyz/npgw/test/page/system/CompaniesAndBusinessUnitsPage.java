@@ -23,14 +23,10 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator editCompanyButton = getByTestId("EditCompanyButton");
     @Getter
     private final Locator businessUnitEmptyList = locator("[role='gridcell']");
-    private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator successAlert = alert("SUCCESS");
-    private final Locator companyDropdown = labelExact("Select company");
     @Getter
     private final Locator addCompanyDialog = dialog();
     private final Locator companyNameDropdownList = locator("[role='option']");
-    private final Locator selectCompanyDropdown = locator("[aria-label='Show suggestions']:nth-child(2)");
-    private final Locator lastDropdownOption = locator("[role='option']:last-child");
     @Getter
     private final Locator selectCompanyInput = placeholder("Search...");
     @Getter
@@ -88,16 +84,6 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         return this;
     }
-
-    @Step("Select a company into 'Select company' filter field")
-    public CompaniesAndBusinessUnitsPage selectCompanyInTheFilter(String name) {
-        companyDropdown.click();
-        companyDropdown.fill(name);
-        getPage().locator("li[role='option']:has-text('%s')".formatted(name)).first().click();
-
-        return this;
-    }
-
 
     @Step("Click 'Add business unit' button (+)")
     public AddBusinessUnitDialog clickOnAddBusinessUnitButton() {
