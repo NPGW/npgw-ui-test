@@ -49,6 +49,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
     private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
     private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
+    private final Locator amountEditButton = locator("svg[data-icon='pencil']");
 
     public Locator amountApplied(String amount) {
         return textExact(amount);
@@ -73,7 +74,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
         return this;
     }
 
-    @Step("Click Icon 'Refresh Data' button")
+    @Step("Click 'Refresh Data' button")
     public TransactionsPage clickRefreshDataButton() {
         refreshDataButton.click();
 
@@ -268,7 +269,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
         return this;
     }
 
-    @Step("Check Visible column '{name}' in Settings")
+    @Step("Check visible column '{name}' in Settings")
     public TransactionsPage checkVisibleColumn(String name) {
         settingsVisibleColumns
                 .all()
@@ -280,4 +281,10 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
         return this;
     }
 
+    @Step("Click amount 'Edit' button")
+    public TransactionsPage clickAmountEditButton() {
+        amountEditButton.click();
+
+        return this;
+    }
 }
