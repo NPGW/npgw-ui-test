@@ -9,6 +9,7 @@ import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
+import java.util.List;
 import java.util.Objects;
 
 public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements TableTrait {
@@ -24,6 +25,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     @Getter
     private final Locator acquirerNameHeader = textExact("Acquirer name");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
+    private final Locator acquirersStatus = locator("span.flex-1.text-inherit");
     @Getter
     private final Locator rowsPerPage = locator("button[aria-label='Rows Per Page']");
     @Getter
@@ -53,6 +55,11 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         getPage().waitForTimeout(1000);
 
         return acquirersList;
+    }
+
+    public List<Locator> getAcquirersStatus() {
+
+        return acquirersStatus.all();
     }
 
     @Step("Click 'Select acquirer' placeholder")
