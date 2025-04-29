@@ -15,9 +15,7 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
