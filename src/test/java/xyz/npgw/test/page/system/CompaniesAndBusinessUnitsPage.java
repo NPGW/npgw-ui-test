@@ -11,6 +11,7 @@ import xyz.npgw.test.page.common.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
+import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 
 public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage>
         implements SelectCompanyTrait<CompaniesAndBusinessUnitsPage> {
@@ -22,11 +23,12 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator editCompanyButton = getByTestId("EditCompanyButton");
     @Getter
     private final Locator businessUnitEmptyList = locator("[role='gridcell']");
-    private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator successAlert = alert("SUCCESS");
-    private final Locator companyDropdown = labelExact("Select company");
     @Getter
     private final Locator addCompanyDialog = dialog();
+    private final Locator companyNameDropdownList = locator("[role='option']");
+    @Getter
+    private final Locator selectCompanyInput = placeholder("Search...");
     @Getter
     private final Locator descriptionFromCompanyInfoSection = labelExact("Description");
     @Getter
@@ -57,6 +59,9 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator businessUnitNameData = locator("[role='row'] span").first();
     @Getter
     private final Locator merchantIdData = locator("[role='row'] span").nth(1);
+    @Getter
+    private final Locator editBusinessUnitButton = getByTestId("EditBusinessUnitButton");
+
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -75,20 +80,10 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     }
 
     public CompaniesAndBusinessUnitsPage waitUntilAlertIsGone() {
-        successAlert.waitFor();
+        successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         return this;
     }
-
-    @Step("Select a company into 'Select company' filter field")
-    public CompaniesAndBusinessUnitsPage selectCompanyInTheFilter(String name) {
-        companyDropdown.click();
-        companyDropdown.fill(name);
-        getPage().locator("li[role='option']:has-text('%s')".formatted(name)).first().click();
-
-        return this;
-    }
-
 
     @Step("Click 'Add business unit' button (+)")
     public AddBusinessUnitDialog clickOnAddBusinessUnitButton() {
@@ -140,5 +135,14 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         editCompanyButton.click();
 
         return new EditCompanyDialog(getPage());
+    }
+
+    @Step("Click 'Edit Business Unit' button")
+    public EditBusinessUnitDialog clickEditBusinessUnitButton() {
+        editBusinessUnitButton.waitFor(new Locator.WaitForOptions()
+                .setState(WaitForSelectorState.ATTACHED));
+        editBusinessUnitButton.click();
+
+        return new EditBusinessUnitDialog(getPage());
     }
 }
