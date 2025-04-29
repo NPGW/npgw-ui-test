@@ -6,7 +6,10 @@ import com.microsoft.playwright.Page;
 public class ResponseUtils {
 
     public static void clickAndWaitForResponse(Page page, Locator locator, String endpoint) {
-        page.waitForResponse(response -> response.request().url().contains(endpoint), locator::click);
-        page.waitForTimeout(500);
+        page.waitForResponse(
+                r -> r.url().contains(endpoint),
+                new Page.WaitForResponseOptions().setTimeout(15000),
+                locator::click
+        );
     }
 }
