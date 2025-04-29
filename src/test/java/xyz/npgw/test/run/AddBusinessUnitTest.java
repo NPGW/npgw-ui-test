@@ -8,7 +8,6 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
 import org.opentest4j.AssertionFailedError;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
@@ -24,7 +23,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class AddBusinessUnitTest extends BaseTest {
 
-    @Ignore("fail on AddCompanyButton")
     @Test
     @TmsLink("213")
     @Epic("System/Companies and business units")
@@ -43,7 +41,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .selectCompanyInTheFilter(company.companyName());
+                .getSelectCompany().selectCompany(company.companyName());
 
         Allure.step("'Add business unit' button is available");
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isEnabled();
@@ -66,7 +64,6 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton()).isDisabled();
     }
 
-    @Ignore("fail on AddCompanyButton")
     @Test
     @TmsLink("238")
     @Epic("System/Companies and business units")
@@ -85,7 +82,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .selectCompanyInTheFilter(company.companyName())
+                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton();
 
         Allure.step("Verify that Company name field is read-only and prefilled created company");
@@ -93,7 +90,6 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
-    @Ignore("fail on Click 'Add company' button")
     @Test
     @TmsLink("241")
     @Epic("System/Companies and business units")
@@ -112,7 +108,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .selectCompanyInTheFilter(company.companyName())
+                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .clickCloseButton();
 
@@ -120,7 +116,7 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getBusinessUnitEmptyList()).hasText("No rows to display.");
     }
 
-// Currency, Status, Actions fields aren't filled with data so it'll fail everytime - TODO BR-XXX
+    // Currency, Status, Actions fields aren't filled with data so it'll fail everytime - TODO BR-XXX
     @Test(enabled = false, expectedExceptions = AssertionFailedError.class,
             dataProvider = "merchantFormData", dataProviderClass = TestDataProvider.class)
     @TmsLink("218")
@@ -140,7 +136,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .selectCompanyInTheFilter(company.companyName())
+                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
                 .fillBusinessUnitNameField(company.companyType())
