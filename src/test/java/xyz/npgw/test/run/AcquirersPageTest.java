@@ -30,6 +30,8 @@ public class AcquirersPageTest extends BaseTest {
             "Status",
             "Actions");
 
+    String[] rowsPerPageOptions = new String[]{"10", "25", "50", "100"};
+
     @Test
     @TmsLink("134")
     @Epic("System/Acquirers")
@@ -196,7 +198,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getRowsPerPageDropdown()).isVisible();
 
         Allure.step("Verify: The dropdown contains all four options: 10, 25, 50, 100");
-        assertThat(acquirersPage.getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
+        assertThat(acquirersPage.getRowsPerPageOptions()).hasText(rowsPerPageOptions);
     }
 
     @Test()
@@ -205,15 +207,13 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
     public void testSelectingRowsPerPageOptionUpdatesFieldValue() {
-        String[] expectedOptions = new String[]{"10", "25", "50", "100"};
-
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab();
 
-        for (String option : expectedOptions) {
+        for (String option : rowsPerPageOptions) {
             acquirersPage
                     .clickRowsPerPageChevron()
                     .selectRowsPerPageOption(option);
@@ -229,8 +229,6 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify that selecting a 'Rows Per Page' option displays the correct number of rows in the table.")
     public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
-
-        int[] expectedOptions = new int[]{10, 25, 50, 100};
         List<Integer> totalRows = new ArrayList<>();
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
@@ -239,10 +237,10 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu()
                 .clickAcquirersTab();
 
-        for (int option : expectedOptions) {
+        for (String option : rowsPerPageOptions) {
             acquirersPage
                     .clickRowsPerPageChevron()
-                    .selectRowsPerPageOption(String.valueOf(option));
+                    .selectRowsPerPageOption(option);
 
             int rowsSum = 0;
 
@@ -252,7 +250,7 @@ public class AcquirersPageTest extends BaseTest {
 
                 Allure.step(String.format(
                         "Verify: The table contains '%s' rows less than or equal to '%s'", actualRowCount, option));
-                Assert.assertTrue(actualRowCount <= option);
+                Assert.assertTrue(actualRowCount <= Integer.parseInt(option));
 
                 if (acquirersPage.isLastPage()) {
                     break;

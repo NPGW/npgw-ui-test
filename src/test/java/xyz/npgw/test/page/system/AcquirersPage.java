@@ -120,7 +120,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         return this;
     }
 
-    @Step("Click on page '{pagination}'")
+    @Step("Click on page '{pageNumber}'")
     public AcquirersPage clickOnPaginationPage(String pageNumber) {
         label("pagination item " + pageNumber).click();
 
