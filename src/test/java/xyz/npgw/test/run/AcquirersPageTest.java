@@ -238,7 +238,7 @@ public class AcquirersPageTest extends BaseTest {
         for (String option : rowsPerPageOptions) {
             acquirersPage
                     .clickRowsPerPageChevron()
-                    .selectRowsPerPageOption(String.valueOf(option));
+                    .selectRowsPerPageOption(option);
 
             int rowsSum = 0;
 
