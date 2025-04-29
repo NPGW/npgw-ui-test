@@ -13,7 +13,7 @@ public class DateRangePickerComponent<CurrentPageT> extends BaseComponent {
     @Getter(AccessLevel.NONE)
     private final Locator dateRangeFields = spinButton();
     private final Locator dataRangePickerErrorMessage = locator("[data-slot='error-message']");
-    private final Locator dateRangePicker = group("DateRange");
+    private final Locator dateRangePickerField = group("DateRange");
 
     private final CurrentPageT currentPage;
 
