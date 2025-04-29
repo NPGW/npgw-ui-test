@@ -14,6 +14,7 @@ import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.AcquirersPage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -232,7 +233,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
 
         int[] expectedOptions = new int[]{10, 25, 50, 100};
-        Map<Integer, Integer> totalRows = new HashMap<>();
+        List<Integer> totalRows = new ArrayList<>();
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
@@ -241,29 +242,32 @@ public class AcquirersPageTest extends BaseTest {
                 .clickAcquirersTab();
 
         for (int option : expectedOptions) {
-            int rowOnPage = 0;
-
             acquirersPage
                     .clickRowsPerPageChevron()
                     .selectRowsPerPageOption(String.valueOf(option));
 
-            for (int i = acquirersPage.getPaginationCount().count(); i >= 1; i--) {
-                acquirersPage.clickOnPaginationPage(String.valueOf(i));
+            int rowsSum = 0;
 
+            while (true) {
                 int actualRowCount = acquirersPage.getTable().getTableRows().count();
-                rowOnPage += actualRowCount;
+                rowsSum += actualRowCount;
 
                 Allure.step(String.format(
-                        "Verify: The table contains '%s' rows less than '%s'", actualRowCount, option + 1));
+                        "Verify: The table contains '%s' rows less than or equal to '%s'", actualRowCount, option));
                 Assert.assertTrue(actualRowCount <= option);
+
+                if (acquirersPage.isLastPage()) {
+                    break;
+                }
+
+                acquirersPage.clickNextPage();
             }
-            totalRows.put(option, rowOnPage);
+
+            totalRows.add(rowsSum);
+            acquirersPage.clickOnPaginationPage("1");
         }
 
-        boolean allTotalsSame = totalRows.values().stream()
-                .distinct()
-                .count() == 1;
-
+        boolean allTotalsSame = totalRows.stream().distinct().count() == 1;
         Allure.step("Verify: Total rows count is the same for each 'Rows Per Page' option");
         Assert.assertTrue(allTotalsSame, "Total rows should be the same for all 'Rows Per Page' options");
     }
