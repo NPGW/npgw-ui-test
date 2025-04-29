@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import org.testng.Assert;
 import xyz.npgw.test.page.common.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
@@ -23,6 +24,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator businessUnitEmptyList = locator("[role='gridcell']");
     private final Locator companyNameDropdownList = locator("[role='option']");
     private final Locator successAlert = alert("SUCCESS");
+    private final Locator companyDropdown = labelExact("Select company");
     @Getter
     private final Locator addCompanyDialog = dialog();
     @Getter
@@ -78,14 +80,14 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         return this;
     }
 
-//    @Step("Select a company into 'Select company' filter field")
-//    public CompaniesAndBusinessUnitsPage selectCompanyInTheFilter(String name) {
-//        companyDropdown.click();
-//        companyDropdown.fill(name);
-//        getPage().locator("li[role='option']:has-text('%s')".formatted(name)).first().click();
-//
-//        return this;
-//    }
+    @Step("Select a company into 'Select company' filter field")
+    public CompaniesAndBusinessUnitsPage selectCompanyInTheFilter(String name) {
+        companyDropdown.click();
+        companyDropdown.fill(name);
+        getPage().locator("li[role='option']:has-text('%s')".formatted(name)).first().click();
+
+        return this;
+    }
 
 
     @Step("Click 'Add business unit' button (+)")
