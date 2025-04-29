@@ -139,7 +139,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink();
 
         Allure.step("Verify: DataRange picker is visible");
-        assertThat(transactionsPage.getDateRangePicker()).isVisible();
+        assertThat(transactionsPage.getDateRangePicker().getDateRangePickerField()).isVisible();
 
         Allure.step("Verify: Business Unit selector is visible");
         assertThat(transactionsPage.getBusinessUnitSelector()).isVisible();
@@ -302,19 +302,20 @@ public class TransactionsPageTest extends BaseTest {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader()
                 .clickTransactionsLink()
-                .setStartDate("01-04-2025")
-                .setEndDate("01-04-2024")
+                .getDateRangePicker()
+                .setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(transactionsPage.getDataRangeErrorMessage()).hasText("Start date must be before end date.");
+        assertThat(transactionsPage.getDateRangePicker().getDataRangePickerErrorMessage()).hasText(
+                "Start date must be before end date.");
     }
 
     @Test
     @TmsLink("350")
     @Epic("Transactions")
     @Feature("Transactions table header")
-    @Description("Verify full lists of Columnheaders in table and Visible columns from Settings")
+    @Description("Verify full lists of column headers in table and visible columns from Settings")
     public void testCheckUncheckAllVisibleColumns() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -335,13 +336,13 @@ public class TransactionsPageTest extends BaseTest {
                 .clickRefreshDataButton()
                 .getTable().getColumnHeadersText();
 
-        Allure.step("Verify: All columnheaders are displayed in the Settings");
+        Allure.step("Verify: All column headers are displayed in the Settings");
         assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
 
-        Allure.step("Verify: All columnheaders are displayed in the Transactions table");
+        Allure.step("Verify: All column headers are displayed in the transactions table");
         assertEquals(headersList, COLUMNS_HEADERS);
 
-        Allure.step("Verify: Columnheaders are not displayed in the Transactions table "
+        Allure.step("Verify: Column headers are not displayed in the transactions table "
                 + "after it's unchecking in the Settings");
         assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
     }
@@ -350,7 +351,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("359")
     @Epic("Transactions")
     @Feature("Settings")
-    @Description("Check/Uncheck Visible columns in the Settings and verify table columnheaders")
+    @Description("Check/Uncheck Visible columns in the Settings and verify table column headers")
     public void testCheckUncheckOneVisibleColumn() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -364,7 +365,7 @@ public class TransactionsPageTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only One сolumnheader is NOT displayed in the Transactions. And it's - '{item}'");
+            Allure.step("Verify: Only one column header is NOT displayed in the Transactions. And it's - '{item}'");
             assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1)
                     && !headersListAfterUncheckOne.contains(item));
 
@@ -382,12 +383,63 @@ public class TransactionsPageTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only One сolumnheader is displayed in the Transactions table. And it's - '{item}'");
+            Allure.step("Verify: Only one column header is displayed in the transactions table. And it's - '{item}'");
             assertTrue((headersListAfterCheckOnlyOne.size() == 1) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
                     .clickSettingsButton()
                     .uncheckVisibleColumn(item);
         });
+    }
+
+    @Test
+    @TmsLink("354")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("Edit Amount")
+    public void testEditAmount() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickAmountButton()
+                .fillAmountFromField("500")
+                .fillAmountToField("10000")
+                .clickAmountApplyButton()
+                .clickAmountEditButton()
+                .fillAmountFromField("500")
+                .fillAmountToField("10300");
+
+        Allure.step("Verify: Edited amount is visible");
+        assertThat(transactionsPage.amountApplied("Amount: 500 - 10300")).isVisible();
+    }
+
+    @Test
+    @TmsLink("355")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("Reset Amount Values")
+    public void testResetAmountValues() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickAmountButton()
+                .fillAmountFromField("500")
+                .fillAmountToField("10000")
+                .clickAmountApplyButton()
+                .clickAmountAppliedClearButton()
+                .clickAmountButton();
+
+        Allure.step("Verify: From Amount is zero");
+        assertThat(transactionsPage.getAmountFromInputField()).hasValue("0.00");
+
+        Allure.step("Verify: To Amount is zero");
+        assertThat(transactionsPage.getAmountToInputField()).hasValue("0.00");
+
+        transactionsPage.clickAmountApplyButton();
+
+        Allure.step("Verify: Applied amount is visible");
+        assertThat(transactionsPage.amountApplied("Amount: 0 - 0")).isVisible();
     }
 }

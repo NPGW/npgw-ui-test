@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.opentest4j.AssertionFailedError;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
@@ -141,8 +140,7 @@ public class AddCompanyDialogTest extends BaseTest {
     }
 
     @Test(dataProvider = "getCompanyNameInvalidSpecialCharacters",
-            dataProviderClass = TestDataProvider.class,
-            enabled = false)
+            dataProviderClass = TestDataProvider.class)
     @TmsLink("215")
     @Epic("System/Companies and business units")
     @Feature("Add company")
@@ -154,17 +152,15 @@ public class AddCompanyDialogTest extends BaseTest {
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField("Company" + character)
-                .fillCompanyTypeField(COMPANY_TYPE)
-                .clickCreateButtonAndTriggerError();
+                .fillCompanyTypeField(COMPANY_TYPE);
 
-        Allure.step("Verify: error message is displayed about invalid characters in the company name");
-        assertThat(addCompanyDialog.getAlertMessage()).containsText(
-                ("Invalid companyName: 'Company%s'. "
-                        + "It may only contain letters, digits, ampersands, hyphens, commas, periods, and spaces")
-                        .formatted(character));
+        Allure.step("Verify: 'Create' button is disabled");
+        assertThat(addCompanyDialog.getCreateButton()).isDisabled();
+
+        Allure.step("Verify: 'Company name' field is marked invalid");
+        assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
-    @Ignore("fail after latest update")
     @Test(dataProvider = "getInvalidCompanyNamesByLengthAndChar", dataProviderClass = TestDataProvider.class)
     @TmsLink("261")
     @Epic("System/Companies and business units")
@@ -179,15 +175,13 @@ public class AddCompanyDialogTest extends BaseTest {
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(fullName)
-                .fillCompanyTypeField(COMPANY_TYPE)
-                .clickCreateButtonAndTriggerError();
+                .fillCompanyTypeField(COMPANY_TYPE);
 
-        Allure.step("Verify: error message for invalid length and character in company name");
-        assertThat(addCompanyDialog.getAlertMessage()).containsText(
-                ("Invalid companyName: '%s'. It must contain between 4 and 100 characters "
-                        + "Invalid companyName: '%s'. It may only contain letters, digits, ampersands, "
-                        + "hyphens, commas, periods, and spaces").formatted(fullName, fullName)
-        );
+        Allure.step("Verify: 'Create' button is disabled");
+        assertThat(addCompanyDialog.getCreateButton()).isDisabled();
+
+        Allure.step("Verify: 'Company name' field is marked invalid");
+        assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
     @Test
@@ -212,7 +206,6 @@ public class AddCompanyDialogTest extends BaseTest {
                 "Company was created successfully");
     }
 
-    @Ignore("Company 'CompanyName' not found in dropdown.")
     @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
     @TmsLink("224")
     @Epic("System/Companies and business units")
@@ -230,7 +223,6 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getSelectCompanyInput()).hasValue(COMPANY_NAME);
     }
 
-    @Ignore("depends on ignored test")
     @Test(dependsOnMethods = "testVerifyCompanyPresenceInDropdown")
     @TmsLink("232")
     @Epic("System/Companies and business units")
