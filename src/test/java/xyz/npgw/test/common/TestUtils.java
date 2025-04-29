@@ -14,10 +14,6 @@ import java.nio.charset.StandardCharsets;
 @Log4j2
 public class TestUtils {
 
-    private static String encode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-    }
-
     public static void deleteUser(APIRequestContext request, User user) {
         request.delete(
                 "portal-v1/user?email=%s".formatted(encode(user.email())));
@@ -70,6 +66,10 @@ public class TestUtils {
     public static void deleteCompany(APIRequestContext request, String companyName) {
         request.delete(
                 "portal-v1/company/%s".formatted(encode(companyName)));
+    }
+
+    private static String encode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
     }
 
     private static boolean getCompany(APIRequestContext request, String companyName) {
