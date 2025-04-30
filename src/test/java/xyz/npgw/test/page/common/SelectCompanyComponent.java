@@ -14,6 +14,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
     @Getter
     private final Locator selectCompanyField = labelExact("Select company");
     private final Locator dropdownOptionList = getPage().getByRole(AriaRole.OPTION);
+    @Getter
     private final Locator selectCompanyPlaceholder = locator("input[aria-label='Select company']");
     @Getter
     private final Locator companyDropdown = locator("div[data-slot='content']");
@@ -22,12 +23,6 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
                     .filter(new Locator.FilterOptions().setHas(selectCompanyPlaceholder));
     private final Locator selectCompanyDropdownChevron =
             selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
-
-    public Locator getSelectCompanyPlaceholder() {
-        selectCompanyPlaceholder.waitFor();
-
-        return selectCompanyPlaceholder;
-    }
 
     private final Locator selectCompanyClearIcon =
             selectCompanyContainer.locator("button[aria-label='Show suggestions']:first-child");
@@ -88,6 +83,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Click 'Select company' placeholder")
     public CurrentPageT clickSelectCompanyPlaceholder() {
+        selectCompanyPlaceholder.waitFor();
         selectCompanyPlaceholder.click();
 
         return page;
