@@ -442,4 +442,26 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Applied amount is visible");
         assertThat(transactionsPage.amountApplied("Amount: 0 - 0")).isVisible();
     }
+
+    @Test
+    @TmsLink("356")
+    @Epic("Transactions")
+    @Feature("Export table data")
+    @Description("The presence of the dropdown options export table data to file")
+    public void testPresenceOfDownloadFilesOptions() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickDownloadButton();
+
+        Allure.step("Verify: CVC option is visible");
+        assertThat(transactionsPage.getDownloadCsvOption()).isVisible();
+
+        Allure.step("Verify: EXCEL option is visible");
+        assertThat(transactionsPage.getDownloadExcelOption()).isVisible();
+
+        Allure.step("Verify: PDF option is visible");
+        assertThat(transactionsPage.getDownloadPdfOption()).isVisible();
+    }
 }
