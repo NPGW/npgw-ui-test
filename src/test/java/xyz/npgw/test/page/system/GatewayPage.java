@@ -29,6 +29,7 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
 
     @Step("Click Currency value")
     public GatewayPage clickCurrencyValue() {
+        currencyValue.waitFor();
         currencyValue.click();
 
         return this;

@@ -47,12 +47,11 @@ public class GatewayPageTest extends BaseTest {
         List<String> expectedOptions = List.of("ALL", "USD", "EUR");
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickGatewayTab();
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab();
 
-        Locator actualCurrency = gatewayPage.getCurrencyValue();
+        Locator actualCurrency = gatewayPage
+                .getCurrencyValue();
 
         for (String currency : expectedOptions) {
             gatewayPage
@@ -85,10 +84,8 @@ public class GatewayPageTest extends BaseTest {
         int expectedCount = expectedBusinessUnitsList.length;
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickGatewayTab()
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyPlaceholder()
                 .getSelectCompany().selectCompany(companyName);
 
@@ -115,7 +112,8 @@ public class GatewayPageTest extends BaseTest {
                     String.format("Unexpected item: %s", actualBusinessUnitsText));
         }
 
-        gatewayPage.getSelectCompany().clickSelectCompanyClearIcon()
+        gatewayPage
+                .getSelectCompany().clickSelectCompanyClearIcon()
                 .getSelectCompany().clickSelectCompanyDropdownChevron();
 
         Allure.step("Verify: Placeholder has value 'Search...'", () -> {
