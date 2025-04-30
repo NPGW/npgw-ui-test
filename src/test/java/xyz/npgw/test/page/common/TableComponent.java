@@ -24,12 +24,13 @@ public class TableComponent extends BaseComponent {
     }
 
     private int getColumnHeaderIndexByName(String columnHeaderName) {
+        tableHeader.last().waitFor();
         for (int i = 0; i < tableHeader.count(); i++) {
             if (tableHeader.nth(i).innerText().equals(columnHeaderName)) {
                 return i;
             }
         }
-        throw new NoSuchElementException("Column with selector '" + columnHeaderName + "' not found.");
+        throw new NoSuchElementException("Column with header '" + columnHeaderName + "' not found.");
     }
 
     @Step("Get list of values in column '{columnHeaderName}'")
