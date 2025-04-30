@@ -26,10 +26,8 @@ public class GatewayPageTest extends BaseTest {
     @Description("The 'Currency' dropdown toggles and contains options All, USD, EUR.")
     public void testOpenCurrencyDropdown() {
         Locator actualOptions = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickGatewayTab()
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
                 .clickCurrencyValue()
                 .getCurrencyOptions();
 
