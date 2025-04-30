@@ -447,7 +447,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("356")
     @Epic("Transactions")
     @Feature("Export table data")
-    @Description("The presence of the dropdown options export table data to file")
+    @Description("The presence of the dropdown options export table data to  file")
     public void testPresenceOfDownloadFilesOptions() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
