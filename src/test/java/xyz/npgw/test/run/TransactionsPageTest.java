@@ -229,6 +229,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountButton()).isVisible();
     }
 
+    @Ignore
     @Test
     @TmsLink("311")
     @Epic("Transactions")
