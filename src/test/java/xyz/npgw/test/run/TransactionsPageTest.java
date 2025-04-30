@@ -440,7 +440,7 @@ public class TransactionsPageTest extends BaseTest {
         transactionsPage.clickAmountApplyButton();
 
         Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.amountApplied("Amount: 0 - 0")).isVisible();
+        assertThat(transactionsPage.amountApplied("Amount: 0.00 - 0.00")).isVisible();
     }
 
     @Test

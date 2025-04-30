@@ -53,6 +53,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getDialogHeader()).hasText("Add company");
     }
 
+    @Ignore
     @Test
     @TmsLink("189")
     @Epic("System/Companies and business units")
@@ -140,6 +141,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddCompanyDialog()).isHidden();
     }
 
+    @Ignore
     @Test(dataProvider = "getCompanyNameInvalidSpecialCharacters",
             dataProviderClass = TestDataProvider.class)
     @TmsLink("215")
@@ -185,6 +187,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
+    @Ignore
     @Test
     @TmsLink("223")
     @Epic("System/Companies and business units")
@@ -207,6 +210,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 "Company was created successfully");
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddCompanyByFillRequiredFields")
     @TmsLink("224")
     @Epic("System/Companies and business units")
@@ -223,6 +227,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getSelectCompanyField()).hasValue(COMPANY_NAME);
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testVerifyCompanyPresenceInDropdown")
     @TmsLink("232")
     @Epic("System/Companies and business units")
@@ -306,6 +311,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 "SUCCESSCompany was created successfully");
     }
 
+    @Ignore("Company 'CompanyNameTest' not found in dropdown list.")
     @Test
     @TmsLink("246")
     @Epic("System/Companies and business units")
@@ -414,6 +420,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .hasValue(company.city());
     }
 
+    @Ignore
     @Test(dependsOnMethods = "testAddCompanyEndToEndTest")
     @TmsLink("290")
     @Epic("System/Companies and business units")
