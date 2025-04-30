@@ -53,7 +53,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-        ResponseUtils.clickAndWaitForResponse(getPage(), systemAdministrationButton, Constants.COMPANY_ENDPOINT);
+        systemAdministrationButton.click();
 
         return new TeamPage(getPage());
     }
