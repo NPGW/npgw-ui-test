@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
@@ -16,7 +15,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
-    @Ignore
     @Test
     @TmsLink("387")
     @Epic("System/Companies and business units")
@@ -40,6 +38,6 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .getDialogHeader();
 
         Allure.step("Verify: the header contains the expected title text");
-        assertThat(dialogTitle).hasText("Edit merchant");
+        assertThat(dialogTitle).hasText("Add business unit");
     }
 }
