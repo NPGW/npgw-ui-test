@@ -2,7 +2,6 @@ package xyz.npgw.test.page.dialog.acquirer;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.system.AcquirersPage;
@@ -11,7 +10,7 @@ import xyz.npgw.test.page.system.AcquirersPage;
 public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
     private final Locator createButton = buttonByName("Create");
-    private final Locator acquirerName = placeholder("Enter acquirer name");
+    private final Locator acquirerNamePlaceholder = placeholder("Enter acquirer name");
 
     public AddAcquirerDialog(Page page) {
         super(page);
@@ -27,7 +26,7 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
     @Step("Enter acquirer name '{}'")
     public AddAcquirerDialog enterAcquirerName(String name) {
-        acquirerName.fill(name);
+        acquirerNamePlaceholder.fill(name);
 
         return this;
     }
