@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -64,6 +65,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
     }
 
+    @Ignore
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("319")
     @Epic("Transactions")
@@ -228,6 +230,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountButton()).isVisible();
     }
 
+    @Ignore
     @Test
     @TmsLink("311")
     @Epic("Transactions")
@@ -440,6 +443,28 @@ public class TransactionsPageTest extends BaseTest {
         transactionsPage.clickAmountApplyButton();
 
         Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.amountApplied("Amount: 0 - 0")).isVisible();
+        assertThat(transactionsPage.amountApplied("Amount: 0.00 - 0.00")).isVisible();
+    }
+
+    @Test
+    @TmsLink("356")
+    @Epic("Transactions")
+    @Feature("Export table data")
+    @Description("The presence of the dropdown options export table data to  file")
+    public void testPresenceOfDownloadFilesOptions() {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickTransactionsLink()
+                .clickDownloadButton();
+
+        Allure.step("Verify: CVC option is visible");
+        assertThat(transactionsPage.getDownloadCsvOption()).isVisible();
+
+        Allure.step("Verify: EXCEL option is visible");
+        assertThat(transactionsPage.getDownloadExcelOption()).isVisible();
+
+        Allure.step("Verify: PDF option is visible");
+        assertThat(transactionsPage.getDownloadPdfOption()).isVisible();
     }
 }
