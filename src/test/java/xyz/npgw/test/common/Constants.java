@@ -18,4 +18,5 @@ public class Constants {
     public static final String USER_LIST_ENDPOINT = "/user/list";
     public static final String COMPANY_ENDPOINT = "/company";
     public static final String MERCHANT_ENDPOINT = "/merchant";
+    public static final String ACQUIRER_ENDPOINT = "/acquirer";
 }

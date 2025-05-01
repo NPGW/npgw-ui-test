@@ -3,6 +3,8 @@ package xyz.npgw.test.page.system;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
+import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.util.ResponseUtils;
 import xyz.npgw.test.page.base.BaseComponent;
 
 public class MenuComponent extends BaseComponent {
@@ -31,7 +33,7 @@ public class MenuComponent extends BaseComponent {
 
     @Step("Click Gateway Tab")
     public GatewayPage clickGatewayTab() {
-        gatewayTab.click();
+        ResponseUtils.clickAndWaitForResponse(getPage(), gatewayTab, Constants.ACQUIRER_ENDPOINT);
 
         return new GatewayPage(getPage());
     }
