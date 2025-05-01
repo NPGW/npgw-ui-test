@@ -6,12 +6,14 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import net.datafaker.Faker;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dialog.acquirer.AcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
@@ -21,6 +23,14 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 
 public class AddAcquirerDialogTest extends BaseTest {
+
+    private static final String acquirerName = "Enter acquirer name";
+    private static final String acquirerCode = "Enter acquirer code";
+    private static final String challengeURL = "Enter challenge URL";
+    private static final String fingerprintURL = "Enter fingerprint URL";
+    private static final String resourceURL = "Enter resource URL";
+    private static final String notificationQueue = "Enter notification queue";
+    private static final String acquirerConfig = "Enter acquirer config";
 
     @Test
     @TmsLink("249")
@@ -196,5 +206,30 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         Allure.step(String.format("Verify: Timezone field is timezone '%s'", icelandTimezone));
         assertThat(addAcquirerDialog.getSelectTimezone()).hasText(icelandTimezone);
+    }
+
+    @Test
+    @TmsLink("412")
+    @Epic("System/Acquirers")
+    @Feature("Rows Per Page")
+    @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
+    public void testAcquirerSuccessfullyCreatedAndAppearsInList() {
+        String newAcquirerName = "Awder dd 6";
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab()
+                .clickAddAcquirer()
+                .enterValueToPlaceholder(acquirerName, newAcquirerName)
+                .clickCreateButton();
+
+        assertThat(acquirersPage.getAlertMessage()).containsText(
+                "SUCCESS\n" +
+                        "        Acquirer was created successfully");
+
+        acquirersPage.enterAcquirerNameIntoSelectAcquirerPlaceholder(newAcquirerName);
+
     }
 }

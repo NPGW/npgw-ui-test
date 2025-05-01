@@ -26,6 +26,7 @@ public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDial
     private final Locator allPlaceholdersWithoutSearch = locator("[data-slot='input']:not([placeholder='Search...'])");
     private final Locator alertMessage = locator("[role='alert']");
 
+
     public BaseDialog(Page page) {
         super(page);
     }
@@ -44,6 +45,12 @@ public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDial
                 .first().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         return allPlaceholdersWithoutSearch.all().stream().map(l -> l.getAttribute("placeholder")).toList();
+    }
+
+    public CurrentDialogT enterValueToPlaceholder(String placeholder, String value) {
+        placeholder(placeholder).fill(value);
+
+        return (CurrentDialogT) this;
     }
 
     @Step("Clear all form input fields")
