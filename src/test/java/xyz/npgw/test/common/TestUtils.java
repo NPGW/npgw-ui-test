@@ -89,7 +89,7 @@ public class TestUtils {
                 "/portal-v1/acquirer/" + acquirerName);
 
         if (response.ok()) {
-            log.info("Acquirer {} successfully deleted ", acquirerName);
+            log.info("Acquirer {} successfully deleted", acquirerName);
         } else {
             log.info("{}", response.text());
         }

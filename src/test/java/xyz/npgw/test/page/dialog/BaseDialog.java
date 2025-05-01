@@ -26,7 +26,6 @@ public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDial
     private final Locator allPlaceholdersWithoutSearch = locator("[data-slot='input']:not([placeholder='Search...'])");
     private final Locator alertMessage = locator("[role='alert']");
 
-
     public BaseDialog(Page page) {
         super(page);
     }
