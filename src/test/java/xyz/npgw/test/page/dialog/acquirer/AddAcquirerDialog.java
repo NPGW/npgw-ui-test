@@ -11,6 +11,7 @@ import xyz.npgw.test.page.system.AcquirersPage;
 public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
     private final Locator createButton = buttonByName("Create");
+    private final Locator acquirerName = placeholder("Enter acquirer name");
 
     public AddAcquirerDialog(Page page) {
         super(page);
@@ -22,5 +23,12 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
         createButton.click();
 
         return new AcquirersPage(getPage());
+    }
+
+    @Step("Enter acquirer name '{}'")
+    public AddAcquirerDialog enterAcquirerName(String name) {
+        acquirerName.fill(name);
+
+        return this;
     }
 }

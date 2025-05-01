@@ -1,6 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -214,7 +215,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
     public void testAcquirerSuccessfullyCreatedAndAppearsInList() {
-        String newAcquirerName = "Awder dd 6";
+        String newAcquirer = "X";
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
@@ -222,14 +223,15 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
-                .enterValueToPlaceholder(acquirerName, newAcquirerName)
+                .enterAcquirerName(newAcquirer)
                 .clickCreateButton();
 
+        Allure.step("Verify: Acquirer creation success message is displayed");
         assertThat(acquirersPage.getAlertMessage()).containsText(
-                "SUCCESS\n" +
-                        "        Acquirer was created successfully");
+                "SUCCESSAcquirer was created successfully");
 
-        acquirersPage.enterAcquirerNameIntoSelectAcquirerPlaceholder(newAcquirerName);
-
+        acquirersPage.enterAcquirerName(newAcquirer);
+        Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", newAcquirer));
+        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(newAcquirer);
     }
 }

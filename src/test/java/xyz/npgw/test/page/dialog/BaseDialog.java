@@ -47,12 +47,6 @@ public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDial
         return allPlaceholdersWithoutSearch.all().stream().map(l -> l.getAttribute("placeholder")).toList();
     }
 
-    public CurrentDialogT enterValueToPlaceholder(String placeholder, String value) {
-        placeholder(placeholder).fill(value);
-
-        return (CurrentDialogT) this;
-    }
-
     @Step("Clear all form input fields")
     public CurrentDialogT clearInputFields() {
         allInputFields.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));

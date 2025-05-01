@@ -46,7 +46,6 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     private final Locator acquirerStatusDropdown = locator("div[data-slot='listbox']");
     @Getter
     private final Locator acquirerStatusOptions = option(acquirerStatusDropdown);
-    private final Locator alertMessage = locator("div[role='alert']");
 
     public AcquirersPage(Page page) {
         super(page);
@@ -71,10 +70,10 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         return this;
     }
 
-    @Step("Enter '{acquirerName}' in 'Select acquirer' placeholder")
-    public AcquirersPage enterAcquirerNameIntoSelectAcquirerPlaceholder(String acquirerName) {
+    @Step("Enter '{acquirerName}' into 'Select acquirer' placeholder")
+    public AcquirersPage enterAcquirerName(String acquirerName) {
         selectAcquirerLabel.waitFor();
-        selectAcquirerPlaceholder.fill(acquirerName);
+        selectAcquirerPlaceholder.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(100));
 
         return this;
     }
@@ -152,11 +151,5 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     public boolean isLastPage() {
         return Objects.equals(paginationNext.getAttribute("tabindex"), "-1");
-    }
-
-    public Locator getAlertMessage() {
-        alertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        return alertMessage;
     }
 }
