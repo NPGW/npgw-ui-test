@@ -75,6 +75,16 @@ public class TestUtils {
         return response.ok() && response.text().contains(businessUnitName);
     }
 
+    public static boolean getAcquirer(APIRequestContext request, String acquirerName) {
+        APIResponse response = request.get("portal-v1/acquirer/%s".formatted(encode(acquirerName)));
+//        APIResponse response = request.get(
+//                "/portal-v1/acquirer" + acquirerName);
+
+        log.info("get acquirer '{}' - {} {}", acquirerName, response.status(), response.text());
+
+        return response.ok();
+    }
+
     public static void deleteAcquirer(APIRequestContext request, String acquirerName) {
         APIResponse response = request.delete(
                 "/portal-v1/acquirer/" + acquirerName);
