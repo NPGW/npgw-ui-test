@@ -202,10 +202,41 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Test
     @TmsLink("412")
     @Epic("System/Acquirers")
-    @Feature("Rows Per Page")
-    @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
+    @Feature("Add acquirer")
+    @Description("Verify that a new Acquirer can be successfully created and appears in the Acquirers dropdown.")
     public void testAcquirerSuccessfullyCreatedAndAppearsInDropdown() {
 
+        String acquirerName = "Awesome acquirer";
+        deleteAcquirer(getApiRequestContext(), acquirerName);
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab()
+                .clickAddAcquirer()
+                .enterAcquirerName(acquirerName)
+                .clickCreateButton();
+
+        Allure.step("Verify: Acquirer creation success message is displayed");
+        assertThat(acquirersPage.getAlertMessage()).containsText(
+                "SUCCESSAcquirer was created successfully");
+
+        Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
+        assertThat(acquirersPage.getAddAcquirerDialog()).isHidden();
+
+        acquirersPage.enterAcquirerName(acquirerName);
+
+        Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", acquirerName));
+        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(acquirerName);
+    }
+
+    @Test
+    @TmsLink("427")
+    @Epic("System/Acquirers")
+    @Feature("Add acquirer")
+    @Description("Verify error appears when creating an Acquirer with a duplicate name.")
+    public void testCreateAcquirerWithDuplicateNameShowsError() {
         String acquirerName = "Awesome acquirer";
         deleteAcquirer(getApiRequestContext(), acquirerName);
 
