@@ -42,7 +42,7 @@ public class TeamPageTest extends BaseTest {
             ProjectProperties.getAdminPassword()
     );
 
-    @Test
+    @Test(invocationCount = 20)
     @TmsLink("154")
     @Epic("System/Team")
     @Feature("Navigation")
