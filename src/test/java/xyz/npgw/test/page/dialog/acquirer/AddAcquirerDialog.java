@@ -24,7 +24,7 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
         return new AcquirersPage(getPage());
     }
 
-    @Step("Enter acquirer name '{}'")
+    @Step("Enter acquirer name '{name}'")
     public AddAcquirerDialog enterAcquirerName(String name) {
         acquirerNamePlaceholder.fill(name);
 
