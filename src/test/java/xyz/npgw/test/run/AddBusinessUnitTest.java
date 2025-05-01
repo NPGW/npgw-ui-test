@@ -91,7 +91,6 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
-    @Ignore("strict mode violation: locator('[role='gridcell']') resolved to 2 elements")
     @Test
     @TmsLink("241")
     @Epic("System/Companies and business units")
@@ -102,17 +101,14 @@ public class AddBusinessUnitTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickCompaniesAndBusinessUnitsTab()
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .getSelectCompany()
-                .selectCompany(company.companyName())
+                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .clickCloseButton();
 

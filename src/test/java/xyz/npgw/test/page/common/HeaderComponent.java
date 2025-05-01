@@ -3,6 +3,7 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.common.Constants;
@@ -50,7 +51,9 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-        ResponseUtils.clickAndWaitForResponse(getPage(), systemAdministrationButton, Constants.COMPANY_ENDPOINT);
+        systemAdministrationButton.click();
+        textExact("No rows to display.")
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(4444));
 
         return new TeamPage(getPage());
     }
