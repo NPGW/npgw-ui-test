@@ -1,20 +1,17 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import net.datafaker.Faker;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.dialog.acquirer.AcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
@@ -22,16 +19,9 @@ import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static xyz.npgw.test.common.TestUtils.deleteAcquirer;
 
 public class AddAcquirerDialogTest extends BaseTest {
-
-    private static final String acquirerName = "Enter acquirer name";
-    private static final String acquirerCode = "Enter acquirer code";
-    private static final String challengeURL = "Enter challenge URL";
-    private static final String fingerprintURL = "Enter fingerprint URL";
-    private static final String resourceURL = "Enter resource URL";
-    private static final String notificationQueue = "Enter notification queue";
-    private static final String acquirerConfig = "Enter acquirer config";
 
     @Test
     @TmsLink("249")
@@ -215,7 +205,9 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
     public void testAcquirerSuccessfullyCreatedAndAppearsInList() {
-        String newAcquirer = "X";
+
+        String acquirerName = "Awesome acquirer";
+        deleteAcquirer(getApiRequestContext(), acquirerName);
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader()
@@ -223,15 +215,16 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
-                .enterAcquirerName(newAcquirer)
+                .enterAcquirerName(acquirerName)
                 .clickCreateButton();
 
         Allure.step("Verify: Acquirer creation success message is displayed");
         assertThat(acquirersPage.getAlertMessage()).containsText(
                 "SUCCESSAcquirer was created successfully");
 
-        acquirersPage.enterAcquirerName(newAcquirer);
-        Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", newAcquirer));
-        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(newAcquirer);
+        acquirersPage.enterAcquirerName(acquirerName);
+
+        Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", acquirerName));
+        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(acquirerName);
     }
 }
