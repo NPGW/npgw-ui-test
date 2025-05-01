@@ -1,6 +1,5 @@
 package xyz.npgw.test.run;
 
-import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
@@ -240,7 +239,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Description("Verify error appears when creating an Acquirer with a duplicate name.")
     public void testCreateAcquirerWithDuplicateNameShowsError() {
 
-        String acquirerName = "Awesome acquirer";
+        String acquirerName = "Awder D 5f02";
         if (getAcquirer(getApiRequestContext(), acquirerName)) {
             Assert.fail(
                     "Precondition failed: Acquirer with name '" + acquirerName + "' must already exist before test execution.");
