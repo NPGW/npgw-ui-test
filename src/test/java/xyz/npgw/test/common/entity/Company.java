@@ -19,7 +19,7 @@ public record Company(String companyName,
     }
 
     public Company(Faker faker) {
-        this(faker.company().name().replace("'", ""), faker.company().industry());
+        this(faker.company().name(), faker.company().industry());
     }
 
     public Company(String companyName) {

@@ -8,12 +8,12 @@ import io.qameta.allure.TmsLink;
 import org.opentest4j.AssertionFailedError;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Address;
+import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.provider.TestDataProvider;
-import xyz.npgw.test.common.util.Merchant;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
@@ -427,11 +427,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add business unit")
     @Description("Validates successful business unit addition to company (E2E test).")
     public void testAddBusinessUnitEndToEndTest() {
-        Merchant merchant = new Merchant(
-                "MerchantNameTest",
-                false, true,
-                false
-        );
+        BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader()
@@ -457,7 +453,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getAlertMessage()).containsText("Enter merchant name");
 
         companiesAndBusinessUnitsPage = addBusinessUnitDialog
-                .fillBusinessUnitNameField(merchant.merchantName())
+                .fillBusinessUnitNameField(businessUnit.merchantName())
                 .clickCreateButton();
 
         Allure.step("Verify: Success alert is shown after business unit is added");
@@ -469,7 +465,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .getSelectCompany().getSelectCompanyField()).hasValue(company.companyName());
 
         Allure.step("Verify: New business unit name appears in the list");
-        assertThat(companiesAndBusinessUnitsPage.getBusinessUnitNameData()).hasText(merchant.merchantName());
+        assertThat(companiesAndBusinessUnitsPage.getBusinessUnitNameData()).hasText(businessUnit.merchantName());
 
         Allure.step("Verify: Merchant ID is displayed");
         assertThat(companiesAndBusinessUnitsPage.getMerchantIdData()).containsText("id.merchant");
