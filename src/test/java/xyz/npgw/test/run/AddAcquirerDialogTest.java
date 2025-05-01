@@ -222,6 +222,9 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(acquirersPage.getAlertMessage()).containsText(
                 "SUCCESSAcquirer was created successfully");
 
+        Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
+        assertThat(acquirersPage.getAddAcquirerDialog()).isHidden();
+
         acquirersPage.enterAcquirerName(acquirerName);
 
         Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", acquirerName));
