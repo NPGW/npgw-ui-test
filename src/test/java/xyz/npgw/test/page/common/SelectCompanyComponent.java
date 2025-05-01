@@ -83,7 +83,6 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Click 'Select company' placeholder")
     public CurrentPageT clickSelectCompanyPlaceholder() {
-        selectCompanyPlaceholder.waitFor();
         selectCompanyPlaceholder.click();
 
         return page;

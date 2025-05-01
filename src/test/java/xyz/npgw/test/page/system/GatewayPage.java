@@ -25,11 +25,12 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
 
     public GatewayPage(Page page) {
         super(page);
+        businessUnitsListHeader
+                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5678));
     }
 
     @Step("Click Currency value")
     public GatewayPage clickCurrencyValue() {
-        currencyValue.waitFor();
         currencyValue.click();
 
         return this;
