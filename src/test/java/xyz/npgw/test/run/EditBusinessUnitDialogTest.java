@@ -7,7 +7,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.TestUtils;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
 
@@ -21,23 +20,16 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
     public void testVerifyTitleEditBusinessUnitDialog() {
-        String buName = "NewBUForEdit";
         String companyName = "CompanyForBU";
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
         Locator dialogTitle = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany()
-                .selectCompany(companyName)
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSelectCompany().selectCompany(companyName)
                 .clickEditBusinessUnitButton()
                 .getDialogHeader();
 
         Allure.step("Verify: the header contains the expected title text");
-        assertThat(dialogTitle).hasText("Add business unit");
+        assertThat(dialogTitle).hasText("Edit business unit");
     }
 }
