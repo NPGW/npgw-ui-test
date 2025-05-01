@@ -204,7 +204,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
-    public void testAcquirerSuccessfullyCreatedAndAppearsInList() {
+    public void testAcquirerSuccessfullyCreatedAndAppearsInDropdown() {
 
         String acquirerName = "Awesome acquirer";
         deleteAcquirer(getApiRequestContext(), acquirerName);
