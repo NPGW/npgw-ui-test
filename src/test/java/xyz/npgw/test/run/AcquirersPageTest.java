@@ -256,9 +256,7 @@ public class AcquirersPageTest extends BaseTest {
 
                 acquirersPage.clickNextPage();
             }
-
             totalRows.add(rowsSum);
-            acquirersPage.clickOnPaginationPage("1");
         }
 
         Assert.assertEquals(totalRows.stream().distinct().count(), 1,
