@@ -49,7 +49,6 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     public AcquirersPage(Page page) {
         super(page);
-        selectAcquirerLabel.waitFor();
     }
 
     public Locator getAcquirersList() {
@@ -65,7 +64,6 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     @Step("Click 'Select acquirer' placeholder")
     public AcquirersPage clickSelectAcquirerPlaceholder() {
-        selectAcquirerLabel.waitFor();
         selectAcquirerPlaceholder.click();
 
         return this;
@@ -73,7 +71,6 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     @Step("Enter '{acquirerName}' into select acquirer placeholder")
     public AcquirersPage enterAcquirerName(String acquirerName) {
-        selectAcquirerLabel.waitFor();
         selectAcquirerPlaceholder.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(100));
 
         return this;
@@ -87,7 +84,6 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     @Step("Click Status placeholder")
     public AcquirersPage clickAcquirerStatusPlaceholder() {
-        selectAcquirerLabel.waitFor();
         acquirerStatusValue.click();
 
         return this;
