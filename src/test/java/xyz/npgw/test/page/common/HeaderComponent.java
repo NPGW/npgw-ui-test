@@ -3,6 +3,7 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.common.Constants;
@@ -29,8 +30,8 @@ public class HeaderComponent extends BaseComponent {
     private final Locator repeatPasswordField = placeholder("Repeat new password");
     private final Locator saveButton = locator("button:has-text('Save')");
     private final Locator logOutButtonUserMenu = menuItemByName("Log Out");
-    private final Locator lightRadioButtonUserMenu = locator("//input[@value='light']");
-    private final Locator darkRadioButtonUserMenu = locator("//input[@value='dark']");
+    private final Locator lightRadioButtonInUserMenu = radioButton("Light");
+    private final Locator darkRadioButtonInUserMenu = radioButton("Dark");
 
     public HeaderComponent(Page page) {
         super(page);
@@ -118,14 +119,14 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click the 'Light' radio button in the user menu")
     public DashboardPage clickLightRadioButton() {
-        lightRadioButtonUserMenu.click();
+        lightRadioButtonInUserMenu.click();
 
         return new DashboardPage(getPage());
     }
 
     @Step ("Click the 'Dark' radio button in the user menu")
     public DashboardPage clickDarkRadioButton() {
-        darkRadioButtonUserMenu.click();
+        darkRadioButtonInUserMenu.click();
 
         return new DashboardPage(getPage());
     }
