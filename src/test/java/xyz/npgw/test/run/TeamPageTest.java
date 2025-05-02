@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
@@ -13,6 +14,7 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
+import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
@@ -167,5 +169,36 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: 'Activate' icon is shown for the user");
         assertEquals(teamPage.getChangeUserActivityButton(user.email()).getAttribute("data-icon"), "check");
+    }
+
+    @Test
+    @TmsLink("")
+    @Epic("System/Team")
+    @Feature("Add user")
+    @Description("Create new company admin user")
+    public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
+        TestUtils.createCompanyAdmin(getApiRequestContext(),"amazon3@gmail.com");
+
+        TeamPage teamPage = new AboutBlankPage(getPage())
+                .navigate("/login")
+                .fillEmailField("amazon3@gmail.com")
+                .fillPasswordField("Amazon1!")
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField("Amazon1!")
+                .fillRepeatNewPasswordField("Amazon1!")
+                .clickSaveButton()
+                .fillEmailField("amazon3@gmail.com")
+                .fillPasswordField("Amazon1!")
+                .clickLoginButton()
+                .waitUntilAlertIsGone()
+                .getHeader().clickSystemAdministrationLink()
+                .clickAddUserButton()
+                .fillEmailField("email@gmail.com")
+                .fillPasswordField("Password1!")
+                .checkCompanyAdminRadiobutton()
+                .clickCreateButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
     }
 }
