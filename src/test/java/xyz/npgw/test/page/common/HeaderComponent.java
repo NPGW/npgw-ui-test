@@ -117,11 +117,10 @@ public class HeaderComponent extends BaseComponent {
     }
 
     @Step("Click the 'Light' radio button in the user menu")
-    public HeaderPage clickLightRadioButton() {
+    public DashboardPage clickLightRadioButton() {
         lightRadioButtonUserMenu.click();
 
-        return new HeaderPage(getPage()) {
-        };
+        return new DashboardPage(getPage());
     }
 
     @Step ("Click the 'Dark' radio button in the user menu")

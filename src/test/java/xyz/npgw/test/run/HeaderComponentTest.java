@@ -146,12 +146,12 @@ public class HeaderComponentTest extends BaseTest {
     @Feature("User menu")
     @Description("Verify that the user can switch to the dark theme")
     public  void testDarkColorThemeSwitch() {
-        HeaderPage headerPage = new DashboardPage(getPage())
+        DashboardPage dashboardPage = new DashboardPage(getPage())
                 .getHeader().clickUserMenuButton()
                 .getHeader().clickDarkRadioButton();
 
         Allure.step("Verify that the dark color theme is selected");
-        assertThat(headerPage.getPage().locator("html.dark")).isVisible();
+        assertThat(dashboardPage.getPage().locator("html.dark")).isVisible();
     }
 
     @Test
@@ -160,11 +160,11 @@ public class HeaderComponentTest extends BaseTest {
     @Feature("User menu")
     @Description("Verify that the user can switch to the light theme")
     public  void testLightColorThemeSwitch() {
-        HeaderPage headerPage = new DashboardPage(getPage())
+        DashboardPage dashboardPage = new DashboardPage(getPage())
                 .getHeader().clickUserMenuButton()
                 .getHeader().clickLightRadioButton();
 
         Allure.step("Verify that the light color theme is selected");
-        assertThat(headerPage.getPage().locator("html.light")).isVisible();
+        assertThat(dashboardPage.getPage().locator("html.light")).isVisible();
     }
 }
