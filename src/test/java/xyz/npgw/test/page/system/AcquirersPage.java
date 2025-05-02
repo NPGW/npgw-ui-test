@@ -49,6 +49,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     public AcquirersPage(Page page) {
         super(page);
+        selectAcquirerLabel.waitFor();
     }
 
     public Locator getAcquirersList() {
