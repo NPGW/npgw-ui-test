@@ -65,7 +65,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     @Step("Check 'Company admin' user role radiobutton")
     public CurrentDialogT checkCompanyAdminRadiobutton() {
         getPage().getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName("Company admin")).check();
-
+        getPage().waitForTimeout(500);
         return (CurrentDialogT) this;
     }
 

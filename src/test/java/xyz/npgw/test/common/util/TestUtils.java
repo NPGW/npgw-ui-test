@@ -32,9 +32,9 @@ public final class TestUtils {
     }
 
     public static void createCompanyAdmin(APIRequestContext request, String email) {
-        User user = new User("Amazon",true, UserRole.ADMIN,new String[]{},email,"Amazon1!");
-        deleteUser(request,user);
-        APIResponse response = request.post("portal-v1/user/create",RequestOptions.create().setData(user));
+        User user = new User("Amazon", true, UserRole.ADMIN, new String[]{}, email, "Amazon1!");
+        deleteUser(request, user);
+        APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
         log.info("create company admin '{}' - {} {}", user.email(), response.status(), response.text());
     }
 

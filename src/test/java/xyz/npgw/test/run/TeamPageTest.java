@@ -177,7 +177,7 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Create new company admin user")
     public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyAdmin(getApiRequestContext(),"amazon3@gmail.com");
+        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
