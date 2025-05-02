@@ -63,7 +63,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
     }
 
-//    @Ignore("Fall on empty transactions table")
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("319")
     @Epic("Transactions")
@@ -72,7 +71,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testFilterTransactionsByCurrency(String currency) {
         List<String> currencyValues = new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-25", "30-04-25")
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "30-04-2025")
                 .clickCurrencySelector()
                 .selectCurrency(currency)
                 .getTable().getColumnValues("Currency");
