@@ -5,6 +5,7 @@ import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.extern.log4j.Log4j2;
+import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
@@ -28,6 +29,13 @@ public final class TestUtils {
                 businessUnits.toArray(BusinessUnit[]::new), user.email(), user.password());
         APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(newUser));
         log.info("create user '{}' - {} {}", user.email(), response.status(), response.text());
+    }
+
+    public static void createCompanyAdmin(APIRequestContext request, String email) {
+        User user = new User("Amazon",true, UserRole.ADMIN,new String[]{},email,"Amazon1!");
+        deleteUser(request,user);
+        APIResponse response = request.post("portal-v1/user/create",RequestOptions.create().setData(user));
+        log.info("create company admin '{}' - {} {}", user.email(), response.status(), response.text());
     }
 
     public static void deleteUser(APIRequestContext request, User user) {
