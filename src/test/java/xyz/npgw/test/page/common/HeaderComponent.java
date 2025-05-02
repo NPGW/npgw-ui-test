@@ -131,7 +131,6 @@ public class HeaderComponent extends BaseComponent {
         return new DashboardPage(getPage());
     }
 
-
     public boolean isLogoImageLoaded() {
         return (boolean) getImg().evaluate(
                 "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
