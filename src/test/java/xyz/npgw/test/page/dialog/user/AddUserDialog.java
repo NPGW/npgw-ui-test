@@ -38,8 +38,6 @@ public class AddUserDialog extends UserDialog<AddUserDialog> {
     @Step("Click 'Create' button")
     public TeamPage clickCreateButton() {
         createButton.click();
-        textExact("Business units IDs")
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(777));
 
         return new TeamPage(getPage());
     }

@@ -39,8 +39,12 @@ public final class TestUtils {
     }
 
     public static void deleteUser(APIRequestContext request, User user) {
-        APIResponse response = request.delete("portal-v1/user?email=%s".formatted(encode(user.email())));
-        log.info("delete user '{}' - {} {}", user.email(), response.status(), response.text());
+        deleteUser(request, user.email());
+    }
+
+    public static void deleteUser(APIRequestContext request, String email) {
+        APIResponse response = request.delete("portal-v1/user?email=%s".formatted(encode(email)));
+        log.info("delete user '{}' - {} {}", email, response.status(), response.text());
     }
 
     public static void createBusinessUnit(APIRequestContext request, String companyName, String businessUnitName) {

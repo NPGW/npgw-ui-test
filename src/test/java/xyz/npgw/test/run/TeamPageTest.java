@@ -177,6 +177,8 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Create new company admin user")
     public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
+        String email = "email@gmail.com";
+        TestUtils.deleteUser(getApiRequestContext(), email);
         TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
 
         TeamPage teamPage = new AboutBlankPage(getPage())
@@ -193,7 +195,7 @@ public class TeamPageTest extends BaseTest {
                 .waitUntilAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
-                .fillEmailField("email@gmail.com")
+                .fillEmailField(email)
                 .fillPasswordField("Password1!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton();
