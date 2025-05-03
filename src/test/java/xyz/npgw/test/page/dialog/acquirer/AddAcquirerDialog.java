@@ -17,6 +17,7 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
     @Step("Click on the 'Create' button")
     public AcquirersPage clickCreateButton() {
+        getPage().waitForCondition(createButton::isEnabled, new Page.WaitForConditionOptions().setTimeout(5000));
         createButton.click();
 
         return new AcquirersPage(getPage());

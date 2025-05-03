@@ -38,8 +38,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("User navigate to 'Transactions page' after clicking on 'Transactions' link on the header")
     public void testNavigateToTransactionsPage() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink();
+                .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Transactions Page URL");
         assertThat(transactionsPage.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
@@ -55,17 +54,15 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Displaying selected currency")
     public void testFilterDisplaysSelectedCurrency(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickCurrencySelector()
-                .clickCurrency(currency)
+                .selectCurrency(currency)
                 .clickRefreshDataButton();
 
         Allure.step("Verify: Filter displays the selected currency");
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
     }
 
-    @Ignore
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("319")
     @Epic("Transactions")
@@ -73,12 +70,11 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Filtering transactions by Currency")
     public void testFilterTransactionsByCurrency(String currency) {
         List<String> currencyValues = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "30-04-2025")
                 .clickCurrencySelector()
-                .clickCurrency(currency)
-                .getTable()
-                .getColumnValues("Currency");
+                .selectCurrency(currency)
+                .getTable().getColumnValues("Currency");
 
         Allure.step("Verify: All values in the Currency column match the selected currency");
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
@@ -91,8 +87,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Displaying the number of rows on the screen when selecting Selector Rows.")
     public void testCountSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink();
+                .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: default row count - 25");
         assertThat(transactionsPage.getRowsPerPageButton()).containsText("25");
@@ -105,8 +100,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Displaying rows per page options when clicking on Selector Rows")
     public void testCountOptionsSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickRowsPerPageButton();
 
         Allure.step("Verify: displaying all options when clicking on Selector Rows");
@@ -120,8 +114,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Verifying that we can switch the page when we click next button")
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
@@ -137,8 +130,7 @@ public class TransactionsPageTest extends BaseTest {
             + "Apply data, Download file, Settings.")
     public void testTheVisibilityOfTheControlPanelElementsOnTheTransactionsPage() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink();
+                .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: DataRange picker is visible");
         assertThat(transactionsPage.getDateRangePicker().getDateRangePickerField()).isVisible();
@@ -187,8 +179,7 @@ public class TransactionsPageTest extends BaseTest {
                 "EXPIRED");
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickStatusSelector();
 
         Allure.step("Verify: Selector Status Options are visible");
@@ -204,8 +195,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Choose amount popup functionality")
     public void testChooseAmountPopUp() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField("10")
                 .fillAmountFromField("20")
@@ -241,8 +231,7 @@ public class TransactionsPageTest extends BaseTest {
         int amountTo = 500;
 
         List<String> amountValues = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField(String.valueOf(amountFrom))
                 .fillAmountToField(String.valueOf(amountTo))
@@ -264,8 +253,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testErrorMessageByAmount() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField("500")
                 .fillAmountToField("10");
@@ -286,8 +274,7 @@ public class TransactionsPageTest extends BaseTest {
                 "Mastercard");
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickPaymentMethodSelector();
 
         Allure.step("Verify: Payment Method Options are visible");
@@ -303,10 +290,8 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
-                .getDateRangePicker()
-                .setDateRangeFields("01-04-2025", "01-04-2024")
+                .getHeader().clickTransactionsLink()
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
@@ -403,8 +388,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testEditAmount() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField("500")
                 .fillAmountToField("10000")
@@ -425,8 +409,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testResetAmountValues() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField("500")
                 .fillAmountToField("10000")
@@ -454,8 +437,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testPresenceOfDownloadFilesOptions() {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickTransactionsLink()
+                .getHeader().clickTransactionsLink()
                 .clickDownloadButton();
 
         Allure.step("Verify: CVC option is visible");

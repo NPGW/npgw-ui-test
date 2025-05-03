@@ -138,4 +138,32 @@ public class HeaderComponentTest extends BaseTest {
         Allure.step("Verify: Login Page URL");
         assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
     }
+
+    @Test
+    @TmsLink("437")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Verify that the user can switch to the dark theme")
+    public  void testDarkColorThemeSwitch() {
+        new DashboardPage(getPage())
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickDarkRadioButton();
+
+        Allure.step("Verify that the dark color theme is selected");
+        assertThat(getPage().locator("html.dark")).isVisible();
+    }
+
+    @Test
+    @TmsLink("440")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Verify that the user can switch to the light theme")
+    public  void testLightColorThemeSwitch() {
+        new DashboardPage(getPage())
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickLightRadioButton();
+
+        Allure.step("Verify that the light color theme is selected");
+        assertThat(getPage().locator("html.light")).isVisible();
+    }
 }

@@ -66,10 +66,8 @@ public class AcquirersPageTest extends BaseTest {
     @Description("The visibility of the 'Acquirers List' header, which contains a list of Acquirers.")
     public void testVisibilityHeaderAndAcquirersList() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab();
 
         Allure.step("Verify: 'Acquirer name' header is visible");
         assertThat(acquirersPage.getAcquirerNameHeader()).isVisible();
@@ -146,7 +144,6 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Status")
     @Description("Verify that re-selecting an already selected status keeps the selection unchanged.")
     public void testRetainStatusWhenReSelectingSameOption() {
-
         List<String> expectedOptions = List.of("All", "Active", "Inactive");
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
@@ -221,7 +218,7 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Test()
+    @Test
     @TmsLink("385")
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
@@ -256,13 +253,28 @@ public class AcquirersPageTest extends BaseTest {
 
                 acquirersPage.clickNextPage();
             }
-
             totalRows.add(rowsSum);
-            acquirersPage.clickOnPaginationPage("1");
         }
 
-        boolean allTotalsSame = totalRows.stream().distinct().count() == 1;
-        Allure.step("Verify: Total rows count is the same for each 'Rows Per Page' option");
-        Assert.assertTrue(allTotalsSame, "Total rows should be the same for all 'Rows Per Page' options");
+        Assert.assertEquals(totalRows.stream().distinct().count(), 1,
+                "Total rows should be the same for all 'Rows Per Page' options");
+    }
+
+    @Test
+    @TmsLink("432")
+    @Epic("System/Acquirers")
+    @Feature("Acquirers list")
+    @Description("Verify Acquirers table contains correct column headers")
+    public void testDisplayCorrectColumnHeadersInAcquirersTable() {
+        List<String> acquirerTableHeaders = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab()
+                .getTable()
+                .getColumnHeadersText();
+
+        Allure.step("Verify: The Acquirer table contains correct column headers");
+        Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
     }
 }

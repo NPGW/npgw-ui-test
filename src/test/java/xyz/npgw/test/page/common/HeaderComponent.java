@@ -2,8 +2,8 @@ package xyz.npgw.test.page.common;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.common.Constants;
@@ -30,6 +30,8 @@ public class HeaderComponent extends BaseComponent {
     private final Locator repeatPasswordField = placeholder("Repeat new password");
     private final Locator saveButton = locator("button:has-text('Save')");
     private final Locator logOutButtonUserMenu = menuItemByName("Log Out");
+    private final Locator lightRadioButtonInUserMenu = radioButton("Light");
+    private final Locator darkRadioButtonInUserMenu = radioButton("Dark");
 
     public HeaderComponent(Page page) {
         super(page);
@@ -38,8 +40,6 @@ public class HeaderComponent extends BaseComponent {
     @Step("Click on 'Transactions' menu in Header")
     public TransactionsPage clickTransactionsLink() {
         ResponseUtils.clickAndWaitForResponse(getPage(), transactionsButton, Constants.TRANSACTION_HISTORY_ENDPOINT);
-        getPage().getByRole(AriaRole.ROW).first().waitFor();
-        getPage().getByRole(AriaRole.ROW).last().waitFor();
 
         return new TransactionsPage(getPage());
     }
@@ -53,7 +53,7 @@ public class HeaderComponent extends BaseComponent {
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-        ResponseUtils.clickAndWaitForResponse(getPage(), systemAdministrationButton, Constants.COMPANY_ENDPOINT);
+        ResponseUtils.clickAndWaitForResponse(getPage(), systemAdministrationButton, Constants.ASSETS_TEAM);
 
         return new TeamPage(getPage());
     }
@@ -115,6 +115,20 @@ public class HeaderComponent extends BaseComponent {
         getPage().waitForURL("**/");
 
         return new LoginPage(getPage());
+    }
+
+    @Step("Click the 'Light' radio button in the user menu")
+    public DashboardPage clickLightRadioButton() {
+        lightRadioButtonInUserMenu.click();
+
+        return new DashboardPage(getPage());
+    }
+
+    @Step ("Click the 'Dark' radio button in the user menu")
+    public DashboardPage clickDarkRadioButton() {
+        darkRadioButtonInUserMenu.click();
+
+        return new DashboardPage(getPage());
     }
 
     public boolean isLogoImageLoaded() {

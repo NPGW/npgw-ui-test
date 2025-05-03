@@ -19,6 +19,9 @@ import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static xyz.npgw.test.common.util.TestUtils.createAcquirer;
+import static xyz.npgw.test.common.util.TestUtils.deleteAcquirer;
+import static xyz.npgw.test.common.util.TestUtils.getAcquirer;
 
 public class AddAcquirerDialogTest extends BaseTest {
 
@@ -87,7 +90,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 
-    @Ignore("fail after latest update")
+    @Ignore("Country and Timezone fields not exists already - fail after latest update (FALU)")
     @Test
     @TmsLink("322")
     @Epic("System/Acquirers")
@@ -170,7 +173,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(addAcquirerDialog.getSelectDropdown()).hasText("No items.");
     }
 
-    @Ignore("fail after latest update")
+    @Ignore("Timezone field not exists already (FALU)")
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("326")
     @Epic("System/Acquirers")
@@ -196,5 +199,71 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         Allure.step(String.format("Verify: Timezone field is timezone '%s'", icelandTimezone));
         assertThat(addAcquirerDialog.getSelectTimezone()).hasText(icelandTimezone);
+    }
+
+    @Test
+    @TmsLink("412")
+    @Epic("System/Acquirers")
+    @Feature("Add acquirer")
+    @Description("Verify that a new Acquirer can be successfully created and appears in the Acquirers dropdown.")
+    public void testAcquirerSuccessfullyCreatedAndAppearsInDropdown() {
+
+        String acquirerName = "Awesome acquirer";
+        deleteAcquirer(getApiRequestContext(), acquirerName);
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab()
+                .clickAddAcquirer()
+                .enterAcquirerName(acquirerName)
+                .clickCheckboxCurrency("USD")
+                .clickCreateButton();
+
+        Allure.step("Verify: Acquirer creation success message is displayed");
+        assertThat(acquirersPage.getAlertMessage()).containsText(
+                "SUCCESSAcquirer was created successfully");
+
+        Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
+        assertThat(acquirersPage.getAddAcquirerDialog()).isHidden();
+
+        acquirersPage.enterAcquirerName(acquirerName);
+
+        Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", acquirerName));
+        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(acquirerName);
+    }
+
+    @Test
+    @TmsLink("427")
+    @Epic("System/Acquirers")
+    @Feature("Add acquirer")
+    @Description("Verify error appears when creating an Acquirer with a duplicate name.")
+    public void testCreateAcquirerWithDuplicateNameShowsError() {
+
+        String acquirerName = "Awesome acquirer";
+        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
+            createAcquirer(getApiRequestContext(), acquirerName);
+        }
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab();
+
+        AddAcquirerDialog acquirerDialog = acquirersPage
+                .clickAddAcquirer()
+                .enterAcquirerName(acquirerName)
+                .clickCheckboxCurrency("USD");
+
+        acquirerDialog.clickCreateButton();
+
+        Allure.step("Verify: Acquirer Error message is displayed");
+        assertThat(acquirerDialog.getAlertMessage()).containsText(
+                "Acquirer with name {" + acquirerName + "} already exists.");
+
+        Allure.step("Verify: the 'Add acquirer' dialog is not closed");
+        assertThat(acquirersPage.getAddAcquirerDialog()).not().isHidden();
     }
 }
