@@ -114,8 +114,8 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public EditAcquirerDialog clickEditButtonForAcquirer(String name) {
-        optionByName(name).getByText("Edit").click();
+    public EditAcquirerDialog clickEditButtonForAcquirer(Locator row) {
+        row.locator("button[data-testid='EditAcquirerButton']").click();
 
         return new EditAcquirerDialog(getPage());
     }
