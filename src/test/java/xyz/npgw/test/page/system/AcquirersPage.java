@@ -76,6 +76,13 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         return this;
     }
 
+    @Step("Enter '{acquirerName}' into select acquirer placeholder")
+    public AcquirersPage clickAcquirerInDropdown(String acquirerName) {
+        dropdownAcquirerList.getByText(acquirerName,new Locator.GetByTextOptions().setExact(true)).click();
+
+        return this;
+    }
+
     public Locator getSelectAcquirersDropdownItems() {
         dropdownAcquirerList.last().waitFor();
 
