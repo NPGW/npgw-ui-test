@@ -26,8 +26,7 @@ public class MenuComponent extends BaseComponent {
     @Step("Click Acquirers Tab")
     public AcquirersPage clickAcquirersTab() {
         acquirersTab.click();
-        textExact("Acquirer name")
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(888));
+        textExact("Acquirer name").waitFor();
 
         return new AcquirersPage(getPage());
     }
@@ -35,8 +34,7 @@ public class MenuComponent extends BaseComponent {
     @Step("Click Gateway Tab")
     public GatewayPage clickGatewayTab() {
         gatewayTab.click();
-        textExact("Business units list")
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(899));
+        textExact("Business units list").waitFor();
 
         return new GatewayPage(getPage());
     }
