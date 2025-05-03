@@ -5,7 +5,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.common.util.ResponseUtils;
 import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.NoSuchElementException;
@@ -41,7 +40,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        ResponseUtils.waitUntilInputReady(selectCompanyField, 2500);
+        getPage().waitForTimeout(1500);
 
         String lastName = "";
 
