@@ -3,7 +3,9 @@ package xyz.npgw.test.common.util;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class ResponseUtils {
 
     public static void clickAndWaitForResponse(Page page, Locator locator, String endpoint) {
@@ -30,6 +32,7 @@ public class ResponseUtils {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ignored) {
+                log.info("InterruptedException ignored");
             }
         }
     }

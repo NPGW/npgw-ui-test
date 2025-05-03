@@ -41,7 +41,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        ResponseUtils.waitUntilInputReady(selectCompanyField, 1500);
+        ResponseUtils.waitUntilInputReady(selectCompanyField, 2500);
 
         String lastName = "";
 
