@@ -36,7 +36,7 @@ public class TableComponent extends BaseComponent {
 
     @Step("Get list of values in column '{columnHeaderName}'")
     public List<String> getColumnValues(String columnHeaderName) {
-        int columnIndex = getColumnHeaderIndexByName(columnHeaderName) - 1;
+        int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
 
         return tableRows.all().stream()
                 .map(row -> row.getByRole(AriaRole.GRIDCELL).nth(columnIndex).textContent())
