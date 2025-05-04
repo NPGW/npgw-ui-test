@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertEquals;
 import static xyz.npgw.test.common.util.TestUtils.createAcquirer;
 import static xyz.npgw.test.common.util.TestUtils.getAcquirer;
 
@@ -297,15 +296,18 @@ public class AcquirersPageTest extends BaseTest {
                 .getHeader()
                 .clickSystemAdministrationLink()
                 .getSystemMenu()
-                .clickAcquirersTab();
+                .clickAcquirersTab()
+                .enterAcquirerName(acquirerName)
+                .clickAcquirerInDropdown(acquirerName);
 
         Locator row = acquirersPage
-                .enterAcquirerName(acquirerName)
-                .clickAcquirerInDropdown(acquirerName)
                 .getTable()
                 .getTableRows();
 
-        Allure.step("Verify placeholders match expected values for all fields");
-        assertEquals(actualPlaceholders, expectedPlaceholders);
+        Allure.step("Verify: List has only 1 row");
+        assertThat(row).hasCount(1);
+
+        String acquirerNameInList = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(0)).get(0); // Пустое значение
+
     }
 }
