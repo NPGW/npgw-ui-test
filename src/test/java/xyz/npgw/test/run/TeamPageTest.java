@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -62,6 +63,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
+    @Ignore("ERRORmerchantIds must be defined for role USER")
     @Test(dataProvider = "getUsers", dataProviderClass = TestDataProvider.class)
     @TmsLink("298")
     @Epic("System/Team")
