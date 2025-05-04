@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
-import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
+import xyz.npgw.test.page.dialog.acquirer.EditAcquirer;
 
 import java.util.List;
 import java.util.Objects;
@@ -113,10 +113,20 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public EditAcquirerDialog clickEditAcquirerButton(Locator row) {
+    public EditAcquirer clickEditAcquirerButton(Locator row) {
         row.locator("button[data-testid='EditAcquirerButton']").click();
 
-        return new EditAcquirerDialog(getPage());
+        return new EditAcquirer(getPage());
+    }
+
+    public Locator getEditAcquirerButton(Locator row) {
+
+        return row.locator("button[data-testid='EditAcquirerButton']");
+    }
+
+    public Locator getDeactivateAcquirerButton(Locator row) {
+
+        return row.locator("button[data-testid='ChangeBusinessUnitActivityButton']");
     }
 
     @Step("Click the 'Rows Per Page' dropdown Chevron")

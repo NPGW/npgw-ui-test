@@ -13,14 +13,16 @@ import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.common.TableComponent;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static xyz.npgw.test.common.util.TestUtils.createAcquirer;
-import static xyz.npgw.test.common.util.TestUtils.getAcquirer;
+import static xyz.npgw.test.common.util.TestUtils.deleteAcquirer;
 
 public class AcquirersPageTest extends BaseTest {
 
@@ -279,35 +281,57 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Table shows one Acquirer row when selected.")
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
-        String acquirerName = "Acquirer 11.002.01";
-        Acquirer acquirer = new Acquirer("NGenius", "et", new SystemConfig(), acquirerName, new String[]{"USD"}, true);
+        Acquirer acquirer = new Acquirer(
+                "NGenius",
+                "et",
+                new SystemConfig("something 1", "something 2", "something 3", "something 4"),
+                "Acquirer 11.002.01",
+                new String[]{"USD", "EUR"},
+                true);
 
-        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
-            createAcquirer(getApiRequestContext(), acquirerName);
-        }
+        deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
+        createAcquirer(getApiRequestContext(), acquirer);
+
+        Map<String, String> expectedColumnValues = Map.of(
+                COLUMNS_HEADERS.get(0), acquirer.acquirerName(),
+                COLUMNS_HEADERS.get(1), acquirer.acquirerCode(),
+                COLUMNS_HEADERS.get(2), String.join(", ", acquirer.currencyList()),
+                COLUMNS_HEADERS.get(3), acquirer.acquirerConfig(),
+                COLUMNS_HEADERS.get(4), acquirer.systemConfig().toString(),
+                COLUMNS_HEADERS.get(5), acquirer.isActive() ? "Active" : "Inactive"
+        );
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
-                .enterAcquirerName(acquirerName)
-                .clickAcquirerInDropdown(acquirerName);
+                .enterAcquirerName(acquirer.acquirerName())
+                .clickAcquirerInDropdown(acquirer.acquirerName());
 
-        Locator row = acquirersPage
-                .getTable().getTableRows();
+        TableComponent table = acquirersPage.getTable();
+
+        Locator row = table.getTableRows();
 
         Allure.step("Verify: List has only 1 row");
         assertThat(row).hasCount(1);
 
+        for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
+            String header = COLUMNS_HEADERS.get(i);
+            String expected = expectedColumnValues.get(header);
+            String actual = table.getColumnValues(header).get(0);
 
+            Allure.step(String.format("Verify displayed %s is: %s", header, expected));
+            Assert.assertEquals(
+                    actual,
+                    expected,
+                    String.format("%s in the table does not match the expected value", header)
+            );
+        }
 
-        String _1 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(0)).get(0);
-        String _2 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(1)).get(0);
-        String _3 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(2)).get(0);
-        String _4 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(3)).get(0);
-        String _5 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(4)).get(0);
-        String _6 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(5)).get(0);
-        String _7 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(6)).get(0);
+        Allure.step("Verify: Edit button is visible");
+        assertThat(acquirersPage.getEditAcquirerButton(row)).isVisible();
 
+        Allure.step("Verify: Deactivate acquirer button is visible");
+        assertThat(acquirersPage.getEditAcquirerButton(row)).isVisible();
     }
 }

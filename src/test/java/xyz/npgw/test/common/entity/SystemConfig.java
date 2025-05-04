@@ -9,4 +9,9 @@ public record SystemConfig(
     public SystemConfig() {
         this("", "", "", "");
     }
+
+    @Override
+    public String toString() {
+        return challengeUrl + fingerprintUrl + resourceUrl + notificationQueue;
+    }
 }
