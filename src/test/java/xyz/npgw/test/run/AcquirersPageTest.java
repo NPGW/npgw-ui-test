@@ -309,6 +309,7 @@ public class AcquirersPageTest extends BaseTest {
                 "\nAcquirer config: " + _4 +
                 "\nSystem config: " + _5 +
                 "\nStatus: " + _6 +
-                "\nActions: " + _7);
+                "\nActions: " + _7 +
+                "\n ");
     }
 }
