@@ -307,7 +307,6 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: List has only 1 row");
         assertThat(row).hasCount(1);
 
-
         String _1 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(0)).get(0); // Acquirer name пустое значение
         String _2 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(1)).get(0);
         String _3 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(2)).get(0);
