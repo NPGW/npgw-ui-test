@@ -39,7 +39,11 @@ public class TableComponent extends BaseComponent {
         int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
 
         return tableRows.all().stream()
-                .map(row -> row.getByRole(AriaRole.GRIDCELL).nth(columnIndex).textContent())
+                .map(row -> row
+                        .getByRole(AriaRole.GRIDCELL)
+                        .or(row.getByRole(AriaRole.ROWHEADER))
+                        .nth(columnIndex)
+                        .textContent())
                 .collect(Collectors.toList());
     }
 
