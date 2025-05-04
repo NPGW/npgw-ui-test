@@ -83,6 +83,7 @@ public abstract class BaseTest {
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
 
+        log.info("{}", getTestName(method, testResult).replace("(", "_").split("_")[0]);
         initApiRequestContext();
         openSite(args);
     }
@@ -96,7 +97,10 @@ public abstract class BaseTest {
         }
 
         long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
-        log.info("{} {} in {} s", testName, testResult.isSuccess(), testDuration);
+        log.info("{} {} in {} s",
+                testResult.isSuccess() ? "OK" : "FAILED",
+                testName.split("/")[1],
+                testDuration);
 
         Path videoFilePath = Paths
                 .get(ProjectProperties.getArtefactDir(), ProjectProperties.getBrowserType(), testName + ".webm");
@@ -183,7 +187,7 @@ public abstract class BaseTest {
     }
 
     private void initApiRequestContext() {
-        if(LocalTime.now().isBefore(bestBefore)) {
+        if (LocalTime.now().isBefore(bestBefore)) {
             return;
         }
 
