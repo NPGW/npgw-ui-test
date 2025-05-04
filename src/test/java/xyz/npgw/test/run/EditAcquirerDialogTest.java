@@ -42,19 +42,17 @@ public class EditAcquirerDialogTest extends BaseTest {
         );
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .enterAcquirerName(acquirerName)
                 .clickAcquirerInDropdown(acquirerName);
 
         Locator row = acquirersPage
-                .getTable()
-                .getTableRows();
+                .getTable().getTableRows();
 
         List<String> actualPlaceholders = acquirersPage
-                .clickEditButtonForAcquirer(row)
+                .clickEditAcquirerButton(row)
                 .getPlaceholdersOrTextsFromFields();
 
         Allure.step("Verify placeholders match expected values for all fields");
