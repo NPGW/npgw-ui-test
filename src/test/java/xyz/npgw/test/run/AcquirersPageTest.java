@@ -279,7 +279,9 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("463")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
-    @Description("Table shows one Acquirer row when selected.")
+    @Description(
+            "Verifies that the Acquirers table displays correct data for the selected acquirer and shows relevant "
+                    + "action buttons.")
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
         Acquirer acquirer = new Acquirer(
                 "NGenius",
