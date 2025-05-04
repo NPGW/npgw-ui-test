@@ -277,7 +277,6 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Table shows one Acquirer row when selected.")
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
-
         String acquirerName = "Acquirer 11.002.01";
         if (!getAcquirer(getApiRequestContext(), acquirerName)) {
             createAcquirer(getApiRequestContext(), acquirerName);
