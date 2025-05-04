@@ -153,6 +153,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     }
 
     public boolean isLastPage() {
+
         return Objects.equals(paginationNext.getAttribute("tabindex"), "-1");
     }
 }
