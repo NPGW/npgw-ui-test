@@ -109,6 +109,11 @@ public final class TestUtils {
         log.info("create acquirer '{}' - {} {}", acquirerName, response.status(), response.text());
     }
 
+    public static void createAcquirer(APIRequestContext request, Acquirer acquirer) {
+        APIResponse response = request.post("portal-v1/acquirer", RequestOptions.create().setData(acquirer));
+        log.info("create acquirer '{}' - {} {}", acquirer.acquirerName(), response.status(), response.text());
+    }
+
     public static boolean getAcquirer(APIRequestContext request, String acquirerName) {
         APIResponse response = request.get("portal-v1/acquirer/%s".formatted(encode(acquirerName)));
         log.info("get acquirer '{}' - {} {}", acquirerName, response.status(), response.text());

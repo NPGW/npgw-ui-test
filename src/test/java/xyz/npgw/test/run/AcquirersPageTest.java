@@ -9,6 +9,8 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.Acquirer;
+import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.AcquirersPage;
@@ -278,6 +280,8 @@ public class AcquirersPageTest extends BaseTest {
     @Description("Table shows one Acquirer row when selected.")
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
         String acquirerName = "Acquirer 11.002.01";
+        Acquirer acquirer = new Acquirer("NGenius", "et", new SystemConfig(), acquirerName, new String[]{"USD"}, true);
+
         if (!getAcquirer(getApiRequestContext(), acquirerName)) {
             createAcquirer(getApiRequestContext(), acquirerName);
         }
@@ -295,22 +299,15 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: List has only 1 row");
         assertThat(row).hasCount(1);
 
-        String _1 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(0)).get(0); // Acquirer name пустое значение
+
+
+        String _1 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(0)).get(0);
         String _2 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(1)).get(0);
         String _3 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(2)).get(0);
         String _4 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(3)).get(0);
         String _5 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(4)).get(0);
         String _6 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(5)).get(0);
-//        String _7 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(6)).get(0);
+        String _7 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(6)).get(0);
 
-        System.out.print(
-                "\nAcquirer name: " + _1 +
-                "\nAcquirer code: " + _2 +
-                "\nCurrencies: " + _3 +
-                "\nAcquirer config: " + _4 +
-                "\nSystem config: " + _5 +
-                "\nStatus: " + _6 +
-//                "\nActions: " + _7 +
-                "\n ");
     }
 }
