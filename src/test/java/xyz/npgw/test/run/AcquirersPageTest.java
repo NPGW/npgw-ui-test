@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static xyz.npgw.test.common.util.TestUtils.createAcquirer;
+import static xyz.npgw.test.common.util.TestUtils.getAcquirer;
 
 public class AcquirersPageTest extends BaseTest {
 
@@ -276,5 +279,33 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: The Acquirer table contains correct column headers");
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
+    }
+
+    @Test
+    @TmsLink("463")
+    @Epic("System/Acquirers")
+    @Feature("Acquirers list")
+    @Description("Table shows one Acquirer row when selected.")
+    public void testDisplaySingleRowWhenAcquirerIsSelected() {
+
+        String acquirerName = "Acquirer 11.002.01";
+        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
+            createAcquirer(getApiRequestContext(), acquirerName);
+        }
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader()
+                .clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab();
+
+        Locator row = acquirersPage
+                .enterAcquirerName(acquirerName)
+                .clickAcquirerInDropdown(acquirerName)
+                .getTable()
+                .getTableRows();
+
+        Allure.step("Verify placeholders match expected values for all fields");
+        assertEquals(actualPlaceholders, expectedPlaceholders);
     }
 }
