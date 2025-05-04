@@ -34,17 +34,30 @@ public class TableComponent extends BaseComponent {
         throw new NoSuchElementException("Column with header '" + columnHeaderName + "' not found.");
     }
 
-    @Step("Get list of values in column '{columnHeaderName}'")
-    public List<String> getColumnValues(String columnHeaderName) {
-        int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
+    public Locator getHeaderByName(String name) {
 
-        return tableRows.all().stream()
-                .map(row -> row
-                        .getByRole(AriaRole.GRIDCELL)
-                        .or(row.getByRole(AriaRole.ROWHEADER))
-                        .nth(columnIndex)
-                        .textContent())
-                .collect(Collectors.toList());
+        return tableHeader.getByText(name);
+    }
+
+    @Step("Get list of values in column '{columnHeaderName}'")
+//    public List<String> getColumnValues(String columnHeaderName) {
+//        int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
+//
+//        return tableRows.all().stream()
+//                .map(row -> row
+//                        .getByRole(AriaRole.GRIDCELL)
+//                        .or(row.getByRole(AriaRole.ROWHEADER))
+//                        .nth(columnIndex)
+//                        .textContent())
+//                .collect(Collectors.toList());
+//    }
+
+    public List<String> getColumnValues(String columnHeaderName) {
+        Locator header = getHeaderByName(columnHeaderName);
+        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
+        Locator cells = getPage().locator("tr[role='row'] > td:nth-child(" + (columnIndex + 1) + ")");
+
+        return cells.allInnerTexts();
     }
 
     public List<String> getColumnHeadersText() {
