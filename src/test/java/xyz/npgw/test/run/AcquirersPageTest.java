@@ -301,15 +301,16 @@ public class AcquirersPageTest extends BaseTest {
         String _4 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(3)).get(0);
         String _5 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(4)).get(0);
         String _6 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(5)).get(0);
-        String _7 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(6)).get(0);
+//        String _7 = acquirersPage.getTable().getColumnValues(COLUMNS_HEADERS.get(6)).get(0);
 
-        System.out.print("\nAcquirer name: " + _1 +
+        System.out.print(
+                "\nAcquirer name: " + _1 +
                 "\nAcquirer code: " + _2 +
                 "\nCurrencies: " + _3 +
                 "\nAcquirer config: " + _4 +
                 "\nSystem config: " + _5 +
                 "\nStatus: " + _6 +
-                "\nActions: " + _7 +
+//                "\nActions: " + _7 +
                 "\n ");
     }
 }
