@@ -299,7 +299,11 @@ public class AcquirersPageTest extends BaseTest {
                 COLUMNS_HEADERS.get(1), acquirer.acquirerCode(),
                 COLUMNS_HEADERS.get(2), String.join(", ", acquirer.currencyList()),
                 COLUMNS_HEADERS.get(3), acquirer.acquirerConfig(),
-                COLUMNS_HEADERS.get(4), acquirer.systemConfig().toString(),
+                COLUMNS_HEADERS.get(4), String.join("\n",
+                        acquirer.systemConfig().challengeUrl(),
+                        acquirer.systemConfig().fingerprintUrl(),
+                        acquirer.systemConfig().resourceUrl(),
+                        acquirer.systemConfig().notificationQueue()),
                 COLUMNS_HEADERS.get(5), acquirer.isActive() ? "Active" : "Inactive"
         );
 
@@ -335,5 +339,9 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: Deactivate acquirer button is visible");
         assertThat(acquirersPage.getEditAcquirerButton(row)).isVisible();
+
+        Allure.step("Verify: That pagination shows one page");
+        assertThat(acquirersPage.getPaginationItems()).isVisible();
+        assertThat(acquirersPage.getPaginationItems()).containsText("1");
     }
 }
