@@ -139,6 +139,7 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Edits the user's role and status, verifies the updates, and reactivates the user(e2e).")
     public void testEditUser() {
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), user);
         TestUtils.deleteUser(getApiRequestContext(), user);
         TestUtils.createUser(getApiRequestContext(), user);
 
