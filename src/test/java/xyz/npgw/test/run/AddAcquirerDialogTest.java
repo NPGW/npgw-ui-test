@@ -212,8 +212,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         deleteAcquirer(getApiRequestContext(), acquirerName);
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
@@ -247,8 +246,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         }
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab();
 
