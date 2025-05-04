@@ -19,7 +19,7 @@ import xyz.npgw.test.page.common.HeaderComponent;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class HeaderComponentTest extends BaseTest {
+public class HeaderTest extends BaseTest {
 
     @Test
     @TmsLink("209")
