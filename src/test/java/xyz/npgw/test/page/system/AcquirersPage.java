@@ -77,7 +77,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     @Step("Click '{acquirerName}' in dropdown")
     public AcquirersPage clickAcquirerInDropdown(String acquirerName) {
-        dropdownAcquirerList.getByText(acquirerName,new Locator.GetByTextOptions().setExact(true)).click();
+        dropdownAcquirerList.getByText(acquirerName, new Locator.GetByTextOptions().setExact(true)).click();
 
         return this;
     }
