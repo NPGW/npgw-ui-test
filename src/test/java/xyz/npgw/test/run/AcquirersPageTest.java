@@ -340,7 +340,7 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: Deactivate acquirer button is visible");
         assertThat(acquirersPage.getEditAcquirerButton(row)).isVisible();
 
-        Allure.step("Verify: That pagination shows one page");
+        Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getPaginationItems()).isVisible();
         assertThat(acquirersPage.getPaginationItems()).containsText("1");
     }
