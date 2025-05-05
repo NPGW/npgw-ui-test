@@ -16,7 +16,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
-    @Ignore
     @Test
     @TmsLink("387")
     @Epic("System/Companies and business units")
