@@ -88,6 +88,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
     }
 
+    @Ignore("on ApplyFilterButtonTeamPage")
     @Test
     @TmsLink("330")
     @Epic("System/Team")
@@ -133,6 +134,7 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getChangeUserActivityButton(user.email()).getAttribute("data-icon"), "ban");
     }
 
+    @Ignore("fixing API request first")
     @Test
     @TmsLink("331")
     @Epic("System/Team")

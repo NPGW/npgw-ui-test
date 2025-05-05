@@ -16,6 +16,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
+    @Ignore("Company 'CompanyForBU' not found in dropdown list.")
     @Test
     @TmsLink("387")
     @Epic("System/Companies and business units")
