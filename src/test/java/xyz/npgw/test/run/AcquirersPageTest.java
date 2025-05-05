@@ -318,7 +318,7 @@ public class AcquirersPageTest extends BaseTest {
 
         Locator row = table.getTableRows();
 
-        Allure.step("Verify: List has only 1 row");
+        Allure.step("Verify: List of acquirers has only 1 row in the table");
         assertThat(row).hasCount(1);
 
         for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
@@ -326,7 +326,7 @@ public class AcquirersPageTest extends BaseTest {
             String expected = expectedColumnValues.get(header);
             String actual = table.getColumnValues(header).get(0);
 
-            Allure.step(String.format("Verify displayed %s is: %s", header, expected));
+            Allure.step(String.format("Verify that displayed '%s' is: %s", header, expected));
             Assert.assertEquals(
                     actual,
                     expected,
