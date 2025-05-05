@@ -108,7 +108,7 @@ public class TeamPageTest extends BaseTest {
                 .fillPasswordField(user.password())
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
-                .setAllowedBusinessUnits(user)
+                .setFirstAllowedBusinessUnit(user)
                 .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");

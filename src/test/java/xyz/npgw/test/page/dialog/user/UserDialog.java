@@ -83,9 +83,23 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     public CurrentDialogT setAllowedBusinessUnits(User user) {
         if (user.userRole().equals(UserRole.USER)) {
             String[] businessUnits = user.merchantIds();
+            allowedBusinessUnitsTitle.waitFor();
             for (String businessUnit : businessUnits) {
-                checkbox(businessUnit).all().forEach(item -> item.setChecked(true));
+                checkbox(businessUnit).all().forEach(item -> {
+                    item.waitFor();
+                    item.setChecked(true);
+                });
             }
+        }
+
+        return (CurrentDialogT) this;
+    }
+
+    @Step("Set checked first 'Allowed business units' checkbox")
+    public CurrentDialogT setFirstAllowedBusinessUnit(User user) {
+        if (user.userRole().equals(UserRole.USER)) {
+            allowedBusinessUnitsTitle.waitFor();
+            checkbox(user.merchantIds()[0]).first().setChecked(true);
         }
 
         return (CurrentDialogT) this;
@@ -103,5 +117,4 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
         return (CurrentDialogT) this;
     }
-
 }
