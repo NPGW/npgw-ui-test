@@ -82,8 +82,6 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     @Step("Set checked 'Allowed business units' checkboxes by business units names")
     public CurrentDialogT setAllowedBusinessUnits(User user) {
         if (user.userRole().equals(UserRole.USER)) {
-            allowedBusinessUnitsTitle.waitFor();
-
             String[] businessUnits = user.merchantIds();
             for (String businessUnit : businessUnits) {
                 checkbox(businessUnit).all().forEach(item -> item.setChecked(true));

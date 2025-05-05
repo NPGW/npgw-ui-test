@@ -109,8 +109,7 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user)
-                .clickCreateButton()
-                .clickApplyFilter();
+                .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
@@ -154,7 +153,7 @@ public class TeamPageTest extends BaseTest {
                 .unsetAllowedBusinessUnits(user.merchantIds())
                 .setUserRoleRadiobutton(updatedUser.userRole())
                 .clickSaveChangesButton()
-                .clickApplyFilter(); // Шаг добавлен т.к. обновленные данные не каждый раз появляются на ui
+                .clickRefreshDataButton(); // Шаг добавлен т.к. обновленные данные не каждый раз появляются на ui
 
         Allure.step("Verify: success alert appears after user update");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
@@ -237,7 +236,7 @@ public class TeamPageTest extends BaseTest {
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .clickRefreshDataButton()
                 .getTable().clickEditUserButton(email)
                 .checkInactiveRadiobutton()
                 .clickSaveChangesButton();
@@ -279,7 +278,7 @@ public class TeamPageTest extends BaseTest {
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .clickRefreshDataButton()
                 .getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton();
 
@@ -287,7 +286,7 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshData();
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
