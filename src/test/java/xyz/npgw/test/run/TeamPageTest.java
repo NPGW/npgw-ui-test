@@ -259,7 +259,7 @@ public class TeamPageTest extends BaseTest {
     public void testDeactivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "deactivated@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(),"Amazon1");
+        TestUtils.createCompany(getApiRequestContext(), "Amazon1");
         TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
 
         TeamPage teamPage = new AboutBlankPage(getPage())
@@ -293,6 +293,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
 
         Allure.step("Verify: deactivate user icon appears");
-        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon","check");
+        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
     }
 }

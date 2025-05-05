@@ -58,7 +58,7 @@ public class TableComponent<CurrentPageT> extends BaseComponent {
     }
 
     public Locator getTableRow(String email) {
-        Locator rowHeader = getPage().getByRole(AriaRole.ROWHEADER,new Page.GetByRoleOptions().setName(email));
+        Locator rowHeader = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(email));
 
         return  getTableRows().filter(new Locator.FilterOptions().setHas(rowHeader));
     }
