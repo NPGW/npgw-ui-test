@@ -9,7 +9,6 @@ import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Getter
 public class TableComponent extends BaseComponent {
