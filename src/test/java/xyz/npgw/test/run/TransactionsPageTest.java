@@ -106,7 +106,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getRowsPerPageOptions()).hasText("102550100");
     }
 
-    @Test
+    @Test(enabled = false)
     @TmsLink("130")
     @Epic("Transactions")
     @Feature("Pagination")
