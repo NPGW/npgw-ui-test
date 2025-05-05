@@ -19,6 +19,10 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait, Se
     private final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
     private final Locator selectCompanyInput = placeholder("Search...");
 
+    private Locator userRow(String username) {
+        return getPage().getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username));
+    }
+
     public TeamPage(Page page) {
         super(page);
     }
@@ -31,33 +35,24 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait, Se
     }
 
     @Step("Click 'Edit user'")
-    public EditUserDialog clickEditUser(String username) {
-        Locator editButton = getPage().getByRole(
-                AriaRole.ROW, new Page.GetByRoleOptions().setName(username)).getByTestId("EditUserButton");
-        editButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+    public EditUserDialog clickEditUserButton(String username) {
+        Locator editButton = userRow(username).getByTestId("EditUserButton");
+        editButton.waitFor();
         editButton.click();
 
         return new EditUserDialog(getPage());
     }
 
     public Locator getUserEmailByUsername(String username) {
-        Locator row = getPage()
-                .getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username));
-
-        return row.locator("td").first();
+        return userRow(username).locator("td").first();
     }
 
     public Locator getUserRoleByUsername(String username) {
-        Locator row = getPage()
-                .getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username));
-
-        return row.locator("td").nth(1);
+        return userRow(username).locator("td").nth(1);
     }
 
     public Locator getUserStatusByUsername(String username) {
-        return getPage()
-                .getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username))
-                .locator("td").nth(2);
+        return userRow(username).locator("td").nth(2);
     }
 
     public Locator waitForChangingUserStatusText(String username, String expectedText) {
@@ -84,8 +79,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait, Se
     }
 
     public Locator getChangeUserActivityButton(String username) {
-        return getPage()
-                .getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username))
+        return userRow(username)
                 .getByTestId("ChangeUserActivityButton")
                 .locator("svg");
     }

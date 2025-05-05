@@ -148,7 +148,7 @@ public class TeamPageTest extends BaseTest {
         EditUserDialog editUserDialog = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
-                .clickEditUser(user.email());
+                .clickEditUserButton(user.email());
 
         Allure.step("Verify: 'Edit user' header is displayed");
         assertThat(editUserDialog.getDialogHeader()).hasText("Edit user");
@@ -237,7 +237,7 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: user status becomes 'Inactive' in the table");
         assertThat(teamPage.waitForChangingUserStatusText(user.email(), "Inactive")).hasText("Inactive");
 
-        Allure.step("Verify: 'Activate' icon is shown for the user");
+        Allure.step("Verify: 'Activate user' icon is shown for the user");
         assertEquals(teamPage.getChangeUserActivityButton(user.email()).getAttribute("data-icon"), "check");
     }
 }
