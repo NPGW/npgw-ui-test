@@ -178,7 +178,7 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("474")
     @Epic("System/Team")
     @Feature("Add user")
     @Description("Create new company admin user")
@@ -211,7 +211,7 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("475")
     @Epic("System/Team")
     @Feature("Edit user")
     @Description("Edit user under company admin")
@@ -252,7 +252,7 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("476")
     @Epic("System/Team")
     @Feature("Edit user")
     @Description("Deactivate user under company admin")
@@ -288,6 +288,8 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+
+        teamPage.clickRefreshData();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
