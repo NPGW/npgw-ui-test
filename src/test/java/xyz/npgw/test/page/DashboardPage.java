@@ -17,10 +17,6 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
         super(page);
     }
 
-    protected Locator alert(String text) {
-        return getPage().getByRole(AriaRole.ALERT, new Page.GetByRoleOptions().setName(text));
-    }
-
     @Step("Click 'Refresh data' button")
     public DashboardPage clickRefreshDataButton() {
         refreshDataButton.click();

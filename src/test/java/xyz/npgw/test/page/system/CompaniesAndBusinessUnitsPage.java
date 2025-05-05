@@ -48,10 +48,6 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         super(page);
     }
 
-    protected Locator alert(String text) {
-        return getPage().getByRole(AriaRole.ALERT, new Page.GetByRoleOptions().setName(text));
-    }
-
     @Step("Click 'Add company' button")
     public AddCompanyDialog clickAddCompanyButton() {
         addCompanyButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));

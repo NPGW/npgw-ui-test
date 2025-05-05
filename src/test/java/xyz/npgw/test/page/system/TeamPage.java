@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
+import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.common.SelectCompanyTrait;
 import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
@@ -13,7 +14,7 @@ import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 
 @Log4j2
-public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait, SelectCompanyTrait<TeamPage> {
+public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<TeamPage>, SelectCompanyTrait<TeamPage> {
 
     private final Locator applyFilterButton = getByTestId("ApplyFilterButtonTeamPage");
     private final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
@@ -84,5 +85,19 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait, Se
         button.click();
 
         return new ChangeUserActivityDialog(getPage());
+    }
+
+    public TeamPage waitUntilAlertIsGone() {
+        alert("SUCCESS").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        alert("SUCCESS").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+
+        return this;
+    }
+
+    @Step("Click 'Refresh data'")
+    public TeamPage clickRefreshData() {
+        getPage().getByTestId("ApplyFilterButtonTeamPage").click();
+
+        return this;
     }
 }
