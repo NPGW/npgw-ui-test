@@ -107,8 +107,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getRowsPerPageOptions()).hasText("102550100");
     }
 
-    @Ignore("failed on next page button")
-    @Test
+    @Test(enabled = false)
     @TmsLink("130")
     @Epic("Transactions")
     @Feature("Pagination")

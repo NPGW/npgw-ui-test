@@ -8,8 +8,8 @@ import xyz.npgw.test.page.system.TeamPage;
 
 public class ChangeUserActivityDialog extends BaseDialog<TeamPage, ChangeUserActivityDialog> {
 
-    private final Locator deactivateButton = textExact("Deactivate");
-    private final Locator activateButton = textExact("Activate");
+    private final Locator activateButton = buttonByName("Activate");
+    private final Locator deactivateButton = buttonByName("Deactivate");
 
     public ChangeUserActivityDialog(Page page) {
         super(page);
@@ -33,6 +33,4 @@ public class ChangeUserActivityDialog extends BaseDialog<TeamPage, ChangeUserAct
 
         return new TeamPage(getPage());
     }
-
-
 }
