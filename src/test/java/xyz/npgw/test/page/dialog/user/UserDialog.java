@@ -86,7 +86,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
             for (String businessUnit : businessUnits) {
                 checkbox(businessUnit).all().forEach(item -> item.setChecked(true));
             }
-         }
+        }
 
         return (CurrentDialogT) this;
     }
