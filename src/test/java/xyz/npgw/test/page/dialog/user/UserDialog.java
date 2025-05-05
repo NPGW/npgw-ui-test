@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.common.UserRole;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
@@ -79,12 +80,13 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     }
 
     @Step("Set checked 'Allowed business units' checkboxes by business units names")
-    public CurrentDialogT setAllowedBusinessUnits(String[] businessUnits) {
-        allowedBusinessUnitsTitle.waitFor();
-
-        for (String businessUnit : businessUnits) {
-            checkbox(businessUnit).all().forEach(item -> item.setChecked(true));
-        }
+    public CurrentDialogT setAllowedBusinessUnits(User user) {
+        if (user.userRole().equals(UserRole.USER)) {
+            String[] businessUnits = user.merchantIds();
+            for (String businessUnit : businessUnits) {
+                checkbox(businessUnit).all().forEach(item -> item.setChecked(true));
+            }
+         }
 
         return (CurrentDialogT) this;
     }
