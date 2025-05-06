@@ -20,15 +20,16 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Epic("System/Companies and business units")
     @Feature("Edit business unit")
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
-    public void testVerifyTitleEditBusinessUnitDialog() {
+    public void testVerifyTitleEditBusinessUnitDialog(@Optional("UNAUTHORISED") String userRole) {
         String buName = "NewBUForEdit";
         String companyName = "CompanyForBU";
-
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
         TestUtils.createCompany(getApiRequestContext(), companyName);
         TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
-        Locator dialogTitle = new DashboardPage(getPage())
+        Locator dialogTitle = new AboutBlankPage(getPage())
+                .navigate("/login")
+                .loginAs(UserRole.SUPER)
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
