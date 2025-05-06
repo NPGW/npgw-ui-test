@@ -27,6 +27,10 @@ import static org.testng.Assert.assertEquals;
 public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "Smitham-Johnson";
+    private static final String ADMIN_COMPANY_NAME = "AdminCompany";
+    private static final String ADMIN_EMAIL = "admin.email@gmail.com";
+    private static final String ADMIN_PASSWORD = "AdminPassword1!";
+
 
     User user = new User(
             COMPANY_NAME,
@@ -193,18 +197,18 @@ public class TeamPageTest extends BaseTest {
     public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "email@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
@@ -262,20 +266,20 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Edit user under company admin")
     public void testEditCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "email@gmail.com";
+        String email = "edit.user@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
@@ -305,19 +309,19 @@ public class TeamPageTest extends BaseTest {
     public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "deactivated@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), "Amazon1");
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
@@ -365,19 +369,19 @@ public class TeamPageTest extends BaseTest {
     public void testResetUserPasswordCompanyUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "reset.password@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), "Amazon1");
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
@@ -389,7 +393,7 @@ public class TeamPageTest extends BaseTest {
                 .waitUntilAlertIsGone()
                 .clickRefreshData()
                 .getTable().clickResetUserPasswordButton(email)
-                .fillPasswordField("Password1!")
+                .fillPasswordField("NewPassword1!")
                 .clickResetButton();
 
         Allure.step("Verify: success message is displayed");
@@ -397,10 +401,10 @@ public class TeamPageTest extends BaseTest {
 
         teamPage.getHeader().clickLogOutButton()
                 .fillEmailField(email)
-                .fillPasswordField("Password1!")
+                .fillPasswordField("NewPassword1!")
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField("ChangedNewPassword1!")
+                .fillRepeatNewPasswordField("ChangedNewPassword1!")
                 .clickSaveButton();
 
         Allure.step("Verify: success message is displayed");
