@@ -24,14 +24,14 @@ public class UserTableComponent extends TableComponent {
 
     @Step("Click 'Deactivate user' button")
     public ChangeUserActivityDialog clickDeactivateUserButton(String email) {
-        getTableRow(email).locator("//svg[@data-icon='ban']/..]").click();
+        getTableRow(email).locator("//*[@data-icon='ban']/..").click();
 
         return new ChangeUserActivityDialog(getPage());
     }
 
     @Step("Click 'Activate user' button")
     public ChangeUserActivityDialog clickActivateUserButton(String email) {
-        getTableRow(email).locator("//svg[@data-icon='check']/..]").click();
+        getTableRow(email).locator("//*[@data-icon='check']/..").click();
 
         return new ChangeUserActivityDialog(getPage());
     }
@@ -45,8 +45,9 @@ public class UserTableComponent extends TableComponent {
 
     public Locator getUserStatus(String email) {
         int columnIndex = getColumnHeaderIndexByName("Status");
+        Locator row = getTableRow(email);
 
-        return getTableRow(email).getByRole(AriaRole.GRIDCELL).nth(columnIndex);
+        return row.getByRole(AriaRole.GRIDCELL).or(row.getByRole(AriaRole.ROWHEADER)).nth(columnIndex);
     }
 
     public Locator getUserActivityIcon(String email) {

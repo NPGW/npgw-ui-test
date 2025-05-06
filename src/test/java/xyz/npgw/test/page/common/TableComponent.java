@@ -39,7 +39,7 @@ public class TableComponent extends BaseComponent {
 
         return tableRows.all().stream()
                 .map(row -> row.getByRole(AriaRole.GRIDCELL)
-                        .or(getPage().getByRole(AriaRole.ROWHEADER))
+                        .or(row.getByRole(AriaRole.ROWHEADER))
                         .nth(columnIndex)
                         .textContent())
                 .toList();
