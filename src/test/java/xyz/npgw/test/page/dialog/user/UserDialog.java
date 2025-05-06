@@ -15,7 +15,6 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
     private final Locator activeRadioButton = radioButton("Active");
     private final Locator inactiveRadioButton = radioButton("Inactive");
-    private final Locator allowedBusinessUnitsTitle = textExact("Allowed business units");
 
     public UserDialog(Page page) {
         super(page);
@@ -83,7 +82,8 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     public CurrentDialogT setAllowedBusinessUnits(User user) {
         if (user.userRole().equals(UserRole.USER)) {
             String[] businessUnits = user.merchantIds();
-            allowedBusinessUnitsTitle.waitFor();
+            checkbox(businessUnits[0]).first().waitFor();
+
             for (String businessUnit : businessUnits) {
                 checkbox(businessUnit).all().forEach(item -> {
                     item.waitFor();
@@ -91,17 +91,15 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
                 });
             }
         }
-
         return (CurrentDialogT) this;
     }
 
     @Step("Set checked first 'Allowed business units' checkbox")
     public CurrentDialogT setFirstAllowedBusinessUnit(User user) {
         if (user.userRole().equals(UserRole.USER)) {
-            allowedBusinessUnitsTitle.waitFor();
+            checkbox(user.merchantIds()[0]).first().waitFor();
             checkbox(user.merchantIds()[0]).first().setChecked(true);
         }
-
         return (CurrentDialogT) this;
     }
 
