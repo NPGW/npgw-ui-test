@@ -92,6 +92,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
         return (CurrentDialogT) this;
     }
+
     @Step("Set checked first 'Allowed business units' checkbox")
     public CurrentDialogT setFirstAllowedBusinessUnit(User user) {
         if (user.userRole().equals(UserRole.USER)) {
