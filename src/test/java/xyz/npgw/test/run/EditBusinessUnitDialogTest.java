@@ -32,7 +32,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
                 .clickEditBusinessUnitButton()

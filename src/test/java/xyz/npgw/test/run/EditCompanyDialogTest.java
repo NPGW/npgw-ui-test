@@ -21,7 +21,7 @@ public class EditCompanyDialogTest extends BaseTest {
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany("Kate")
                 .clickEditCompanyButton()

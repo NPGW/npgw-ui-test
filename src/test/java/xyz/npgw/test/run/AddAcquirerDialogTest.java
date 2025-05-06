@@ -43,9 +43,8 @@ public class AddAcquirerDialogTest extends BaseTest {
         );
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab();
 
         AddAcquirerDialog addAcquirerDialog = acquirersPage.clickAddAcquirer();
 
@@ -76,9 +75,8 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Description("Verifies that the status radio buttons ('Active' and 'Inactive') toggle correctly.")
     public void testToggleStatusRadioButtonsCorrectly(String status) {
         Locator statusRadiobutton = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickStatusRadiobutton(status)
                 .getStatusRadiobutton(status);
@@ -100,9 +98,8 @@ public class AddAcquirerDialogTest extends BaseTest {
         String unitedStatesTimezone = "-09:00 Alaska Time";
 
         AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer();
 
         Allure.step("Verify: Country fields has default 'Search...' text", () -> {
@@ -181,9 +178,8 @@ public class AddAcquirerDialogTest extends BaseTest {
         String icelandTimezone = "+00:00 Greenwich Mean Time";
 
         AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickSelectCountry()
                 .clickCountryInDropdown(oneTimezoneCountry)
@@ -204,9 +200,8 @@ public class AddAcquirerDialogTest extends BaseTest {
         deleteAcquirer(getApiRequestContext(), acquirerName);
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .enterAcquirerName(acquirerName)
                 .clickCheckboxCurrency("USD")
@@ -237,9 +232,8 @@ public class AddAcquirerDialogTest extends BaseTest {
         }
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab();
 
         AddAcquirerDialog acquirerDialog = acquirersPage
                 .clickAddAcquirer()

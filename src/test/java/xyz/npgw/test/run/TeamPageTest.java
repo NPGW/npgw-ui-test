@@ -52,7 +52,6 @@ public class TeamPageTest extends BaseTest {
             + "on 'System administration' link on the header")
     public void testNavigateToSystemAdministrationPage() {
         TeamPage systemAdministrationPage = new DashboardPage(getPage())
-                .getHeader()
                 .clickSystemAdministrationLink();
 
         Allure.step("Verify: System administration Page URL");
@@ -72,7 +71,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.deleteUser(getApiRequestContext(), user);
 
         TeamPage teamPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton()
                 .fillEmailField(user.email())
@@ -96,7 +95,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.deleteUser(getApiRequestContext(), user);
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton();
 
@@ -141,7 +140,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
 
         EditUserDialog editUserDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton()
                 .fillEmailField(user.email())
@@ -204,7 +203,7 @@ public class TeamPageTest extends BaseTest {
                 .fillPasswordField("Amazon1!")
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
@@ -225,7 +224,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
 
         TeamPage teamPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton()
                 .fillEmailField(user.email())
@@ -275,7 +274,7 @@ public class TeamPageTest extends BaseTest {
                 .fillPasswordField("Amazon1!")
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
@@ -317,7 +316,7 @@ public class TeamPageTest extends BaseTest {
                 .fillPasswordField("Amazon1!")
                 .clickLoginButton()
                 .waitUntilAlertIsGone()
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")

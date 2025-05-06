@@ -29,7 +29,7 @@ public class AddBusinessUnitTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -51,7 +51,7 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Verify 'Add business unit' button is disabled if 'Select company' filter's field is cleaned")
     public void testVerifyAddBusinessUnitButtonDefaultState() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
         Allure.step("'Add business unit' button is disabled once no destination company is selected");
@@ -68,7 +68,7 @@ public class AddBusinessUnitTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         AddBusinessUnitDialog addBusinessUnitDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -93,7 +93,7 @@ public class AddBusinessUnitTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -118,7 +118,7 @@ public class AddBusinessUnitTest extends BaseTest {
         Locator createdBusinessUnitRow = getPage().locator("td").locator("xpath=..");
 
         new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())

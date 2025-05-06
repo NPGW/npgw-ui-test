@@ -22,7 +22,6 @@ public class ReportsPageTest extends BaseTest {
     @Description("User navigate to 'Reports page' after clicking on 'Reports' link on the header")
     public void testNavigateToReportsPage() {
         ReportsPage reportsPage = new DashboardPage(getPage())
-                .getHeader()
                 .clickReportsLink();
 
         Allure.step("Verify: Reports Page URL");
@@ -39,10 +38,8 @@ public class ReportsPageTest extends BaseTest {
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
         ReportsPage reportsPage = new DashboardPage(getPage())
-                .getHeader()
                 .clickReportsLink()
-                .getDateRangePicker()
-                .setDateRangeFields("01-04-2025", "01-04-2024")
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");

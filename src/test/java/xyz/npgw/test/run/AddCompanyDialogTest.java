@@ -45,7 +45,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Verify that the 'Add Company' window displays the correct title in the header.")
     public void testVerifyAddCompanyWindowTitle() {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -76,7 +76,7 @@ public class AddCompanyDialogTest extends BaseTest {
         );
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -91,7 +91,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Error message is shown for company name is shorter than 4 or longer than 100 characters.")
     public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(name)
@@ -110,7 +110,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("'Create' button is disabled when required fields are not filled.")
     public void testCreateButtonDisabledWhenRequiredFieldsAreEmpty(String name, String type) {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(name)
@@ -127,7 +127,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Verify that clicking the Close button successfully closes the 'Add Company' dialog.")
     public void testVerifyCloseAddCompanyDialogWhenCloseButtonIsClicked() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .clickCloseButton();
@@ -144,7 +144,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Error is displayed when trying to create a company with special characters in the name.")
     public void testErrorIsDisplayedWhenCreatingCompanyWithSpecialCharacters(String character) {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField("Company" + character)
@@ -166,7 +166,7 @@ public class AddCompanyDialogTest extends BaseTest {
         String fullName = name + character;
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(fullName)
@@ -188,7 +188,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME)
@@ -209,7 +209,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), COMPANY_NAME);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME);
 
@@ -226,7 +226,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), COMPANY_NAME);
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME)
@@ -245,7 +245,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Company creation with Cyrillic symbols")
     public void testAddCompanyWithCyrillicSymbols() {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField("Амазон")
@@ -276,7 +276,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(companyName)
@@ -308,7 +308,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -417,7 +417,7 @@ public class AddCompanyDialogTest extends BaseTest {
         BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
         Allure.step("Verify: 'Add business unit' button is disabled before selecting a company");

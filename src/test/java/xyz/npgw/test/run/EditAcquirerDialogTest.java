@@ -42,9 +42,8 @@ public class EditAcquirerDialogTest extends BaseTest {
         );
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
                 .typeAcquirerNameToSelectAcquirerInputField(acquirerName)
                 .clickAcquirerInDropdown(acquirerName);
 
