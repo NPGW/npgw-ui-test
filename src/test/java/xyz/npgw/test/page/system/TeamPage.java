@@ -19,12 +19,12 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
     private final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
     private final Locator selectCompanyInput = placeholder("Search...");
 
-    private Locator userRow(String username) {
-        return getPage().getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username));
-    }
-
     public TeamPage(Page page) {
         super(page);
+    }
+
+    public Locator userRow(String username) {
+        return getPage().getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username));
     }
 
     @Step("Click 'Add user' button")
@@ -53,20 +53,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
 
     public Locator getUserStatusByUsername(String username) {
         return userRow(username).locator("td").nth(2);
-    }
-
-    public Locator waitForChangingUserStatusText(String username, String expectedText) {
-        Locator statusCell = getUserStatusByUsername(username);
-
-        for (int i = 0; i < 10; i++) {
-            String visibleText = statusCell.innerText().trim();
-            if (visibleText.equals(expectedText)) {
-                return statusCell;
-            }
-            getPage().waitForTimeout(500);
-        }
-
-        throw new AssertionError("Visible status did not change to '%s' within timeout".formatted(expectedText));
     }
 
     @Step("Click 'Apply filter")
