@@ -301,8 +301,8 @@ public class TeamPageTest extends BaseTest {
     @TmsLink("476")
     @Epic("System/Team")
     @Feature("Edit user")
-    @Description("Deactivate user under company admin")
-    public void testDeactivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
+    @Description("Deactivate and activate user under company admin")
+    public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "deactivated@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
         TestUtils.createCompany(getApiRequestContext(), "Amazon1");
@@ -341,6 +341,20 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
+
+        teamPage.getTable().clickActivateUserButton(email)
+                .clickActivateButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was activated successfully");
+
+        teamPage.clickRefreshData();
+
+        Allure.step("Verify: status of the user was changed");
+        assertThat(teamPage.getTable().getUserStatus(email)).hasText("Active");
+
+        Allure.step("Verify: activate user icon appears");
+        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "ban");
     }
 
     @Test
