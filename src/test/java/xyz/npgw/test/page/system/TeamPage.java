@@ -61,6 +61,15 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
                 .locator("svg");
     }
 
+    @Step("Click 'Refresh data' button")
+    public TeamPage clickRefreshDataButton() {
+        selectCompanyInput.waitFor();
+
+        refreshDataButton.click();
+
+        return this;
+    }
+
     @Step("Click user activation button")
     public ChangeUserActivityDialog clickChangeUserActivityButton(String username) {
         Locator button = getChangeUserActivityButton(username);
@@ -73,14 +82,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
     public TeamPage waitUntilAlertIsGone() {
         alert("SUCCESS").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         alert("SUCCESS").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
-
-        return this;
-    }
-
-    @Step("Click 'Refresh data' button")
-    public TeamPage clickRefreshDataButton() {
-        selectCompanyInput.waitFor();
-        refreshDataButton.click();
 
         return this;
     }

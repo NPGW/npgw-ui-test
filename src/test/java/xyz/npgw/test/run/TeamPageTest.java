@@ -91,7 +91,7 @@ public class TeamPageTest extends BaseTest {
     @Epic("System/Team")
     @Feature("Add user")
     @Description("Add a new user and verify that all fields, statuses, and icons are correctly displayed(e2e).")
-    public void testAddCompanyAnalyst() {
+    public void c() {
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
         TestUtils.deleteUser(getApiRequestContext(), user);
 
@@ -109,7 +109,8 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
                 .setFirstAllowedBusinessUnit(user)
-                .clickCreateButton();
+                .clickCreateButton()
+                .clickRefreshDataButton();
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
