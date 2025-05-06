@@ -342,4 +342,54 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
     }
+
+    @Test
+    @TmsLink("")
+    @Epic("System/Team")
+    @Feature("Edit user")
+    @Description("Reset user password under company admin")
+    public void testResetUserPasswordCompanyUser(@Optional("UNAUTHORISED") String userRole) {
+        String email = "reset.password@gmail.com";
+        TestUtils.deleteUser(getApiRequestContext(), email);
+        TestUtils.createCompany(getApiRequestContext(), "Amazon1");
+        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+
+        TeamPage teamPage = new AboutBlankPage(getPage())
+                .navigate("/login")
+                .fillEmailField("amazon3@gmail.com")
+                .fillPasswordField("Amazon1!")
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField("Amazon1!")
+                .fillRepeatNewPasswordField("Amazon1!")
+                .clickSaveButton()
+                .fillEmailField("amazon3@gmail.com")
+                .fillPasswordField("Amazon1!")
+                .clickLoginButton()
+                .waitUntilAlertIsGone()
+                .getHeader().clickSystemAdministrationLink()
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("Password1!")
+                .checkCompanyAdminRadiobutton()
+                .clickCreateButton()
+                .waitUntilAlertIsGone()
+                .clickRefreshData()
+                .getTable().clickResetUserPasswordButton(email)
+                .fillPasswordField("Password1!")
+                .clickResetButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSPassword was reseted successfully");
+
+        teamPage.getHeader().clickLogOutButton()
+                .fillEmailField(email)
+                .fillPasswordField("Password1!")
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField("Amazon1!")
+                .fillRepeatNewPasswordField("Amazon1!")
+                .clickSaveButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSPassword is changed successfully");
+    }
 }
