@@ -331,7 +331,6 @@ public class TeamPageTest extends BaseTest {
                 .getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton();
 
-
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
 

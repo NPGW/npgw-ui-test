@@ -1,0 +1,53 @@
+package xyz.npgw.test.page.common;
+
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Step;
+import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
+import xyz.npgw.test.page.dialog.user.EditUserDialog;
+
+public class UserTableComponent extends TableComponent {
+
+    public UserTableComponent(Page page) {
+        super(page);
+    }
+
+    @Step("Click 'Edit user'")
+    public EditUserDialog clickEditUserButton(String email) {
+        getTableRow(email).getByTestId("EditUserButton").click();
+
+        return new EditUserDialog(getPage());
+    }
+
+    @Step("Click 'Deactivate user' button")
+    public ChangeUserActivityDialog clickDeactivateUserButton(String email) {
+        getTableRow(email).locator("//svg[@data-icon='ban']/..]").click();
+
+        return new ChangeUserActivityDialog(getPage());
+    }
+
+    @Step("Click 'Activate user' button")
+    public ChangeUserActivityDialog clickActivateUserButton(String email) {
+        getTableRow(email).locator("//svg[@data-icon='check']/..]").click();
+
+        return new ChangeUserActivityDialog(getPage());
+    }
+
+//    @Step("Click 'Reset user password' button")
+//    public EditUserDialog clickResetUserPasswordButton(String email) {
+//        getTableRow(email).getByTestId("ResetUserPasswordButton").click();
+//
+//        return new EditUserDialog(getPage());
+//    }
+
+    public Locator getUserStatus(String email) {
+        int columnIndex = getColumnHeaderIndexByName("Status");
+
+        return getTableRow(email).getByRole(AriaRole.GRIDCELL).nth(columnIndex);
+    }
+
+    public Locator getUserActivityIcon(String email) {
+        return getTableRow(email).getByTestId("ChangeUserActivityButton").locator("svg");
+    }
+}
