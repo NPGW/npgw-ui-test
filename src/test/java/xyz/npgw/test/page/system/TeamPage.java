@@ -57,7 +57,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
 
     @Step("Click 'Refresh data' button")
     public TeamPage clickRefreshDataButton() {
-        selectCompanyInput.waitFor();
 
         refreshDataButton.click();
 
