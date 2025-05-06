@@ -41,7 +41,8 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator merchantIdData = locator("[role='row'] span").nth(1);
     private final Locator editBusinessUnitButton = getByTestId("EditBusinessUnitButton");
     private final Locator merchantsTable = labelExact("merchants table");
-
+    private final Locator resetFilterButton = locator("[data-icon='xmark']");
+    private final Locator selectCompanyWarning = locator("[class='contentBlock']");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -120,5 +121,12 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         editBusinessUnitButton.click();
 
         return new EditBusinessUnitDialog(getPage());
+    }
+
+    @Step("Click 'Reset filter' button")
+    public CompaniesAndBusinessUnitsPage clickOnResetFilterButton() {
+        resetFilterButton.click();
+
+        return this;
     }
 }
