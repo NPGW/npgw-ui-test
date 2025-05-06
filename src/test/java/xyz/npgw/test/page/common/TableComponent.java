@@ -3,7 +3,6 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
@@ -38,7 +37,6 @@ public class TableComponent extends BaseComponent {
         return tableHeader.getByText(name);
     }
 
-    @Step("Get list of values in column '{columnHeaderName}'")
     public List<String> getColumnValues(String columnHeaderName) {
         Locator header = getHeaderByName(columnHeaderName);
         int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
@@ -57,15 +55,15 @@ public class TableComponent extends BaseComponent {
         return getTableRows().filter(new Locator.FilterOptions().setHas(rowHeader));
     }
 
-    @Step("Get list of values in column '{columnHeaderName}'")
-    public List<String> getColumnValues(String columnHeaderName) {
-        int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
-
-        return tableRows.all().stream()
-                .map(row -> row.getByRole(AriaRole.GRIDCELL)
-                        .or(row.getByRole(AriaRole.ROWHEADER))
-                        .nth(columnIndex)
-                        .textContent())
-                .toList();
-    }
+//    @Step("Get list of values in column '{columnHeaderName}'")
+//    public List<String> getColumnValues(String columnHeaderName) {
+//        int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
+//
+//        return tableRows.all().stream()
+//                .map(row -> row.getByRole(AriaRole.GRIDCELL)
+//                        .or(row.getByRole(AriaRole.ROWHEADER))
+//                        .nth(columnIndex)
+//                        .textContent())
+//                .toList();
+//    }
 }

@@ -197,6 +197,7 @@ public class TeamPageTest extends BaseTest {
     public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "email@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
@@ -268,6 +269,7 @@ public class TeamPageTest extends BaseTest {
     public void testEditCompanyUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "edit.user@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
