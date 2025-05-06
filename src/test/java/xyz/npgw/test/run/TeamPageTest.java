@@ -79,7 +79,7 @@ public class TeamPageTest extends BaseTest {
                 .fillPasswordField(user.password())
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
-                .setAllowedBusinessUnits(user)
+                .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
@@ -147,7 +147,7 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(user.email())
                 .fillPasswordField(user.password())
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user)
+                .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
                 .clickRefreshDataButton()
@@ -231,7 +231,7 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(user.email())
                 .fillPasswordField(user.password())
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user)
+                .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
                 .clickRefreshDataButton()

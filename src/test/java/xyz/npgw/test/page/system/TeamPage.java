@@ -55,12 +55,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
         return userRow(username).locator("td").nth(2);
     }
 
-    public Locator getChangeUserActivityButton(String username) {
-        return userRow(username)
-                .getByTestId("ChangeUserActivityButton")
-                .locator("svg");
-    }
-
     @Step("Click 'Refresh data' button")
     public TeamPage clickRefreshDataButton() {
         selectCompanyInput.waitFor();
@@ -68,6 +62,12 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
         refreshDataButton.click();
 
         return this;
+    }
+
+    public Locator getChangeUserActivityButton(String username) {
+        return userRow(username)
+                .getByTestId("ChangeUserActivityButton")
+                .locator("svg");
     }
 
     @Step("Click user activation button")
