@@ -271,6 +271,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getTable()
                 .getColumnHeadersText();
 
+
         Allure.step("Verify: The Acquirer table contains correct column headers");
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
     }
@@ -324,7 +325,7 @@ public class AcquirersPageTest extends BaseTest {
         for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
             String header = COLUMNS_HEADERS.get(i);
             String expected = expectedColumnValues.get(header);
-            String actual = table.getColumnValues(header).get(0);
+            String actual = table.getColumnValues(header).get(0).toString();
 
             Allure.step(String.format("Verify that displayed '%s' is: %s", header, expected));
             Assert.assertEquals(
