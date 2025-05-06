@@ -7,7 +7,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
-import xyz.npgw.test.page.dialog.acquirer.EditAcquirer;
+import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +69,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     }
 
     @Step("Enter '{acquirerName}' into select acquirer placeholder")
-    public AcquirersPage enterAcquirerName(String acquirerName) {
+    public AcquirersPage typeAcquirerNameToSelectAcquirerInputField(String acquirerName) {
         selectAcquirerPlaceholder.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(100));
 
         return this;
@@ -113,10 +113,10 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public EditAcquirer clickEditAcquirerButton(Locator row) {
+    public EditAcquirerDialog clickEditAcquirerButton(Locator row) {
         row.locator("button[data-testid='EditAcquirerButton']").click();
 
-        return new EditAcquirer(getPage());
+        return new EditAcquirerDialog(getPage());
     }
 
     public Locator getEditAcquirerButton(Locator row) {
@@ -124,7 +124,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         return row.locator("button[data-testid='EditAcquirerButton']");
     }
 
-    public Locator getDeactivateAcquirerButton(Locator row) {
+    public Locator getChangeAcquirerActivityButton(Locator row) {
 
         return row.locator("button[data-testid='ChangeBusinessUnitActivityButton']");
     }

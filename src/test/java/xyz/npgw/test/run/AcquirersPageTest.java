@@ -311,7 +311,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
-                .enterAcquirerName(acquirer.acquirerName())
+                .typeAcquirerNameToSelectAcquirerInputField(acquirer.acquirerName())
                 .clickAcquirerInDropdown(acquirer.acquirerName());
 
         TableComponent table = acquirersPage.getTable();
@@ -337,8 +337,8 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: Edit button is visible");
         assertThat(acquirersPage.getEditAcquirerButton(row)).isVisible();
 
-        Allure.step("Verify: Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getEditAcquirerButton(row)).isVisible();
+        Allure.step("Verify: Activate/Deactivate acquirer button is visible");
+        assertThat(acquirersPage.getChangeAcquirerActivityButton(row)).isVisible();
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getPaginationItems()).isVisible();
