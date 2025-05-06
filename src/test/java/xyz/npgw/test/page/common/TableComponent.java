@@ -54,16 +54,4 @@ public class TableComponent extends BaseComponent {
 
         return getTableRows().filter(new Locator.FilterOptions().setHas(rowHeader));
     }
-
-//    @Step("Get list of values in column '{columnHeaderName}'")
-//    public List<String> getColumnValues(String columnHeaderName) {
-//        int columnIndex = getColumnHeaderIndexByName(columnHeaderName);
-//
-//        return tableRows.all().stream()
-//                .map(row -> row.getByRole(AriaRole.GRIDCELL)
-//                        .or(row.getByRole(AriaRole.ROWHEADER))
-//                        .nth(columnIndex)
-//                        .textContent())
-//                .toList();
-//    }
 }
