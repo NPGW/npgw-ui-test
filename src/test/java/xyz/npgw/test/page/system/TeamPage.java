@@ -13,7 +13,7 @@ import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 
 @Log4j2
-public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<TeamPage>, SelectCompanyTrait<TeamPage> {
+public class TeamPage extends BaseSystemPage implements TableTrait<TeamPage>, SelectCompanyTrait<TeamPage> {
 
     private final Locator refreshDataButton = getByTestId("ApplyFilterButtonTeamPage");
     private final Locator addUserButton = getByTestId("AddUserButtonTeamPage");

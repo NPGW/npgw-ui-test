@@ -13,7 +13,7 @@ import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 
 @Getter
-public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage>
+public class CompaniesAndBusinessUnitsPage extends BaseSystemPage
         implements SelectCompanyTrait<CompaniesAndBusinessUnitsPage> {
 
     private final Locator addCompanyButton = locator("button[data-testid='AddCompanyButton']");

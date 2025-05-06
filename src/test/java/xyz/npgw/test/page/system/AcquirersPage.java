@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
-public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements TableTrait {
+public class AcquirersPage extends BaseSystemPage implements TableTrait {
 
     private final Locator addAcquirerButton = getByTestId("AddAcquirerButton");
     private final Locator addAcquirerDialog = dialog();

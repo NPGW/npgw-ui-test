@@ -8,7 +8,7 @@ import lombok.Getter;
 import org.testng.Assert;
 import xyz.npgw.test.page.common.SelectCompanyTrait;
 
-public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage> {
+public class GatewayPage extends BaseSystemPage implements SelectCompanyTrait<GatewayPage> {
 
     @Getter
     private final Locator businessUnitsListHeader = textExact("Business units list");

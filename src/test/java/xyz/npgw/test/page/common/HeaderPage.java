@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.util.ResponseUtils;
 import xyz.npgw.test.page.DashboardPage;
@@ -13,6 +14,7 @@ import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.system.TeamPage;
 
+@Getter
 public abstract class HeaderPage extends BasePage {
 
     private final Locator img = altText("logo");
