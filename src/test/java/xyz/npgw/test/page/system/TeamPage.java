@@ -55,15 +55,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements TableTrait<Tea
         return userRow(username).locator("td").nth(2);
     }
 
-    @Step("Click 'Apply filter")
-    public TeamPage clickApplyFilter() {
-        selectCompanyInput.waitFor();
-
-        applyFilterButton.click();
-
-        return this;
-    }
-
     public Locator getChangeUserActivityButton(String username) {
         return userRow(username)
                 .getByTestId("ChangeUserActivityButton")

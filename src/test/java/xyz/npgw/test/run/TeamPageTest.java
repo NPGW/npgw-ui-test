@@ -146,10 +146,10 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(user.email())
                 .fillPasswordField(user.password())
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user.merchantIds())
+                .setAllowedBusinessUnits(user)
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .clickRefreshDataButton()
                 .clickEditUserButton(user.email());
 
         Allure.step("Verify: 'Edit user' header is displayed");
@@ -230,17 +230,17 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(user.email())
                 .fillPasswordField(user.password())
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user.merchantIds())
+                .setAllowedBusinessUnits(user)
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .clickRefreshDataButton()
                 .clickChangeUserActivityButton(user.email())
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshData();
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
