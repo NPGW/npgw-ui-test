@@ -108,7 +108,7 @@ public class TeamPageTest extends BaseTest {
                 .fillPasswordField(user.password())
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
-                .setFirstAllowedBusinessUnit(user)
+                .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
                 .clickRefreshDataButton();
 
