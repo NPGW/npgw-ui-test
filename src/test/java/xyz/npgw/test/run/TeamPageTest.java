@@ -91,7 +91,7 @@ public class TeamPageTest extends BaseTest {
     @Epic("System/Team")
     @Feature("Add user")
     @Description("Add a new user and verify that all fields, statuses, and icons are correctly displayed(e2e).")
-    public void c() {
+    public void testAddCompanyAnalyst() {
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
         TestUtils.deleteUser(getApiRequestContext(), user);
 
