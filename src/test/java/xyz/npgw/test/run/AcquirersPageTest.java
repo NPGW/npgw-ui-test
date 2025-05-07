@@ -346,8 +346,8 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getPaginationItems()).isVisible();
         assertThat(acquirersPage.getPaginationItems()).hasText("1");
     }
-
-    @Test(expectedExceptions = { AssertionError.class })
+//    expectedExceptions = { AssertionError.class }
+    @Test()
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
@@ -370,7 +370,9 @@ public class AcquirersPageTest extends BaseTest {
             while (true) {
                 String activePage = acquirersPage.getActivePage().innerText();
 
-                Allure.step(String.format("Verify: All table column headers are on page '%s'", activePage));
+                Allure.step(
+                        String.format("Verify: All table column headers are on page '%s' with '%s' pagination",
+                                activePage, option));
                 Assert.assertEquals(
                         acquirersPage.getTable().getTableHeader().allTextContents(),
                         COLUMNS_HEADERS,
@@ -386,8 +388,8 @@ public class AcquirersPageTest extends BaseTest {
                     Assert.assertNotNull(box, "Header exists but is off-screen!");
 
                     double pageWidth = getPage().viewportSize().width;
-                    Assert.assertTrue(box.x >= 0 && box.x <= pageWidth,
-                            String.format("Header '%s' is outside visible viewport!", header));
+                    Assert.assertTrue(box.x >= 0 && box.x <= pageWidth, String.format(
+                            "Header '%s' is outside visible viewport on the '%s' page!", header, activePage));
                 }
 
                 if (acquirersPage.isLastPage()) {
