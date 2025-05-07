@@ -12,6 +12,7 @@ import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Getter
 public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements TableTrait {
@@ -132,6 +133,10 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
         getTable().getTableRows().last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
 
         return this;
+    }
+
+    public Locator getActivePage() {
+        return getPage().getByLabel(Pattern.compile("pagination item.*active.*", Pattern.CASE_INSENSITIVE));
     }
 
     @Step("Click on page '{pageNumber}'")

@@ -1,6 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.options.BoundingBox;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -196,7 +197,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getRowsPerPageOptions()).hasText(rowsPerPageOptions);
     }
 
-    @Test()
+    @Test
     @TmsLink("382")
     @Epic("System/Acquirers")
     @Feature("Rows Per Page")
@@ -343,6 +344,57 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getPaginationItems()).isVisible();
-        assertThat(acquirersPage.getPaginationItems()).containsText("1");
+        assertThat(acquirersPage.getPaginationItems()).hasText("1");
+    }
+
+    @Test(expectedExceptions = { AssertionError.class })
+    @TmsLink("487")
+    @Epic("System/Acquirers")
+    @Feature("Acquirers list")
+    @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
+    public void testColumnHeadersDisplayCorrectlyOnAllPages() {
+        Allure.step("Test disabled / Known bug: The column is not visible on the screen!");
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab();
+
+        for (String option : rowsPerPageOptions) {
+            acquirersPage
+                    .clickRowsPerPageChevron()
+                    .selectRowsPerPageOption(option);
+
+            while (true) {
+                String activePage = acquirersPage.getActivePage().innerText();
+
+                Allure.step(String.format("Verify: All table column headers are on page '%s'", activePage));
+                Assert.assertEquals(
+                        acquirersPage.getTable().getTableHeader().allTextContents(),
+                        COLUMNS_HEADERS,
+                        String.format("Column headers do not match expected headers on page '%s'", activePage));
+
+                for (String header : COLUMNS_HEADERS) {
+                    Locator columnHeader = acquirersPage.getTable().getHeaderByName(header);
+
+                    Allure.step(String.format("Verify: Header '%s' is visible", header));
+                    assertThat(columnHeader).isVisible();
+
+                    BoundingBox box = columnHeader.boundingBox();
+                    Assert.assertNotNull(box, "Header exists but is off-screen!");
+
+                    double pageWidth = getPage().viewportSize().width;
+                    Assert.assertTrue(box.x >= 0 && box.x <= pageWidth,
+                            String.format("Header '%s' is outside visible viewport!", header));
+                }
+
+                if (acquirersPage.isLastPage()) {
+                    break;
+                }
+
+                acquirersPage.clickNextPage();
+            }
+        }
     }
 }
+
