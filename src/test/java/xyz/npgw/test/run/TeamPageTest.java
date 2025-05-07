@@ -416,7 +416,7 @@ public class TeamPageTest extends BaseTest {
     @TmsLink("")
     @Epic("System/Team")
     @Feature("Edit user")
-    @Description("Reset user password under company admin")
+    @Description("Create company analyst")
     public void testCreateCompanyAnalyst(@Optional("UNAUTHORISED") String userRole) {
         String email = "companyanalyst@gmail.com";
         String companyName = "Analyst company";
