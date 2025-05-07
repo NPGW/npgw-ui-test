@@ -5,6 +5,7 @@ import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.extern.log4j.Log4j2;
+import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
@@ -30,9 +31,20 @@ public final class TestUtils {
         log.info("create user '{}' - {} {}", user.email(), response.status(), response.text());
     }
 
+    public static void createCompanyAdmin(APIRequestContext request, String company, String email, String password) {
+        User user = new User(company, true, UserRole.ADMIN, new String[]{}, email, password);
+        deleteUser(request, user);
+        APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
+        log.info("create company admin '{}' - {} {}", user.email(), response.status(), response.text());
+    }
+
     public static void deleteUser(APIRequestContext request, User user) {
-        APIResponse response = request.delete("portal-v1/user?email=%s".formatted(encode(user.email())));
-        log.info("delete user '{}' - {} {}", user.email(), response.status(), response.text());
+        deleteUser(request, user.email());
+    }
+
+    public static void deleteUser(APIRequestContext request, String email) {
+        APIResponse response = request.delete("portal-v1/user?email=%s".formatted(encode(email)));
+        log.info("delete user '{}' - {} {}", email, response.status(), response.text());
     }
 
     public static void createBusinessUnit(APIRequestContext request, String companyName, String businessUnitName) {
@@ -93,8 +105,12 @@ public final class TestUtils {
 
     public static void createAcquirer(APIRequestContext request, String acquirerName) {
         Acquirer acquirer = new Acquirer("NGenius", "et", new SystemConfig(), acquirerName, new String[]{"USD"}, true);
+        createAcquirer(request, acquirer);
+    }
+
+    public static void createAcquirer(APIRequestContext request, Acquirer acquirer) {
         APIResponse response = request.post("portal-v1/acquirer", RequestOptions.create().setData(acquirer));
-        log.info("create acquirer '{}' - {} {}", acquirerName, response.status(), response.text());
+        log.info("create acquirer '{}' - {} {}", acquirer.acquirerName(), response.status(), response.text());
     }
 
     public static boolean getAcquirer(APIRequestContext request, String acquirerName) {

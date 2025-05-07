@@ -8,11 +8,13 @@ import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
+@SuppressWarnings("unchecked")
 public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialogT>>
         extends BaseDialog<TeamPage, CurrentDialogT> {
 
     private final Locator activeRadioButton = radioButton("Active");
     private final Locator inactiveRadioButton = radioButton("Inactive");
+    private final Locator allowedBusinessUnitsTitle = textExact("Allowed business units");
 
     public UserDialog(Page page) {
         super(page);
@@ -79,7 +81,12 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     @Step("Set checked 'Allowed business units' checkboxes by business units names")
     public CurrentDialogT setAllowedBusinessUnits(String[] businessUnits) {
         for (String businessUnit : businessUnits) {
-            checkbox(businessUnit).all().forEach(item -> item.setChecked(true));
+            allowedBusinessUnitsTitle.waitFor();
+            checkbox(businessUnit).all()
+                    .forEach(item -> {
+                        item.waitFor();
+                        item.setChecked(true);
+                    });
         }
 
         return (CurrentDialogT) this;
@@ -97,5 +104,4 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
         return (CurrentDialogT) this;
     }
-
 }

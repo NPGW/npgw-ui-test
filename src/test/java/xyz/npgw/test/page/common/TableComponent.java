@@ -3,14 +3,11 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
-import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Getter
 public class TableComponent extends BaseComponent {
@@ -24,9 +21,8 @@ public class TableComponent extends BaseComponent {
         super(page);
     }
 
-    private int getColumnHeaderIndexByName(String columnHeaderName) {
-        tableHeader.last()
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(4999));
+    protected int getColumnHeaderIndexByName(String columnHeaderName) {
+        tableHeader.last().waitFor();
 
         for (int i = 0; i < tableHeader.count(); i++) {
             if (tableHeader.nth(i).innerText().equals(columnHeaderName)) {
@@ -36,21 +32,26 @@ public class TableComponent extends BaseComponent {
         throw new NoSuchElementException("Column with header '" + columnHeaderName + "' not found.");
     }
 
-    @Step("Get list of values in column '{columnHeaderName}'")
-    public List<String> getColumnValues(String columnHeaderName) {
-        int columnIndex = getColumnHeaderIndexByName(columnHeaderName) - 1;
+    public Locator getHeaderByName(String name) {
 
-        return tableRows.all().stream()
-                .map(row -> row.getByRole(AriaRole.GRIDCELL).nth(columnIndex).textContent())
-                .collect(Collectors.toList());
+        return tableHeader.getByText(name);
+    }
+
+    public List<String> getColumnValues(String columnHeaderName) {
+        Locator header = getHeaderByName(columnHeaderName);
+        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
+        Locator cells = getPage().locator("tr[role='row'] > td:nth-child(" + (columnIndex + 1) + ")");
+
+        return cells.allInnerTexts();
     }
 
     public List<String> getColumnHeadersText() {
+        return tableHeader.allInnerTexts();
+    }
 
-        return tableHeader
-                .all()
-                .stream()
-                .map(Locator::innerText)
-                .toList();
+    public Locator getTableRow(String header) {
+        Locator rowHeader = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(header));
+
+        return getTableRows().filter(new Locator.FilterOptions().setHas(rowHeader));
     }
 }

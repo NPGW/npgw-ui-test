@@ -43,8 +43,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         );
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab();
 
@@ -76,10 +75,8 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verifies that the status radio buttons ('Active' and 'Inactive') toggle correctly.")
     public void testToggleStatusRadioButtonsCorrectly(String status) {
-
         Locator statusRadiobutton = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
@@ -90,22 +87,20 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 
-    @Ignore("fail after latest update")
+    @Ignore("Country and Timezone fields not exists already - fail after latest update (FALU)")
     @Test
     @TmsLink("322")
     @Epic("System/Acquirers")
     @Feature("Add acquirer")
     @Description("Verifies Country and Timezone field interaction during Acquirer creation.")
     public void testCountryAndTimezoneFieldInteraction() {
-
         String oneTimezoneCountry = "Iceland";
         String icelandTimezone = "+00:00 Greenwich Mean Time";
         String multipleTimezoneCountry = "United States";
         String unitedStatesTimezone = "-09:00 Alaska Time";
 
         AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer();
@@ -173,22 +168,20 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(addAcquirerDialog.getSelectDropdown()).hasText("No items.");
     }
 
-    @Ignore("fail after latest update")
+    @Ignore("Timezone field not exists already (FALU)")
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("326")
     @Epic("System/Acquirers")
     @Feature("Add acquirer")
     @Description("Verifies Re-selecting the Same Timezone Does Not Change the Value")
     public void testReSelectingSameTimezoneKeepsValueUnchanged() {
-
         Allure.step("This test is temporarily disabled till bug fixed.");
 
         String oneTimezoneCountry = "Iceland";
         String icelandTimezone = "+00:00 Greenwich Mean Time";
 
         AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
@@ -201,20 +194,17 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(addAcquirerDialog.getSelectTimezone()).hasText(icelandTimezone);
     }
 
-    @Ignore("ERRORcurrencyList must be not empty")
     @Test
     @TmsLink("412")
     @Epic("System/Acquirers")
     @Feature("Add acquirer")
     @Description("Verify that a new Acquirer can be successfully created and appears in the Acquirers dropdown.")
     public void testAcquirerSuccessfullyCreatedAndAppearsInDropdown() {
-
         String acquirerName = "Awesome acquirer";
         deleteAcquirer(getApiRequestContext(), acquirerName);
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
@@ -229,7 +219,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
         assertThat(acquirersPage.getAddAcquirerDialog()).isHidden();
 
-        acquirersPage.enterAcquirerName(acquirerName);
+        acquirersPage.typeAcquirerNameToSelectAcquirerInputField(acquirerName);
 
         Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", acquirerName));
         assertThat(acquirersPage.getAddAcquirerDialog()).hasText(acquirerName);
@@ -241,15 +231,13 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify error appears when creating an Acquirer with a duplicate name.")
     public void testCreateAcquirerWithDuplicateNameShowsError() {
-
         String acquirerName = "Awesome acquirer";
         if (!getAcquirer(getApiRequestContext(), acquirerName)) {
             createAcquirer(getApiRequestContext(), acquirerName);
         }
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink()
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu()
                 .clickAcquirersTab();
 

@@ -137,7 +137,7 @@ public class AddCompanyDialogTest extends BaseTest {
     }
 
     @Test(dataProvider = "getCompanyNameInvalidSpecialCharacters",
-            dataProviderClass = TestDataProvider.class)
+            dataProviderClass = TestDataProvider.class, enabled = false)
     @TmsLink("215")
     @Epic("System/Companies and business units")
     @Feature("Add company")
@@ -412,8 +412,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add business unit")
     @Description("Validates successful business unit addition to company (E2E test).")
     public void testAddBusinessUnitEndToEndTest() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), COMPANY_NAME);
 
         BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");
 

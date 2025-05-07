@@ -40,11 +40,12 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
+        selectCompanyField.waitFor();
         getPage().waitForTimeout(1500);
 
         String lastName = "";
 
-        selectCompanyField.fill(companyName);
+        selectCompanyField.pressSequentially(companyName, new Locator.PressSequentiallyOptions().setDelay(100));
 
         if (dropdownOptionList.all().isEmpty()) {
             throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
