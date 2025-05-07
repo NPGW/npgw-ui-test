@@ -349,7 +349,7 @@ public class TeamPageTest extends BaseTest {
                 .clickActivateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was activated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was activated successfully");
 
         teamPage.clickRefreshDataButton();
 
@@ -382,21 +382,21 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(ADMIN_EMAIL)
                 .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
-                .waitUntilAlertIsGone()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-                .waitUntilAlertIsGone()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
                 .getTable().clickResetUserPasswordButton(email)
                 .fillPasswordField("NewPassword1!")
                 .clickResetButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSPassword was reseted successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSPassword was reseted successfully");
 
         teamPage.getHeader().clickLogOutButton()
                 .fillEmailField(email)
@@ -407,6 +407,6 @@ public class TeamPageTest extends BaseTest {
                 .clickSaveButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSPassword is changed successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSPassword is changed successfully");
     }
 }
