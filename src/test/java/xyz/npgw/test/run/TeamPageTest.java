@@ -301,7 +301,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
     }
 
-    @Ignore
     @Test
     @TmsLink("476")
     @Epic("System/Team")
