@@ -413,7 +413,7 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("492")
     @Epic("System/Team")
     @Feature("Edit user")
     @Description("Create company analyst")
