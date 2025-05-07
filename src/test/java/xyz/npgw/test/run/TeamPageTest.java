@@ -351,7 +351,7 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was activated successfully");
 
-        teamPage.clickRefreshData();
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Active");
@@ -390,7 +390,7 @@ public class TeamPageTest extends BaseTest {
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
                 .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .clickRefreshDataButton()
                 .getTable().clickResetUserPasswordButton(email)
                 .fillPasswordField("NewPassword1!")
                 .clickResetButton();
