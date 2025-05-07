@@ -17,14 +17,14 @@ public class AlertComponent<CurrentPageT> extends BaseComponent {
     }
 
     public CurrentPageT waitUntilSuccessAlertIsGone() {
-        alertMessage.waitFor();
+        alert("SUCCESS").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         alert("SUCCESS").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;
     }
 
     public Locator getAlertMessage() {
-        alertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        alertMessage.waitFor();
 
         return alertMessage;
     }
