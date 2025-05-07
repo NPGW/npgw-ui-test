@@ -351,7 +351,9 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
-    @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
+    @Description(
+            "Verifies that table column headers are displayed correctly on each page when navigating through paginated"
+                    + " results.")
     public void testColumnHeadersDisplayCorrectlyOnAllPages() {
         Allure.step("Test disabled / Known bug: The column is not visible on the screen!");
 
