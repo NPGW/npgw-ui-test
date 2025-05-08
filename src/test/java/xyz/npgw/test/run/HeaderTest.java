@@ -1,5 +1,6 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.Page;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -10,6 +11,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
@@ -159,5 +161,24 @@ public class HeaderTest extends BaseTest {
 
         Allure.step("Verify that the light color theme is selected");
         assertThat(getPage().locator("html.light")).isVisible();
+    }
+
+    @Test
+    @TmsLink("494")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Verify that the color theme matching with the default browser theme")
+    public  void testDefaultThemeMatching() {
+        new DashboardPage(getPage())
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickLightRadioButton()
+                .clearLocalStorage()
+                .reloadPage();
+
+        new LoginPage(getPage())
+                .loginAs(UserRole.SUPER);
+
+        Allure.step("Verify that the current color theme is dark, matching the browser's theme");
+        assertThat(getPage().locator("html.dark")).isVisible();
     }
 }

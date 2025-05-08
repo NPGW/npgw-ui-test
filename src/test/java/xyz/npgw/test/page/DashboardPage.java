@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
+import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.DateRangePickerTrait;
 import xyz.npgw.test.page.common.HeaderPage;
 
@@ -26,6 +27,18 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
     public DashboardPage waitUntilAlertIsGone() {
         successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         successAlert.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+        return this;
+    }
+
+    @Step("Clear browser storage")
+    public DashboardPage clearLocalStorage() {
+        getPage().evaluate("() => localStorage.clear()");
+        return this;
+    }
+
+    @Step("Reload page")
+    public DashboardPage reloadPage() {
+        getPage().reload();
         return this;
     }
 }
