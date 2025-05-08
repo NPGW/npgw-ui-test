@@ -31,7 +31,6 @@ public class TeamPageTest extends BaseTest {
     private static final String ADMIN_EMAIL = "admin.email@gmail.com";
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
 
-
     User user = new User(
             COMPANY_NAME,
             true,

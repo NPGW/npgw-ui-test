@@ -32,6 +32,9 @@ public final class ProjectProperties {
     private static final String CLOSE_BROWSER_IF_ERROR = PREFIX_PROP + "closeBrowserIfError";
     private static final String ARTEFACT_DIR = PREFIX_PROP + "artefactDir";
     private static final String DEFAULT_TIMEOUT = PREFIX_PROP + "defaultTimeout";
+    private static final String FAIL_FAST = PREFIX_PROP + "failFast";
+    private static final String SKIP_MODE = PREFIX_PROP + "skipMode";
+    private static final String ADDITIONAL_RETRIES = PREFIX_PROP + "additionalRetries";
 
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
 
@@ -89,8 +92,16 @@ public final class ProjectProperties {
         return Boolean.parseBoolean(properties.getProperty(TRACING_MODE, "true"));
     }
 
+    public static void setTracingMode(boolean mode) {
+        properties.setProperty(TRACING_MODE, String.valueOf(mode));
+    }
+
     public static boolean isVideoMode() {
         return Boolean.parseBoolean(properties.getProperty(VIDEO_MODE, "true"));
+    }
+
+    public static void setVideoMode(boolean mode) {
+        properties.setProperty(VIDEO_MODE, String.valueOf(mode));
     }
 
     public static int getVideoWidth() {
@@ -135,5 +146,21 @@ public final class ProjectProperties {
 
     public static String getUserPassword() {
         return properties.getProperty(PREFIX_PROP + UserRole.USER + PASSWORD, "");
+    }
+
+    public static boolean isFailFast() {
+        return Boolean.parseBoolean(properties.getProperty(FAIL_FAST, "false"));
+    }
+
+    public static boolean isSkipMode() {
+        return Boolean.parseBoolean(properties.getProperty(SKIP_MODE, "false"));
+    }
+
+    public static void setSkipMode(boolean mode) {
+        properties.setProperty(SKIP_MODE, String.valueOf(mode));
+    }
+
+    public static int getAdditionalRetries() {
+        return Integer.parseInt(properties.getProperty(ADDITIONAL_RETRIES, "0"));
     }
 }
