@@ -370,7 +370,8 @@ public class AcquirersPageTest extends BaseTest {
                 double pageWidth = getPage().viewportSize().width;
 
                 Assert.assertTrue(table.x >= 0 && (table.x + table.width) <= pageWidth, String.format(
-                        "Еhe header is not fully visible within the viewport on page '%s'!", activePage));
+                        "The header is not fully visible within the viewport on page '%s' with '%s' pagination!",
+                        activePage, option));
 
                 if (acquirersPage.isLastPage()) {
                     break;
