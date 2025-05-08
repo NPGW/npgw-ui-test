@@ -155,7 +155,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickOnResetFilterButton();
 
-        assertThat(companiesAndBusinessUnitsPage.getSelectCompanyWarning())
+        assertThat(companiesAndBusinessUnitsPage.getPageContent())
                 .containsText("Select company name to view merchants");
     }
 }
