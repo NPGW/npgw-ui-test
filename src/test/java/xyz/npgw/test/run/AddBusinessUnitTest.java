@@ -136,9 +136,9 @@ public class AddBusinessUnitTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("479")
+    @TmsLink("480")
     @Epic("Companies and business units")
-    @Feature("Add merchant")
+    @Feature("Reset filter")
     @Description("Verify default filter state was applied once reset")
     public void testResetAppliedFilter() {
         Company company = new Company(new Faker());
