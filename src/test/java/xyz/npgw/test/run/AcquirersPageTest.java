@@ -316,7 +316,7 @@ public class AcquirersPageTest extends BaseTest {
         for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
             String header = COLUMNS_HEADERS.get(i);
             String expected = expectedColumnValues.get(header);
-            String actual = table.getColumnValues(header).get(0).toString();
+            String actual = table.getColumnValues(header).get(0);
 
             Allure.step(String.format("Verify that displayed '%s' is: %s", header, expected));
             Assert.assertEquals(
