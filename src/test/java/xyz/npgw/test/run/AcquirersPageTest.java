@@ -381,4 +381,3 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 }
-
