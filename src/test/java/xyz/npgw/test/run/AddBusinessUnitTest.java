@@ -151,7 +151,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
-                .waitUntilAlertIsGone()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickOnResetFilterButton();
 
