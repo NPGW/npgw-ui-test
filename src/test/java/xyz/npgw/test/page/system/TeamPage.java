@@ -3,7 +3,6 @@ package xyz.npgw.test.page.system;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.common.AlertTrait;
@@ -75,7 +74,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
     @Step("Click user activation button")
     public ChangeUserActivityDialog clickChangeUserActivityButton(String username) {
         Locator button = getChangeUserActivityButton(username);
-        button.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        button.waitFor();
         button.click();
 
         return new ChangeUserActivityDialog(getPage());
