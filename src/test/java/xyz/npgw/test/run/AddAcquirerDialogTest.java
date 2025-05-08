@@ -44,8 +44,7 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         AddAcquirerDialog addAcquirerDialog = acquirersPage.clickAddAcquirer();
 
@@ -77,8 +76,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     public void testToggleStatusRadioButtonsCorrectly(String status) {
         Locator statusRadiobutton = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickStatusRadiobutton(status)
                 .getStatusRadiobutton(status);
@@ -101,8 +99,7 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer();
 
         Allure.step("Verify: Country fields has default 'Search...' text", () -> {
@@ -182,10 +179,8 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
-                .clickAddAcquirer()
-                .clickSelectCountry()
+                .getSystemMenu().clickAcquirersTab()
+                .clickAddAcquirer().clickSelectCountry()
                 .clickCountryInDropdown(oneTimezoneCountry)
                 .clickSelectTimezone()
                 .clickTimezoneInDropdown(icelandTimezone);
@@ -205,15 +200,14 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .enterAcquirerName(acquirerName)
                 .clickCheckboxCurrency("USD")
                 .clickCreateButton();
 
         Allure.step("Verify: Acquirer creation success message is displayed");
-        assertThat(acquirersPage.getAlertMessage()).containsText(
+        assertThat(acquirersPage.getAlert().getAlertMessage()).containsText(
                 "SUCCESSAcquirer was created successfully");
 
         Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
@@ -238,8 +232,7 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         AddAcquirerDialog acquirerDialog = acquirersPage
                 .clickAddAcquirer()
