@@ -12,6 +12,7 @@ import xyz.npgw.test.page.system.BaseSystemPage;
 import java.util.List;
 
 @Getter
+@SuppressWarnings("unchecked")
 public abstract class BaseDialog<ReturnPageT extends BaseSystemPage, CurrentDialogT extends BaseDialog>
         extends BaseModel {
 
