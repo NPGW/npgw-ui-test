@@ -42,7 +42,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator editBusinessUnitButton = getByTestId("EditBusinessUnitButton");
     private final Locator merchantsTable = labelExact("merchants table");
     private final Locator resetFilterButton = getByTestId("ResetButtonTeamPage");
-    private final Locator pageContent = locator("[class='contentBlock']");;
+    private final Locator pageContent = locator("[class='contentBlock']");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
