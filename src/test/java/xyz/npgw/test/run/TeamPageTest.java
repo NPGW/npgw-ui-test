@@ -113,11 +113,12 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton()
-                .clickRefreshDataButton();
+                .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
