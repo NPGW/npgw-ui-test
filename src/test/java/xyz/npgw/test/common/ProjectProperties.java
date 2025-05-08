@@ -1,5 +1,6 @@
 package xyz.npgw.test.common;
 
+import com.microsoft.playwright.options.ColorScheme;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public final class ProjectProperties {
     private static final String FAIL_FAST = PREFIX_PROP + "failFast";
     private static final String SKIP_MODE = PREFIX_PROP + "skipMode";
     private static final String ADDITIONAL_RETRIES = PREFIX_PROP + "additionalRetries";
+    private static final String COLOR_SCHEME = PREFIX_PROP + "colorScheme";
 
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
 
@@ -162,5 +164,9 @@ public final class ProjectProperties {
 
     public static int getAdditionalRetries() {
         return Integer.parseInt(properties.getProperty(ADDITIONAL_RETRIES, "0"));
+    }
+
+    public static ColorScheme getColorScheme() {
+        return ColorScheme.valueOf(properties.getProperty(COLOR_SCHEME, "DARK").toUpperCase());
     }
 }

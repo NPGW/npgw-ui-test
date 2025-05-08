@@ -65,7 +65,7 @@ public abstract class BaseTest {
                 .NewContextOptions()
                 .setLocale("en-GB")
                 .setTimezoneId("Europe/Paris")
-                .setColorScheme(ColorScheme.DARK)
+                .setColorScheme(ProjectProperties.getColorScheme())
                 .setViewportSize(ProjectProperties.getViewportWidth(), ProjectProperties.getViewportHeight())
                 .setBaseURL(ProjectProperties.getBaseUrl());
 
