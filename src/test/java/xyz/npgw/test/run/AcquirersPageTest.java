@@ -364,7 +364,9 @@ public class AcquirersPageTest extends BaseTest {
                 Assert.assertEquals(
                         acquirersPage.getTable().getTableColumnHeader().allTextContents(),
                         COLUMNS_HEADERS,
-                        String.format("Column headers do not match expected headers on page '%s'", activePage));
+                        String.format(
+                                "Column headers do not match expected headers on page '%s' with '%s' pagination!",
+                                activePage, option));
 
                 BoundingBox table = acquirersPage.getTable().getTableHeader().boundingBox();
                 double pageWidth = getPage().viewportSize().width;
