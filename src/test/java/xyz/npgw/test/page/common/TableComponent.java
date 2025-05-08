@@ -3,7 +3,6 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.BoundingBox;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
