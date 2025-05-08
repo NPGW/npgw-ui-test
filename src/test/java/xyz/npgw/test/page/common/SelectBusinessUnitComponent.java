@@ -1,7 +1,7 @@
 package xyz.npgw.test.page.common;
 
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
@@ -44,7 +44,8 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
 
         String lastName = "";
 
-        selectBusinessUnitField.pressSequentially(businessUnitName, new Locator.PressSequentiallyOptions().setDelay(100));
+        selectBusinessUnitField.pressSequentially(businessUnitName,
+                new Locator.PressSequentiallyOptions().setDelay(100));
 
         if (dropdownOptionList.all().isEmpty()) {
             throw new NoSuchElementException("Business unit '" + businessUnitName + "' not found in dropdown list.");
