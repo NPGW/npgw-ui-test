@@ -59,6 +59,8 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
 
     @Step("Click 'Refresh data' button")
     public TeamPage clickRefreshDataButton() {
+//        TODO remove after bugfix
+        getPage().waitForTimeout(500);
         refreshDataButton.waitFor();
 
         refreshDataButton.click();

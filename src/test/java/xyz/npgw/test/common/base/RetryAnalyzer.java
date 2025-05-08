@@ -14,10 +14,10 @@ public final class RetryAnalyzer implements IRetryAnalyzer {
     @Override
     public boolean retry(ITestResult testResult) {
         if (testResult.getStatus() == ITestResult.FAILURE && retryCount++ <= MAX_RETRY_COUNT) {
-            log.debug("Enabling traces and video");
+            log.info("Enabling traces and video");
             ProjectProperties.setTracingMode(true);
             ProjectProperties.setVideoMode(true);
-            log.debug("Retry {} in debug mode for {} time.", testResult.getName(), retryCount);
+            log.info("Retry {} in debug mode for {} time.", testResult.getName(), retryCount);
             return true;
         }
         return false;
