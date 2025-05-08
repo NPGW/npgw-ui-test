@@ -3,8 +3,8 @@ package xyz.npgw.test.page;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.common.DateRangePickerTrait;
 import xyz.npgw.test.page.common.AlertTrait;
+import xyz.npgw.test.page.common.DateRangePickerTrait;
 import xyz.npgw.test.page.common.HeaderPage;
 
 public final class DashboardPage extends HeaderPage implements DateRangePickerTrait<DashboardPage>,
