@@ -221,7 +221,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
     }
 
-    @Ignore("Locator expected to have text: Inactive but Active")
     @Test
     @TmsLink("471")
     @Epic("System/Team")
