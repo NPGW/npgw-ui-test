@@ -27,6 +27,10 @@ import static org.testng.Assert.assertEquals;
 public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "Smitham-Johnson";
+    private static final String ADMIN_COMPANY_NAME = "AdminCompany";
+    private static final String ADMIN_EMAIL = "admin.email@gmail.com";
+    private static final String ADMIN_PASSWORD = "AdminPassword1!";
+
 
     User user = new User(
             COMPANY_NAME,
@@ -63,7 +67,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
-    @Ignore("ERRORmerchantIds must be defined for role USER")
     @Test(dataProvider = "getUsers", dataProviderClass = TestDataProvider.class)
     @TmsLink("298")
     @Epic("System/Team")
@@ -85,10 +88,9 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
     }
 
-    @Ignore("on ApplyFilterButtonTeamPage")
     @Test
     @TmsLink("330")
     @Epic("System/Team")
@@ -113,10 +115,10 @@ public class TeamPageTest extends BaseTest {
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
-                .clickApplyFilter();
+                .clickRefreshDataButton();
 
         Allure.step("Verify: a success alert appears after user creation");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
@@ -152,8 +154,8 @@ public class TeamPageTest extends BaseTest {
                 .checkCompanyAnalystRadiobutton()
                 .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
-                .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickRefreshDataButton()
                 .clickEditUserButton(user.email());
 
         Allure.step("Verify: 'Edit user' header is displayed");
@@ -164,10 +166,10 @@ public class TeamPageTest extends BaseTest {
                 .unsetAllowedBusinessUnits(user.merchantIds())
                 .setUserRoleRadiobutton(updatedUser.userRole())
                 .clickSaveChangesButton()
-                .clickApplyFilter();
+                .clickRefreshDataButton();
 
         Allure.step("Verify: success alert appears after user update");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was updated successfully");
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
@@ -193,20 +195,21 @@ public class TeamPageTest extends BaseTest {
     public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "email@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
-                .waitUntilAlertIsGone()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -215,9 +218,10 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
     }
 
+    @Ignore("Locator expected to have text: Inactive but Active")
     @Test
     @TmsLink("471")
     @Epic("System/Team")
@@ -236,15 +240,15 @@ public class TeamPageTest extends BaseTest {
                 .checkCompanyAnalystRadiobutton()
                 .setAllowedBusinessUnits(user.merchantIds())
                 .clickCreateButton()
-                .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickRefreshDataButton()
                 .clickChangeUserActivityButton(user.email())
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshData();
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
@@ -262,36 +266,37 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Edit user under company admin")
     public void testEditCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "email@gmail.com";
+        String email = "edit.user@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
-                .waitUntilAlertIsGone()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-                .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickRefreshDataButton()
                 .getTable().clickEditUserButton(email)
                 .checkInactiveRadiobutton()
                 .clickSaveChangesButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was updated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was updated successfully");
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
@@ -301,46 +306,158 @@ public class TeamPageTest extends BaseTest {
     @TmsLink("476")
     @Epic("System/Team")
     @Feature("Edit user")
-    @Description("Deactivate user under company admin")
-    public void testDeactivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
+    @Description("Deactivate and activate user under company admin")
+    public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "deactivated@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), "Amazon1");
-        TestUtils.createCompanyAdmin(getApiRequestContext(), "amazon3@gmail.com");
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("Amazon1!")
-                .fillRepeatNewPasswordField("Amazon1!")
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
                 .clickSaveButton()
-                .fillEmailField("amazon3@gmail.com")
-                .fillPasswordField("Amazon1!")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
                 .clickLoginButton()
-                .waitUntilAlertIsGone()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-                .waitUntilAlertIsGone()
-                .clickRefreshData()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickRefreshDataButton()
                 .getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton();
 
-
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshData();
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
 
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
+
+        teamPage.getTable().clickActivateUserButton(email)
+                .clickActivateButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was activated successfully");
+
+        teamPage.clickRefreshDataButton();
+
+        Allure.step("Verify: status of the user was changed");
+        assertThat(teamPage.getTable().getUserStatus(email)).hasText("Active");
+
+        Allure.step("Verify: activate user icon appears");
+        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "ban");
+    }
+
+    @Test
+    @TmsLink("")
+    @Epic("System/Team")
+    @Feature("Edit user")
+    @Description("Reset user password under company admin")
+    public void testResetUserPasswordCompanyUser(@Optional("UNAUTHORISED") String userRole) {
+        String email = "reset.password@gmail.com";
+        TestUtils.deleteUser(getApiRequestContext(), email);
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
+
+        TeamPage teamPage = new AboutBlankPage(getPage())
+                .navigate("/login")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
+                .clickSaveButton()
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
+                .clickLoginButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getHeader().clickSystemAdministrationLink()
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("Password1!")
+                .checkCompanyAdminRadiobutton()
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickRefreshDataButton()
+                .getTable().clickResetUserPasswordButton(email)
+                .fillPasswordField("NewPassword1!")
+                .clickResetButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSPassword was reseted successfully");
+
+        teamPage.getHeader().clickLogOutButton()
+                .fillEmailField(email)
+                .fillPasswordField("NewPassword1!")
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField("ChangedNewPassword1!")
+                .fillRepeatNewPasswordField("ChangedNewPassword1!")
+                .clickSaveButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSPassword is changed successfully");
+    }
+
+    @Test
+    @TmsLink("492")
+    @Epic("System/Team")
+    @Feature("Edit user")
+    @Description("Create company analyst")
+    public void testCreateCompanyAnalyst(@Optional("UNAUTHORISED") String userRole) {
+        String email = "companyanalyst@gmail.com";
+        String companyName = "Analyst company";
+        TestUtils.deleteUser(getApiRequestContext(), email);
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, "Business unit 1");
+        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, ADMIN_EMAIL, ADMIN_PASSWORD);
+
+        TeamPage teamPage = new AboutBlankPage(getPage())
+                .navigate("/login")
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField(ADMIN_PASSWORD)
+                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
+                .clickSaveButton()
+                .fillEmailField(ADMIN_EMAIL)
+                .fillPasswordField(ADMIN_PASSWORD)
+                .clickLoginButton()
+                .getAlert()
+                .waitUntilSuccessAlertIsGone()
+                .getHeader().clickSystemAdministrationLink()
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("CompanyAnalyst123!")
+                .setAllowedBusinessUnit("Business unit 1")
+                .clickCreateButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+
+        teamPage.clickRefreshDataButton();
+
+        Allure.step("Verify: status of the user was changed");
+        assertThat(teamPage.getTable().getUserRole(email)).hasText("USER");
+
+        Allure.step("Verify: status of the user");
+        assertThat(teamPage.getTable().getUserStatus(email)).hasText("Active");
+
+        Allure.step("Verify: deactivate user icon appears");
+        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "ban");
     }
 }

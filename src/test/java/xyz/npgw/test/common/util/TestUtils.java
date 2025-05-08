@@ -31,8 +31,8 @@ public final class TestUtils {
         log.info("create user '{}' - {} {}", user.email(), response.status(), response.text());
     }
 
-    public static void createCompanyAdmin(APIRequestContext request, String email) {
-        User user = new User("Amazon1", true, UserRole.ADMIN, new String[]{}, email, "Amazon1!");
+    public static void createCompanyAdmin(APIRequestContext request, String company, String email, String password) {
+        User user = new User(company, true, UserRole.ADMIN, new String[]{}, email, password);
         deleteUser(request, user);
         APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
         log.info("create company admin '{}' - {} {}", user.email(), response.status(), response.text());
@@ -136,5 +136,16 @@ public final class TestUtils {
         APIResponse response = request.get("portal-v1/company/%s/merchant".formatted(encode(companyName)));
         log.info("get all merchants for company '{}' - {} {}", companyName, response.status(), response.text());
         return new Gson().fromJson(response.text(), BusinessUnit[].class);
+    }
+
+    public static void createMerchantIfNeeded(APIRequestContext request, String companyName, String businessUnitName) {
+        if (!existsMerchant(request, companyName, businessUnitName)) {
+            createMerchant(request, companyName, businessUnitName);
+        }
+    }
+
+    private static boolean existsMerchant(APIRequestContext request, String companyName, String businessUnitName) {
+        return Arrays.stream(getAllMerchants(request, companyName))
+                .anyMatch(businessUnit -> businessUnit.merchantName().equals(businessUnitName));
     }
 }

@@ -1,23 +1,24 @@
 package xyz.npgw.test.page;
 
+import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.testng.Assert;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.util.ResponseUtils;
-import xyz.npgw.test.page.common.DateRangePickerTrait;
-import xyz.npgw.test.page.common.HeaderPage;
-import xyz.npgw.test.page.common.SelectCompanyTrait;
-import xyz.npgw.test.page.common.TableTrait;
+import xyz.npgw.test.page.common.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Getter
 public class TransactionsPage extends HeaderPage implements TableTrait, DateRangePickerTrait<TransactionsPage>,
-        SelectCompanyTrait<TransactionsPage> {
+        SelectCompanyTrait<TransactionsPage>, SelectBusinessUnitTrait<TransactionsPage> {
 
     private final Locator rowsPerPageButton = buttonByName("Rows Per Page");
     private final Locator rowsPerPageOptions = dialog();
@@ -298,4 +299,20 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
 
         return this;
     }
+
+    public boolean isFileAvailableAndNotEmpty(String menuItemName) {
+
+        Download download = getPage().waitForDownload(() -> {
+            menuItemByName(menuItemName).click();
+        });
+
+        int length = 0;
+        try (InputStream inputStream = download.createReadStream()) {
+            length = inputStream.readAllBytes().length;
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+        return length > 0;
+    }
 }
+
