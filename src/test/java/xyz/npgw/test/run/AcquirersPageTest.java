@@ -46,8 +46,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testVisibilityAcquirersListControlTab() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         Allure.step("Verify: Add Acquirer Button is visible");
         assertThat(acquirersPage.getAddAcquirerButton()).isVisible();
@@ -94,8 +93,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testSelectAcquirerDropdownFunctionality() {
         Locator dropdownAcquirerList = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .clickSelectAcquirerPlaceholder()
                 .getSelectAcquirersDropdownItems();
 
@@ -112,8 +110,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testOpenStatusDropdown() {
         Locator actualOptions = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAcquirerStatusPlaceholder()
                 .getAcquirerStatusOptions();
 
@@ -129,8 +126,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testFilterAcquirersByStatus(String status) {
         List<Locator> statuses = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .clickAcquirerStatusPlaceholder()
                 .selectAcquirerStatus(status)
                 .getAcquirersStatus();
@@ -151,8 +147,7 @@ public class AcquirersPageTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         Locator actualStatus = acquirersPage.getAcquirerStatusValue();
 
@@ -181,8 +176,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testRowsPerPageDropdownOptions() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         Allure.step("Verify: The default 'Rows Per Page' value is set to 25");
         assertThat(acquirersPage.getRowsPerPage()).hasText("25");
@@ -205,8 +199,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testSelectingRowsPerPageOptionUpdatesFieldValue() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         for (String option : rowsPerPageOptions) {
             acquirersPage
@@ -228,8 +221,7 @@ public class AcquirersPageTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         for (String option : rowsPerPageOptions) {
             acquirersPage
@@ -267,8 +259,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testDisplayCorrectColumnHeadersInAcquirersTable() {
         List<String> acquirerTableHeaders = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .getTable()
                 .getColumnHeadersText();
 
@@ -311,8 +302,7 @@ public class AcquirersPageTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab()
+                .getSystemMenu().clickAcquirersTab()
                 .typeAcquirerNameToSelectAcquirerInputField(acquirer.acquirerName())
                 .clickAcquirerInDropdown(acquirer.acquirerName());
 
@@ -347,7 +337,8 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getPaginationItems()).hasText("1");
     }
 
-    @Test(expectedExceptions = { AssertionError.class })
+//    @Test(expectedExceptions = { AssertionError.class })
+    @Test
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
@@ -358,8 +349,7 @@ public class AcquirersPageTest extends BaseTest {
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu()
-                .clickAcquirersTab();
+                .getSystemMenu().clickAcquirersTab();
 
         for (String option : rowsPerPageOptions) {
             acquirersPage
@@ -373,23 +363,15 @@ public class AcquirersPageTest extends BaseTest {
                         String.format("Verify: All table column headers are on page '%s' with '%s' pagination",
                                 activePage, option));
                 Assert.assertEquals(
-                        acquirersPage.getTable().getTableHeader().allTextContents(),
+                        acquirersPage.getTable().getTableColumnHeader().allTextContents(),
                         COLUMNS_HEADERS,
                         String.format("Column headers do not match expected headers on page '%s'", activePage));
 
-                for (String header : COLUMNS_HEADERS) {
-                    Locator columnHeader = acquirersPage.getTable().getHeaderByName(header);
+                BoundingBox table = acquirersPage.getTable().getTableHeader().boundingBox();
+                double pageWidth = getPage().viewportSize().width;
 
-                    Allure.step(String.format("Verify: Header '%s' is visible", header));
-                    assertThat(columnHeader).isVisible();
-
-                    BoundingBox box = columnHeader.boundingBox();
-                    Assert.assertNotNull(box, "Header exists but is off-screen!");
-
-                    double pageWidth = getPage().viewportSize().width;
-                    Assert.assertTrue(box.x >= 0 && box.x <= pageWidth, String.format(
-                            "Header '%s' is outside visible viewport on the '%s' page!", header, activePage));
-                }
+                Assert.assertTrue(table.x >= 0 && (table.x + table.width) <= pageWidth, String.format(
+                        "Header '%s' is partially or fully outside the visible viewport on the '%s' page!", activePage));
 
                 if (acquirersPage.isLastPage()) {
                     break;
