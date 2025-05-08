@@ -15,9 +15,6 @@ import xyz.npgw.test.page.dialog.user.EditUserDialog;
 public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait, SelectCompanyTrait<TeamPage>,
         AlertTrait<TeamPage> {
 
-    private final Locator refreshDataButton = getByTestId("ApplyFilterButtonTeamPage");
-    private final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
-
     public TeamPage(Page page) {
         super(page);
     }
@@ -28,7 +25,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
 
     @Step("Click 'Add user' button")
     public AddUserDialog clickAddUserButton() {
-        addUserButton.click();
+        getByTestId("AddUserButtonTeamPage").click();
 
         return new AddUserDialog(getPage());
     }
@@ -58,9 +55,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
     public TeamPage clickRefreshDataButton() {
 //        TODO remove after bugfix
         getPage().waitForTimeout(500);
-        refreshDataButton.waitFor();
-
-        refreshDataButton.click();
+        getByTestId("ApplyFilterButtonTeamPage").click();
 
         return this;
     }
