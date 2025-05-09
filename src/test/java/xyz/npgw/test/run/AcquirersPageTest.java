@@ -374,8 +374,6 @@ public class AcquirersPageTest extends BaseTest {
                         "The header is not fully visible within the viewport on page '%s' with '%s' pagination!",
                         activePage, option));
 
-                acquirersPage.clickNextPage();
-
             }
             while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
         }
