@@ -1,6 +1,6 @@
 package xyz.npgw.test.run;
 
-import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.ColorScheme;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -178,7 +178,12 @@ public class HeaderTest extends BaseTest {
         new LoginPage(getPage())
                 .loginAs(UserRole.SUPER);
 
-        Allure.step("Verify that the current color theme is dark, matching the browser's theme");
-        assertThat(getPage().locator("html.dark")).isVisible();
+        Allure.step("Verify that the current color theme matches the default browser theme");
+        ColorScheme expectedTheme = ProjectProperties.getColorScheme();
+        if (expectedTheme == ColorScheme.DARK) {
+            assertThat(getPage().locator("html.dark")).isVisible();
+        } else if (expectedTheme == ColorScheme.LIGHT) {
+            assertThat(getPage().locator("html.light")).isVisible();
+        }
     }
 }
