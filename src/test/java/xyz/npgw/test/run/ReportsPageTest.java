@@ -84,7 +84,8 @@ public class ReportsPageTest extends BaseTest {
         assertThat(generationParametersDialog.getGenerateButton()).isDisabled();
 
         Allure.step("Verify: All report column names are listed in the 'Generation Parameters dialog'");
-        Assert.assertEquals(new HashSet<>(generationParametersDialog.getReportColumns()), new HashSet<>(REPORT_COLUMNS));
+        Assert.assertEquals(
+                new HashSet<>(generationParametersDialog.getReportColumns()), new HashSet<>(REPORT_COLUMNS));
     }
 
 }
