@@ -230,7 +230,7 @@ public class AcquirersPageTest extends BaseTest {
 
             int rowsSum = 0;
 
-            while (true) {
+            do {
                 int actualRowCount = acquirersPage.getTable().getTableRows().count();
                 rowsSum += actualRowCount;
 
@@ -238,12 +238,8 @@ public class AcquirersPageTest extends BaseTest {
                         "Verify: The table contains '%s' rows less than or equal to '%s'", actualRowCount, option));
                 Assert.assertTrue(actualRowCount <= Integer.parseInt(option));
 
-                if (acquirersPage.isLastPage()) {
-                    break;
-                }
+            } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
 
-                acquirersPage.clickNextPage();
-            }
             totalRows.add(rowsSum);
         }
 
