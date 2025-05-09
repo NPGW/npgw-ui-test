@@ -29,6 +29,10 @@ public class TeamPageTest extends BaseTest {
     private static final String ADMIN_COMPANY_NAME = "AdminCompany";
     private static final String ADMIN_EMAIL = "admin.email@gmail.com";
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
+    private static final String SUCCESS_MESSAGE_USER_DEACTIVATED = "SUCCESSUser was deactivated successfully";
+    private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
+    private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
+
 
     User user = new User(
             COMPANY_NAME,
@@ -86,7 +90,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
     }
 
     @Test
@@ -115,7 +119,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
         teamPage.clickRefreshDataButton();
 
@@ -168,7 +172,7 @@ public class TeamPageTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: success alert appears after user update");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was updated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
@@ -217,7 +221,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
     }
 
     @Test
@@ -244,7 +248,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_DEACTIVATED);
 
         teamPage.clickRefreshDataButton();
 
@@ -294,7 +298,7 @@ public class TeamPageTest extends BaseTest {
                 .clickSaveChangesButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was updated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
@@ -335,7 +339,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_DEACTIVATED);
 
         teamPage.clickRefreshDataButton();
 
@@ -445,7 +449,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
         teamPage.clickRefreshDataButton();
 
