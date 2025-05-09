@@ -21,8 +21,7 @@ public class EditCompanyDialogTest extends BaseTest {
     @Feature("Edit company")
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
-        TestUtils.deleteCompany(getApiRequestContext(), "Kate");
-        TestUtils.createCompany(getApiRequestContext(), "Kate");
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), "Kate");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
