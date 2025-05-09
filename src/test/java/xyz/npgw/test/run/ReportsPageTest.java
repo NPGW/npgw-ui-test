@@ -72,7 +72,7 @@ public class ReportsPageTest extends BaseTest {
     @Epic("Reports")
     @Feature("Generate report")
     @Description("Verify content of 'Generation Parameters dialog'")
-    public void testContentOfGenerationParametersDalog () {
+    public void testContentOfGenerationParametersDalog() {
         ReportsParametersDialog generationParametersDialog = new DashboardPage(getPage())
                 .getHeader().clickReportsLink()
                 .clickGenerateReportButton();

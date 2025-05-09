@@ -14,6 +14,7 @@ public class ReportsPage extends HeaderPage implements TableTrait, DateRangePick
 
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator generateReportButton = buttonByName("Generate report");
+
     public ReportsPage(Page page) {
         super(page);
     }

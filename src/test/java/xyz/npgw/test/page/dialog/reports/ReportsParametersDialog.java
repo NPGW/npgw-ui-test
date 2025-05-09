@@ -15,9 +15,9 @@ public class ReportsParametersDialog extends BaseDialog<ReportsPage, ReportsPara
 
     @Getter
     private final Locator generateButton = buttonByName("Generate");
-    private final Locator radioButtonCSV = radioButton("CSV");
+    private final Locator radioButtonCsv = radioButton("CSV");
     private final Locator radioButtonExcel = radioButton("EXCEL");
-    private final Locator radioButtonPDF = radioButton("PDF");
+    private final Locator radioButtonPdf = radioButton("PDF");
     private final Locator checkboxes = getPage().locator("label:has(input[type='checkbox'])");
 
     public ReportsParametersDialog(Page page) {
