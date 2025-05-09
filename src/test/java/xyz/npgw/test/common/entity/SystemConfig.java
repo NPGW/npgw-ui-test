@@ -11,6 +11,6 @@ public record SystemConfig(
                 "https://test.npgw.xyz/challenge/url",
                 "https://test.npgw.xyz/fingerprint/url",
                 "https://test.npgw.xyz/resource/url",
-                "");
+                "notificationQueue");
     }
 }
