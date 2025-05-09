@@ -4,7 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.common.Constants;
@@ -27,8 +26,8 @@ public class HeaderComponent extends BaseComponent {
     private final Locator logOutButton = textExact("Log out");
     private final Locator userMenuButton = getByTestId("userMenuToggle");
     private final Locator profileSettingsButton = textExact("Profile Settings");
-    private final Locator passwordField = placeholder("Enter new password");
-    private final Locator repeatPasswordField = placeholder("Repeat new password");
+    private final Locator passwordField = getByPlaceholder("Enter new password");
+    private final Locator repeatPasswordField = getByPlaceholder("Repeat new password");
     private final Locator saveButton = locator("button:has-text('Save')");
     private final Locator logOutButtonUserMenu = getByRole(AriaRole.MENUITEM, "Log Out");
     private final Locator lightRadioButtonInUserMenu = radioButton("Light");

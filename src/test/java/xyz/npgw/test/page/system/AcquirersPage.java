@@ -32,7 +32,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     private final Locator paginationNext = labelExact("next page button");
     private final Locator selectAcquirerLabel = labelExact("Select acquirer");
     @Getter(AccessLevel.NONE)
-    private final Locator selectAcquirerPlaceholder = placeholder("Search");
+    private final Locator selectAcquirerPlaceholder = getByPlaceholder("Search");
     @Getter(AccessLevel.NONE)
     private final Locator dropdownAcquirerList = locator("div[data-slot='content'] li");
     private final Locator statusLabel = labelExact("Status");

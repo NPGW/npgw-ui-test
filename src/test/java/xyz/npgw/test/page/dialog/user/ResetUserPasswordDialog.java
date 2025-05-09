@@ -18,7 +18,7 @@ public class ResetUserPasswordDialog extends BaseDialog<TeamPage, ResetUserPassw
 
     @Step("Enter new password in the 'New password' field")
     public ResetUserPasswordDialog fillPasswordField(String newPassword) {
-        placeholder("Enter new password").fill(newPassword);
+        getByPlaceholder("Enter new password").fill(newPassword);
 
         return this;
     }

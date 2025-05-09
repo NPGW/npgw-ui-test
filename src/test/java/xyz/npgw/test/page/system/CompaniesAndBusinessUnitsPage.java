@@ -22,7 +22,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator businessUnitEmptyList = locator("[role='gridcell']");
     private final Locator addCompanyDialog = dialog();
     private final Locator companyNameDropdownList = locator("[role='option']");
-    private final Locator selectCompanyInput = placeholder("Search...");
+    private final Locator selectCompanyInput = getByPlaceholder("Search...");
     private final Locator descriptionFromCompanyInfoSection = labelExact("Description");
     private final Locator websiteFromCompanyInfoSection = labelExact("Website");
     private final Locator primaryContactFromCompanyInfoSection = labelExact("Primary contact");

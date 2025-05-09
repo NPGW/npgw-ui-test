@@ -12,8 +12,8 @@ import static io.qameta.allure.model.Parameter.Mode.MASKED;
 @Log4j2
 public class AddUserDialog extends UserDialog<AddUserDialog> {
 
-    private final Locator emailField = placeholder("Enter user email");
-    private final Locator passwordField = placeholder("Enter user password");
+    private final Locator emailField = getByPlaceholder("Enter user email");
+    private final Locator passwordField = getByPlaceholder("Enter user password");
     private final Locator createButton = buttonByName("Create");
 
     public AddUserDialog(Page page) {

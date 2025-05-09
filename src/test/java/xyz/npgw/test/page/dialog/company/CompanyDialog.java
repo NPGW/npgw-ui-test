@@ -13,20 +13,20 @@ public abstract class CompanyDialog<CurrentDialogT extends CompanyDialog<Current
         extends BaseDialog<CompaniesAndBusinessUnitsPage, CurrentDialogT> {
 
     @Getter
-    private final Locator companyNameField = placeholder("Enter company name");
+    private final Locator companyNameField = getByPlaceholder("Enter company name");
     @Getter
-    private final Locator companyTypeField = placeholder("Enter type");
-    private final Locator companyDescriptionField = placeholder("Enter company description");
-    private final Locator companyWebsiteField = placeholder("Enter company website");
-    private final Locator companyPrimaryContactField = placeholder("Enter company primary contact");
-    private final Locator companyEmailField = placeholder("Enter company email");
-    private final Locator companyCountryField = placeholder("Enter country");
-    private final Locator companyStateField = placeholder("Enter state");
-    private final Locator companyZipField = placeholder("Enter ZIP");
-    private final Locator companyCityField = placeholder("Enter city");
-    private final Locator companyPhoneField = placeholder("Enter phone");
-    private final Locator companyMobileField = placeholder("Enter mobile");
-    private final Locator companyFaxField = placeholder("Enter fax");
+    private final Locator companyTypeField = getByPlaceholder("Enter type");
+    private final Locator companyDescriptionField = getByPlaceholder("Enter company description");
+    private final Locator companyWebsiteField = getByPlaceholder("Enter company website");
+    private final Locator companyPrimaryContactField = getByPlaceholder("Enter company primary contact");
+    private final Locator companyEmailField = getByPlaceholder("Enter company email");
+    private final Locator companyCountryField = getByPlaceholder("Enter country");
+    private final Locator companyStateField = getByPlaceholder("Enter state");
+    private final Locator companyZipField = getByPlaceholder("Enter ZIP");
+    private final Locator companyCityField = getByPlaceholder("Enter city");
+    private final Locator companyPhoneField = getByPlaceholder("Enter phone");
+    private final Locator companyMobileField = getByPlaceholder("Enter mobile");
+    private final Locator companyFaxField = getByPlaceholder("Enter fax");
     private final Locator apiActiveCheckbox = getByRole(AriaRole.CHECKBOX, "API active");
     private final Locator portalActiveCheckbox = getByRole(AriaRole.CHECKBOX, "Portal active");
 
