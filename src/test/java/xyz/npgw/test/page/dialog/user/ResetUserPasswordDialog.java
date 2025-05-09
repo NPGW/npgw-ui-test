@@ -1,6 +1,7 @@
 package xyz.npgw.test.page.dialog.user;
 
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
@@ -25,7 +26,7 @@ public class ResetUserPasswordDialog extends BaseDialog<TeamPage, ResetUserPassw
 
     @Step("Click 'Reset' button")
     public TeamPage clickResetButton() {
-        buttonByName("Reset").click();
+        getByRole(AriaRole.BUTTON, "Reset").click();
 
         return new TeamPage(getPage());
     }

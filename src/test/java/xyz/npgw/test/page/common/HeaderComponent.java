@@ -30,8 +30,8 @@ public class HeaderComponent extends BaseComponent {
     private final Locator repeatPasswordField = getByPlaceholder("Repeat new password");
     private final Locator saveButton = locator("button:has-text('Save')");
     private final Locator logOutButtonUserMenu = getByRole(AriaRole.MENUITEM, "Log Out");
-    private final Locator lightRadioButtonInUserMenu = radioButton("Light");
-    private final Locator darkRadioButtonInUserMenu = radioButton("Dark");
+    private final Locator lightRadioButtonInUserMenu = getByRoleExact(AriaRole.RADIO, "Light");
+    private final Locator darkRadioButtonInUserMenu = getByRoleExact(AriaRole.RADIO, "Dark");
 
     public HeaderComponent(Page page) {
         super(page);

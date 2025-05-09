@@ -14,8 +14,8 @@ import java.util.Arrays;
 public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialogT>>
         extends BaseDialog<TeamPage, CurrentDialogT> {
 
-    private final Locator activeRadioButton = radioButton("Active");
-    private final Locator inactiveRadioButton = radioButton("Inactive");
+    private final Locator activeRadioButton = getByRoleExact(AriaRole.RADIO, "Active");
+    private final Locator inactiveRadioButton = getByRoleExact(AriaRole.RADIO, "Inactive");
     private final Locator allowedBusinessUnitsTitle = textExact("Allowed business units");
 
     public UserDialog(Page page) {
@@ -54,7 +54,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
     @Step("Set 'User role' radiobutton checked for '{userRole}'")
     public CurrentDialogT setUserRoleRadiobutton(UserRole userRole) {
-        radioButton(userRole.getName()).check();
+        getByRoleExact(AriaRole.RADIO, userRole.getName()).check();
 
         return (CurrentDialogT) this;
     }

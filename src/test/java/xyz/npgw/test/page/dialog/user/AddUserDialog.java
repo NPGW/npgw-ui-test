@@ -2,6 +2,7 @@ package xyz.npgw.test.page.dialog.user;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
@@ -14,7 +15,7 @@ public class AddUserDialog extends UserDialog<AddUserDialog> {
 
     private final Locator emailField = getByPlaceholder("Enter user email");
     private final Locator passwordField = getByPlaceholder("Enter user password");
-    private final Locator createButton = buttonByName("Create");
+    private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
 
     public AddUserDialog(Page page) {
         super(page);

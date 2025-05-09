@@ -22,6 +22,10 @@ public abstract class BaseModel {
         return page.getByRole(ariaRole, new Page.GetByRoleOptions().setName(name));
     }
 
+    protected Locator getByRoleExact(AriaRole ariaRole, String name) {
+        return page.getByRole(ariaRole, new Page.GetByRoleOptions().setName(name).setExact(true));
+    }
+
     protected Locator getByTestId(String testId) {
         return page.getByTestId(testId);
     }
@@ -30,16 +34,16 @@ public abstract class BaseModel {
         return page.getByPlaceholder(placeholder);
     }
 
-    protected Locator buttonByName(String name) {
-        return getPage().getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(name));
+    protected Locator labelExact(String text) {
+        return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true));
+    }
+
+    protected Locator textExact(String text) {
+        return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 
     protected Locator radioButton(String name) {
         return getPage().getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName(name).setExact(true));
-    }
-
-    protected Locator tab(String text) {
-        return getPage().getByRole(AriaRole.TAB, new Page.GetByRoleOptions().setName(text));
     }
 
     protected Locator locator(String selector) {
@@ -48,14 +52,6 @@ public abstract class BaseModel {
 
     protected Locator dialog() {
         return getPage().getByRole(AriaRole.DIALOG);
-    }
-
-    protected Locator labelExact(String text) {
-        return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true));
-    }
-
-    protected Locator textExact(String text) {
-        return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 
     protected Locator option(Locator locator) {

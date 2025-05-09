@@ -20,7 +20,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     private final Locator selectCountry = labelExact("Select country");
 
-    private final Locator selectTimezoneLabel = buttonByName("Timezone");
+    private final Locator selectTimezoneLabel = getByRole(AriaRole.BUTTON, "Timezone");
     private final Locator selectTimezone = labelExact("Timezone").locator("span[data-slot='value']");
 
     private final Locator selectDropdown = dialog();

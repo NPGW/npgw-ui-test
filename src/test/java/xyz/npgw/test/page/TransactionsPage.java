@@ -24,16 +24,16 @@ import java.util.List;
 public class TransactionsPage extends HeaderPage implements TableTrait, DateRangePickerTrait<TransactionsPage>,
         SelectCompanyTrait<TransactionsPage>, SelectBusinessUnitTrait<TransactionsPage> {
 
-    private final Locator rowsPerPageButton = buttonByName("Rows Per Page");
+    private final Locator rowsPerPageButton = getByRole(AriaRole.BUTTON, "Rows Per Page");
     private final Locator rowsPerPageOptions = dialog();
     @Getter(AccessLevel.NONE)
-    private final Locator nextPageButton = buttonByName("next page button");
-    private final Locator paginationItemTwoActiveButton = buttonByName("pagination item 2 active");
+    private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
+    private final Locator paginationItemTwoActiveButton = getByRole(AriaRole.BUTTON, "pagination item 2 active");
     private final Locator businessUnitSelector = textExact("Business unit").locator("../../..");
     private final Locator currencySelector = labelExact("Currency");
     private final Locator paymentMethodSelector = labelExact("Payment method");
     private final Locator statusSelector = labelExact("Status");
-    private final Locator amountButton = buttonByName("Amount");
+    private final Locator amountButton = getByRole(AriaRole.BUTTON, "Amount");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
@@ -51,7 +51,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
     private final Locator amountFromDecreaseArrow = amountFromField.locator("//button[@aria-label='Decrease From']");
     private final Locator amountToIncreaseArrow = amountToField.locator("//button[@aria-label='Increase To']");
     private final Locator amountToDecreaseArrow = amountToField.locator("//button[@aria-label='Decrease To']");
-    private final Locator amountApplyButton = buttonByName("Apply");
+    private final Locator amountApplyButton = getByRole(AriaRole.BUTTON, "Apply");
     private final Locator amountClearButton = textExact("Clear");
     private final Locator amountAppliedClearButton = labelExact("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");

@@ -2,6 +2,7 @@ package xyz.npgw.test.page.dialog.merchant;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
@@ -12,7 +13,7 @@ public class AddBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnitsP
     @Getter
     private final Locator companyNameField = locator("input[aria-label='Company name']");
     private final Locator addMerchantDialog = dialog();
-    private final Locator createButton = buttonByName("Create");
+    private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
     private final Locator businessUnitNameField = getByPlaceholder("Enter business unit name");
 
     @Getter
