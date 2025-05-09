@@ -23,16 +23,4 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
 
         return this;
     }
-
-    @Step("Clear browser storage")
-    public DashboardPage clearLocalStorage() {
-        getPage().evaluate("() => localStorage.clear()");
-        return this;
-    }
-
-    @Step("Reload page")
-    public DashboardPage reloadPage() {
-        getPage().reload();
-        return this;
-    }
 }

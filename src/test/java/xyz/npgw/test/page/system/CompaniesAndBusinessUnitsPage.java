@@ -5,7 +5,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import org.testng.Assert;
 import xyz.npgw.test.page.common.AlertTrait;
 import xyz.npgw.test.page.common.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
@@ -50,7 +49,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Add company' button")
     public AddCompanyDialog clickAddCompanyButton() {
-        addCompanyButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        addCompanyButton.waitFor();
         addCompanyButton.click();
 
         return new AddCompanyDialog(getPage());
@@ -67,41 +66,10 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         return new AddBusinessUnitDialog(getPage());
     }
 
-    @Step("Click '{companyName}' company in dropdown")
-    public CompaniesAndBusinessUnitsPage clickCompanyInDropdown(String companyName) {
-        String lastSeenText = "";
-
-        while (true) {
-            Locator options = companyNameDropdownList;
-            int count = options.count();
-
-            for (int i = 0; i < count; i++) {
-                String text = options.nth(i).innerText().trim();
-                if (text.equals(companyName)) {
-                    options.nth(i).click();
-                    return this;
-                }
-            }
-
-            String currentLastText = options.nth(count - 1).innerText().trim();
-            if (currentLastText.equals(lastSeenText)) {
-                break;
-            }
-
-            lastSeenText = currentLastText;
-
-            companyNameDropdownList.last().scrollIntoViewIfNeeded();
-        }
-
-        Assert.fail("Company '" + companyName + "' not found in dropdown.");
-
-        return this;
-    }
-
     @Step("Click 'Edit company' button")
     public EditCompanyDialog clickEditCompanyButton() {
         //getPage().waitForLoadState(LoadState.NETWORKIDLE);
-        getPage().getByText("Loading").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        getPage().getByText("Loading").waitFor();
         getPage().getByText("Loading").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         editCompanyButton.click();
 
