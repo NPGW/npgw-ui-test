@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 @SuppressWarnings("unchecked")
-public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT extends BaseDialog>
+public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT extends BaseDialog<?, ?>>
         extends BaseModel {
 
     private final Locator dialogHeader = locator("section header");
@@ -29,6 +29,8 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
     public BaseDialog(Page page) {
         super(page);
     }
+
+    protected abstract ReturnPageT getReturnPage();
 
     public List<String> getPlaceholdersOrTextsFromFields() {
         fieldsWithPlaceholder.last().waitFor();
@@ -56,8 +58,6 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
         return (CurrentDialogT) this;
     }
 
-    protected abstract ReturnPageT getReturnPage();
-
     @Step("Click on the 'Close' button to close form")
     public ReturnPageT clickCloseButton() {
         closeButton.click();
@@ -71,5 +71,4 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
 
         return getReturnPage();
     }
-
 }
