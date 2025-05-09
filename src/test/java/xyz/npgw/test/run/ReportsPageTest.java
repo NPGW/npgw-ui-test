@@ -68,7 +68,7 @@ public class ReportsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("509")
+    @TmsLink("510")
     @Epic("Reports")
     @Feature("Generate report")
     @Description("Verify content of 'Generation Parameters dialog'")
