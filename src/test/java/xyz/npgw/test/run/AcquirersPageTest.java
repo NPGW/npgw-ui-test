@@ -337,7 +337,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getPaginationItems()).hasText("1");
     }
 
-    @Test(expectedExceptions = { AssertionError.class })
+    @Test
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
@@ -354,8 +354,7 @@ public class AcquirersPageTest extends BaseTest {
             acquirersPage
                     .clickRowsPerPageChevron()
                     .selectRowsPerPageOption(option);
-
-            while (true) {
+            do {
                 String activePage = acquirersPage.getActivePage().innerText();
 
                 Allure.step(
@@ -375,12 +374,10 @@ public class AcquirersPageTest extends BaseTest {
                         "The header is not fully visible within the viewport on page '%s' with '%s' pagination!",
                         activePage, option));
 
-                if (acquirersPage.isLastPage()) {
-                    break;
-                }
-
                 acquirersPage.clickNextPage();
+
             }
+            while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
         }
     }
 }
