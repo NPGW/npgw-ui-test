@@ -88,7 +88,9 @@ public final class TestUtils {
     }
 
     private static String encode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        return URLEncoder.encode(value, StandardCharsets.UTF_8)
+                .replaceAll("\\+", "%20")
+                .replaceAll(",", "%2C");
     }
 
     private static boolean existsCompany(APIRequestContext request, String companyName) {
