@@ -1,11 +1,8 @@
 package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.LoadState;
-import io.qameta.allure.Step;
 import xyz.npgw.test.page.common.HeaderPage;
 
-@SuppressWarnings("unchecked")
 public abstract class BaseSystemPage<SystemPageT extends BaseSystemPage<SystemPageT>> extends HeaderPage
         implements MenuTrait {
 

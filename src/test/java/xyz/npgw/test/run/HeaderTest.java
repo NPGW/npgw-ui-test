@@ -9,7 +9,6 @@ import org.testng.Assert;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
@@ -78,7 +77,7 @@ public class HeaderTest extends BaseTest {
         String email = "company.admin@email.com";
         String password = "CompanyAdmin123!";
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), company);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), company, email,password);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), company, email, password);
         String newPassword = "QWEdsa123@";
 
         DashboardPage dashboardPage = new AboutBlankPage(getPage())
@@ -132,7 +131,7 @@ public class HeaderTest extends BaseTest {
     @Epic("Header")
     @Feature("User menu")
     @Description("Verify that the user can switch to the dark theme")
-    public  void testDarkColorThemeSwitch() {
+    public void testDarkColorThemeSwitch() {
         new DashboardPage(getPage())
                 .getHeader().clickUserMenuButton()
                 .getHeader().clickDarkRadioButton();
@@ -146,7 +145,7 @@ public class HeaderTest extends BaseTest {
     @Epic("Header")
     @Feature("User menu")
     @Description("Verify that the user can switch to the light theme")
-    public  void testLightColorThemeSwitch() {
+    public void testLightColorThemeSwitch() {
         new DashboardPage(getPage())
                 .getHeader().clickUserMenuButton()
                 .getHeader().clickLightRadioButton();
