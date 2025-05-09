@@ -12,7 +12,7 @@ public class AddBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnitsP
 
     @Getter
     private final Locator companyNameField = locator("input[aria-label='Company name']");
-    private final Locator addMerchantDialog = dialog();
+    private final Locator addMerchantDialog = getByRole(AriaRole.DIALOG);
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
     private final Locator businessUnitNameField = getByPlaceholder("Enter business unit name");
 

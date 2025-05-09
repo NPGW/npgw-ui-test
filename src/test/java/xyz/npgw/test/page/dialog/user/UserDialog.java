@@ -16,7 +16,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
     private final Locator activeRadioButton = getByRoleExact(AriaRole.RADIO, "Active");
     private final Locator inactiveRadioButton = getByRoleExact(AriaRole.RADIO, "Inactive");
-    private final Locator allowedBusinessUnitsTitle = textExact("Allowed business units");
+    private final Locator allowedBusinessUnitsTitle = getByTextExact("Allowed business units");
 
     public UserDialog(Page page) {
         super(page);

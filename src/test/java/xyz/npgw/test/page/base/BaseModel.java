@@ -34,31 +34,15 @@ public abstract class BaseModel {
         return page.getByPlaceholder(placeholder);
     }
 
-    protected Locator labelExact(String text) {
-        return getPage().getByLabel(text, new Page.GetByLabelOptions().setExact(true));
+    protected Locator getByLabelExact(String text) {
+        return page.getByLabel(text, new Page.GetByLabelOptions().setExact(true));
     }
 
-    protected Locator textExact(String text) {
-        return getPage().getByText(text, new Page.GetByTextOptions().setExact(true));
-    }
-
-    protected Locator radioButton(String name) {
-        return getPage().getByRole(AriaRole.RADIO, new Page.GetByRoleOptions().setName(name).setExact(true));
+    protected Locator getByTextExact(String text) {
+        return page.getByText(text, new Page.GetByTextOptions().setExact(true));
     }
 
     protected Locator locator(String selector) {
-        return getPage().locator(selector);
-    }
-
-    protected Locator dialog() {
-        return getPage().getByRole(AriaRole.DIALOG);
-    }
-
-    protected Locator option(Locator locator) {
-        return locator.getByRole(AriaRole.OPTION);
-    }
-
-    protected Locator listboxByRole() {
-        return getPage().getByRole(AriaRole.LISTBOX);
+        return page.locator(selector);
     }
 }

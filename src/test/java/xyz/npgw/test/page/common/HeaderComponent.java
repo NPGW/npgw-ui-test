@@ -23,9 +23,9 @@ public class HeaderComponent extends BaseComponent {
     private final Locator transactionsButton = getByRole(AriaRole.LINK, "Transactions");
     private final Locator reportsButton = getByRole(AriaRole.LINK, "Reports");
     private final Locator systemAdministrationButton = getByRole(AriaRole.LINK, "System administration");
-    private final Locator logOutButton = textExact("Log out");
+    private final Locator logOutButton = getByTextExact("Log out");
     private final Locator userMenuButton = getByTestId("userMenuToggle");
-    private final Locator profileSettingsButton = textExact("Profile Settings");
+    private final Locator profileSettingsButton = getByTextExact("Profile Settings");
     private final Locator passwordField = getByPlaceholder("Enter new password");
     private final Locator repeatPasswordField = getByPlaceholder("Repeat new password");
     private final Locator saveButton = locator("button:has-text('Save')");
