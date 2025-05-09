@@ -28,7 +28,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
     private final Locator acquirersStatus = locator("span.flex-1.text-inherit");
     private final Locator rowsPerPage = locator("button[aria-label='Rows Per Page']");
     private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
-    private final Locator paginationItems = label("pagination item");
+    private final Locator paginationItems = getPage().getByLabel("pagination item");
     private final Locator paginationNext = labelExact("next page button");
     private final Locator selectAcquirerLabel = labelExact("Select acquirer");
     @Getter(AccessLevel.NONE)
@@ -142,7 +142,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Tabl
 
     @Step("Click on page '{pageNumber}'")
     public AcquirersPage clickOnPaginationPage(String pageNumber) {
-        label("pagination item " + pageNumber).click();
+        getPage().getByLabel("pagination item " + pageNumber).click();
 
         return this;
     }

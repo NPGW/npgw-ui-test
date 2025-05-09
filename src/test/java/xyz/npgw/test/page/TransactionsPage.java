@@ -38,7 +38,8 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
     private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage");
-    private final Locator statusSelectorOptions = listboxByRole().locator(optionByRole());
+    //TODO this is a strange one
+    private final Locator statusSelectorOptions = listboxByRole().locator(getByRole(AriaRole.OPTION));
     private final Locator activeOption = listboxByRole().locator("[aria-selected='true']");
     private final Locator amountFromField = labelExact("From").locator("..");
     private final Locator amountToField = labelExact("To").locator("..");
@@ -78,8 +79,9 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
 
     @Step("Select currency {value} from dropdown menu")
     public TransactionsPage selectCurrency(String value) {
-        optionByName(value).waitFor();
-        ResponseUtils.clickAndWaitForResponse(getPage(), optionByName(value), Constants.TRANSACTION_HISTORY_ENDPOINT);
+        Locator option = getByRole(AriaRole.OPTION, value);
+        option.waitFor();
+        ResponseUtils.clickAndWaitForResponse(getPage(), option, Constants.TRANSACTION_HISTORY_ENDPOINT);
 
         return this;
     }

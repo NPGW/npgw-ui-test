@@ -2,6 +2,7 @@ package xyz.npgw.test.page.common;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
@@ -18,8 +19,8 @@ import xyz.npgw.test.page.system.TeamPage;
 @Getter
 public class HeaderComponent extends BaseComponent {
 
-    private final Locator img = altText("logo");
-    private final Locator logo = link().filter(new Locator.FilterOptions().setHas(img));
+    private final Locator img = getPage().getByAltText("logo");
+    private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(img));
     private final Locator transactionsButton = linkByName("Transactions");
     private final Locator reportsButton = linkByName("Reports");
     private final Locator systemAdministrationButton = linkByName("System administration");
