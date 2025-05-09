@@ -22,20 +22,16 @@ public abstract class BaseModel {
         return page.getByRole(ariaRole, new Page.GetByRoleOptions().setName(name));
     }
 
+    protected Locator getByTestId(String testId) {
+        return page.getByTestId(testId);
+    }
+
     protected Locator buttonByName(String name) {
         return getPage().getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName(name));
     }
 
     protected Locator checkbox(String text) {
         return getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(text));
-    }
-
-    protected Locator linkByName(String text) {
-        return getPage().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName(text));
-    }
-
-    protected Locator menuItemByName(String text) {
-        return getPage().getByRole(AriaRole.MENUITEM, new Page.GetByRoleOptions().setName(text));
     }
 
     protected Locator radioButton(String name) {
@@ -68,10 +64,6 @@ public abstract class BaseModel {
 
     protected Locator option(Locator locator) {
         return locator.getByRole(AriaRole.OPTION);
-    }
-
-    protected Locator getByTestId(String testId) {
-        return getPage().getByTestId(testId);
     }
 
     protected Locator listboxByRole() {

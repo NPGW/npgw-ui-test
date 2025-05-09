@@ -58,9 +58,9 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
     private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
     private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
     private final Locator amountEditButton = locator("svg[data-icon='pencil']");
-    private final Locator downloadCsvOption = menuItemByName("CSV");
-    private final Locator downloadExcelOption = menuItemByName("EXCEL");
-    private final Locator downloadPdfOption = menuItemByName("PDF");
+    private final Locator downloadCsvOption = getByRole(AriaRole.MENUITEM,"CSV");
+    private final Locator downloadExcelOption = getByRole(AriaRole.MENUITEM,"EXCEL");
+    private final Locator downloadPdfOption = getByRole(AriaRole.MENUITEM,"PDF");
 
     public TransactionsPage(Page page) {
         super(page);
@@ -307,7 +307,7 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
     }
 
     public boolean isFileAvailableAndNotEmpty(String menuItemName) {
-        Download download = getPage().waitForDownload(() -> menuItemByName(menuItemName).click());
+        Download download = getPage().waitForDownload(() -> getByRole(AriaRole.MENUITEM, menuItemName).click());
 
         int length = 0;
         try (InputStream inputStream = download.createReadStream()) {

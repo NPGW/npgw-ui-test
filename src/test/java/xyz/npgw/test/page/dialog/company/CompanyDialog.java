@@ -2,6 +2,7 @@ package xyz.npgw.test.page.dialog.company;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
@@ -26,8 +27,8 @@ public abstract class CompanyDialog<CurrentDialogT extends CompanyDialog<Current
     private final Locator companyPhoneField = placeholder("Enter phone");
     private final Locator companyMobileField = placeholder("Enter mobile");
     private final Locator companyFaxField = placeholder("Enter fax");
-    private final Locator apiActiveCheckbox = checkbox("API active");
-    private final Locator portalActiveCheckbox = checkbox("Portal active");
+    private final Locator apiActiveCheckbox = getByRole(AriaRole.CHECKBOX, "API active");
+    private final Locator portalActiveCheckbox = getByRole(AriaRole.CHECKBOX, "Portal active");
 
     public CompanyDialog(Page page) {
         super(page);

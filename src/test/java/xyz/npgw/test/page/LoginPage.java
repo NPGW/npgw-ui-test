@@ -2,6 +2,7 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     private final Locator emailField = placeholder("Enter your email");
     private final Locator passwordField = placeholder("Enter your password");
     private final Locator loginButton = buttonByName("Login");
-    private final Locator rememberMeCheckbox = checkbox("Remember me");
+    private final Locator rememberMeCheckbox = getByRole(AriaRole.CHECKBOX, "Remember me");
     @Getter
     private final Locator loginFormTitle = locator(".login-form-container h3");
     private final Locator newPasswordField = locator("input[aria-label='New password']");

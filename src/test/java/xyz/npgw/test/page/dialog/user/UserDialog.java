@@ -8,6 +8,8 @@ import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
+import java.util.Arrays;
+
 @SuppressWarnings("unchecked")
 public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialogT>>
         extends BaseDialog<TeamPage, CurrentDialogT> {
@@ -80,22 +82,15 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
     @Step("Set checked 'Allowed business units' checkboxes by business units names")
     public CurrentDialogT setAllowedBusinessUnits(String[] businessUnits) {
-        for (String businessUnit : businessUnits) {
-            allowedBusinessUnitsTitle.waitFor();
-            checkbox(businessUnit).all()
-                    .forEach(item -> {
-                        item.waitFor();
-                        item.setChecked(true);
-                    });
-        }
+        Arrays.stream(businessUnits).forEach(this::setAllowedBusinessUnit);
 
         return (CurrentDialogT) this;
     }
 
-    @Step("Set checked '{businessUnit}' checkbox")
+    @Step("Set checked all '{businessUnit}' checkboxes")
     public CurrentDialogT setAllowedBusinessUnit(String businessUnit) {
         allowedBusinessUnitsTitle.waitFor();
-        checkbox(businessUnit).all()
+        getByRole(AriaRole.CHECKBOX, businessUnit).all()
                 .forEach(item -> {
                     item.waitFor();
                     item.setChecked(true);
