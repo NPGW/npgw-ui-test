@@ -9,8 +9,7 @@ import xyz.npgw.test.page.common.AlertTrait;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 @Getter
-public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog>
-        implements AlertTrait<AddAcquirerDialog> {
+public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
 
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
 
