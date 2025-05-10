@@ -2,20 +2,28 @@ package xyz.npgw.test.page.common;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
-import xyz.npgw.test.page.system.AcquirersPage;
+
+import java.util.NoSuchElementException;
 
 public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Getter
-    private final Locator selectAcquirerLabel = getByLabelExact("Select acquirer");
+    private final Locator selectAcquirerField = getByLabelExact("Select acquirer");
+    private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
     @Getter(AccessLevel.NONE)
     private final Locator selectAcquirerPlaceholder = getByPlaceholder("Search");
     @Getter(AccessLevel.NONE)
-    private final Locator dropdownAcquirerList = locator("div[data-slot='content'] li");
+    private final Locator selectAcquirerContainer =
+            locator("div[data-slot='input-wrapper']");
+    private final Locator selectAcquirerDropdownChevron =
+            selectAcquirerContainer.locator("button[aria-label='Show suggestions']:last-child");
+    private final Locator selectAcquirerClearIcon =
+            selectAcquirerContainer.locator("button[aria-label='Show suggestions']:first-child");
 
     private final CurrentPageT page;
     public SelectAcquirerComponent(Page page, CurrentPageT currentPage) {
@@ -40,14 +48,59 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Click '{acquirerName}' in dropdown")
     public CurrentPageT clickAcquirerInDropdown(String acquirerName) {
-        dropdownAcquirerList.getByText(acquirerName, new Locator.GetByTextOptions().setExact(true)).click();
+        dropdownOptionList.getByText(acquirerName, new Locator.GetByTextOptions().setExact(true)).click();
 
         return page;
     }
 
     public Locator getSelectAcquirersDropdownItems() {
-        dropdownAcquirerList.last().waitFor();
+        dropdownOptionList.last().waitFor();
 
-        return dropdownAcquirerList;
+        return dropdownOptionList;
+    }
+
+    public Locator getAcquirerInDropdownOption(String acquirerName) {
+        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(acquirerName)));
+    }
+
+    @Step("Select '{acquirerName}' business unit using filter")
+    public CurrentPageT selectAcquirer(String acquirerName) {
+        selectAcquirerField.waitFor();
+
+        String lastName = "";
+
+        selectAcquirerPlaceholder.pressSequentially(acquirerName,
+                new Locator.PressSequentiallyOptions().setDelay(100));
+
+        if (dropdownOptionList.all().isEmpty()) {
+            throw new NoSuchElementException("Business unit '" + acquirerName + "' not found in dropdown.");
+        }
+
+        while (getAcquirerInDropdownOption(acquirerName).all().isEmpty()) {
+            if (dropdownOptionList.last().innerText().equals(lastName)) {
+                throw new NoSuchElementException("Business unit '" + acquirerName + "' not found in dropdown.");
+            }
+            dropdownOptionList.last().scrollIntoViewIfNeeded();
+
+            lastName = dropdownOptionList.last().innerText();
+        }
+
+        getAcquirerInDropdownOption(acquirerName).first().click();
+
+        return page;
+    }
+
+    @Step("Click acquirer dropdown toggle arrow '˅˄'")
+    public CurrentPageT clickAcquirerDropdownChevron() {
+        selectAcquirerDropdownChevron.click();
+
+        return page;
+    }
+
+    @Step("Click select Business unit clear icon")
+    public CurrentPageT clickSelectAcquirerClearIcon() {
+        selectAcquirerClearIcon.dispatchEvent("click");
+
+        return page;
     }
 }

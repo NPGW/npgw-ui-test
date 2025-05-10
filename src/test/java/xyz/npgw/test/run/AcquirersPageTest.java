@@ -52,7 +52,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getAddAcquirerButton()).isVisible();
 
         Allure.step("Verify: Select Acquirer label is visible");
-        assertThat(acquirersPage.getSelectAcquirer().getSelectAcquirerLabel()).isVisible();
+        assertThat(acquirersPage.getSelectAcquirer().getSelectAcquirerField()).isVisible();
 
         Allure.step("Verify: Status label is visible");
         assertThat(acquirersPage.getStatusLabel()).isVisible();
@@ -372,5 +372,18 @@ public class AcquirersPageTest extends BaseTest {
 
             } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
         }
+    }
+
+    @Test
+    public void testMyTest(){
+        String acquirerName = "Awesome acquirer";
+        new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .getSelectAcquirer().selectAcquirer(acquirerName)
+                .getSelectAcquirer().clickAcquirerDropdownChevron()
+                .getSelectAcquirer().clickSelectAcquirerClearIcon();
+
+        getPage().pause();
     }
 }

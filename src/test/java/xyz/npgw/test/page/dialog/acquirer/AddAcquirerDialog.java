@@ -5,10 +5,12 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.common.AlertTrait;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 @Getter
-public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
+public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog>
+        implements AlertTrait<AddAcquirerDialog> {
 
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
 
