@@ -20,8 +20,8 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 
 public class EditBusinessUnitDialogTest extends BaseTest {
-    private final String CompanyName = "CompanyForBuEdit";
-    private final String BuName = "NewBUForEdit";
+    private final String companyName = "CompanyForBuEdit";
+    private final String buName = "NewBUForEdit";
     private final List<String> expectedFieldsLabel = List.of(
             "Company name",
             "Business unit name"
@@ -33,15 +33,15 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
     public void testVerifyTitleEditBusinessUnitDialog(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), CompanyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), CompanyName, BuName);
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
+        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
 
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(CompanyName)
+                .getSelectCompany().selectCompany(companyName)
                 .clickEditBusinessUnitButton()
                 .getDialogHeader();
 
@@ -54,16 +54,16 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Epic("System/Companies and business units")
     @Feature("Edit business unit")
     @Description("Verify that the label of each field is correct")
-    public void testVerifyLabelOfEachField (@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), CompanyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), CompanyName, BuName);
+    public void testVerifyLabelOfEachField(@Optional("UNAUTHORISED") String userRole) {
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
+        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(CompanyName)
+                .getSelectCompany().selectCompany(companyName)
                 .clickEditBusinessUnitButton();
 
         List<String> actualLabelList = editBusinessUnitDialog.getAllFieldsLabel();
