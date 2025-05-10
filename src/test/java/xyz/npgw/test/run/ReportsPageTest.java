@@ -89,7 +89,7 @@ public class ReportsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("512")
     @Epic("Reports")
     @Feature("Generate report")
     @Description("Check/uncheck reports columns in the 'Generation Parameters dialog'")
