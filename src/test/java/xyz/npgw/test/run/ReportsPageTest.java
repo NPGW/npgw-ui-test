@@ -44,10 +44,10 @@ public class ReportsPageTest extends BaseTest {
         ReportsPage reportsPage = new DashboardPage(getPage())
                 .getHeader().clickReportsLink();
 
-        Allure.step("Verify: Reports Page URL");
+        Allure.step(String.format("Verify: Reports Page URL - '%s'", Constants.REPORTS_PAGE_URL));
         assertThat(reportsPage.getPage()).hasURL(Constants.REPORTS_PAGE_URL);
 
-        Allure.step("Verify: Reports Page Title");
+        Allure.step(String.format("Verify: Reports Page Title - '%s'", Constants.REPORTS_URL_TITLE));
         assertThat(reportsPage.getPage()).hasTitle(Constants.REPORTS_URL_TITLE);
     }
 
@@ -72,12 +72,12 @@ public class ReportsPageTest extends BaseTest {
     @Epic("Reports")
     @Feature("Generate report")
     @Description("Verify content of 'Generation Parameters dialog'")
-    public void testContentOfGenerationParametersDalog() {
+    public void testContentOfGenerationParametersDialog() {
         ReportsParametersDialog generationParametersDialog = new DashboardPage(getPage())
                 .getHeader().clickReportsLink()
                 .clickGenerateReportButton();
 
-        Allure.step("Verify: error message is shown for invalid date range");
+        Allure.step("Verify: Dialog window has title 'Generation Parameters'");
         assertThat(generationParametersDialog.getDialogHeader()).hasText("Generation Parameters");
 
         Allure.step("Verify: 'Generate' button is disabled with not selected business unit");
