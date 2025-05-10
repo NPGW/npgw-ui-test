@@ -230,7 +230,7 @@ public class AcquirersPageTest extends BaseTest {
 
             int rowsSum = 0;
 
-            while (true) {
+            do {
                 int actualRowCount = acquirersPage.getTable().getTableRows().count();
                 rowsSum += actualRowCount;
 
@@ -238,12 +238,8 @@ public class AcquirersPageTest extends BaseTest {
                         "Verify: The table contains '%s' rows less than or equal to '%s'", actualRowCount, option));
                 Assert.assertTrue(actualRowCount <= Integer.parseInt(option));
 
-                if (acquirersPage.isLastPage()) {
-                    break;
-                }
+            } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
 
-                acquirersPage.clickNextPage();
-            }
             totalRows.add(rowsSum);
         }
 
@@ -278,8 +274,8 @@ public class AcquirersPageTest extends BaseTest {
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
         Acquirer acquirer = new Acquirer(
                 "NGenius",
-                "et",
-                new SystemConfig("something 1", "something 2", "something 3", "something 4"),
+                "default",
+                new SystemConfig(),
                 "Acquirer 11.002.01",
                 new String[]{"USD", "EUR"},
                 true);
@@ -337,7 +333,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getPaginationItems()).hasText("1");
     }
 
-    @Test(expectedExceptions = { AssertionError.class })
+    @Test(expectedExceptions = {AssertionError.class})
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
@@ -354,8 +350,7 @@ public class AcquirersPageTest extends BaseTest {
             acquirersPage
                     .clickRowsPerPageChevron()
                     .selectRowsPerPageOption(option);
-
-            while (true) {
+            do {
                 String activePage = acquirersPage.getActivePage().innerText();
 
                 Allure.step(
@@ -364,21 +359,18 @@ public class AcquirersPageTest extends BaseTest {
                 Assert.assertEquals(
                         acquirersPage.getTable().getTableColumnHeader().allTextContents(),
                         COLUMNS_HEADERS,
-                        String.format("Column headers do not match expected headers on page '%s'", activePage));
+                        String.format(
+                                "Column headers do not match expected headers on page '%s' with '%s' pagination!",
+                                activePage, option));
 
                 BoundingBox table = acquirersPage.getTable().getTableHeader().boundingBox();
                 double pageWidth = getPage().viewportSize().width;
 
                 Assert.assertTrue(table.x >= 0 && (table.x + table.width) <= pageWidth, String.format(
-                        "Еhe header is not fully visible within the viewport on page '%s'!", activePage));
+                        "The header is not fully visible within the viewport on page '%s' with '%s' pagination!",
+                        activePage, option));
 
-                if (acquirersPage.isLastPage()) {
-                    break;
-                }
-
-                acquirersPage.clickNextPage();
-            }
+            } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
         }
     }
 }
-

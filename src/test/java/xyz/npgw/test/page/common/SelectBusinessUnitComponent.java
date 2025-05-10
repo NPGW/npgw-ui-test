@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
 
     @Getter
-    private final Locator selectBusinessUnitField = labelExact("Business unit");
+    private final Locator selectBusinessUnitField = getByLabelExact("Business unit");
     @Getter
     private final Locator selectBusinessUnitPlaceholder = locator("input[aria-label='Business unit']");
     @Getter
@@ -34,7 +34,7 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
     }
 
     public Locator getBusinessUnitInDropdownOption(String businessUnitName) {
-        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(textExact(businessUnitName)));
+        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(businessUnitName)));
     }
 
     @Step("Select '{businessUnitName}' business unit using filter")
@@ -48,12 +48,12 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
                 new Locator.PressSequentiallyOptions().setDelay(100));
 
         if (dropdownOptionList.all().isEmpty()) {
-            throw new NoSuchElementException("Business unit '" + businessUnitName + "' not found in dropdown list.");
+            throw new NoSuchElementException("Business unit '" + businessUnitName + "' not found in dropdown.");
         }
 
         while (getBusinessUnitInDropdownOption(businessUnitName).all().isEmpty()) {
             if (dropdownOptionList.last().innerText().equals(lastName)) {
-                throw new NoSuchElementException("Business unit '" + businessUnitName + "' not found in dropdown list.");
+                throw new NoSuchElementException("Business unit '" + businessUnitName + "' not found in dropdown.");
             }
             dropdownOptionList.last().scrollIntoViewIfNeeded();
 
@@ -86,4 +86,3 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
         return page;
     }
 }
-

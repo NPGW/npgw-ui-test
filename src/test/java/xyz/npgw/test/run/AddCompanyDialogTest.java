@@ -27,6 +27,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
     private static final String COMPANY_NAME = "CompanyName";
     private static final String COMPANY_TYPE = "CompanyType";
+    private static final String SUCCESS_MESSAGE_COMPANY_CREATED = "SUCCESSCompany was created successfully";
 
     Company company = new Company(
             "CompanyNameTest", "Company Type Test",
@@ -136,8 +137,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAddCompanyDialog()).isHidden();
     }
 
-    @Test(dataProvider = "getCompanyNameInvalidSpecialCharacters",
-            dataProviderClass = TestDataProvider.class, enabled = false)
+    @Test(dataProvider = "getCompanyNameInvalidSpecialCharacters", dataProviderClass = TestDataProvider.class)
     @TmsLink("215")
     @Epic("System/Companies and business units")
     @Feature("Add company")
@@ -197,7 +197,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
         Allure.step("Verify: company creation success message is displayed");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getAlertMessage()).hasText(
-                "SUCCESSCompany was created successfully");
+                SUCCESS_MESSAGE_COMPANY_CREATED);
     }
 
     @Test
@@ -296,7 +296,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
         Allure.step("Verify: success message is displayed");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getAlertMessage()).hasText(
-                "SUCCESSCompany was created successfully");
+                SUCCESS_MESSAGE_COMPANY_CREATED);
     }
 
     @Test
@@ -340,13 +340,9 @@ public class AddCompanyDialogTest extends BaseTest {
                 .fillCompanyPhoneField(company.companyAddress().phone())
                 .fillCompanyMobileField(company.companyAddress().mobile())
                 .fillCompanyFaxField(company.companyAddress().fax())
-                .clickCreateButton();
-
-        Allure.step("Verify: success message is displayed after company creation");
-        assertThat(companiesAndBusinessUnitsPage.getAlert().getAlertMessage())
-                .hasText("SUCCESSCompany was created successfully");
-
-        companiesAndBusinessUnitsPage
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickOnResetFilterButton()
                 .getSelectCompany().selectCompany(company.companyName());
 
         Allure.step("Verify: selected company is shown in the input field");

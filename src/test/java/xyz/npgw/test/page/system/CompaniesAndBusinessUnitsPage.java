@@ -2,10 +2,10 @@ package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import org.testng.Assert;
 import xyz.npgw.test.page.common.AlertTrait;
 import xyz.npgw.test.page.common.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
@@ -21,27 +21,28 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator addBusinessUnitButton = getByTestId("ButtonAddMerchant");
     private final Locator editCompanyButton = getByTestId("EditCompanyButton");
     private final Locator businessUnitEmptyList = locator("[role='gridcell']");
-    private final Locator addCompanyDialog = dialog();
+    private final Locator addCompanyDialog = getByRole(AriaRole.DIALOG);
     private final Locator companyNameDropdownList = locator("[role='option']");
-    private final Locator selectCompanyInput = placeholder("Search...");
-    private final Locator descriptionFromCompanyInfoSection = labelExact("Description");
-    private final Locator websiteFromCompanyInfoSection = labelExact("Website");
-    private final Locator primaryContactFromCompanyInfoSection = labelExact("Primary contact");
-    private final Locator emailFromCompanyInfoSection = labelExact("Email");
-    private final Locator phoneFromCompanyInfoSection = labelExact("Phone");
-    private final Locator mobileFromCompanyInfoSection = labelExact("Mobile");
-    private final Locator faxFromCompanyInfoSection = labelExact("Fax");
-    private final Locator countryFromCompanyInfoSection = labelExact("Country");
-    private final Locator stateFromCompanyInfoSection = labelExact("State");
-    private final Locator zipFromCompanyInfoSection = labelExact("ZIP");
-    private final Locator cityFromCompanyInfoSection = labelExact("City");
-    private final Locator apiActiveCheckboxFromCompanyInfoSection = labelExact("API active");
-    private final Locator portalActiveCheckboxFromCompanyInfoSection = labelExact("Portal active");
+    private final Locator selectCompanyInput = getByPlaceholder("Search...");
+    private final Locator descriptionFromCompanyInfoSection = getByLabelExact("Description");
+    private final Locator websiteFromCompanyInfoSection = getByLabelExact("Website");
+    private final Locator primaryContactFromCompanyInfoSection = getByLabelExact("Primary contact");
+    private final Locator emailFromCompanyInfoSection = getByLabelExact("Email");
+    private final Locator phoneFromCompanyInfoSection = getByLabelExact("Phone");
+    private final Locator mobileFromCompanyInfoSection = getByLabelExact("Mobile");
+    private final Locator faxFromCompanyInfoSection = getByLabelExact("Fax");
+    private final Locator countryFromCompanyInfoSection = getByLabelExact("Country");
+    private final Locator stateFromCompanyInfoSection = getByLabelExact("State");
+    private final Locator zipFromCompanyInfoSection = getByLabelExact("ZIP");
+    private final Locator cityFromCompanyInfoSection = getByLabelExact("City");
+    private final Locator apiActiveCheckboxFromCompanyInfoSection = getByLabelExact("API active");
+    private final Locator portalActiveCheckboxFromCompanyInfoSection = getByLabelExact("Portal active");
     private final Locator businessUnitNameData = locator("[role='row'] span").first();
     private final Locator merchantIdData = locator("[role='row'] span").nth(1);
     private final Locator editBusinessUnitButton = getByTestId("EditBusinessUnitButton");
-    private final Locator merchantsTable = labelExact("merchants table");
-
+    private final Locator merchantsTable = getByLabelExact("merchants table");
+    private final Locator resetFilterButton = getByTestId("ResetButtonTeamPage");
+    private final Locator pageContent = locator("[class='contentBlock']");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -49,7 +50,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Add company' button")
     public AddCompanyDialog clickAddCompanyButton() {
-        addCompanyButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        addCompanyButton.waitFor();
         addCompanyButton.click();
 
         return new AddCompanyDialog(getPage());
@@ -66,41 +67,10 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         return new AddBusinessUnitDialog(getPage());
     }
 
-    @Step("Click '{companyName}' company in dropdown")
-    public CompaniesAndBusinessUnitsPage clickCompanyInDropdown(String companyName) {
-        String lastSeenText = "";
-
-        while (true) {
-            Locator options = companyNameDropdownList;
-            int count = options.count();
-
-            for (int i = 0; i < count; i++) {
-                String text = options.nth(i).innerText().trim();
-                if (text.equals(companyName)) {
-                    options.nth(i).click();
-                    return this;
-                }
-            }
-
-            String currentLastText = options.nth(count - 1).innerText().trim();
-            if (currentLastText.equals(lastSeenText)) {
-                break;
-            }
-
-            lastSeenText = currentLastText;
-
-            companyNameDropdownList.last().scrollIntoViewIfNeeded();
-        }
-
-        Assert.fail("Company '" + companyName + "' not found in dropdown.");
-
-        return this;
-    }
-
     @Step("Click 'Edit company' button")
     public EditCompanyDialog clickEditCompanyButton() {
         //getPage().waitForLoadState(LoadState.NETWORKIDLE);
-        getPage().getByText("Loading").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        getPage().getByText("Loading").waitFor();
         getPage().getByText("Loading").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         editCompanyButton.click();
 
@@ -114,5 +84,12 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         editBusinessUnitButton.click();
 
         return new EditBusinessUnitDialog(getPage());
+    }
+
+    @Step("Click 'Reset filter' button")
+    public CompaniesAndBusinessUnitsPage clickOnResetFilterButton() {
+        resetFilterButton.click();
+
+        return this;
     }
 }

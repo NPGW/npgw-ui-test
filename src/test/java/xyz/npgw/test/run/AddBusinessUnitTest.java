@@ -115,7 +115,6 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Add a new Merchant with 'Add business unit' button")
     public void testAddNewMerchants() {
         Company company = new Company(new Faker());
-        Locator createdBusinessUnitRow = getPage().locator("td").locator("xpath=..");
 
         new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
@@ -131,7 +130,37 @@ public class AddBusinessUnitTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
+//        TODO add steps and cleanup createdBusinessUnitRow locator
+        Locator createdBusinessUnitRow = getPage().locator("td").locator("xpath=..");
+        Allure.step("");
         assertThat(createdBusinessUnitRow).containsText(company.companyType());
+        Allure.step("");
         assertThat(createdBusinessUnitRow).containsText("id.merchant.");
+    }
+
+    @Test
+    @TmsLink("480")
+    @Epic("Companies and business units")
+    @Feature("Reset filter")
+    @Description("Verify default filter state was applied once reset")
+    public void testResetAppliedFilter() {
+        Company company = new Company(new Faker());
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
+
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .clickAddCompanyButton()
+                .fillCompanyNameField(company.companyName())
+                .fillCompanyTypeField(company.companyType())
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSelectCompany().selectCompany(company.companyName())
+                .clickOnResetFilterButton();
+
+//        TODO add stepr
+        Allure.step("");
+        assertThat(companiesAndBusinessUnitsPage.getPageContent())
+                .containsText("Select company name to view merchants");
     }
 }

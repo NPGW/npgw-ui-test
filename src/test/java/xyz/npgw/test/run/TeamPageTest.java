@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -27,9 +26,12 @@ import static org.testng.Assert.assertEquals;
 public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "Smitham-Johnson";
-    private static final String ADMIN_COMPANY_NAME = "AdminCompany";
+    private static final String ADMIN_COMPANY_NAME = "Admin company";
     private static final String ADMIN_EMAIL = "admin.email@gmail.com";
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
+    private static final String SUCCESS_MESSAGE_USER_DEACTIVATED = "SUCCESSUser was deactivated successfully";
+    private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
+    private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
 
 
     User user = new User(
@@ -57,8 +59,7 @@ public class TeamPageTest extends BaseTest {
             + "on 'System administration' link on the header")
     public void testNavigateToSystemAdministrationPage() {
         TeamPage systemAdministrationPage = new DashboardPage(getPage())
-                .getHeader()
-                .clickSystemAdministrationLink();
+                .getHeader().clickSystemAdministrationLink();
 
         Allure.step("Verify: System administration Page URL");
         assertThat(systemAdministrationPage.getPage()).hasURL(Constants.SYSTEM_PAGE_URL);
@@ -88,7 +89,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
     }
 
     @Test
@@ -114,11 +115,12 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(user.enabled())
                 .setUserRoleRadiobutton(user.userRole())
                 .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton()
-                .clickRefreshDataButton();
+                .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
+
+        teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
@@ -169,7 +171,7 @@ public class TeamPageTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: success alert appears after user update");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was updated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
@@ -187,6 +189,7 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getChangeUserActivityButton(user.email()).getAttribute("data-icon"), "check");
     }
 
+//    TODO add tms link
     @Test
     @TmsLink("")
     @Epic("System/Team")
@@ -218,10 +221,9 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
     }
 
-    @Ignore("Locator expected to have text: Inactive but Active")
     @Test
     @TmsLink("471")
     @Epic("System/Team")
@@ -246,7 +248,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_DEACTIVATED);
 
         teamPage.clickRefreshDataButton();
 
@@ -296,7 +298,7 @@ public class TeamPageTest extends BaseTest {
                 .clickSaveChangesButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was updated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
@@ -337,7 +339,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was deactivated successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_DEACTIVATED);
 
         teamPage.clickRefreshDataButton();
 
@@ -362,6 +364,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "ban");
     }
 
+//    TODO add tms link
     @Test
     @TmsLink("")
     @Epic("System/Team")
@@ -418,7 +421,7 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Create company analyst")
     public void testCreateCompanyAnalyst(@Optional("UNAUTHORISED") String userRole) {
-        String email = "companyanalyst@gmail.com";
+        String email = "company.analyst@gmail.com";
         String companyName = "Analyst company";
         TestUtils.deleteUser(getApiRequestContext(), email);
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
@@ -447,7 +450,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSUser was created successfully");
+        assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
         teamPage.clickRefreshDataButton();
 

@@ -2,28 +2,30 @@ package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.page.base.BasePage;
+import xyz.npgw.test.page.common.AlertTrait;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
-public final class LoginPage extends BasePage {
+public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
 
     @Getter
-    private final Locator emailField = placeholder("Enter your email");
-    private final Locator passwordField = placeholder("Enter your password");
-    private final Locator loginButton = buttonByName("Login");
-    private final Locator rememberMeCheckbox = checkbox("Remember me");
+    private final Locator emailField = getByPlaceholder("Enter your email");
+    private final Locator passwordField = getByPlaceholder("Enter your password");
+    private final Locator loginButton = getByRole(AriaRole.BUTTON, "Login");
+    private final Locator rememberMeCheckbox = getByRole(AriaRole.CHECKBOX, "Remember me");
     @Getter
     private final Locator loginFormTitle = locator(".login-form-container h3");
     private final Locator newPasswordField = locator("input[aria-label='New password']");
     private final Locator repeatNewPasswordField = locator("input[aria-label='Repeat password']");
-    private final Locator saveButton = buttonByName("Save");
+    private final Locator saveButton = getByRole(AriaRole.BUTTON, "Save");
 
     public LoginPage(Page page) {
         super(page);
@@ -112,6 +114,38 @@ public final class LoginPage extends BasePage {
         uncheckRememberMeCheckbox();
         clickLoginButton();
         assertThat(getPage()).hasURL("/dashboard");
+
+        return new DashboardPage(getPage());
+    }
+
+    @Step("Login with '{email}' user")
+    public DashboardPage login(String email, String password) {
+        fillEmailField(email);
+        fillPasswordField(password);
+        clickLoginButton();
+
+        return new DashboardPage(getPage());
+    }
+
+    @Step("Change password")
+    public LoginPage changePassword(String newPassword) {
+        fillNewPasswordField(newPassword);
+        fillRepeatNewPasswordField(newPassword);
+        clickSaveButton();
+
+        getAlert().clickCloseButton();
+        return this;
+    }
+
+    public DashboardPage loginAndChangePassword(String email, String password) {
+        return loginAndChangePassword(email, password, password);
+    }
+
+    @Step("Login with '{email}' user and change password")
+    public DashboardPage loginAndChangePassword(String email, String password, String newPassword) {
+        login(email, password);
+        changePassword(newPassword);
+        login(email, newPassword);
 
         return new DashboardPage(getPage());
     }
