@@ -33,8 +33,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
     public void testVerifyTitleEditBusinessUnitDialog(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompany(getApiRequestContext(), CompanyName);
-        TestUtils.createBusinessUnit(getApiRequestContext(), CompanyName, BuName);
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), CompanyName);
+        TestUtils.createMerchantIfNeeded(getApiRequestContext(), CompanyName, BuName);
 
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
