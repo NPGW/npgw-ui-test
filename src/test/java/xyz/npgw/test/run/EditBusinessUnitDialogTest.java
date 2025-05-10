@@ -12,6 +12,7 @@ import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
+import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 
 import java.util.List;
