@@ -5,10 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
-import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.common.AlertTrait;
-import xyz.npgw.test.page.common.SelectAcquirerTrait;
 import xyz.npgw.test.page.common.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
@@ -27,7 +25,6 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage>
     private final Locator refreshDataButton = getByTestId("ApplyFilterButtonAcquirersPage");
     private final Locator acquirerNameHeader = getByTextExact("Acquirer name");
     private final Locator acquirersList = locator("div[data-slot='base'] li");
-    @Getter(AccessLevel.NONE)
     private final Locator acquirersStatus = locator("span.flex-1.text-inherit");
     private final Locator rowsPerPage = locator("button[aria-label='Rows Per Page']");
     private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");

@@ -1,4 +1,4 @@
-package xyz.npgw.test.page.common;
+package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
