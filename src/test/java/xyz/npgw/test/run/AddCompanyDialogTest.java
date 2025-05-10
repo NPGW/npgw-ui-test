@@ -433,7 +433,9 @@ public class AddCompanyDialogTest extends BaseTest {
         addBusinessUnitDialog.clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: Validation error is shown when merchant name is not filled");
-        assertThat(addBusinessUnitDialog.getAlert().getAlertMessage()).containsText("Enter merchant name");
+        assertThat(addBusinessUnitDialog
+                .getAlert().getAlertMessage())
+                .containsText("Enter merchant name");
 
         companiesAndBusinessUnitsPage = addBusinessUnitDialog
                 .fillBusinessUnitNameField(businessUnit.merchantName())
