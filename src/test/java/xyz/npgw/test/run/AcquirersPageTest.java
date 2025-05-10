@@ -52,7 +52,9 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getAddAcquirerButton()).isVisible();
 
         Allure.step("Verify: Select Acquirer label is visible");
-        assertThat(acquirersPage.getSelectAcquirer().getSelectAcquirerField()).isVisible();
+        assertThat(acquirersPage
+                .getSelectAcquirer().getSelectAcquirerField())
+                .isVisible();
 
         Allure.step("Verify: Status label is visible");
         assertThat(acquirersPage.getStatusLabel()).isVisible();

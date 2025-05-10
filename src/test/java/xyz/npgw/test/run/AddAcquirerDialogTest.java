@@ -146,7 +146,9 @@ public class AddAcquirerDialogTest extends BaseTest {
         acquirerDialog.clickCreateButton();
 
         Allure.step("Verify: Acquirer Error message is displayed");
-        assertThat(acquirerDialog.getAlert().getAlertMessage()).containsText(
+        assertThat(acquirerDialog
+                .getAlert().getAlertMessage())
+                .containsText(
                 "Acquirer with name {" + acquirerName + "} already exists.");
 
         Allure.step("Verify: the 'Add acquirer' dialog is not closed");
