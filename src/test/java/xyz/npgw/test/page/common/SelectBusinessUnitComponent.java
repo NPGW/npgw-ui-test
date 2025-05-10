@@ -7,6 +7,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
@@ -84,5 +85,10 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
         selectBusinessUnitPlaceholder.click();
 
         return page;
+    }
+
+    @Step("Get all 'Visible Business units' in dropdown")
+    public List<String> getBusinessUnitOptions() {
+        return dropdownOptionList.all().stream().map(Locator::innerText).toList();
     }
 }
