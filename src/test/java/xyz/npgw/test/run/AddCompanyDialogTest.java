@@ -234,8 +234,9 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: error message is displayed for duplicate company name");
-        assertThat(addCompanyDialog.getAlert().getAlertMessage()).containsText(
-                "Company with name {%s} already exists.".formatted(COMPANY_NAME));
+        assertThat(addCompanyDialog
+                .getAlert().getAlertMessage())
+                .containsText("Company with name {%s} already exists.".formatted(COMPANY_NAME));
     }
 
     @Test(expectedExceptions = AssertionFailedError.class)
