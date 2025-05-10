@@ -12,7 +12,6 @@ import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
-import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 
 import java.util.List;
@@ -21,8 +20,8 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 
 public class EditBusinessUnitDialogTest extends BaseTest {
-    private final String COMPANY_NAME = "CompanyForBuEdit";
-    private final String BU_NAME = "NewBUForEdit";
+    private final String CompanyName = "CompanyForBuEdit";
+    private final String BuName = "NewBUForEdit";
     private final List<String> expectedFieldsLabel = List.of(
             "Company name",
             "Business unit name"
@@ -34,16 +33,15 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
     public void testVerifyTitleEditBusinessUnitDialog(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BU_NAME);
+        TestUtils.createCompany(getApiRequestContext(), CompanyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), CompanyName, BuName);
 
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectCompany().selectCompany(CompanyName)
                 .clickEditBusinessUnitButton()
                 .getDialogHeader();
 
@@ -57,15 +55,15 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the label of each field is correct")
     public void testVerifyLabelOfEachField (@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(),COMPANY_NAME,BU_NAME);
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), CompanyName);
+        TestUtils.createMerchantIfNeeded(getApiRequestContext(), CompanyName, BuName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectCompany().selectCompany(CompanyName)
                 .clickEditBusinessUnitButton();
 
         List<String> actualLabelList = editBusinessUnitDialog.getAllFieldsLabel();
