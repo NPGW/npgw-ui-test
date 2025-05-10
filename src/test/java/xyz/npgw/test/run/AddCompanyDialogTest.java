@@ -100,8 +100,9 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: error message for invalid company name: '{name}' is displayed");
-        assertThat(addCompanyDialog.getAlert().getAlertMessage()).containsText(
-                "Invalid companyName: '%s'. It must contain between 4 and 100 characters".formatted(name));
+        assertThat(addCompanyDialog
+                .getAlert().getAlertMessage())
+                .containsText("Invalid companyName: '%s'. It must contain between 4 and 100 characters".formatted(name));
     }
 
     @Test(dataProvider = "getEmptyRequiredFields", dataProviderClass = TestDataProvider.class)
