@@ -20,18 +20,17 @@ public class ReportsPage extends HeaderPage implements TableTrait, DateRangePick
         super(page);
     }
 
-    @Step("Click 'Refresh data' button")
+    @Step("Click on the 'Refresh data' button")
     public ReportsPage clickRefreshDataButton() {
         refreshDataButton.click();
 
         return this;
     }
 
-    @Step("Click 'Generation report' button")
+    @Step("Click on the 'Generation report' button")
     public ReportsParametersDialog clickGenerateReportButton() {
         generateReportButton.click();
 
         return new ReportsParametersDialog(getPage());
     }
-
 }
