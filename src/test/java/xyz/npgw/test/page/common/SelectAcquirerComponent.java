@@ -15,9 +15,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
     @Getter
     private final Locator selectAcquirerField = getByLabelExact("Select acquirer");
     private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
-    @Getter(AccessLevel.NONE)
     private final Locator selectAcquirerPlaceholder = getByPlaceholder("Search");
-    @Getter(AccessLevel.NONE)
     private final Locator selectAcquirerContainer =
             locator("div[data-slot='input-wrapper']");
     private final Locator selectAcquirerDropdownChevron =
