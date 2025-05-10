@@ -463,19 +463,22 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("520")
     @Epic("Transactions")
     @Feature("Business unit")
-    @Description("Verify that the Company admin can see all the company's business units in the Business unit dropdown list")
+    @Description("Verify that the Company admin can see all the company's business units in the Business unit " +
+            "dropdown list")
     public void testTheVisibilityOfTheAvailableBusinessUnitOptions(@Optional("UNAUTHORISED") String userRole) {
-        List<String> businessUnitNames = List.of("Business unit 1", "Business unit 2", "Business unit 3", "Business unit 4");
+        List<String> businessUnitNames = List.of("Business unit 1", "Business unit 2", "Business unit 3",
+                "Business unit 4");
         String companyAdminEmail = "companyAdmin@gmail.com";
         String companyAdminPassword = "CompanyAdmin1!";
         TestUtils.deleteUser(getApiRequestContext(), companyAdminEmail);
         TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, companyAdminEmail, companyAdminPassword);
-        businessUnitNames.forEach(businessUnitName -> TestUtils.createBusinessUnit(getApiRequestContext(), ADMIN_COMPANY_NAME, businessUnitName));
+        businessUnitNames.forEach(businessUnitName -> TestUtils.createBusinessUnit(
+                getApiRequestContext(), ADMIN_COMPANY_NAME, businessUnitName));
 
         TransactionsPage transactionsPage = new AboutBlankPage((getPage()))
                 .navigate("/login")
