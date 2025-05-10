@@ -52,7 +52,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getAddAcquirerButton()).isVisible();
 
         Allure.step("Verify: Select Acquirer label is visible");
-        assertThat(acquirersPage.getSelectAcquirerLabel()).isVisible();
+        assertThat(acquirersPage.getSelectAcquirer().getSelectAcquirerLabel()).isVisible();
 
         Allure.step("Verify: Status label is visible");
         assertThat(acquirersPage.getStatusLabel()).isVisible();
@@ -94,8 +94,8 @@ public class AcquirersPageTest extends BaseTest {
         Locator dropdownAcquirerList = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .clickSelectAcquirerPlaceholder()
-                .getSelectAcquirersDropdownItems();
+                .getSelectAcquirer().clickSelectAcquirerPlaceholder()
+                .getSelectAcquirer().getSelectAcquirersDropdownItems();
 
         Allure.step(String.format(
                 "Verify: Dropdown list is not empty. INFO: (%d elements)", dropdownAcquirerList.count()));
@@ -299,8 +299,8 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .typeAcquirerNameToSelectAcquirerInputField(acquirer.acquirerName())
-                .clickAcquirerInDropdown(acquirer.acquirerName());
+                .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirer.acquirerName())
+                .getSelectAcquirer().clickAcquirerInDropdown(acquirer.acquirerName());
 
         TableComponent table = acquirersPage.getTable();
 
