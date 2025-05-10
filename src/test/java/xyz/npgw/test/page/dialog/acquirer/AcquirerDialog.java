@@ -19,8 +19,6 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     private final Locator statusSwitch = locator("div[role='radiogroup']");
     private final Locator allowedCurrenciesCheckboxes = locator("div[role='group']");
 
-//    private final Locator selectDropdown = getByRole(AriaRole.DIALOG);
-
     public AcquirerDialog(Page page) {
         super(page);
     }
