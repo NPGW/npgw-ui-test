@@ -86,7 +86,7 @@ public class ReportsParametersDialog extends BaseDialog<ReportsPage, ReportsPara
     }
 
     @Step("Click on the all column checkboxes one by one")
-    public void clickAllСolumnCheckboxesOneByOne() {
+    public void clickAllColumnCheckboxesOneByOne() {
         checkboxes.last().waitFor();
 
         int totalColumns = checkboxes.count() - 1;

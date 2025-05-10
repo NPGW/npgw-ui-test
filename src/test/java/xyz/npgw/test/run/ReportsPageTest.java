@@ -135,13 +135,13 @@ public class ReportsPageTest extends BaseTest {
         Assert.assertTrue(generationParametersDialog.isAllColumnnsChecked());
 
         generationParametersDialog
-                .clickAllСolumnCheckboxesOneByOne();
+                .clickAllColumnCheckboxesOneByOne();
 
         Allure.step("Verify: All report columns are unchecked after clicking on them one by one");
         Assert.assertTrue(generationParametersDialog.isAllColumnnsUnchecked());
 
         generationParametersDialog
-                .clickAllСolumnCheckboxesOneByOne();
+                .clickAllColumnCheckboxesOneByOne();
 
         Allure.step("Verify: All report columns are checked after clicking on them one by one");
         Assert.assertTrue(generationParametersDialog.isAllColumnnsChecked());
