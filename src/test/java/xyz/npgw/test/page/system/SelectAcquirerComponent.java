@@ -61,7 +61,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
         return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(acquirerName)));
     }
 
-    @Step("Select '{acquirerName}' business unit using filter")
+    @Step("Select '{acquirerName}' acquirer using filter")
     public CurrentPageT selectAcquirer(String acquirerName) {
         selectAcquirerField.waitFor();
 
@@ -95,7 +95,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
         return page;
     }
 
-    @Step("Click select Business unit clear icon")
+    @Step("Click select Acquirer unit clear icon")
     public CurrentPageT clickSelectAcquirerClearIcon() {
         selectAcquirerClearIcon.dispatchEvent("click");
 
