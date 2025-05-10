@@ -69,7 +69,6 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         List<String> actualLabelList = editBusinessUnitDialog.getAllFieldsLabel();
 
         Allure.step("Verify: all labels are correct for each field");
-        assertEquals(actualLabelList, expectedFieldsLabel);
+        assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
     }
-
 }
