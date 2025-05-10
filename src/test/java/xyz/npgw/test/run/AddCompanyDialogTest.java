@@ -234,7 +234,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: error message is displayed for duplicate company name");
-        assertThat(addCompanyDialog.getAlertMessage()).containsText(
+        assertThat(addCompanyDialog.getAlert().getAlertMessage()).containsText(
                 "Company with name {%s} already exists.".formatted(COMPANY_NAME));
     }
 
@@ -432,7 +432,7 @@ public class AddCompanyDialogTest extends BaseTest {
         addBusinessUnitDialog.clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: Validation error is shown when merchant name is not filled");
-        assertThat(addBusinessUnitDialog.getAlertMessage()).containsText("Enter merchant name");
+        assertThat(addBusinessUnitDialog.getAlert().getAlertMessage()).containsText("Enter merchant name");
 
         companiesAndBusinessUnitsPage = addBusinessUnitDialog
                 .fillBusinessUnitNameField(businessUnit.merchantName())

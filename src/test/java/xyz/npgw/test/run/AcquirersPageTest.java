@@ -373,17 +373,4 @@ public class AcquirersPageTest extends BaseTest {
             } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
         }
     }
-
-    @Test
-    public void testMyTest(){
-        String acquirerName = "Awesome acquirer";
-        new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().selectAcquirer(acquirerName)
-                .getSelectAcquirer().clickAcquirerDropdownChevron()
-                .getSelectAcquirer().clickSelectAcquirerClearIcon();
-
-        getPage().pause();
-    }
 }
