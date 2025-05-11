@@ -49,7 +49,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     }
 
     @Step("Enter challenge URL '{url}'")
-    public CurrentDialogT fillChallengeUrl(String url) {
+    public static CurrentDialogT fillChallengeUrl(String url) {
         getByPlaceholder("Enter challenge URL").fill(url);
 
         return (CurrentDialogT) this;
@@ -89,4 +89,23 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
         return (CurrentDialogT) this;
     }
+
+//    @Step("Fill acquirer form '{acquirerData}'")
+//    public CurrentDialogT fillAcquirerForm(String[] acquirerData) {
+//        fillChallengeUrl("")
+//                .fillFingerprintUrl("")
+//                .fillResourceUrl("")
+//                .fillNotificationQueue("")
+//                .fillAcquirerConfig("");
+//
+//        if (!acquirerData.currency.empty()) {
+//            clickCheckboxCurrency("");
+//        }
+//
+//        if (!acquirerData.status.empty()) {
+//            clickStatusRadiobutton("");
+//        }
+//
+//        return (CurrentDialogT) this;
+//    }
 }

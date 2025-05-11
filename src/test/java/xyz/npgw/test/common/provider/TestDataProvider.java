@@ -5,6 +5,9 @@ import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.entity.User;
 
+import java.util.List;
+import java.util.Map;
+
 public class TestDataProvider {
 
     @DataProvider
@@ -83,5 +86,43 @@ public class TestDataProvider {
                 {"EXCEL"},
                 //{"PDF"},
         };
+    }
+
+    @DataProvider(name = "acquirerNegativeData")
+    public Object[][] acquirerNegativeData() {
+        List<Map<String, Object>> testData = List.of(
+                Map.of(
+                        "name", "",
+                        "config", "validConfig",
+                        "currency", "USD",
+                        "status", true,
+                        "errorMessage", "Acquirer name is required"
+                ),
+                Map.of(
+                        "name", "ValidName",
+                        "config", "",
+                        "currency", "USD",
+                        "status", true,
+                        "errorMessage", "Acquirer config is required"
+                ),
+                Map.of(
+                        "name", "ValidName",
+                        "config", "validConfig",
+                        "currency", "",
+                        "status", true,
+                        "errorMessage", "At least one currency is required"
+                ),
+                Map.of(
+                        "name", "ValidName",
+                        "config", "validConfig",
+                        "currency", "USD",
+                        "status", null,
+                        "errorMessage", "Status must be selected"
+                )
+        );
+
+        return testData.stream()
+                .map(data -> new Object[]{data})
+                .toArray(Object[][]::new);
     }
 }

@@ -174,4 +174,34 @@ public class AddAcquirerDialogTest extends BaseTest {
         Allure.step("Verify: 'Create' button is disabled.");
         assertThat(addAcquirerDialog.getCreateButton()).isDisabled();
     }
+
+//    @Test(dataProvider = "invalidAcquirerData", dataProviderClass = TestDataProvider.class)
+//    @TmsLink("526")
+//    @Epic("System/Acquirers")
+//    @Feature("Add acquirer")
+//    @Description("Verify validation messages when creating Acquirer with invalid input.")
+//    public void testDisplayValidationErrorsForInvalidAcquirerInput(
+//            String name,
+//            String config,
+//            String currencies,
+//            Boolean isActive,
+//            String expectedErrorMessage
+//    ) {
+//        String acquirerName = "Acquirer with Error Message";
+//        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
+//            createAcquirer(getApiRequestContext(), acquirerName);
+//        }
+//
+//        AcquirersPage acquirersPage = new DashboardPage(getPage())
+//                .getHeader().clickSystemAdministrationLink()
+//                .getSystemMenu()
+//                .clickAcquirersTab()
+//                .clickAddAcquirer()
+//                .fillAcquirerName(acquirerName)
+//                .fillAcquirerForm(name, config, currencies, isActive)
+//                .clickCreateAcquirer();
+//
+//        Allure.step(String.format("Verify error message is: %s", expectedErrorMessage));
+//        assertThat(acquirersPage.getAlert().getAlertMessage()).has(expectedErrorMessage);
+//    }
 }
