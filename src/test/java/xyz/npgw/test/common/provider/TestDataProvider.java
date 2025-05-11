@@ -84,14 +84,4 @@ public class TestDataProvider {
                 //{"PDF"},
         };
     }
-
-    @DataProvider
-    public Object[][] invalidAcquirerData() {
-        return new Object[][] {
-                {"Acquirer for Handling Error ", "Active", "", "",  "", "", "", "", "Acquirer name is required"},
-//                {"ValidName", "", "USD", true, "Acquirer config is required"},
-//                {"ValidName", "validConfig", "", true, "At least one currency is required"},
-//                {"ValidName", "validConfig", "USD", null, "Status must be selected"}
-        };
-    }
 }

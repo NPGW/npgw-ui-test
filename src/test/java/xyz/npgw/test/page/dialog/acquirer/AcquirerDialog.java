@@ -31,9 +31,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Click on the '{option}' radiobutton")
     public CurrentDialogT clickStatusRadiobutton(String option) {
-        if (!option.isEmpty()) {
-            getByLabelExact(option).click();
-        }
+        getByLabelExact(option).click();
 
         return (CurrentDialogT) this;
     }
@@ -80,9 +78,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Click currency '{currency}'")
     public CurrentDialogT clickCheckboxCurrency(String currency) {
-        if (!currency.isEmpty()) {
-            getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(currency)).check();
-        }
+        getPage().getByRole(AriaRole.CHECKBOX, new Page.GetByRoleOptions().setName(currency)).check();
 
         return (CurrentDialogT) this;
     }
