@@ -498,6 +498,7 @@ public class TransactionsPageTest extends BaseTest {
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
         Allure.step("Verify: Company's business units are visible");
-        assertEquals(transactionsPage.getSelectBusinessUnit().getBusinessUnitOptions(), businessUnitNames);
+        assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames
+                .toArray(String[]::new));
     }
 }

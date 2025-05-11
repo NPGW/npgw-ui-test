@@ -18,6 +18,7 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
     private final Locator selectBusinessUnitPlaceholder = locator("input[aria-label='Business unit']");
     @Getter
     private final Locator businessUnitDropdown = locator("div[aria-label='Suggestions']");
+    @Getter
     private final Locator dropdownOptionList = getPage().getByRole(AriaRole.OPTION);
     private final Locator selectBusinessUnitContainer =
             locator("div[data-slot='input-wrapper']")
@@ -85,10 +86,5 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
         selectBusinessUnitPlaceholder.click();
 
         return page;
-    }
-
-    @Step("Get all 'Visible Business units' in dropdown")
-    public List<String> getBusinessUnitOptions() {
-        return dropdownOptionList.all().stream().map(Locator::innerText).toList();
     }
 }
