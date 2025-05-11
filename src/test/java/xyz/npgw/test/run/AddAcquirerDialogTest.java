@@ -164,7 +164,12 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
-                .fillAcquirerName("");
+                .fillAcquirerName("Acquirer name");
+
+        Allure.step("Verify: 'Create' button is not disabled.");
+        assertThat(addAcquirerDialog.getCreateButton()).not().isDisabled();
+
+        addAcquirerDialog.getAcquirerNamePlaceholder().clear();
 
         Allure.step("Verify: 'Create' button is disabled.");
         assertThat(addAcquirerDialog.getCreateButton()).isDisabled();
