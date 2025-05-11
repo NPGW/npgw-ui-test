@@ -28,7 +28,7 @@ public record Company(
     }
 
     public boolean isEmpty() {
-        return companyAddress.isEmpty() && description.isEmpty() && website.isEmpty() && primaryContact.isEmpty()
-                && isPortalActive && isApiActive;
+        return companyAddress.isEmpty() && description.isEmpty() && website.isEmpty() && primaryContact.isEmpty();
+//                && isPortalActive && isApiActive;
     }
 }

@@ -87,7 +87,7 @@ public final class TestUtils {
         log.info("delete company '{}' - {} {}", companyName, response.status(), response.text());
     }
 
-    private static String encode(String value) {
+    static String encode(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
     }
 
@@ -147,5 +147,21 @@ public final class TestUtils {
     private static boolean existsMerchant(APIRequestContext request, String companyName, String businessUnitName) {
         return Arrays.stream(getAllMerchants(request, companyName))
                 .anyMatch(businessUnit -> businessUnit.merchantName().equals(businessUnitName));
+    }
+
+    public static User[] getAllUsers(APIRequestContext request, String companyName) {
+        APIResponse response = request.get("portal-v1/user/list/%s".formatted(encode(companyName)));
+        log.info("get all users for company '{}' - {} {}", companyName, response.status(), response.text());
+        return new Gson().fromJson(response.text(), User[].class);
+    }
+
+    public static void deleteMerchant(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
+        APIResponse response = request.delete(
+                "portal-v1/company/%s/merchant/%s".formatted(encode(companyName), businessUnit.merchantId()));
+        log.info("delete merchant '{}' for company '{}' - {} {}",
+                businessUnit.merchantId(),
+                companyName,
+                response.status(),
+                response.text());
     }
 }
