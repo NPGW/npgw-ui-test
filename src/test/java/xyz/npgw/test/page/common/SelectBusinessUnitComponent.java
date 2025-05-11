@@ -7,7 +7,6 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
