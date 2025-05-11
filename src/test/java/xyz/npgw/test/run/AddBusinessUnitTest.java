@@ -81,10 +81,10 @@ public class AddBusinessUnitTest extends BaseTest {
                 .clickOnAddBusinessUnitButton();
 
         Allure.step("Verify: Company name field is read-only and prefilled created company");
-        assertThat(addBusinessUnitDialog.getCompanyNameFieldByLabel()).hasValue(company.companyName());
+        assertThat(addBusinessUnitDialog.getCompanyNameField()).hasValue(company.companyName());
 
         Allure.step("Verify: 'Company name' field is non-editable");
-        assertThat(addBusinessUnitDialog.getCompanyNameFieldByLabel()).hasAttribute("aria-readonly", "true");
+        assertThat(addBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
     @Test
@@ -191,7 +191,7 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(addBusinessUnitDialog.getGetAddMerchantDialogHeader()).hasText("Add business unit");
 
         Allure.step("Verify: Company name is pre-filled correctly");
-        assertThat(addBusinessUnitDialog.getCompanyNameFieldByLabel()).hasValue(COMPANY_NAME);
+        assertThat(addBusinessUnitDialog.getCompanyNameField()).hasValue(COMPANY_NAME);
 
         addBusinessUnitDialog.clickCreateButtonAndTriggerError();
 

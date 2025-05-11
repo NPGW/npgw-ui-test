@@ -101,7 +101,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickAddCompanyButton();
 
         Allure.step("Verify: 'Company name' field is marked invalid");
-        assertThat(addCompanyDialog.getCompanyNameFieldByPlaceholder()).hasAttribute("aria-invalid", "true");
+        assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
 
         Allure.step("Verify: 'Company type' field is marked invalid");
         assertThat(addCompanyDialog.getCompanyTypeField()).hasAttribute("aria-invalid", "true");
@@ -143,7 +143,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getCreateButton()).isDisabled();
 
         Allure.step("Verify: 'Company name' field is marked invalid");
-        assertThat(addCompanyDialog.getCompanyNameFieldByPlaceholder()).hasAttribute("aria-invalid", "true");
+        assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
     @Test(dataProvider = "getInvalidCompanyNamesByLengthAndChar", dataProviderClass = TestDataProvider.class)
@@ -165,7 +165,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getCreateButton()).isDisabled();
 
         Allure.step("Verify: 'Company name' field is marked invalid");
-        assertThat(addCompanyDialog.getCompanyNameFieldByPlaceholder()).hasAttribute("aria-invalid", "true");
+        assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
     @Test
@@ -273,7 +273,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getDialogHeader()).hasText("Add company");
 
         Allure.step("Verify: 'Company name' field is marked as invalid");
-        assertEquals(addCompanyDialog.getCompanyNameFieldByPlaceholder().getAttribute("aria-invalid"), "true");
+        assertEquals(addCompanyDialog.getCompanyNameField().getAttribute("aria-invalid"), "true");
 
         Allure.step("Verify: 'Company type' field is marked as invalid");
         assertEquals(addCompanyDialog.getCompanyTypeField().getAttribute("aria-invalid"), "true");

@@ -81,8 +81,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .clickEditBusinessUnitButton();
 
         Allure.step("Verify: Company name is pre-filled correctly");
-        assertThat(editBusinessUnitDialog.getCompanyNameFieldByLabel()).hasValue(companyName);
+        assertThat(editBusinessUnitDialog.getCompanyNameField()).hasValue(companyName);
         Allure.step("Verify: Company name field is read-only");
-        assertThat(editBusinessUnitDialog.getCompanyNameFieldByLabel()).hasAttribute("aria-readonly", "true");
+        assertThat(editBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 }

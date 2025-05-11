@@ -26,8 +26,6 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
     private final Locator allPlaceholdersWithoutSearch = locator("[data-slot='input']:not([placeholder='Search...'])");
     private final Locator alertMessage = locator("[role='alert']");
     private final Locator fieldLabel = getByRole(AriaRole.DIALOG).locator("label[data-slot='label']");
-    private final Locator companyNameFieldByLabel = locator("input[aria-label='Company name']");
-    private final Locator companyNameFieldByPlaceholder = getByPlaceholder("Enter company name");
 
     public BaseDialog(Page page) {
         super(page);
