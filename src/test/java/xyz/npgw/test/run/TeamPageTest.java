@@ -468,18 +468,14 @@ public class TeamPageTest extends BaseTest {
         final String statusColumnName = "Status";
         final String companyAdmin = "dummyadmin@email.com";
         final String companyAdminPassword = ProjectProperties.getAdminPassword();
-        final String companyAdmin2 = "dummyadmin2@email.com";
-        final String companyAdminPassword2 = ProjectProperties.getAdminPassword();
+        final String companyName = "framework";
 
-        TestUtils.deleteUser(getApiRequestContext(), user);
-        TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
-        TestUtils.createUser(getApiRequestContext(), user);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), COMPANY_NAME, companyAdmin, companyAdminPassword);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), COMPANY_NAME, companyAdmin2, companyAdminPassword2);
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin, companyAdminPassword);
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectCompany().selectCompany(companyName)
                 .getTable().deactivateUser(companyAdmin)
                 .clickStatusSelector()
                 .selectActiveStatus();
@@ -494,5 +490,7 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: All visible users are 'Inactive' after applying Inactive filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)
                 .stream().allMatch(value -> value.equals("Inactive")));
+
+        TestUtils.deleteUser(getApiRequestContext(), companyAdmin);
     }
 }
