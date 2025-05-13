@@ -174,7 +174,7 @@ public class HeaderTest extends BaseTest {
     @Epic("Header")
     @Feature("User menu")
     @Description("Verify that the color theme matching with the default browser theme")
-    public  void testDefaultThemeMatching() {
+    public void testDefaultThemeMatching() {
         Allure.step("Verify that the current color theme matches the default browser theme");
         assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
     }
@@ -185,7 +185,7 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Check validation error messages when changing password")
     public void testCheckChangePasswordValidationMessages(@Optional("UNAUTHORISED") String userRole,
-                                                    String newPassword, String expectedMessage) {
+                                                          String newPassword, String expectedMessage) {
         User user = new User(
                 "framework",
                 true,
@@ -218,8 +218,8 @@ public class HeaderTest extends BaseTest {
 
     @DataProvider(name = "passwordValidationData")
     public Object[][] passwordValidationData() {
-        return new Object[][] {
-                {"UNAUTHORISED", "Qw1!ab", null},
+        return new Object[][]{
+                {"UNAUTHORISED", "Qwert1!", null},
                 {"UNAUTHORISED", "QWERTY1!",
                         "Password does not conform to policy: Password must have lowercase characters"},
                 {"UNAUTHORISED", "qwerty1!",
@@ -229,5 +229,35 @@ public class HeaderTest extends BaseTest {
                 {"UNAUTHORISED", "Qwertyu1",
                         "Password does not conform to policy: Password must have symbol characters"}
         };
+    }
+
+    @Test
+    public void testDeleteSuperUser(@Optional("UNAUTHORISED") String userRole) {
+        User user = new User(
+                "framework",
+                true,
+                UserRole.SUPER,
+                new String[]{},
+                "supertest008@example.com",
+                "Qwerty1!"
+        );
+
+        TestUtils.deleteUser(getApiRequestContext(), user.email());
+        TestUtils.createUser(getApiRequestContext(), user);
+    }
+
+    @Test
+    public void testDeleteUserUser(@Optional("UNAUTHORISED") String userRole) {
+        User user = new User(
+                "framework",
+                true,
+                UserRole.USER,
+                new String[]{"123"},
+                "usertest008@example.com",
+                "Qwerty1!"
+        );
+
+        TestUtils.deleteUser(getApiRequestContext(), user.email());
+        TestUtils.createUser(getApiRequestContext(), user);
     }
 }
