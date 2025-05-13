@@ -230,34 +230,4 @@ public class HeaderTest extends BaseTest {
                         "Password does not conform to policy: Password must have symbol characters"}
         };
     }
-
-    @Test
-    public void testDeleteSuperUser(@Optional("UNAUTHORISED") String userRole) {
-        User user = new User(
-                "framework",
-                true,
-                UserRole.SUPER,
-                new String[]{},
-                "supertest008@example.com",
-                "Qwerty1!"
-        );
-
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createUser(getApiRequestContext(), user);
-    }
-
-    @Test
-    public void testDeleteUserUser(@Optional("UNAUTHORISED") String userRole) {
-        User user = new User(
-                "framework",
-                true,
-                UserRole.USER,
-                new String[]{"123"},
-                "usertest008@example.com",
-                "Qwerty1!"
-        );
-
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createUser(getApiRequestContext(), user);
-    }
 }
