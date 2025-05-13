@@ -5,12 +5,16 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
@@ -20,6 +24,7 @@ import xyz.npgw.test.page.common.HeaderComponent;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+@Slf4j
 public class HeaderTest extends BaseTest {
 
     @Test
@@ -172,5 +177,57 @@ public class HeaderTest extends BaseTest {
     public  void testDefaultThemeMatching() {
         Allure.step("Verify that the current color theme matches the default browser theme");
         assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
+    }
+
+    @Test(dataProvider = "passwordValidationData")
+    @TmsLink("540")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Check validation error messages when changing password")
+    public void testCheckChangePasswordValidationMessages(@Optional("UNAUTHORISED") String userRole,
+                                                    String newPassword, String expectedMessage) {
+        User user = new User(
+                "framework",
+                true,
+                UserRole.ADMIN,
+                new String[]{},
+                "admintest008@example.com",
+                "Qwerty1!"
+        );
+
+        TestUtils.deleteUser(getApiRequestContext(), user.email());
+        TestUtils.createUser(getApiRequestContext(), user);
+
+        new LoginPage(getPage())
+                .loginAndChangePassword(user.email(), user.password(), "Qwerty1!")
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickProfileSettingsButton()
+                .getHeader().fillPasswordField(newPassword)
+                .getHeader().fillRepeatPasswordField(newPassword);
+
+        if (expectedMessage == null) {
+            Allure.step("Verify Save button is disabled");
+            assertThat(getPage().locator("//button[text()='Save']")).isDisabled();
+        } else {
+            new LoginPage(getPage())
+                    .clickSaveButton();
+            Allure.step("Verify error message: \"" + expectedMessage + "\" presence");
+            assertThat(getPage().getByText(expectedMessage)).isVisible();
+        }
+    }
+
+    @DataProvider(name = "passwordValidationData")
+    public Object[][] passwordValidationData() {
+        return new Object[][] {
+                {"UNAUTHORISED", "Qw1!ab", null},
+                {"UNAUTHORISED", "QWERTY1!",
+                        "Password does not conform to policy: Password must have lowercase characters"},
+                {"UNAUTHORISED", "qwerty1!",
+                        "Password does not conform to policy: Password must have uppercase characters"},
+                {"UNAUTHORISED", "Qwertyu!",
+                        "Password does not conform to policy: Password must have numeric characters"},
+                {"UNAUTHORISED", "Qwertyu1",
+                        "Password does not conform to policy: Password must have symbol characters"}
+        };
     }
 }

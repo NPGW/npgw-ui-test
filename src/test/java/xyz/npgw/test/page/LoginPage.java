@@ -145,6 +145,7 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     public DashboardPage loginAndChangePassword(String email, String password, String newPassword) {
         login(email, password);
         changePassword(newPassword);
+        getPage().reload();
         login(email, newPassword);
 
         return new DashboardPage(getPage());
