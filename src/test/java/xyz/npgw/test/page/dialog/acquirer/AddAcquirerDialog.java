@@ -20,6 +20,7 @@ public class AddAcquirerDialog extends AcquirerDialog<AddAcquirerDialog> {
     public AcquirersPage clickCreateButton() {
         getPage().waitForCondition(createButton::isEnabled);
         createButton.click();
+        getAlert().getAlertMessage().waitFor();
 
         return new AcquirersPage(getPage());
     }

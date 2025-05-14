@@ -8,6 +8,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
@@ -15,6 +16,7 @@ import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -175,33 +177,28 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(addAcquirerDialog.getCreateButton()).isDisabled();
     }
 
-//    @Test(dataProvider = "invalidAcquirerData", dataProviderClass = TestDataProvider.class)
-//    @TmsLink("526")
-//    @Epic("System/Acquirers")
-//    @Feature("Add acquirer")
-//    @Description("Verify validation messages when creating Acquirer with invalid input.")
-//    public void testDisplayValidationErrorsForInvalidAcquirerInput(
-//            String name,
-//            String config,
-//            String currencies,
-//            Boolean isActive,
-//            String expectedErrorMessage
-//    ) {
-//        String acquirerName = "Acquirer with Error Message";
-//        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
-//            createAcquirer(getApiRequestContext(), acquirerName);
-//        }
-//
-//        AcquirersPage acquirersPage = new DashboardPage(getPage())
-//                .getHeader().clickSystemAdministrationLink()
-//                .getSystemMenu()
-//                .clickAcquirersTab()
-//                .clickAddAcquirer()
-//                .fillAcquirerName(acquirerName)
-//                .fillAcquirerForm(name, config, currencies, isActive)
-//                .clickCreateAcquirer();
-//
-//        Allure.step(String.format("Verify error message is: %s", expectedErrorMessage));
-//        assertThat(acquirersPage.getAlert().getAlertMessage()).has(expectedErrorMessage);
-//    }
+    @Test(dataProvider = "acquirerNegativeData", dataProviderClass = TestDataProvider.class)
+    @TmsLink("547")
+    @Epic("System/Acquirers")
+    @Feature("Add acquirer")
+    @Description("Verify validation messages when creating Acquirer with invalid input.")
+    public void testDisplayValidationErrorsForInvalidAcquirerInput(Acquirer acquirer, String expectedError) {
+        String acquirerName = "Acquirer with Error Message";
+        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
+            deleteAcquirer(getApiRequestContext(), acquirerName);
+        }
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu()
+                .clickAcquirersTab()
+                .clickAddAcquirer()
+                .fillAcquirerForm(acquirer)
+                .clickCreateButton();
+
+        assertThat(acquirersPage.getAlert().getAlertMessage()).isVisible();
+
+        Allure.step(String.format("Verify error message is: %s", expectedError));
+        assertThat(acquirersPage.getAlert().getAlertMessage()).hasText(expectedError);
+    }
 }

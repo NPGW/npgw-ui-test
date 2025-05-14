@@ -3,10 +3,9 @@ package xyz.npgw.test.common.provider;
 import org.testng.annotations.DataProvider;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.UserRole;
+import xyz.npgw.test.common.entity.Acquirer;
+import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.entity.User;
-
-import java.util.List;
-import java.util.Map;
 
 public class TestDataProvider {
 
@@ -90,39 +89,85 @@ public class TestDataProvider {
 
     @DataProvider(name = "acquirerNegativeData")
     public Object[][] acquirerNegativeData() {
-        List<Map<String, Object>> testData = List.of(
-                Map.of(
-                        "name", "",
-                        "config", "validConfig",
-                        "currency", "USD",
-                        "status", true,
-                        "errorMessage", "Acquirer name is required"
-                ),
-                Map.of(
-                        "name", "ValidName",
-                        "config", "",
-                        "currency", "USD",
-                        "status", true,
-                        "errorMessage", "Acquirer config is required"
-                ),
-                Map.of(
-                        "name", "ValidName",
-                        "config", "validConfig",
-                        "currency", "",
-                        "status", true,
-                        "errorMessage", "At least one currency is required"
-                ),
-                Map.of(
-                        "name", "ValidName",
-                        "config", "validConfig",
-                        "currency", "USD",
-                        "status", null,
-                        "errorMessage", "Status must be selected"
-                )
-        );
+        String acquirerName = "Acquirer with Error Message";
+        String acquirerCode = "NGenius";
 
-        return testData.stream()
-                .map(data -> new Object[]{data})
-                .toArray(Object[][]::new);
+        return new Object[][]{
+//                {
+//                        new Acquirer(
+//                                acquirerCode,
+//                                "Acquirer Config",
+//                                new SystemConfig(
+//                                        "https://challenge.example.com",
+//                                        "https://fingerprint.example.com",
+//                                        "https://resource.example.com",
+//                                        "notification-queue"),
+//                                acquirerName,
+//                                new String[]{},
+//                                true),
+//                        "ErrorSelect at least one allowed currency"
+//                },
+//                {
+//                        new Acquirer(
+//                                acquirerCode,
+//                                "",
+//                                new SystemConfig(
+//                                        "",
+//                                        "",
+//                                        "",
+//                                        ""),
+//                                acquirerName,
+//                                new String[]{"USD"},
+//                                true),
+//                        "ERRORsystemConfig.challengeUrl must be defined\n" +
+//                                "systemConfig.fingerprintUrl must be defined\n" +
+//                                "systemConfig.resourceUrl must be defined"
+//                },
+//                {
+//                        new Acquirer(
+//                                acquirerCode,
+//                                "",
+//                                new SystemConfig(
+//                                        "https://challenge.example.com",
+//                                        "",
+//                                        "",
+//                                        ""),
+//                                acquirerName,
+//                                new String[]{"USD"},
+//                                true),
+//                        "ERRORsystemConfig.fingerprintUrl must be defined\n" +
+//                                "systemConfig.resourceUrl must be defined"
+//                },
+//                {
+//                        new Acquirer(
+//                                acquirerCode,
+//                                "",
+//                                new SystemConfig(
+//                                        "https://challenge.example.com",
+//                                        "https://fingerprint.example.com",
+//                                        "",
+//                                        ""),
+//                                acquirerName,
+//                                new String[]{"USD"},
+//                                true),
+//                        "ERRORsystemConfig.resourceUrl must be defined"
+//                },
+                {
+                        new Acquirer(
+                                acquirerCode,
+                                "",
+                                new SystemConfig(
+                                        "//challenge.example.com",
+                                        "//fingerprint.example.com",
+                                        "ps://fingerprint.example.com",
+                                        "ffff"),
+                                acquirerName,
+                                new String[]{"USD"},
+                                true),
+                        "ERRORsystemConfig.fingerprintUrl must be defined\n" +
+                                "systemConfig.resourceUrl must be defined"
+                }
+
+        };
     }
 }
