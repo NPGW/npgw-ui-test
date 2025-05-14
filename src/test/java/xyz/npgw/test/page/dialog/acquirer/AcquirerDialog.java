@@ -96,9 +96,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Fill acquirer form")
     public CurrentDialogT fillAcquirerForm(Acquirer acquirer) {
-
-        fillAcquirerName(acquirer.acquirerName())
-                .fillChallengeUrl(acquirer.systemConfig().challengeUrl())
+        fillChallengeUrl(acquirer.systemConfig().challengeUrl())
                 .fillFingerprintUrl(acquirer.systemConfig().fingerprintUrl())
                 .fillResourceUrl(acquirer.systemConfig().resourceUrl())
                 .fillNotificationQueue(acquirer.systemConfig().notificationQueue())

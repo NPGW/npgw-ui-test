@@ -192,6 +192,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .getSystemMenu()
                 .clickAcquirersTab()
                 .clickAddAcquirer()
+                .fillAcquirerName(acquirer.acquirerName())
                 .fillAcquirerForm(acquirer)
                 .clickCreateButton();
 
