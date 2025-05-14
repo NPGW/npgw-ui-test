@@ -111,12 +111,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(addUserDialog.getDialogHeader()).hasText("Add user");
 
         TeamPage teamPage = addUserDialog
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
-                .setStatusRadiobutton(user.enabled())
-                .setUserRoleRadiobutton(user.userRole())
-                .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton();
+                .createUser(user);
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
@@ -149,11 +144,7 @@ public class TeamPageTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton()
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
-                .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton()
+                .createUser(user)
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
                 .clickEditUserButton(user.email());
@@ -184,9 +175,8 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "check");
     }
 
-    //    TODO add tms link
     @Test
-    @TmsLink("")
+    @TmsLink("474")
     @Epic("System/Team")
     @Feature("Add user")
     @Description("Create new company admin user")
@@ -202,10 +192,7 @@ public class TeamPageTest extends BaseTest {
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
-                .fillEmailField(email)
-                .fillPasswordField("Password1!")
-                .checkCompanyAdminRadiobutton()
-                .clickCreateButton();
+                .createCompanyAdmin(email, "Password1!");
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
@@ -225,11 +212,7 @@ public class TeamPageTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton()
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
-                .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user.merchantIds())
-                .clickCreateButton()
+                .createUser(user)
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
                 .getTable().deactivateUser(user.email());
@@ -261,10 +244,7 @@ public class TeamPageTest extends BaseTest {
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
-                .fillEmailField(email)
-                .fillPasswordField("Password1!")
-                .checkCompanyAdminRadiobutton()
-                .clickCreateButton()
+                .createCompanyAdmin(email, "Password1!")
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
                 .getTable().clickEditUserButton(email)
@@ -295,10 +275,7 @@ public class TeamPageTest extends BaseTest {
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
-                .fillEmailField(email)
-                .fillPasswordField("Password1!")
-                .checkCompanyAdminRadiobutton()
-                .clickCreateButton()
+                .createCompanyAdmin(email, "Password1!")
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
                 .getTable().clickDeactivateUserButton(email)
@@ -347,10 +324,7 @@ public class TeamPageTest extends BaseTest {
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
-                .fillEmailField(email)
-                .fillPasswordField("Password1!")
-                .checkCompanyAdminRadiobutton()
-                .clickCreateButton()
+                .createCompanyAdmin(email, "Password1!")
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
                 .getTable().clickResetUserPasswordButton(email)
