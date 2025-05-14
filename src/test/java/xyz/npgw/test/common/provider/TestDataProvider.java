@@ -93,65 +93,69 @@ public class TestDataProvider {
         String acquirerCode = "NGenius";
 
         return new Object[][]{
-//                {
-//                        new Acquirer(
-//                                acquirerCode,
-//                                "Acquirer Config",
-//                                new SystemConfig(
-//                                        "https://challenge.example.com",
-//                                        "https://fingerprint.example.com",
-//                                        "https://resource.example.com",
-//                                        "notification-queue"),
-//                                acquirerName,
-//                                new String[]{},
-//                                true),
-//                        "ErrorSelect at least one allowed currency"
-//                },
-//                {
-//                        new Acquirer(
-//                                acquirerCode,
-//                                "",
-//                                new SystemConfig(
-//                                        "",
-//                                        "",
-//                                        "",
-//                                        ""),
-//                                acquirerName,
-//                                new String[]{"USD"},
-//                                true),
-//                        "ERRORsystemConfig.challengeUrl must be defined\n"
-//                                + "systemConfig.fingerprintUrl must be defined\n"
-//                                + "systemConfig.resourceUrl must be defined"
-//                },
-//                {
-//                        new Acquirer(
-//                                acquirerCode,
-//                                "",
-//                                new SystemConfig(
-//                                        "https://challenge.example.com",
-//                                        "",
-//                                        "",
-//                                        ""),
-//                                acquirerName,
-//                                new String[]{"USD"},
-//                                true),
-//                        "ERRORsystemConfig.fingerprintUrl must be defined\n"
-//                                + "systemConfig.resourceUrl must be defined"
-//                },
-//                {
-//                        new Acquirer(
-//                                acquirerCode,
-//                                "",
-//                                new SystemConfig(
-//                                        "https://challenge.example.com",
-//                                        "https://fingerprint.example.com",
-//                                        "",
-//                                        ""),
-//                                acquirerName,
-//                                new String[]{"USD"},
-//                                true),
-//                        "ERRORsystemConfig.resourceUrl must be defined"
-//                },
+                {
+                        new Acquirer(
+                                acquirerCode,
+                                "Acquirer Config",
+                                new SystemConfig(
+                                        "https://challenge.example.com",
+                                        "https://fingerprint.example.com",
+                                        "https://resource.example.com",
+                                        "notification-queue"),
+                                acquirerName,
+                                new String[]{},
+                                true),
+                        """
+ErrorSelect at least one allowed currency"""
+                },
+                {
+                        new Acquirer(
+                                acquirerCode,
+                                "",
+                                new SystemConfig(
+                                        "",
+                                        "",
+                                        "",
+                                        ""),
+                                acquirerName,
+                                new String[]{"USD"},
+                                true),
+                        """
+ERRORsystemConfig.challengeUrl must be defined
+systemConfig.fingerprintUrl must be defined
+systemConfig.resourceUrl must be defined"""
+                },
+                {
+                        new Acquirer(
+                                acquirerCode,
+                                "",
+                                new SystemConfig(
+                                        "https://challenge.example.com",
+                                        "",
+                                        "",
+                                        ""),
+                                acquirerName,
+                                new String[]{"USD"},
+                                true),
+                        """
+ERRORsystemConfig.fingerprintUrl must be defined
+systemConfig.resourceUrl must be defined"""
+                },
+                {
+                        new Acquirer(
+                                acquirerCode,
+                                "",
+                                new SystemConfig(
+                                        "https://challenge.example.com",
+                                        "https://fingerprint.example.com",
+                                        "",
+                                        ""),
+                                acquirerName,
+                                new String[]{"USD"},
+                                true),
+                        """
+ERRORsystemConfig.resourceUrl must be defined"""
+                },
                 {
                         new Acquirer(
                                 acquirerCode,
@@ -164,9 +168,10 @@ public class TestDataProvider {
                                 acquirerName,
                                 new String[]{"USD"},
                                 true),
-                        "ERRORsystemConfig.challengeUrl doesn’t qualify for the URL syntax\n" +
-                                "systemConfig.fingerprintUrl doesn’t qualify for the URL syntax\n" +
-                                "systemConfig.resourceUrl doesn’t qualify for the URL syntax"
+                        """
+ERRORsystemConfig.challengeUrl doesn’t qualify for the URL syntax
+systemConfig.fingerprintUrl doesn’t qualify for the URL syntax
+systemConfig.resourceUrl doesn’t qualify for the URL syntax"""
                 }
         };
     }
