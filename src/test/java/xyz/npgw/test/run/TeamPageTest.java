@@ -198,15 +198,7 @@ public class TeamPageTest extends BaseTest {
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButtonToChangePassword()
-                .fillNewPasswordField(ADMIN_PASSWORD)
-                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
-                .clickSaveButton()
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButton()
+                .loginAndChangePassword(ADMIN_EMAIL, ADMIN_PASSWORD)
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
@@ -265,15 +257,7 @@ public class TeamPageTest extends BaseTest {
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButtonToChangePassword()
-                .fillNewPasswordField(ADMIN_PASSWORD)
-                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
-                .clickSaveButton()
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButton()
+                .loginAndChangePassword(ADMIN_EMAIL, ADMIN_PASSWORD)
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
@@ -307,15 +291,7 @@ public class TeamPageTest extends BaseTest {
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButtonToChangePassword()
-                .fillNewPasswordField(ADMIN_PASSWORD)
-                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
-                .clickSaveButton()
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButton()
+                .loginAndChangePassword(ADMIN_EMAIL, ADMIN_PASSWORD)
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
@@ -367,15 +343,7 @@ public class TeamPageTest extends BaseTest {
 
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButtonToChangePassword()
-                .fillNewPasswordField(ADMIN_PASSWORD)
-                .fillRepeatNewPasswordField(ADMIN_PASSWORD)
-                .clickSaveButton()
-                .fillEmailField(ADMIN_EMAIL)
-                .fillPasswordField(ADMIN_PASSWORD)
-                .clickLoginButton()
+                .loginAndChangePassword(ADMIN_EMAIL, ADMIN_PASSWORD)
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
@@ -459,13 +427,13 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "check");
 
-       LoginPage loginPage = teamPage.getHeader().clickLogOutButton()
-                .loginAsDisabledUser(analystEmail,analystPassword);
+        LoginPage loginPage = teamPage.getHeader().clickLogOutButton()
+                .loginAsDisabledUser(analystEmail, analystPassword);
 
         Allure.step("Verify: error message is displayed");
         assertThat(teamPage.getAlert().getAlertMessage()).hasText("ERRORUser is disabled.");
 
-       DashboardPage dashboardPage = loginPage.login(ADMIN_EMAIL, ADMIN_PASSWORD)
+        DashboardPage dashboardPage = loginPage.login(ADMIN_EMAIL, ADMIN_PASSWORD)
                 .getHeader().clickSystemAdministrationLink()
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()
@@ -474,7 +442,7 @@ public class TeamPageTest extends BaseTest {
                 .loginAndChangePassword(analystEmail, analystPassword);
 
         Allure.step("Verify: error message is displayed");
-        assertThat(dashboardPage.getHeader().getUserMenuButton()).hasText(analystEmail.substring(0,3));
+        assertThat(dashboardPage.getHeader().getUserMenuButton()).hasText(analystEmail.substring(0, 3));
     }
 
     @Test
