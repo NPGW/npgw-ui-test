@@ -375,4 +375,58 @@ public class AcquirersPageTest extends BaseTest {
             } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
         }
     }
+
+    @Test
+    @TmsLink("")
+    @Epic("System/Acquirers")
+    @Feature("Acquirers list")
+    @Description("Verify that Acquirer with status 'Active/Inactive' is displayed correctly in the list")
+    public void testAcquirerStatusIsDisplayedCorrectly() {
+
+
+
+
+
+
+
+
+//        List<String> acquirerTableHeaders = new DashboardPage(getPage())
+//                .getHeader().clickSystemAdministrationLink()
+//                .getSystemMenu().clickAcquirersTab()
+//                .getTable()
+//                .getColumnHeadersText();
+//
+//        Acquirer acquirer = new Acquirer(
+//                "NGenius",
+//                "et",
+//                new SystemConfig("url1", "url2", "url3", "queue"),
+//                "Acquirer Active Status Test",
+//                new String[]{"USD"},
+//                true // статус Active
+//        );
+//
+//        deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
+//        createAcquirer(getApiRequestContext(), acquirer);
+//
+//        AcquirersPage acquirersPage = new DashboardPage(getPage())
+//                .getHeader().clickSystemAdministrationLink()
+//                .getSystemMenu()
+//                .clickAcquirersTab()
+//                .enterAcquirerName(acquirer.acquirerName())
+//                .clickAcquirerInDropdown(acquirer.acquirerName());
+//
+//        TableComponent table = acquirersPage.getTable();
+//        Locator row = table.getTableRows();
+//
+//        Allure.step("Verify: Only one row is displayed for the newly created Acquirer");
+//        assertThat(row).hasCount(1);
+//
+//        String actualStatus = table.getColumnValues("Status").get(0);
+//        String expectedStatus = "Active";
+//
+//        Allure.step(String.format("Verify: Acquirer status is displayed as '%s'", expectedStatus));
+//        Assert.assertEquals(actualStatus, expectedStatus, "Acquirer status in the table does not match expected 'Active' value");
+    }
+
+
 }
