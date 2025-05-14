@@ -15,6 +15,7 @@ import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.common.TableComponent;
+import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.Map;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static xyz.npgw.test.common.util.TestUtils.createAcquirer;
 import static xyz.npgw.test.common.util.TestUtils.deleteAcquirer;
+import static xyz.npgw.test.common.util.TestUtils.getAcquirer;
 
 public class AcquirersPageTest extends BaseTest {
 
@@ -382,11 +384,17 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Verify that Acquirer with status 'Active/Inactive' is displayed correctly in the list")
     public void testAcquirerStatusIsDisplayedCorrectly() {
+        String acquirerName = "Acquirer status check";
+        if (getAcquirer(getApiRequestContext(), acquirerName)) {
+            deleteAcquirer(getApiRequestContext(), acquirerName);
+        }
 
-
-
-
-
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .clickAddAcquirer()
+                .fillAcquirerName(acquirerName)
+                .clickCreateButton();
 
 
 
