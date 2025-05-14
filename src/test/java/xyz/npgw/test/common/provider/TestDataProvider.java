@@ -87,7 +87,7 @@ public class TestDataProvider {
         };
     }
 
-    @DataProvider(name = "acquirerNegativeData")
+    @DataProvider
     public Object[][] acquirerNegativeData() {
         String acquirerName = "Acquirer with Error Message";
         String acquirerCode = "NGenius";
@@ -167,7 +167,6 @@ public class TestDataProvider {
                         "ERRORsystemConfig.fingerprintUrl must be defined\n"
                                 + "systemConfig.resourceUrl must be defined"
                 }
-
         };
     }
 }

@@ -183,9 +183,8 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify validation messages when creating Acquirer with invalid input.")
     public void testDisplayValidationErrorsForInvalidAcquirerInput(Acquirer acquirer, String expectedError) {
-        String acquirerName = "Acquirer with Error Message";
-        if (!getAcquirer(getApiRequestContext(), acquirerName)) {
-            deleteAcquirer(getApiRequestContext(), acquirerName);
+        if (getAcquirer(getApiRequestContext(), acquirer.acquirerName())) {
+            deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
         }
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())

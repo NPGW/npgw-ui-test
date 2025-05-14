@@ -104,16 +104,10 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
                 .fillNotificationQueue(acquirer.systemConfig().notificationQueue())
                 .fillAcquirerConfig(acquirer.acquirerConfig());
 
-        if (acquirer.isActive()) {
-            clickStatusRadiobutton("Active");
-        } else {
-            clickStatusRadiobutton("Inactive");
-        }
+        clickStatusRadiobutton(acquirer.isActive() ? "Active" : "Inactive");
 
-        if (!(acquirer.currencyList().length == 0)) {
-            for (String currency : acquirer.currencyList()) {
-                clickCheckboxCurrency(currency);
-            }
+        for (String currency : acquirer.currencyList()) {
+            clickCheckboxCurrency(currency);
         }
 
         return (CurrentDialogT) this;
