@@ -160,7 +160,7 @@ public class TestDataProvider {
                                         "//challenge.example.com",
                                         "//fingerprint.example.com",
                                         "ps://fingerprint.example.com",
-                                        "ffff"),
+                                        "some.text"),
                                 acquirerName,
                                 new String[]{"USD"},
                                 true),
