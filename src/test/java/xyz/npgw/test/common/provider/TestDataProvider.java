@@ -119,9 +119,9 @@ public class TestDataProvider {
                                 acquirerName,
                                 new String[]{"USD"},
                                 true),
-                        "ERRORsystemConfig.challengeUrl must be defined\n" +
-                                "systemConfig.fingerprintUrl must be defined\n" +
-                                "systemConfig.resourceUrl must be defined"
+                        "ERRORsystemConfig.challengeUrl must be defined\n"
+                                + "systemConfig.fingerprintUrl must be defined\n"
+                                + "systemConfig.resourceUrl must be defined"
                 },
                 {
                         new Acquirer(
@@ -164,8 +164,8 @@ public class TestDataProvider {
                                 acquirerName,
                                 new String[]{"USD"},
                                 true),
-                        "ERRORsystemConfig.fingerprintUrl must be defined\n" +
-                                "systemConfig.resourceUrl must be defined"
+                        "ERRORsystemConfig.fingerprintUrl must be defined\n"
+                                + "systemConfig.resourceUrl must be defined"
                 }
 
         };
