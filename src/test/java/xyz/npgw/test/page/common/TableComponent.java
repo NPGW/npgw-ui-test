@@ -62,7 +62,7 @@ public class TableComponent extends BaseComponent {
         return getTableRows().filter(new Locator.FilterOptions().setHasText(text));
     }
 
-    public Locator getCellWhereRowContains(String columnHeaderName, String text) {
+    public Locator getColumnCellsByRowText(String columnHeaderName, String text) {
         Locator header = getHeaderByName(columnHeaderName);
         int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
         return getPage()
