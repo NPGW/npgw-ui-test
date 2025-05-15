@@ -184,14 +184,14 @@ public class HeaderTest extends BaseTest {
     @Epic("Header")
     @Feature("User menu")
     @Description("Check validation error messages when changing password")
-    public void testCheckChangePasswordValidationMessages(@Optional String userRole,
-                                                          String newPassword, String expectedMessage) {
+    public void testChangePasswordValidationMessages(@Optional String userRole,
+                                                     String newPassword, String expectedMessage) {
         User[] users = new User[]{
                 new User("framework", true, UserRole.ADMIN, new String[]{},
                         "admintest008@example.com", "Qwerty1!"),
                 new User("framework", true, UserRole.SUPER, new String[]{},
                         "supertest008@example.com", "Qwerty1!"),
-                new User("framework", true, UserRole.USER, new String[]{"123"},
+                new User("framework", true, UserRole.USER, new String[]{"123merchant"},
                         "usertest008@example.com", "Qwerty1!")
         };
 
@@ -215,6 +215,7 @@ public class HeaderTest extends BaseTest {
                     .getHeader().clickCloseButton()
                     .getHeader().clickLogOutButton();
         }
+        TestUtils.deleteMerchantByName(getApiRequestContext(), "framework", "123merchant");
     }
 }
 
