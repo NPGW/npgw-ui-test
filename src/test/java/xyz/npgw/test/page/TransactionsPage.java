@@ -18,6 +18,8 @@ import xyz.npgw.test.page.common.TableTrait;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Getter
@@ -314,5 +316,20 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
             Assert.fail(e.getMessage());
         }
         return length > 0;
+    }
+
+    @Step("Click sort icon in '{columnHeaderName}' column")
+    public TransactionsPage clickSortIconByColumnHeaderName(String columnHeaderName) {
+        Locator header = getTable().getHeaderByName(columnHeaderName);
+        Locator sortIcon = header.locator("svg");
+        sortIcon.click();
+
+        return new TransactionsPage(getPage());
+    }
+
+    public List<LocalDateTime> getDateColumnAsDateTimes(String columnName, DateTimeFormatter formatter) {
+        return getTable().getColumnValues(columnName).stream()
+                .map(date -> LocalDateTime.parse(date.trim(), formatter))
+                .toList();
     }
 }

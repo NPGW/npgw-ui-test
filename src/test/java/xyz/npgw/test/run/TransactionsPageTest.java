@@ -16,6 +16,9 @@ import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -491,5 +494,37 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Company's business units are visible");
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames
                 .toArray(String[]::new));
+    }
+
+    @Test
+    @TmsLink("559")
+    @Epic("Transactions")
+    @Feature("Transaction sorting")
+    @Description("'Creation Date' column sorts ascending by default and descending on click.")
+    public void testCreationDataSorting() {
+        final String creationDateColumn = "Creation Date";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader().clickTransactionsLink();
+        List<LocalDateTime> actualDates = transactionsPage
+                .getDateColumnAsDateTimes(creationDateColumn, formatter);
+
+        List<LocalDateTime> expectedAsc = actualDates.stream().sorted().toList();
+
+        Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
+        assertEquals(actualDates, expectedAsc);
+
+        transactionsPage
+                .clickSortIconByColumnHeaderName(creationDateColumn);
+
+        List<LocalDateTime> reversedDates = transactionsPage
+                .getDateColumnAsDateTimes(creationDateColumn, formatter);
+
+        List<LocalDateTime> expectedDesc = expectedAsc.stream().sorted(Comparator.reverseOrder()).toList();
+
+        Allure.step(
+                "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
+        assertEquals(reversedDates, expectedDesc);
     }
 }
