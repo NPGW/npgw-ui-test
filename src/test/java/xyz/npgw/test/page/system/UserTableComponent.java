@@ -11,8 +11,6 @@ import xyz.npgw.test.page.dialog.user.ResetUserPasswordDialog;
 
 public class UserTableComponent extends TableComponent {
 
-    private final Locator usernameColumnheader = getByTextExact("Username");
-
     public UserTableComponent(Page page) {
         super(page);
     }
@@ -72,8 +70,8 @@ public class UserTableComponent extends TableComponent {
     }
 
     @Step("Click Username toggle Columnheader")
-    public TeamPage clickUsernameColumnheader() {
-        usernameColumnheader.click();
+    public TeamPage clickUsernameColumnheader(String columnName) {
+        getHeaderByName(columnName).locator("svg").click();
         getPage().waitForTimeout(500);
 
         return new TeamPage(getPage());
