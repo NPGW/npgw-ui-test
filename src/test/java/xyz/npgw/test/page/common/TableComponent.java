@@ -47,12 +47,12 @@ public class TableComponent extends BaseComponent {
         return cells.allInnerTexts();
     }
 
-    public Locator getColumnValues(String columnHeaderName, String name) {
+    public Locator getColumnValues(String columnHeaderName, String text) {
         Locator header = getHeaderByName(columnHeaderName);
         int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
         return getPage()
                 .locator("tr[role='row']")
-                .filter(new Locator.FilterOptions().setHasText(name))
+                .filter(new Locator.FilterOptions().setHasText(text))
                 .locator("td:nth-child(" + (columnIndex + 1) + ")");
     }
 
