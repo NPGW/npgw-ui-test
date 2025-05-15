@@ -413,7 +413,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickCreateButton();
 
         do {
-            if (acquirersPage.getTable().getTableRowByText(acquirerName).count() > 0) {
+            if (acquirersPage.getTable().getTableRowsContaining(acquirerName).count() > 0) {
                 isFound = true;
                 break;
             }
@@ -431,6 +431,6 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step(String.format("Verify: '%s' has status %s", acquirerName, status)
         );
-        assertThat(acquirersPage.getTable().getColumnValues("Status", acquirerName)).hasText(status);
+        assertThat(acquirersPage.getTable().getCellValueWhereRowContains("Status", acquirerName)).hasText(status);
     }
 }

@@ -47,15 +47,6 @@ public class TableComponent extends BaseComponent {
         return cells.allInnerTexts();
     }
 
-    public Locator getColumnValues(String columnHeaderName, String text) {
-        Locator header = getHeaderByName(columnHeaderName);
-        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
-        return getPage()
-                .locator("tr[role='row']")
-                .filter(new Locator.FilterOptions().setHasText(text))
-                .locator("td:nth-child(" + (columnIndex + 1) + ")");
-    }
-
     public List<String> getColumnHeadersText() {
 
         return tableColumnHeader.allInnerTexts();
@@ -67,7 +58,16 @@ public class TableComponent extends BaseComponent {
         return getTableRows().filter(new Locator.FilterOptions().setHas(rowHeader));
     }
 
-    public Locator getTableRowByText(String text) {
+    public Locator getTableRowsContaining(String text) {
         return getTableRows().filter(new Locator.FilterOptions().setHasText(text));
+    }
+
+    public Locator getCellValueWhereRowContains(String columnHeaderName, String text) {
+        Locator header = getHeaderByName(columnHeaderName);
+        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
+        return getPage()
+                .locator("tr[role='row']")
+                .filter(new Locator.FilterOptions().setHasText(text))
+                .locator("td:nth-child(" + (columnIndex + 1) + ")");
     }
 }
