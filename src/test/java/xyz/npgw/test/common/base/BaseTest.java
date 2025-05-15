@@ -59,12 +59,12 @@ public abstract class BaseTest {
     protected void beforeClass(ITestContext testContext) {
         playwright = Playwright.create(new Playwright.CreateOptions().setEnv(ProjectProperties.getEnv()));
         browser = BrowserFactory.getBrowser(playwright);
-        log.info(">>> >>> >>> CLASS {}", testContext.getAttribute("testRunId"));
+        log.debug(">>> >>> >>> CLASS {}", testContext.getAttribute("testRunId"));
     }
 
     @BeforeMethod
     protected void beforeMethod(ITestContext testContext, Method method, ITestResult testResult, Object[] args) {
-        log.info(">>> thread {} is entering before method", Thread.currentThread().getName());
+        log.debug(">>> thread {} is entering before method", Thread.currentThread().getName());
 
         testId = "%s/%s/%s/%s(%d)%s".formatted(
                 ProjectProperties.getArtefactDir(),
@@ -73,9 +73,9 @@ public abstract class BaseTest {
                 method.getName(),
                 testResult.getMethod().getCurrentInvocationCount(),
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
-        Thread.currentThread().setName("th%s%s".formatted(
-                Thread.currentThread().getId(),
-                testId.substring(testId.length() - 12)));
+//        Thread.currentThread().setName("th%s%s".formatted(
+//                Thread.currentThread().getId(),
+//                testId.substring(testId.length() - 12)));
         log.info(">>> {}", testId);
 
         if (ProjectProperties.isSkipMode() && ProjectProperties.isFailFast()) {
@@ -95,12 +95,12 @@ public abstract class BaseTest {
         if (args.length != 0 && Arrays.stream(RunAs.values()).anyMatch(e -> e.name().equals(args[0]))) {
             runAs = RunAs.valueOf((String) args[0]);
         }
-        log.info("current test will runAs {}", runAs);
+        log.debug("current test will runAs {}", runAs);
 
         if (runAs != RunAs.UNAUTHORISED && isOk(runAs)) {
             options.setStorageStatePath(
                     Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId())));
-            log.info("set for current runAs {} option path {}", runAs, options.storageStatePath);
+            log.debug("set for current runAs {} option path {}", runAs, options.storageStatePath);
         }
 
         if (ProjectProperties.isVideoMode()) {
@@ -192,7 +192,7 @@ public abstract class BaseTest {
             new AboutBlankPage(page).navigate("/");
             return;
         }
-        log.info("login as {} setState and store {}",
+        log.debug("login as {} setState and store {}",
                 UserRole.valueOf(runAs.name()),
                 "target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()));
         new AboutBlankPage(page).navigate("/").loginAs(UserRole.valueOf(runAs.name()));
