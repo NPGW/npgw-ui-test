@@ -383,7 +383,7 @@ public class AcquirersPageTest extends BaseTest {
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
     @Description("Verify that Acquirer with status 'Active/Inactive' is displayed correctly in the list")
-    public void testAcquirerStatusIsDisplayedCorrectly(String status) {
+    public void testAcquirerStatusDisplaysCorrectly(String status) {
         String acquirerName = "ZAcquirer status check";
         boolean found = false;
 
