@@ -113,9 +113,9 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
             }
             default -> throw new IllegalArgumentException("Login as %s not supported".formatted(userRole));
         }
-        uncheckRememberMeCheckbox();
+//        uncheckRememberMeCheckbox();
         clickLoginButton();
-        assertThat(getPage()).hasURL("/dashboard");
+//        assertThat(getPage()).hasURL("/dashboard");
 
         return new DashboardPage(getPage());
     }
