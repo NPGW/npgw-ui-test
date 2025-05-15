@@ -188,7 +188,7 @@ public abstract class BaseTest {
 
     private void openSite(RunAs runAs) {
         if (runAs == RunAs.UNAUTHORISED || isOk(runAs)) {
-            log.info("navigate('/') as {}", runAs);
+            log.debug("navigate('/') as {}", runAs);
             new AboutBlankPage(page).navigate("/");
             return;
         }
@@ -203,11 +203,11 @@ public abstract class BaseTest {
     }
 
     private void initApiRequestContext() {
-        log.info("api context token {} is good till {}", apiRequestContext, apiTokenBestBefore);
+        log.debug("api context token {} is good till {}", apiRequestContext, apiTokenBestBefore);
         if (LocalTime.now().isBefore(apiTokenBestBefore)) {
             return;
         }
-        log.info("updating api context token {} is good till {}", apiRequestContext, apiTokenBestBefore);
+        log.debug("updating api context token {} is good till {}", apiRequestContext, apiTokenBestBefore);
         APIResponse tokenResponse = playwright
                 .request()
                 .newContext()
@@ -217,7 +217,7 @@ public abstract class BaseTest {
                                 "password", ProjectProperties.getSuperPassword())));
 
         if (tokenResponse.ok()) {
-            log.info("token response ok");
+            log.debug("token response ok");
             Token token = new Gson().fromJson(tokenResponse.text(), TokenResponse.class).token();
             apiRequestContext = playwright
                     .request()
@@ -226,7 +226,7 @@ public abstract class BaseTest {
                             .setBaseURL(ProjectProperties.getBaseUrl())
                             .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken))));
             apiTokenBestBefore = LocalTime.now().plusSeconds(token.expiresIn).minusMinutes(1);
-            log.info("updating expiration time {} is good till {}", apiRequestContext, apiTokenBestBefore);
+            log.debug("updating expiration time {} is good till {}", apiRequestContext, apiTokenBestBefore);
         } else {
             String message = "Retrieve API idToken failed: %s".formatted(tokenResponse.statusText());
             log.error(message);
