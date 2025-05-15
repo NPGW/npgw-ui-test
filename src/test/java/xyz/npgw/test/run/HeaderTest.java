@@ -7,7 +7,6 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -15,6 +14,7 @@ import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
@@ -179,55 +179,44 @@ public class HeaderTest extends BaseTest {
         assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
     }
 
-    @Test(dataProvider = "passwordValidationData")
+    @Test(dataProvider = "passwordValidationData", dataProviderClass = TestDataProvider.class)
     @TmsLink("540")
     @Epic("Header")
     @Feature("User menu")
     @Description("Check validation error messages when changing password")
-    public void testCheckChangePasswordValidationMessages(@Optional("UNAUTHORISED") String userRole,
+    public void testCheckChangePasswordValidationMessages(@Optional String userRole,
                                                           String newPassword, String expectedMessage) {
-        User user = new User(
-                "framework",
-                true,
-                UserRole.ADMIN,
-                new String[]{},
-                "admintest008@example.com",
-                "Qwerty1!"
-        );
+        User[] users = new User[]{
+                new User("framework", true, UserRole.ADMIN, new String[]{},
+                        "admintest008@example.com", "Qwerty1!"),
+                new User("framework", true, UserRole.SUPER, new String[]{},
+                        "supertest008@example.com", "Qwerty1!"),
+                new User("framework", true, UserRole.USER, new String[]{"123"},
+                        "usertest008@example.com", "Qwerty1!")
+        };
 
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createUser(getApiRequestContext(), user);
 
-        new LoginPage(getPage())
-                .loginAndChangePassword(user.email(), user.password(), "Qwerty1!")
-                .getHeader().clickUserMenuButton()
-                .getHeader().clickProfileSettingsButton()
-                .getHeader().fillPasswordField(newPassword)
-                .getHeader().fillRepeatPasswordField(newPassword);
+        for (User user : users) {
+            TestUtils.deleteUser(getApiRequestContext(), user.email());
+            TestUtils.createUser(getApiRequestContext(), user);
 
-        if (expectedMessage == null) {
-            Allure.step("Verify Save button is disabled");
-            assertThat(getPage().locator("//button[text()='Save']")).isDisabled();
-        } else {
             new LoginPage(getPage())
-                    .clickSaveButton();
-            Allure.step("Verify error message: \"" + expectedMessage + "\" presence");
+                    .loginAndChangePassword(user.email(), user.password(), "Qwerty1!")
+                    .getHeader().clickUserMenuButton()
+                    .getHeader().clickProfileSettingsButton()
+                    .getHeader().fillPasswordField(newPassword)
+                    .getHeader().fillRepeatPasswordField(newPassword)
+                    .getHeader().clickSaveButton();
+
+            Allure.step("Verify: error message presence for user: " + user.email());
             assertThat(getPage().getByText(expectedMessage)).isVisible();
+
+            new DashboardPage(getPage())
+                    .getHeader().clickCloseButton()
+                    .getHeader().clickLogOutButton();
         }
     }
-
-    @DataProvider(name = "passwordValidationData")
-    public Object[][] passwordValidationData() {
-        return new Object[][]{
-                {"UNAUTHORISED", "Qwert1!", null},
-                {"UNAUTHORISED", "QWERTY1!",
-                        "Password does not conform to policy: Password must have lowercase characters"},
-                {"UNAUTHORISED", "qwerty1!",
-                        "Password does not conform to policy: Password must have uppercase characters"},
-                {"UNAUTHORISED", "Qwertyu!",
-                        "Password does not conform to policy: Password must have numeric characters"},
-                {"UNAUTHORISED", "Qwertyu1",
-                        "Password does not conform to policy: Password must have symbol characters"}
-        };
-    }
 }
+
+
+

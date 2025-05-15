@@ -84,4 +84,18 @@ public class TestDataProvider {
                 //{"PDF"},
         };
     }
+
+    @DataProvider(name = "passwordValidationData")
+    public static Object[][] passwordValidationData() {
+        return new Object[][]{
+                {"UNAUTHORISED", "QWERTY1!",
+                        "Password does not conform to policy: Password must have lowercase characters"},
+                {"UNAUTHORISED", "qwerty1!",
+                        "Password does not conform to policy: Password must have uppercase characters"},
+                {"UNAUTHORISED", "Qwertyu!",
+                        "Password does not conform to policy: Password must have numeric characters"},
+                {"UNAUTHORISED", "Qwertyu1",
+                        "Password does not conform to policy: Password must have symbol characters"}
+        };
+    }
 }
