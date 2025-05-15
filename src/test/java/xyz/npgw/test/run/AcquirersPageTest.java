@@ -414,7 +414,7 @@ public class AcquirersPageTest extends BaseTest {
             }
         } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
 
-        Allure.step(String.format("Verify: Acquirer '%s' has status %s", acquirerName, status));
+        Allure.step("Verify: Acquirer status");
         assertThat(acquirersPage.getTable().getCell("Status", acquirerName)).hasText(status);
     }
 }
