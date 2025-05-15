@@ -52,14 +52,10 @@ public class TableComponent extends BaseComponent {
         return tableColumnHeader.allInnerTexts();
     }
 
-    public Locator getTableRow(String header) {
+    public Locator getRowByPrimaryColumn(String header) {
         Locator rowHeader = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(header));
 
         return getTableRows().filter(new Locator.FilterOptions().setHas(rowHeader));
-    }
-
-    public Locator getTableRowsContaining(String text) {
-        return getTableRows().filter(new Locator.FilterOptions().setHasText(text));
     }
 
     public Locator getColumnCellsByRowText(String columnHeaderName, String text) {

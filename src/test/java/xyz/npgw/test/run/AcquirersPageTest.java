@@ -413,7 +413,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickCreateButton();
 
         do {
-            if (acquirersPage.getTable().getTableRowsContaining(acquirerName).count() > 0) {
+            if (acquirersPage.getTable().getRowByPrimaryColumn(acquirerName).count() > 0) {
                 isFound = true;
                 break;
             }
