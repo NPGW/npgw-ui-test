@@ -183,7 +183,7 @@ public abstract class BaseTest {
         if (playwright != null) {
             playwright.close();
         }
-        log.info("<<< <<< <<< CLASS {}", testContext.getAttribute("testRunId"));
+        log.debug("<<< <<< <<< CLASS {}", testContext.getAttribute("testRunId"));
     }
 
     private void openSite(RunAs runAs) {
