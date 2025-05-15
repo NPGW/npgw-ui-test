@@ -115,7 +115,7 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         }
 //        uncheckRememberMeCheckbox();
         clickLoginButton();
-//        assertThat(getPage()).hasURL("/dashboard");
+        assertThat(getPage()).hasURL("/dashboard");
 
         return new DashboardPage(getPage());
     }
