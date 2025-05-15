@@ -69,8 +69,8 @@ public class UserTableComponent extends TableComponent {
                 .clickRefreshDataButton();
     }
 
-    @Step("Click Username toggle Columnheader")
-    public TeamPage clickUsernameColumnheader(String columnName) {
+    @Step("@Step(Click sort icon in '{columnName}' column)")
+    public TeamPage clickSortIcon(String columnName) {
         getHeaderByName(columnName).locator("svg").click();
         getPage().waitForTimeout(500);
 
