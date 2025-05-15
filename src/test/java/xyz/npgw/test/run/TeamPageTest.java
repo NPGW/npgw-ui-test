@@ -486,7 +486,7 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("550")
+    @TmsLink("551")
     @Epic("System/Team")
     @Feature("Sorting in table")
     @Description("Verify that users can be sorted alphabetically")
@@ -512,7 +512,7 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("551")
+    @TmsLink("552")
     @Epic("System/Team")
     @Feature("Sorting in table")
     @Description("Verify that users can be sorted in reverse alphabetical order")
