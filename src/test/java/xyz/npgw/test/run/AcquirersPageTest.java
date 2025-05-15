@@ -385,7 +385,7 @@ public class AcquirersPageTest extends BaseTest {
     @Description("Verify that Acquirer with status 'Active/Inactive' is displayed correctly in the list")
     public void testAcquirerStatusDisplaysCorrectly(String status) {
         String acquirerName = "ZAcquirer status check";
-        boolean found = false;
+        boolean isFound = false;
 
         if (getAcquirer(getApiRequestContext(), acquirerName)) {
             deleteAcquirer(getApiRequestContext(), acquirerName);
@@ -414,7 +414,7 @@ public class AcquirersPageTest extends BaseTest {
 
         do {
             if (acquirersPage.getTable().getTableRowByText(acquirerName).count() > 0) {
-                found = true;
+                isFound = true;
                 break;
             }
         } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
@@ -427,7 +427,7 @@ public class AcquirersPageTest extends BaseTest {
                         : "unknown")
         );
         Assert.assertTrue(
-                found, "Acquirer with name '%s' was not found in the table");
+                isFound, "Acquirer with name '%s' was not found in the table");
 
         Allure.step(String.format("Verify: '%s' has status %s", acquirerName, status)
         );
