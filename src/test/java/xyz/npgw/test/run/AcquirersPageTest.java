@@ -15,7 +15,6 @@ import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.common.TableComponent;
-import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
@@ -378,64 +377,60 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Test
-    @TmsLink("")
+
+    @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
+    @TmsLink("557")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
     @Description("Verify that Acquirer with status 'Active/Inactive' is displayed correctly in the list")
-    public void testAcquirerStatusIsDisplayedCorrectly() {
-        String acquirerName = "Acquirer status check";
+    public void testAcquirerStatusIsDisplayedCorrectly(String status) {
+        String acquirerName = "ZAcquirer status check";
+        boolean found = false;
+
         if (getAcquirer(getApiRequestContext(), acquirerName)) {
             deleteAcquirer(getApiRequestContext(), acquirerName);
         }
+
+        Acquirer acquirer = new Acquirer(
+                "",
+                "Acquirer Config",
+                new SystemConfig(
+                        "https://challenge.example.com",
+                        "https://fingerprint.example.com",
+                        "https://resource.example.com",
+                        "notification-queue"),
+                acquirerName,
+                new String[]{"USD"},
+                status.equals("Active")
+        );
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .fillAcquirerName(acquirerName)
+                .fillAcquirerForm(acquirer)
                 .clickCreateButton();
 
+        do {
+            if (acquirersPage.getTable().getTableRowByText(acquirerName).count() > 0) {
+                found = true;
+                break;
+            }
+        } while (!acquirersPage.isLastPage() && acquirersPage.clickNextPage() != null);
 
+        Allure.step(String.format(
+                "Verify: After creation '%s' it shows up. Page: %s",
+                        acquirerName,
+                        acquirersPage.getActivePage() != null
+                                ? acquirersPage.getActivePage().innerText()
+                                : "unknown")
+                );
+        Assert.assertTrue(
+                found,"Acquirer with name '%s' was not found in the table");
 
-//        List<String> acquirerTableHeaders = new DashboardPage(getPage())
-//                .getHeader().clickSystemAdministrationLink()
-//                .getSystemMenu().clickAcquirersTab()
-//                .getTable()
-//                .getColumnHeadersText();
-//
-//        Acquirer acquirer = new Acquirer(
-//                "NGenius",
-//                "et",
-//                new SystemConfig("url1", "url2", "url3", "queue"),
-//                "Acquirer Active Status Test",
-//                new String[]{"USD"},
-//                true // статус Active
-//        );
-//
-//        deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
-//        createAcquirer(getApiRequestContext(), acquirer);
-//
-//        AcquirersPage acquirersPage = new DashboardPage(getPage())
-//                .getHeader().clickSystemAdministrationLink()
-//                .getSystemMenu()
-//                .clickAcquirersTab()
-//                .enterAcquirerName(acquirer.acquirerName())
-//                .clickAcquirerInDropdown(acquirer.acquirerName());
-//
-//        TableComponent table = acquirersPage.getTable();
-//        Locator row = table.getTableRows();
-//
-//        Allure.step("Verify: Only one row is displayed for the newly created Acquirer");
-//        assertThat(row).hasCount(1);
-//
-//        String actualStatus = table.getColumnValues("Status").get(0);
-//        String expectedStatus = "Active";
-//
-//        Allure.step(String.format("Verify: Acquirer status is displayed as '%s'", expectedStatus));
-//        Assert.assertEquals(actualStatus, expectedStatus, "Acquirer status in the table does not match expected 'Active' value");
+        Allure.step(String.format("Verify: '%s' has status %s", acquirerName,status)
+        );
+        assertThat(acquirersPage.getTable().getColumnValues("Status", acquirerName)).hasText(status);
     }
-
-
-
 }
