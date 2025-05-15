@@ -3,7 +3,6 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
@@ -48,6 +47,15 @@ public class TableComponent extends BaseComponent {
         return cells.allInnerTexts();
     }
 
+    public Locator getColumnValues(String columnHeaderName, String name) {
+        Locator header = getHeaderByName(columnHeaderName);
+        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
+        return getPage()
+                .locator("tr[role='row']")
+                .filter(new Locator.FilterOptions().setHasText(name))
+                .locator("td:nth-child(" + (columnIndex + 1) + ")");
+    }
+
     public List<String> getColumnHeadersText() {
 
         return tableColumnHeader.allInnerTexts();
@@ -61,14 +69,5 @@ public class TableComponent extends BaseComponent {
 
     public Locator getTableRowByText(String text) {
         return getTableRows().filter(new Locator.FilterOptions().setHasText(text));
-    }
-
-    public Locator getColumnValues(String columnHeaderName, String name) {
-        Locator header = getHeaderByName(columnHeaderName);
-        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
-        return getPage()
-                .locator("tr[role='row']")
-                .filter(new Locator.FilterOptions().setHasText(name))
-                .locator("td:nth-child(" + (columnIndex + 1) + ")");
     }
 }

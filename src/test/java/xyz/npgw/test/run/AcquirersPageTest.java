@@ -421,15 +421,15 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step(String.format(
                 "Verify: After creation '%s' it shows up. Page: %s",
-                        acquirerName,
-                        acquirersPage.getActivePage() != null
-                                ? acquirersPage.getActivePage().innerText()
-                                : "unknown")
-                );
+                acquirerName,
+                acquirersPage.getActivePage() != null
+                        ? acquirersPage.getActivePage().innerText()
+                        : "unknown")
+        );
         Assert.assertTrue(
-                found,"Acquirer with name '%s' was not found in the table");
+                found, "Acquirer with name '%s' was not found in the table");
 
-        Allure.step(String.format("Verify: '%s' has status %s", acquirerName,status)
+        Allure.step(String.format("Verify: '%s' has status %s", acquirerName, status)
         );
         assertThat(acquirersPage.getTable().getColumnValues("Status", acquirerName)).hasText(status);
     }
