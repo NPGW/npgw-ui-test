@@ -15,7 +15,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
         AlertTrait<TeamPage> {
 
     private final Locator statusSelector = getByLabelExact("Status");
-    private final Locator usernameToggle = getByTextExact("Username");
 
     public TeamPage(Page page) {
         super(page);
@@ -67,14 +66,6 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
     @Step("Select 'Inactive' status")
     public TeamPage selectInactiveStatus() {
         getPage().getByRole(AriaRole.OPTION, new Page.GetByRoleOptions().setName("Inactive")).click();
-
-        return this;
-    }
-
-    @Step("Press Username toggle arrow '˅˄'")
-    public TeamPage sortingUsersByName() {
-        usernameToggle.click();
-        getPage().waitForTimeout(500);
 
         return this;
     }

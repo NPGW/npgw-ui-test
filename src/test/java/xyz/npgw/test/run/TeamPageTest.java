@@ -489,34 +489,6 @@ public class TeamPageTest extends BaseTest {
     @TmsLink("550")
     @Epic("System/Team")
     @Feature("Sorting in table")
-    @Description("Verify that users are not sorted by default")
-    public void testCheckDefaultSortingOfUsers() {
-        final String companyAdmin = "dummyadmin@email.com";
-        final String companyAdminPassword = ProjectProperties.getAdminPassword();
-        final String companyName = "framework";
-
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin, companyAdminPassword);
-
-        List<String> users = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(companyName)
-                .getTable().getColumnValues("Username");
-
-        boolean isSorted = true;
-        for (int i = 0; i < users.size() - 1; i++) {
-            if (users.get(i).compareTo(users.get(i + 1)) > 0) {
-                isSorted = false;
-                break;
-            }
-        }
-        Assert.assertFalse(isSorted, "Список отсортирован по алфавиту, а должен быть хаотичным");
-    }
-
-    @Test
-    @TmsLink("551")
-    @Epic("System/Team")
-    @Feature("Sorting in table")
     @Description("Verify that users can be sorted alphabetically")
     public void testCheckSortingListOfUsersAlphabetically() {
         final String companyAdmin = "dummyadmin@email.com";
@@ -529,18 +501,18 @@ public class TeamPageTest extends BaseTest {
         List<String> sortedUsersAlphabetically = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(companyName)
-                .sortingUsersByName()
+                .getTable().clickUsernameColumnheader()
                 .getTable().getColumnValues("Username");
 
-        List<String> expectedSorted = new ArrayList<>(sortedUsersAlphabetically);
-        Collections.sort(expectedSorted);
+        List<String> expectedSortedList = new ArrayList<>(sortedUsersAlphabetically);
+        Collections.sort(expectedSortedList);
 
-        Assert.assertEquals(sortedUsersAlphabetically, expectedSorted,
+        Assert.assertEquals(sortedUsersAlphabetically, expectedSortedList,
                 "Список пользователей не отсортирован по алфавиту");
     }
 
     @Test
-    @TmsLink("552")
+    @TmsLink("551")
     @Epic("System/Team")
     @Feature("Sorting in table")
     @Description("Verify that users can be sorted in reverse alphabetical order")
@@ -552,18 +524,18 @@ public class TeamPageTest extends BaseTest {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
         TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin, companyAdminPassword);
 
-        List<String> sortedUsersReverse = new DashboardPage(getPage())
+        List<String> sortedUsersReverseAlphabetically = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(companyName)
-                .sortingUsersByName()
-                .sortingUsersByName()
+                .getTable().clickUsernameColumnheader()
+                .getTable().clickUsernameColumnheader()
                 .getTable().getColumnValues("Username");
 
-        List<String> expectedSortedList = new ArrayList<>(sortedUsersReverse);
+        List<String> expectedSortedList = new ArrayList<>(sortedUsersReverseAlphabetically);
         expectedSortedList.sort(Collections.reverseOrder());
 
-        Assert.assertEquals(sortedUsersReverse, expectedSortedList,
-                "Список пользователей отсортирован по алфавиту");
+        Assert.assertEquals(sortedUsersReverseAlphabetically, expectedSortedList,
+                "Список пользователей не отсортирован по алфавиту в обратном порядке");
     }
 }
 
