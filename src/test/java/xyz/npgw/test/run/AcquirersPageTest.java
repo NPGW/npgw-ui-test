@@ -431,6 +431,6 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step(String.format("Verify: '%s' has status %s", acquirerName, status)
         );
-        assertThat(acquirersPage.getTable().getCellValueWhereRowContains("Status", acquirerName)).hasText(status);
+        assertThat(acquirersPage.getTable().getCellWhereRowContains("Status", acquirerName)).hasText(status);
     }
 }
