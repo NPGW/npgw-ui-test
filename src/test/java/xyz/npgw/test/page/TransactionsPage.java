@@ -318,16 +318,18 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
         return length > 0;
     }
 
-    @Step("Click sort icon in '{columnHeaderName}' column")
-    public TransactionsPage clickSortIconByColumnHeaderName(String columnHeaderName) {
-        Locator header = getTable().getHeaderByName(columnHeaderName);
-        Locator sortIcon = header.locator("svg");
-        sortIcon.click();
+    @Step("Click sort icon in '{columnName}' column")
+    public TransactionsPage clickSortIcon(String columnName) {
+        getTable().getHeaderByName(columnName)
+                .locator("svg")
+                .click();
 
         return new TransactionsPage(getPage());
     }
 
-    public List<LocalDateTime> getDateColumnAsDateTimes(String columnName, DateTimeFormatter formatter) {
+    public List<LocalDateTime> getDateColumnAsDateTimes(String columnName) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+
         return getTable().getColumnValues(columnName).stream()
                 .map(date -> LocalDateTime.parse(date.trim(), formatter))
                 .toList();

@@ -17,7 +17,6 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 
@@ -503,28 +502,22 @@ public class TransactionsPageTest extends BaseTest {
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
     public void testCreationDataSorting() {
         final String creationDateColumn = "Creation Date";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
-        List<LocalDateTime> actualDates = transactionsPage
-                .getDateColumnAsDateTimes(creationDateColumn, formatter);
 
-        List<LocalDateTime> expectedAsc = actualDates.stream().sorted().toList();
+        List<LocalDateTime> actualDates = transactionsPage
+                .getDateColumnAsDateTimes(creationDateColumn);
 
         Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
-        assertEquals(actualDates, expectedAsc);
+        assertEquals(actualDates, actualDates.stream().sorted().toList());
 
         transactionsPage
-                .clickSortIconByColumnHeaderName(creationDateColumn);
-
-        List<LocalDateTime> reversedDates = transactionsPage
-                .getDateColumnAsDateTimes(creationDateColumn, formatter);
-
-        List<LocalDateTime> expectedDesc = expectedAsc.stream().sorted(Comparator.reverseOrder()).toList();
+                .clickSortIcon(creationDateColumn);
 
         Allure.step(
                 "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
-        assertEquals(reversedDates, expectedDesc);
+        assertEquals(transactionsPage.getDateColumnAsDateTimes(creationDateColumn),
+                actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 }
