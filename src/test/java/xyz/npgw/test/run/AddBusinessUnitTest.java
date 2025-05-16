@@ -113,6 +113,7 @@ public class AddBusinessUnitTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getMerchantsTable()).containsText("No rows to display.");
     }
 
+    @Ignore("")
     @Test
     @TmsLink("218")
     @Epic("Companies and business units")

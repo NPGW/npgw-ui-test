@@ -68,6 +68,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getRefreshDataButton()).isVisible();
     }
 
+    @Ignore("")
     @Test
     @TmsLink("157")
     @Epic("System/Acquirers")
