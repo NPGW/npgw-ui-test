@@ -201,7 +201,7 @@ public class HeaderTest extends BaseTest {
             TestUtils.createUser(getApiRequestContext(), user);
 
             new LoginPage(getPage())
-                    .loginAndChangePassword(user.email(), user.password(), "Qwerty1!")
+                    .loginAndChangePassword(user.email(), user.password())
                     .getHeader().clickUserMenuButton()
                     .getHeader().clickProfileSettingsButton()
                     .getHeader().fillPasswordField(newPassword)
@@ -218,6 +218,3 @@ public class HeaderTest extends BaseTest {
         TestUtils.deleteMerchantByName(getApiRequestContext(), "framework", "123merchant");
     }
 }
-
-
-
