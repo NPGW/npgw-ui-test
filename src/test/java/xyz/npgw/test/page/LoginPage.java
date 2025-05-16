@@ -120,7 +120,6 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
 
     @Step("Login with '{email}' user")
     public DashboardPage login(String email, String password) {
-        waitUntilLoginPageIsLoaded();
         fillEmailField(email);
         fillPasswordField(password);
         clickLoginButton();
@@ -153,6 +152,7 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     public DashboardPage loginAndChangePassword(String email, String password, String newPassword) {
         login(email, password);
         changePassword(newPassword);
+        waitUntilLoginPageIsLoaded();
         login(email, newPassword);
 
         return new DashboardPage(getPage());
