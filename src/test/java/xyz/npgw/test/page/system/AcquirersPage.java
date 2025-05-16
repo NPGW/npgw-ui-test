@@ -6,8 +6,10 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.common.AlertTrait;
-import xyz.npgw.test.page.common.TableTrait;
+import xyz.npgw.test.page.base.BaseSystemPage;
+import xyz.npgw.test.page.common.trait.AlertTrait;
+import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
+import xyz.npgw.test.page.common.trait.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 

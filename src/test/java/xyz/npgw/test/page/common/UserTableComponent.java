@@ -1,13 +1,13 @@
-package xyz.npgw.test.page.system;
+package xyz.npgw.test.page.common;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.common.TableComponent;
 import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.dialog.user.ResetUserPasswordDialog;
+import xyz.npgw.test.page.system.TeamPage;
 
 public class UserTableComponent extends TableComponent {
 

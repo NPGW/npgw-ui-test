@@ -1,7 +1,7 @@
-package xyz.npgw.test.page.system;
+package xyz.npgw.test.page.base;
 
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.common.HeaderPage;
+import xyz.npgw.test.page.common.trait.MenuTrait;
 
 public abstract class BaseSystemPage<SystemPageT extends BaseSystemPage<SystemPageT>> extends HeaderPage
         implements MenuTrait {

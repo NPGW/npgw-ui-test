@@ -77,7 +77,7 @@ public class ReportsPageTest extends BaseTest {
                 .getHeader().clickReportsLink()
                 .clickGenerateReportButton();
 
-        Allure.step("Verify: error message is shown for invalid date range");
+        Allure.step("Verify: Dialog window title text");
         assertThat(generationParametersDialog.getDialogHeader()).hasText("Generation Parameters");
 
         Allure.step("Verify: 'Generate' button is disabled with not selected business unit");

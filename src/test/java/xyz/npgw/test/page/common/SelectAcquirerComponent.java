@@ -1,10 +1,9 @@
-package xyz.npgw.test.page.system;
+package xyz.npgw.test.page.common;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
