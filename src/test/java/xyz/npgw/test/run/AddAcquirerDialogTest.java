@@ -71,7 +71,6 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(acquirersPage.getAddAcquirerDialog()).isHidden();
     }
 
-    @Ignore("stall")
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("255")
     @Epic("System/Acquirers")

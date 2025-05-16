@@ -47,7 +47,6 @@ public class HeaderTest extends BaseTest {
         Assert.assertTrue(headerComponent.isLogoImageLoaded(), "Image inside logo should be fully loaded");
     }
 
-    @Ignore("stall")
     @Test
     @TmsLink("211")
     @Epic("Header")
@@ -61,7 +60,6 @@ public class HeaderTest extends BaseTest {
         assertThat(transactionsPage.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
     }
 
-    @Ignore("stall")
     @Test
     @TmsLink("242")
     @Epic("Header")
