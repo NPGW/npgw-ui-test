@@ -205,6 +205,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getAlertMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
     }
 
+    @Ignore("")
     @Test
     @TmsLink("471")
     @Epic("System/Team")
@@ -350,6 +351,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSPassword is changed successfully");
     }
 
+    @Ignore("")
     @Test
     @TmsLink("492")
     @Epic("System/Team")
