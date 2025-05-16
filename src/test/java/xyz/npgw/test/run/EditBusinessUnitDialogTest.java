@@ -19,10 +19,9 @@ import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class EditBusinessUnitDialogTest extends BaseTest {
-    private final String companyName = "CompanyForBuEdit";
-    private final String buName = "NewBUForEdit";
+    private final String companyName = "CompanyForBuEdit1";
+    private final String buName = "NewBUForEdit1";
 
-    @Ignore("")
     @Test
     @TmsLink("387")
     @Epic("System/Companies and business units")
@@ -45,7 +44,6 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         assertThat(dialogTitle).hasText("Edit business unit");
     }
 
-    @Ignore("")
     @Test
     @TmsLink("501")
     @Epic("System/Companies and business units")
@@ -67,7 +65,6 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
     }
 
-    @Ignore("")
     @Test
     @TmsLink("515")
     @Epic("System/Companies and business units")
@@ -91,7 +88,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
     }
 
-    @Ignore("'")
+    @Ignore("waiting for getByLabel('Select company')")
     @Test
     @TmsLink("528")
     @Epic("System/Companies and business units")
@@ -114,7 +111,6 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
     }
 
-    @Ignore("'")
     @Test
     @TmsLink("544")
     @Epic("System/Companies and business units")
