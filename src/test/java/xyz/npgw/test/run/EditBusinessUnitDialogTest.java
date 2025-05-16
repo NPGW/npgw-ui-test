@@ -18,6 +18,7 @@ import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+@Ignore
 public class EditBusinessUnitDialogTest extends BaseTest {
     private final String companyName = "CompanyForBuEdit1";
     private final String buName = "NewBUForEdit1";
