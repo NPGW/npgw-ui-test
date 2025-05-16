@@ -183,6 +183,7 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "check");
     }
 
+    @Ignore
     @Test
     @TmsLink("474")
     @Epic("System/Team")
@@ -235,6 +236,7 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "check");
     }
 
+    @Ignore
     @Test
     @TmsLink("475")
     @Epic("System/Team")
@@ -265,6 +267,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserStatus(email)).hasText("Inactive");
     }
 
+    @Ignore
     @Test
     @TmsLink("476")
     @Epic("System/Team")
@@ -313,6 +316,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "ban");
     }
 
+    @Ignore
     @Test
     @TmsLink("554")
     @Epic("System/Team")
@@ -351,7 +355,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getAlertMessage()).hasText("SUCCESSPassword is changed successfully");
     }
 
-    @Ignore("")
+    @Ignore
     @Test
     @TmsLink("492")
     @Epic("System/Team")

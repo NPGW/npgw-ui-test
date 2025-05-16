@@ -463,7 +463,7 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(menuItemName));
     }
 
-    @Ignore("")
+    @Ignore
     @Test
     @TmsLink("520")
     @Epic("Transactions")
