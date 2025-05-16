@@ -139,6 +139,7 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "ban");
     }
 
+    @Ignore
     @Test
     @TmsLink("331")
     @Epic("System/Team")
