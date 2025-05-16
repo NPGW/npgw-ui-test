@@ -184,8 +184,7 @@ public class HeaderTest extends BaseTest {
     @Epic("Header")
     @Feature("User menu")
     @Description("Check validation error messages when changing password")
-    public void testChangePasswordValidationMessages(@Optional String userRole,
-                                                     String newPassword, String expectedMessage) {
+    public void testChangePasswordValidationMessages(String userRole, String newPassword, String expectedMessage) {
         User[] users = new User[]{
                 new User("framework", true, UserRole.ADMIN, new String[]{},
                         "admintest008@example.com", "Qwerty1!"),
@@ -194,7 +193,6 @@ public class HeaderTest extends BaseTest {
                 new User("framework", true, UserRole.USER, new String[]{"123merchant"},
                         "usertest008@example.com", "Qwerty1!")
         };
-
 
         for (User user : users) {
             TestUtils.deleteUser(getApiRequestContext(), user.email());
@@ -208,7 +206,7 @@ public class HeaderTest extends BaseTest {
                     .getHeader().fillRepeatPasswordField(newPassword)
                     .getHeader().clickSaveButton();
 
-            Allure.step("Verify: error message presence for user: " + user.email());
+            Allure.step("Verify: error message presence for: " + user.userRole());
             assertThat(getPage().getByText(expectedMessage)).isVisible();
 
             new DashboardPage(getPage())
