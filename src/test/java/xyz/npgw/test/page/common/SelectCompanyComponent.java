@@ -40,7 +40,6 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        selectCompanyField.waitFor();
         getPage().waitForTimeout(1500);
 
         String lastName = "";

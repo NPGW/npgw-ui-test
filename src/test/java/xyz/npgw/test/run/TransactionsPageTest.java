@@ -16,6 +16,8 @@ import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -491,5 +493,31 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Company's business units are visible");
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames
                 .toArray(String[]::new));
+    }
+
+    @Test
+    @TmsLink("559")
+    @Epic("Transactions")
+    @Feature("Transaction sorting")
+    @Description("'Creation Date' column sorts ascending by default and descending on click.")
+    public void testCreationDataSorting() {
+        final String creationDateColumn = "Creation Date";
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .getHeader().clickTransactionsLink();
+
+        List<LocalDateTime> actualDates = transactionsPage
+                .getDateColumnAsDateTimes(creationDateColumn);
+
+        Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
+        assertEquals(actualDates, actualDates.stream().sorted().toList());
+
+        transactionsPage
+                .clickSortIcon(creationDateColumn);
+
+        Allure.step(
+                "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
+        assertEquals(transactionsPage.getDateColumnAsDateTimes(creationDateColumn),
+                actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 }
