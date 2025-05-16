@@ -275,7 +275,6 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAndChangePassword(ADMIN_EMAIL, ADMIN_PASSWORD)
-                .getAlert().waitUntilSuccessAlertIsGone()
                 .getHeader().clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .createCompanyAdmin(email, "Password1!")

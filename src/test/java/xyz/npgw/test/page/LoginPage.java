@@ -160,8 +160,8 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
 
     private void waitUntilLoginPageIsLoaded() {
         getPage().waitForCondition(() ->
-                emailField.isEnabled() &&
-                        emailField.inputValue().isEmpty()
+                emailField.isEnabled()
+                        && emailField.inputValue().isEmpty()
         );
     }
 }
