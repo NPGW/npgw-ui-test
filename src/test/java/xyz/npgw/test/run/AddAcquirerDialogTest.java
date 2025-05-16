@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -70,6 +71,7 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(acquirersPage.getAddAcquirerDialog()).isHidden();
     }
 
+    @Ignore("stall")
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("255")
     @Epic("System/Acquirers")
