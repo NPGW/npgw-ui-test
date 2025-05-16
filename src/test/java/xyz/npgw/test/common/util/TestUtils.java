@@ -140,9 +140,9 @@ public final class TestUtils {
     }
 
     public static void createMerchantIfNeeded(APIRequestContext request, String companyName, String businessUnitName) {
-        if (!existsMerchant(request, companyName, businessUnitName)) {
+//         if (!existsMerchant(request, companyName, businessUnitName)) {
             createMerchant(request, companyName, businessUnitName);
-        }
+//        }
     }
 
     private static boolean existsMerchant(APIRequestContext request, String companyName, String businessUnitName) {

@@ -213,6 +213,6 @@ public class HeaderTest extends BaseTest {
                     .getHeader().clickCloseButton()
                     .getHeader().clickLogOutButton();
         }
-        TestUtils.deleteMerchantByName(getApiRequestContext(), "framework", "123merchant");
+//        TestUtils.deleteMerchantByName(getApiRequestContext(), "framework", "123merchant");
     }
 }
