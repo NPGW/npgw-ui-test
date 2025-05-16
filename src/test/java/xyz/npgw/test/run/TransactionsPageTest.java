@@ -501,6 +501,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames
                 .toArray(String[]::new));
     }
+
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("567")
     @Epic("Transactions")
@@ -508,24 +509,21 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Verify, that 'Reset filter' button change 'Currency' to default value ( ALL)")
     public void testResetCurrency(String currency) {
 
-        TransactionsPage transactionsPageDefault = new DashboardPage(getPage())
+        TransactionsPage transactionsPage= new DashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
-        assertThat(transactionsPageDefault.getCurrencySelector()).containsText("ALL");
+        assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
 
-        TransactionsPage transactionsPage = transactionsPageDefault
-                .clickCurrencySelector()
+        transactionsPage.clickCurrencySelector()
                 .selectCurrency(currency);
 
         Allure.step("Verify: Filter displays the selected currency");
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
 
-        TransactionsPage transactionsPageReset = transactionsPage
-                .clickResetFilterButton();
+        transactionsPage.clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
-        assertThat(transactionsPageReset.getCurrencySelector()).containsText("ALL");
+        assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
     }
-
 }

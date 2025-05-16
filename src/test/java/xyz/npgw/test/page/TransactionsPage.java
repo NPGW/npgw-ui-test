@@ -322,5 +322,4 @@ public class TransactionsPage extends HeaderPage implements TableTrait, DateRang
 
         return this;
     }
-
 }
