@@ -20,25 +20,19 @@ public abstract class BaseTableComponent extends BaseComponent {
         super(page);
     }
 
-    protected int getColumnHeaderIndexByName(String columnHeaderName) {
+    protected int getColumnHeaderIndex(String name) {
         columnHeader.last().waitFor();
 
-        for (int i = 0; i < columnHeader.count(); i++) {
-            if (columnHeader.nth(i).innerText().equals(columnHeaderName)) {
-                return i;
-            }
-        }
-        throw new NoSuchElementException("Column with header '" + columnHeaderName + "' not found.");
+        return ((Number) getColumnHeader(name).evaluate("el => el.cellIndex")).intValue();
     }
 
-    public Locator getHeaderByName(String name) {
+    public Locator getColumnHeader(String name) {
 
         return columnHeader.getByText(name);
     }
 
-    public List<String> getColumnValues(String columnHeaderName) {
-        Locator header = getHeaderByName(columnHeaderName);
-        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
+    public List<String> getColumnValues(String name) {
+        int columnIndex = getColumnHeaderIndex(name);
         Locator cells = getPage().locator("tr[role='row'] > td:nth-child(" + (columnIndex + 1) + ")");
 
         return cells.allInnerTexts();
@@ -56,11 +50,9 @@ public abstract class BaseTableComponent extends BaseComponent {
     }
 
     public Locator getCell(String columnHeader, String rowHeader) {
-        Locator header = getHeaderByName(columnHeader);
-        int columnIndex = ((Number) header.evaluate("el => el.cellIndex")).intValue();
-        return getPage()
-                .locator("tr[role='row']")
+
+        return rows
                 .filter(new Locator.FilterOptions().setHasText(rowHeader))
-                .locator("td:nth-child(" + (columnIndex + 1) + ")");
+                .locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")");
     }
 }

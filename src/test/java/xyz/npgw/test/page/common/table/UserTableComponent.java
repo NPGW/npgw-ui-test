@@ -44,14 +44,14 @@ public class UserTableComponent extends BaseTableComponent {
     }
 
     public Locator getUserRole(String email) {
-        int columnIndex = getColumnHeaderIndexByName("User role");
+        int columnIndex = getColumnHeaderIndex("User role");
         Locator row = getTableRow(email);
 
         return row.getByRole(AriaRole.GRIDCELL).or(row.getByRole(AriaRole.ROWHEADER)).nth(columnIndex);
     }
 
     public Locator getUserStatus(String email) {
-        int columnIndex = getColumnHeaderIndexByName("Status");
+        int columnIndex = getColumnHeaderIndex("Status");
         Locator row = getTableRow(email);
 
         return row.getByRole(AriaRole.GRIDCELL).or(row.getByRole(AriaRole.ROWHEADER)).nth(columnIndex);
@@ -71,7 +71,7 @@ public class UserTableComponent extends BaseTableComponent {
 
     @Step("@Step(Click sort icon in '{columnName}' column)")
     public TeamPage clickSortIcon(String columnName) {
-        getHeaderByName(columnName).locator("svg").click();
+        getColumnHeader(columnName).locator("svg").click();
         getPage().waitForTimeout(500);
 
         return new TeamPage(getPage());
