@@ -55,7 +55,6 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
     @Step("Select currency from dropdown menu")
     public DashboardPage selectCurrency(String value) {
         getByRole(AriaRole.OPTION, value).click();
-        getPage().locator("h2").filter(new Locator.FilterOptions().setHasText(value)).first().waitFor();
 
         return this;
     }

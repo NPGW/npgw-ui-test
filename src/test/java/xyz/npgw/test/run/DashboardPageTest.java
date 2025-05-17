@@ -12,7 +12,6 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
 
@@ -65,7 +64,7 @@ public class DashboardPageTest extends BaseTest {
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
-        assertTrue(dashboardPage.getSelectCompany().getSelectCompanyField().inputValue().isEmpty());
+        assertThat(dashboardPage.getSelectCompany().getSelectCompanyField()).hasValue("");
 
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
