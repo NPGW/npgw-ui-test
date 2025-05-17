@@ -9,10 +9,16 @@ import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.dialog.user.ResetUserPasswordDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-public class UserTableComponent extends BaseTableComponent {
+public class UserTableComponent extends BaseTableComponent<TeamPage> {
 
     public UserTableComponent(Page page) {
         super(page);
+    }
+
+    @Override
+    protected TeamPage getCurrentPage() {
+
+        return new TeamPage(getPage());
     }
 
     @Step("Click 'Edit user'")
@@ -43,20 +49,6 @@ public class UserTableComponent extends BaseTableComponent {
         return new ResetUserPasswordDialog(getPage());
     }
 
-    public Locator getUserRole(String email) {
-        int columnIndex = getColumnHeaderIndex("User role");
-        Locator row = getTableRow(email);
-
-        return row.getByRole(AriaRole.GRIDCELL).or(row.getByRole(AriaRole.ROWHEADER)).nth(columnIndex);
-    }
-
-    public Locator getUserStatus(String email) {
-        int columnIndex = getColumnHeaderIndex("Status");
-        Locator row = getTableRow(email);
-
-        return row.getByRole(AriaRole.GRIDCELL).or(row.getByRole(AriaRole.ROWHEADER)).nth(columnIndex);
-    }
-
     public Locator getUserActivityIcon(String email) {
         return getTableRow(email).getByTestId("ChangeUserActivityButton").locator("svg");
     }
@@ -69,11 +61,4 @@ public class UserTableComponent extends BaseTableComponent {
                 .clickRefreshDataButton();
     }
 
-    @Step("@Step(Click sort icon in '{columnName}' column)")
-    public TeamPage clickSortIcon(String columnName) {
-        getColumnHeader(columnName).locator("svg").click();
-        getPage().waitForTimeout(500);
-
-        return new TeamPage(getPage());
-    }
 }

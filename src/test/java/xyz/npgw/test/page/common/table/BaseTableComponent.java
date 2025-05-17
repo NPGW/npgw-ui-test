@@ -3,14 +3,16 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
+import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.system.TeamPage;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Getter
-public abstract class BaseTableComponent extends BaseComponent {
+public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extends BaseComponent {
 
     private final Locator columnHeader = getByRole(AriaRole.COLUMNHEADER);
     private final Locator headersRow = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
@@ -19,6 +21,8 @@ public abstract class BaseTableComponent extends BaseComponent {
     public BaseTableComponent(Page page) {
         super(page);
     }
+
+    protected abstract CurrentPageT getCurrentPage();
 
     protected int getColumnHeaderIndex(String name) {
         columnHeader.last().waitFor();
@@ -54,5 +58,13 @@ public abstract class BaseTableComponent extends BaseComponent {
         return rows
                 .filter(new Locator.FilterOptions().setHasText(rowHeader))
                 .locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")");
+    }
+
+    @Step("@Step(Click sort icon in '{columnName}' column)")
+    public CurrentPageT clickSortIcon(String columnName) {
+        getColumnHeader(columnName).locator("svg").click();
+        getPage().waitForTimeout(500);
+
+        return getCurrentPage();
     }
 }
