@@ -48,7 +48,7 @@ public class EditAcquirerDialogTest extends BaseTest {
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirerName);
 
         Locator row = acquirersPage
-                .getTable().getTableRows();
+                .getTable().getRows();
 
         List<String> actualPlaceholders = acquirersPage
                 .clickEditAcquirerButton(row)

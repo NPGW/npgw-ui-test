@@ -6,9 +6,9 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.common.trait.AcquirersTableTrait;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
-import xyz.npgw.test.page.common.trait.TableTrait;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 
@@ -17,8 +17,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Getter
-public class AcquirersPage extends BaseSystemPage<AcquirersPage>
-        implements SelectAcquirerTrait<AcquirersPage>, TableTrait, AlertTrait<AcquirersPage> {
+public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements AcquirersTableTrait,
+        SelectAcquirerTrait<AcquirersPage>,
+        AlertTrait<AcquirersPage> {
 
     private final Locator addAcquirerButton = getByTestId("AddAcquirerButton");
     private final Locator addAcquirerDialog = getByRole(AriaRole.DIALOG);
@@ -101,7 +102,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage>
     @Step("Select Rows Per Page '{option}'")
     public AcquirersPage selectRowsPerPageOption(String option) {
         rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();
-        getTable().getTableRows().last().waitFor();
+        getTable().getRows().last().waitFor();
 
         return this;
     }

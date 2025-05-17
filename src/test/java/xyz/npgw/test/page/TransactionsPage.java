@@ -14,15 +14,17 @@ import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.DateRangePickerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
-import xyz.npgw.test.page.common.trait.TableTrait;
+import xyz.npgw.test.page.common.trait.TransactionsTableTrait;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
 @Getter
-public class TransactionsPage extends HeaderPage implements TableTrait, DateRangePickerTrait<TransactionsPage>,
-        SelectCompanyTrait<TransactionsPage>, SelectBusinessUnitTrait<TransactionsPage> {
+public class TransactionsPage extends HeaderPage implements TransactionsTableTrait,
+        DateRangePickerTrait<TransactionsPage>,
+        SelectCompanyTrait<TransactionsPage>,
+        SelectBusinessUnitTrait<TransactionsPage> {
 
     private final Locator rowsPerPageButton = getByRole(AriaRole.BUTTON, "Rows Per Page");
     private final Locator rowsPerPageOptions = getByRole(AriaRole.DIALOG);

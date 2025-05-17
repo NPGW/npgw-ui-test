@@ -6,11 +6,12 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.DateRangePickerTrait;
+import xyz.npgw.test.page.common.trait.ReportsTableTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
-import xyz.npgw.test.page.common.trait.TableTrait;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
 
-public class ReportsPage extends HeaderPage implements TableTrait, DateRangePickerTrait<ReportsPage>,
+public class ReportsPage extends HeaderPage implements ReportsTableTrait,
+        DateRangePickerTrait<ReportsPage>,
         SelectBusinessUnitTrait<ReportsPage> {
 
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");

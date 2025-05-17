@@ -10,24 +10,21 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Getter
-public class TableComponent extends BaseComponent {
+public abstract class BaseTableComponent extends BaseComponent {
 
-    private final Locator tableColumnHeader = getPage().getByRole(AriaRole.COLUMNHEADER);
-    private final Locator tableHeader = getPage()
-            .getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(tableColumnHeader));
+    private final Locator columnHeader = getByRole(AriaRole.COLUMNHEADER);
+    private final Locator headersRow = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
+    private final Locator rows = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHasNot(columnHeader));
 
-    private final Locator tableRows = getPage()
-            .getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHasNot(tableColumnHeader));
-
-    public TableComponent(Page page) {
+    public BaseTableComponent(Page page) {
         super(page);
     }
 
     protected int getColumnHeaderIndexByName(String columnHeaderName) {
-        tableColumnHeader.last().waitFor();
+        columnHeader.last().waitFor();
 
-        for (int i = 0; i < tableColumnHeader.count(); i++) {
-            if (tableColumnHeader.nth(i).innerText().equals(columnHeaderName)) {
+        for (int i = 0; i < columnHeader.count(); i++) {
+            if (columnHeader.nth(i).innerText().equals(columnHeaderName)) {
                 return i;
             }
         }
@@ -36,7 +33,7 @@ public class TableComponent extends BaseComponent {
 
     public Locator getHeaderByName(String name) {
 
-        return tableColumnHeader.getByText(name);
+        return columnHeader.getByText(name);
     }
 
     public List<String> getColumnValues(String columnHeaderName) {
@@ -49,13 +46,13 @@ public class TableComponent extends BaseComponent {
 
     public List<String> getColumnHeadersText() {
 
-        return tableColumnHeader.allInnerTexts();
+        return columnHeader.allInnerTexts();
     }
 
     public Locator getTableRow(String rowHeader) {
         Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
 
-        return getTableRows().filter(new Locator.FilterOptions().setHas(header));
+        return getRows().filter(new Locator.FilterOptions().setHas(header));
     }
 
     public Locator getCell(String columnHeader, String rowHeader) {

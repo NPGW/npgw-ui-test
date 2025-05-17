@@ -9,7 +9,7 @@ import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.dialog.user.ResetUserPasswordDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-public class UserTableComponent extends TableComponent {
+public class UserTableComponent extends BaseTableComponent {
 
     public UserTableComponent(Page page) {
         super(page);

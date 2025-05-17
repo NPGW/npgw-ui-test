@@ -15,7 +15,7 @@ import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.common.table.TableComponent;
+import xyz.npgw.test.page.common.table.AcquirersTableComponent;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
@@ -235,7 +235,7 @@ public class AcquirersPageTest extends BaseTest {
             int rowsSum = 0;
 
             do {
-                int actualRowCount = acquirersPage.getTable().getTableRows().count();
+                int actualRowCount = acquirersPage.getTable().getRows().count();
                 rowsSum += actualRowCount;
 
                 Allure.step(String.format(
@@ -307,9 +307,9 @@ public class AcquirersPageTest extends BaseTest {
                 .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirer.acquirerName())
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirer.acquirerName());
 
-        TableComponent table = acquirersPage.getTable();
+        AcquirersTableComponent table = acquirersPage.getTable();
 
-        Locator row = table.getTableRows();
+        Locator row = table.getRows();
 
         Allure.step("Verify: List of acquirers has only 1 row in the table");
         assertThat(row).hasCount(1);
@@ -362,13 +362,13 @@ public class AcquirersPageTest extends BaseTest {
                         String.format("Verify: All table column headers are on page '%s' with '%s' pagination",
                                 activePage, option));
                 Assert.assertEquals(
-                        acquirersPage.getTable().getTableColumnHeader().allTextContents(),
+                        acquirersPage.getTable().getColumnHeader().allTextContents(),
                         COLUMNS_HEADERS,
                         String.format(
                                 "Column headers do not match expected headers on page '%s' with '%s' pagination!",
                                 activePage, option));
 
-                BoundingBox table = acquirersPage.getTable().getTableHeader().boundingBox();
+                BoundingBox table = acquirersPage.getTable().getHeadersRow().boundingBox();
                 double pageWidth = getPage().viewportSize().width;
 
                 Assert.assertTrue(table.x >= 0 && (table.x + table.width) <= pageWidth, String.format(
