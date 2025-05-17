@@ -127,6 +127,13 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         return new DashboardPage(getPage());
     }
 
+    @Step("Login as disabled user with '{email}'")
+    public LoginPage loginAsDisabledUser(String email, String password) {
+        login(email, password);
+
+        return new LoginPage(getPage());
+    }
+
     @Step("Change password")
     public LoginPage changePassword(String newPassword) {
         fillNewPasswordField(newPassword);
@@ -145,8 +152,16 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     public DashboardPage loginAndChangePassword(String email, String password, String newPassword) {
         login(email, password);
         changePassword(newPassword);
+        waitUntilLoginPageIsLoaded();
         login(email, newPassword);
 
         return new DashboardPage(getPage());
+    }
+
+    private void waitUntilLoginPageIsLoaded() {
+        getPage().waitForCondition(() ->
+                emailField.isEnabled()
+                        && emailField.inputValue().isEmpty()
+        );
     }
 }

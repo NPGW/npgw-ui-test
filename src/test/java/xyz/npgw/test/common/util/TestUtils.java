@@ -17,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 public final class TestUtils {
@@ -163,5 +164,19 @@ public final class TestUtils {
                 companyName,
                 response.status(),
                 response.text());
+    }
+
+    public static void deleteMerchantByName(APIRequestContext request, String companyName, String targetName) {
+        BusinessUnit[] merchants = getAllMerchants(request, companyName);
+
+        Optional<BusinessUnit> target = Arrays.stream(merchants)
+                .filter(m -> targetName.equals(m.merchantName()))
+                .findFirst();
+
+        if (target.isPresent()) {
+            deleteMerchant(request, companyName, target.get());
+        } else {
+            throw new RuntimeException("Merchant with name '" + targetName + "' not found");
+        }
     }
 }
