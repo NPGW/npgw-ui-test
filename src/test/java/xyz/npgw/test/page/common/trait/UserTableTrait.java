@@ -1,6 +1,6 @@
-package xyz.npgw.test.page.system;
+package xyz.npgw.test.page.common.trait;
 
-import xyz.npgw.test.page.common.TableTrait;
+import xyz.npgw.test.page.common.table.UserTableComponent;
 
 public interface UserTableTrait extends TableTrait {
 
