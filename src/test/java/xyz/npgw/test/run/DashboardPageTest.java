@@ -10,10 +10,7 @@ import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.page.DashboardPage;
 
-import java.util.List;
-
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class DashboardPageTest extends BaseTest {
 
@@ -57,15 +54,15 @@ public class DashboardPageTest extends BaseTest {
         DashboardPage dashboardPage = new DashboardPage(getPage());
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
-        assertEquals(dashboardPage.getYAxisLabels(),
-                List.of("100%", "80%", "60%", "40%", "20%", "0%"));
+        assertThat(dashboardPage.getYAxisLabels())
+                .hasText(new String[]{"100%", "80%", "60%", "40%", "20%", "0%"});
 
         Allure.step("Verify: status chart legend labels are correctly displayed");
-        assertEquals(dashboardPage.getLegendLabelsText(),
-                List.of("INITIATED", "FAILED"));
+        assertThat(dashboardPage.getXAxisTexts())
+                .hasText(new String[]{"INITIATED", "FAILED"});
 
         Allure.step("Verify: currency legend labels are correctly displayed");
-        assertEquals(dashboardPage.getCurrencyLegendLabels(),
-                List.of("USD", "EUR"));
+        assertThat(dashboardPage.getCurrencyLegendLabels())
+                .hasText(new String[]{"USD", "EUR"});
     }
 }
