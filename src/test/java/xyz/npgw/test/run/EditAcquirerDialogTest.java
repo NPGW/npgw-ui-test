@@ -47,11 +47,8 @@ public class EditAcquirerDialogTest extends BaseTest {
                 .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirerName)
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirerName);
 
-        Locator row = acquirersPage
-                .getTable().getRows();
-
         List<String> actualPlaceholders = acquirersPage
-                .clickEditAcquirerButton(row)
+                .getTable().clickEditAcquirerButton()
                 .getPlaceholdersOrTextsFromFields();
 
         Allure.step("Verify placeholders match expected values for all fields");

@@ -2,7 +2,6 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.user.ChangeUserActivityDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
@@ -60,5 +59,4 @@ public class UserTableComponent extends BaseTableComponent<TeamPage> {
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton();
     }
-
 }
