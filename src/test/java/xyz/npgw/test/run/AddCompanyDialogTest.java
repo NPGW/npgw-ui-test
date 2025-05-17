@@ -174,6 +174,8 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add company")
     @Description("Company can be added by filling out required fields")
     public void testAddCompanyByFillRequiredFields() {
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
@@ -270,6 +272,8 @@ public class AddCompanyDialogTest extends BaseTest {
     @Feature("Add company")
     @Description("Validates successful company creation and correct field persistence (E2E test).")
     public void testAddCompanyEndToEndTest() {
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
+        
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
