@@ -25,7 +25,6 @@ import java.util.Map;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static xyz.npgw.test.common.util.TestUtils.createAcquirer;
 import static xyz.npgw.test.common.util.TestUtils.deleteAcquirer;
-import static xyz.npgw.test.common.util.TestUtils.getAcquirer;
 
 public class AcquirersPageTest extends BaseTest {
 

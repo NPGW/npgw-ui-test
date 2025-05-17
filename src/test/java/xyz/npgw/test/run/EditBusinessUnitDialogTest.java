@@ -30,7 +30,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
     public void testVerifyTitleEditBusinessUnitDialog(@Optional("UNAUTHORISED") String userRole) {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -53,7 +53,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Description("Verify that the label of each field is correct")
     public void testVerifyLabelOfEachField(@Optional("UNAUTHORISED") String userRole) {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -75,7 +75,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Description("Verify that company name is pre-filled correctly and read-only")
     public void testVerifyFieldCompanyNamePreFilledAndReadOnly(@Optional("UNAUTHORISED") String userRole) {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -99,7 +99,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Description("Verify that the dialog is closed by clicking on the 'Close' button")
     public void testVerifyDialogClosedByClickButtonClose(@Optional("UNAUTHORISED") String userRole) {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -122,7 +122,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Description("Verify that the dialog is closed by clicking on the 'Close' icon")
     public void testVerifyDialogClosedByClickIconClose(@Optional("UNAUTHORISED") String userRole) {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new AboutBlankPage(getPage())
                 .navigate("/login")
