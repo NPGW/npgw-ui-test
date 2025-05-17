@@ -26,6 +26,7 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
         return new EditAcquirerDialog(getPage());
     }
+
     public Locator getEditAcquirerButton(Locator row) {
 
         return row.getByTestId("EditAcquirerButton");

@@ -7,7 +7,6 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
-import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.List;
 import java.util.Objects;
