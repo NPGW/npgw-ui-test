@@ -129,7 +129,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     public void testCreateAcquirerWithDuplicateNameShowsError() {
         String acquirerName = "Awesome acquirer";
         if (!getAcquirer(getApiRequestContext(), acquirerName)) {
-            createAcquirer(getApiRequestContext(), acquirerName);
+            createAcquirer(getApiRequestContext(), new Acquirer(acquirerName));
         }
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
@@ -182,9 +182,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify validation messages when creating Acquirer with invalid input.")
     public void testDisplayValidationErrorsForInvalidAcquirerInput(Acquirer acquirer, String expectedError) {
-        if (getAcquirer(getApiRequestContext(), acquirer.acquirerName())) {
-            deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
-        }
+        deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()

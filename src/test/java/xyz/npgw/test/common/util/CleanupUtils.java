@@ -33,8 +33,8 @@ public class CleanupUtils {
                 .filter(c -> !doNotDeleteCompanyList.contains(c.companyName()))
                 .filter(c -> !err500List.contains(c.companyName()))
                 .forEach(item -> {
-                    BusinessUnit[] businessUnits = TestUtils.getAllMerchants(request, item.companyName());
-                    User[] users = TestUtils.getAllUsers(request, item.companyName());
+                    BusinessUnit[] businessUnits = BusinessUnit.getAll(request, item.companyName());
+                    User[] users = User.getAll(request, item.companyName());
 
                     if (users.length == 0 && businessUnits.length == 0) {
                         log.info("---will delete company---> |{}|", item.companyName());
@@ -52,13 +52,13 @@ public class CleanupUtils {
                 .filter(c -> !doNotDeleteCompanyList.contains(c.companyName()))
                 .filter(c -> !err500List.contains(c.companyName()))
                 .forEach(item -> {
-                    User[] users = TestUtils.getAllUsers(request, item.companyName());
+                    User[] users = User.getAll(request, item.companyName());
                     if (users.length == 0) {
                         log.info("delete all merchants from |{}| without users", item.companyName());
-                        BusinessUnit[] businessUnits = TestUtils.getAllMerchants(request, item.companyName());
+                        BusinessUnit[] businessUnits = BusinessUnit.getAll(request, item.companyName());
                         for (BusinessUnit businessUnit : businessUnits) {
                             log.info("---will delete merchant ---> |{}|", businessUnit.merchantId());
-                            TestUtils.deleteMerchant(request, item.companyName(), businessUnit);
+                            BusinessUnit.delete(request, item.companyName(), businessUnit);
                         }
                     }
                 });
@@ -74,7 +74,7 @@ public class CleanupUtils {
                 .filter(c -> !err500List.contains(c.companyName()))
                 .forEach(item -> {
                     log.info("delete users from |{}|", item.companyName());
-                    User[] users = TestUtils.getAllUsers(request, item.companyName());
+                    User[] users = User.getAll(request, item.companyName());
                     for (User user : users) {
 
                         //any user role is linked to invalid merchantId
@@ -85,7 +85,7 @@ public class CleanupUtils {
                                     || merchantId.matches("^id.merchant.[0-9a-f]{32}$")) {
 
                                 log.info("---will delete invalid merchant ---> |{}|", merchantId);
-                                TestUtils.deleteMerchant(request,
+                                BusinessUnit.delete(request,
                                         item.companyName(),
                                         new BusinessUnit(merchantId, ""));
                                 deleteUser = true;
@@ -94,14 +94,14 @@ public class CleanupUtils {
                         if (deleteUser) {
                             log.info("any user role is linked to invalid merchantId");
                             log.info("--- will delete user with invalid merchantId ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user);
+                            TestUtils.deleteUser(request, user.email());
                         }
 
                         if (user.userRole() == UserRole.ADMIN && user.merchantIds().length != 0) {
                             log.info("company admins with merchant");
                             for (String merchantId : user.merchantIds()) {
                                 log.info("---will delete admin merchant ---> |{}|", merchantId);
-                                TestUtils.deleteMerchant(request,
+                                BusinessUnit.delete(request,
                                         item.companyName(),
                                         new BusinessUnit(merchantId, ""));
                             }
@@ -110,27 +110,27 @@ public class CleanupUtils {
                         if (user.userRole() == UserRole.ADMIN) {
                             log.info("all company admins will be removed");
                             log.info("---will delete admin ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user);
+                            TestUtils.deleteUser(request, user.email());
                         }
 
 
                         if (user.userRole() == UserRole.USER && user.merchantIds().length == 0) {
                             log.info("company analyst should have some merchantId");
                             log.info("---will delete analyst ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user);
+                            TestUtils.deleteUser(request, user.email());
                         }
 
                         if (user.userRole() == UserRole.SUPER && !"super".equals(user.companyName())) {
                             log.info("SUPER user outside SUPER company");
                             log.info("--- will delete outside SUPER ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user);
+                            TestUtils.deleteUser(request, user.email());
                         }
 
                         if (user.userRole() == UserRole.SUPER && user.merchantIds().length != 0) {
                             log.info("super admins with merchant");
                             for (String merchantId : user.merchantIds()) {
                                 log.info("---will delete super merchant ---> |{}|", merchantId);
-                                TestUtils.deleteMerchant(request,
+                                BusinessUnit.delete(request,
                                         item.companyName(),
                                         new BusinessUnit(merchantId, ""));
                             }
@@ -139,7 +139,7 @@ public class CleanupUtils {
                         if (user.userRole() == UserRole.SUPER && !doNotDeleteUserList.contains(user.email())) {
                             log.info("unprotected SUPER user");
                             log.info("--- will delete unprotected SUPER ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user);
+                            TestUtils.deleteUser(request, user.email());
                         }
                     }
                 });
