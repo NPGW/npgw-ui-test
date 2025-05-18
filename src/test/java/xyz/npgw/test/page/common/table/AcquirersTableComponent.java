@@ -2,13 +2,19 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
+import lombok.Getter;
+import xyz.npgw.test.page.dialog.acquirer.ChangeAcquirerActivityDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
+@Getter
 public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
     private final Locator editAcquirerButton = getByTestId("EditAcquirerButton");
+    private final Locator changeAcquirerActivityButton = getByTestId("ChangeBusinessUnitActivityButton");
+    private final Locator changeAcquirerActivityDialog = getByRole(AriaRole.DIALOG);
 
     public AcquirersTableComponent(Page page) {
         super(page);
@@ -27,13 +33,11 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
         return new EditAcquirerDialog(getPage());
     }
 
-    public Locator getEditAcquirerButton(Locator row) {
+    @Step("Click Activate/Deactivate acquirer button")
+    public ChangeAcquirerActivityDialog clickActivateDeactivateAcquirerButton() {
+        changeAcquirerActivityButton.click();
 
-        return row.getByTestId("EditAcquirerButton");
+        return new ChangeAcquirerActivityDialog(getPage());
     }
 
-    public Locator getChangeAcquirerActivityButton(Locator row) {
-
-        return row.getByTestId("ChangeBusinessUnitActivityButton");
-    }
 }

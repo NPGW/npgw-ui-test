@@ -16,6 +16,7 @@ import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.common.table.AcquirersTableComponent;
+import xyz.npgw.test.page.dialog.acquirer.ChangeAcquirerActivityDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
@@ -266,7 +267,7 @@ public class AcquirersPageTest extends BaseTest {
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
     }
 
-    @Ignore("System config in the table does not match the expected value expected")
+//    @Ignore("System config in the table does not match the expected value expected")
     @Test
     @TmsLink("463")
     @Epic("System/Acquirers")
@@ -292,10 +293,10 @@ public class AcquirersPageTest extends BaseTest {
                 COLUMNS_HEADERS.get(2), String.join(", ", acquirer.currencyList()),
                 COLUMNS_HEADERS.get(3), acquirer.acquirerConfig(),
                 COLUMNS_HEADERS.get(4), String.join("\n",
-                        acquirer.systemConfig().challengeUrl(),
-                        acquirer.systemConfig().fingerprintUrl(),
-                        acquirer.systemConfig().resourceUrl(),
-                        acquirer.systemConfig().notificationQueue()),
+                        "Challenge URL\n" + acquirer.systemConfig().challengeUrl(),
+                        "Fingerprint URL\n" + acquirer.systemConfig().fingerprintUrl(),
+                        "Resource URL\n" + acquirer.systemConfig().resourceUrl(),
+                        "Notification queue\n" + acquirer.systemConfig().notificationQueue()),
                 COLUMNS_HEADERS.get(5), acquirer.isActive() ? "Active" : "Inactive"
         );
 
@@ -326,10 +327,10 @@ public class AcquirersPageTest extends BaseTest {
         }
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(acquirersPage.getTable().getEditAcquirerButton(row)).isVisible();
+        assertThat(acquirersPage.getTable().getEditAcquirerButton()).isVisible();
 
         Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getTable().getChangeAcquirerActivityButton(row)).isVisible();
+        assertThat(acquirersPage.getTable().getChangeAcquirerActivityButton()).isVisible();
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
@@ -416,5 +417,45 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: Acquirer status");
         assertThat(acquirersPage.getTable().getCell("Status", acquirerName)).hasText(status);
+    }
+
+    @Test
+    @TmsLink("588")
+    @Epic("System/Acquirers")
+    @Feature("Acquirers list")
+    @Description("Verify Acquirer can be activated and deactivated from the table")
+    public void testAcquirerCanBeActivatedAndDeactivated() {
+        String acquirerName = "Acquirer activate and deactivate";
+        Acquirer acquirer = new Acquirer(
+                "NGenius",
+                "default",
+                new SystemConfig(),
+                acquirerName,
+                new String[]{"USD", "EUR"},
+                true);
+        deleteAcquirer(getApiRequestContext(), acquirerName);
+        createAcquirer(getApiRequestContext(), acquirer);
+
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirerName)
+                .getSelectAcquirer().clickAcquirerInDropdown(acquirerName)
+                .getTable().clickActivateDeactivateAcquirerButton()
+                .clickDeactivateButton();
+
+        Allure.step("Verify: Acquirer status changed to Inactive");
+        assertThat(acquirersPage
+                .getTable().getCell("Status", acquirerName))
+                .hasText("Inactive");
+
+        acquirersPage
+                .getTable().clickActivateDeactivateAcquirerButton()
+                .clickActivateButton();
+
+        Allure.step("Verify: Acquirer status changed back to Active");
+        assertThat(acquirersPage
+                .getTable().getCell("Status", acquirerName))
+                .hasText("Active");
     }
 }
