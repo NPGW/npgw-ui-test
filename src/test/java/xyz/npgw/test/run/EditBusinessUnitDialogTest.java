@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.UserRole;
@@ -40,10 +39,10 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .clickEditBusinessUnitButton()
                 .getDialogHeader();
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-
         Allure.step("Verify: the header contains the expected title text");
         assertThat(dialogTitle).hasText("Edit business unit");
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Test
@@ -63,10 +62,10 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .getSelectCompany().selectCompany(companyName)
                 .clickEditBusinessUnitButton();
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-
         Allure.step("Verify: all labels are correct for each field");
         assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Test
@@ -86,12 +85,12 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .getSelectCompany().selectCompany(companyName)
                 .clickEditBusinessUnitButton();
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-
         Allure.step("Verify: Company name is pre-filled correctly");
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasValue(companyName);
         Allure.step("Verify: Company name field is read-only");
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Test
@@ -112,10 +111,10 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .clickEditBusinessUnitButton()
                 .clickCloseButton();
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Test
@@ -136,9 +135,9 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .clickEditBusinessUnitButton()
                 .clickCloseIcon();
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 }
