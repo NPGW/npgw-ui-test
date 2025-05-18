@@ -15,13 +15,13 @@ import java.util.List;
 @Log4j2
 public class CleanupUtils {
 
-    private static final List<String> doNotDeleteCompanyList = List.of(
+    private static final List<String> COMPANY = List.of(
             "Luke Payments", "CompanyForTestRunOnly Inc.", "super");
-    private static final List<String> err500List = List.of(
+    private static final List<String> ERR_500 = List.of(
             "A2 info", "Company 112172", "Smitham-Johnson", "new company", "testframework");
-    private static final List<String> doNotDeleteUserList = List.of(
+    private static final List<String> USER = List.of(
             "test@email.com", "supertest@email.com", "admintest@email.com", "usertest@email.com");
-    private static final List<String> doNotDeleteAcquirersList = List.of(
+    private static final List<String> ACQUIRER = List.of(
             "Luke EUR MID 1");
 
     public static void deleteCompaniesWithoutUsersAndMerchants(APIRequestContext request) {
@@ -30,8 +30,8 @@ public class CleanupUtils {
         Company[] comp = new Gson().fromJson(response.text(), Company[].class);
 
         Arrays.stream(comp)
-                .filter(c -> !doNotDeleteCompanyList.contains(c.companyName()))
-                .filter(c -> !err500List.contains(c.companyName()))
+                .filter(c -> !COMPANY.contains(c.companyName()))
+                .filter(c -> !ERR_500.contains(c.companyName()))
                 .forEach(item -> {
                     BusinessUnit[] businessUnits = BusinessUnit.getAll(request, item.companyName());
                     User[] users = User.getAll(request, item.companyName());
@@ -49,8 +49,8 @@ public class CleanupUtils {
         Company[] comp = new Gson().fromJson(response.text(), Company[].class);
 
         Arrays.stream(comp)
-                .filter(c -> !doNotDeleteCompanyList.contains(c.companyName()))
-                .filter(c -> !err500List.contains(c.companyName()))
+                .filter(c -> !COMPANY.contains(c.companyName()))
+                .filter(c -> !ERR_500.contains(c.companyName()))
                 .forEach(item -> {
                     User[] users = User.getAll(request, item.companyName());
                     if (users.length == 0) {
@@ -70,8 +70,8 @@ public class CleanupUtils {
         Company[] comp = new Gson().fromJson(response.text(), Company[].class);
 
         Arrays.stream(comp)
-                .filter(c -> !doNotDeleteCompanyList.contains(c.companyName()))
-                .filter(c -> !err500List.contains(c.companyName()))
+                .filter(c -> !COMPANY.contains(c.companyName()))
+                .filter(c -> !ERR_500.contains(c.companyName()))
                 .forEach(item -> {
                     log.info("delete users from |{}|", item.companyName());
                     User[] users = User.getAll(request, item.companyName());
@@ -136,7 +136,7 @@ public class CleanupUtils {
                             }
                         }
 
-                        if (user.userRole() == UserRole.SUPER && !doNotDeleteUserList.contains(user.email())) {
+                        if (user.userRole() == UserRole.SUPER && !USER.contains(user.email())) {
                             log.info("unprotected SUPER user");
                             log.info("--- will delete unprotected SUPER ---> |{}|", user.email());
                             TestUtils.deleteUser(request, user.email());

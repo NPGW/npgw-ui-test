@@ -40,10 +40,6 @@ public final class TestUtils {
         }
     }
 
-    public static void deleteMerchant(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
-        BusinessUnit.delete(request, companyName, businessUnit);
-    }
-
     public static void deleteAllByMerchantTitle(APIRequestContext request, String companyName, String merchantTitle) {
         BusinessUnit.delete(request, companyName, merchantTitle);
     }
