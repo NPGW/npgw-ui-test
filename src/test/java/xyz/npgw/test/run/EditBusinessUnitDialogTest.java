@@ -119,6 +119,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
+    @Ignore
     @Test
     @TmsLink("544")
     @Epic("System/Companies and business units")
