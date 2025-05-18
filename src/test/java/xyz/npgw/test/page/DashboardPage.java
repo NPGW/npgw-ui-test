@@ -9,6 +9,10 @@ import xyz.npgw.test.page.common.AlertTrait;
 import xyz.npgw.test.page.common.DateRangePickerTrait;
 import xyz.npgw.test.page.common.HeaderPage;
 import xyz.npgw.test.page.common.SelectBusinessUnitTrait;
+import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.common.trait.AlertTrait;
+import xyz.npgw.test.page.common.trait.DateRangePickerTrait;
+import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 
 @Getter
 public final class DashboardPage extends HeaderPage implements DateRangePickerTrait<DashboardPage>,
