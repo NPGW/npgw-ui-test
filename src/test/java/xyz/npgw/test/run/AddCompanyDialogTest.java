@@ -25,7 +25,6 @@ public class AddCompanyDialogTest extends BaseTest {
 
     private static final String COMPANY_NAME = "CompanyName";
     private static final String COMPANY_TYPE = "CompanyType";
-    private static final String CREATED_SUCCESSFULLY = "SUCCESSCompany was created successfully";
 
     Company company = new Company(
             "CompanyNameTest", "Company Type Test",
@@ -185,27 +184,8 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: company creation success message is displayed");
-        assertThat(companiesAndBusinessUnitsPage.getAlert().getAlertMessage()).hasText(CREATED_SUCCESSFULLY);
-
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-    }
-
-    @Test
-    @TmsLink("224")
-    @Epic("System/Companies and business units")
-    @Feature("Add company")
-    @Description("Added company appears in the 'Select company' dropdown list")
-    public void testVerifyCompanyPresenceInDropdown() {
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(COMPANY_NAME);
-
-        Allure.step("Verify: company is present in the 'Select company' field");
-        assertThat(companiesAndBusinessUnitsPage
-                .getSelectCompany().getSelectCompanyField()).hasValue(COMPANY_NAME);
+        assertThat(companiesAndBusinessUnitsPage.getAlert().getAlertMessage()).hasText(
+                "SUCCESSCompany was created successfully");
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
     }
@@ -273,7 +253,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Validates successful company creation and correct field persistence (E2E test).")
     public void testAddCompanyEndToEndTest() {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
-        
+
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
@@ -315,6 +295,12 @@ public class AddCompanyDialogTest extends BaseTest {
         Allure.step("Verify: selected company is shown in the input field");
         assertThat(companiesAndBusinessUnitsPage
                 .getSelectCompany().getSelectCompanyField()).hasValue(company.companyName());
+
+        Allure.step("Verify: name field is correctly filled");
+        assertThat(companiesAndBusinessUnitsPage.getName()).hasValue(company.companyName());
+
+        Allure.step("Verify: type field is correctly filled");
+        assertThat(companiesAndBusinessUnitsPage.getType()).hasValue(company.companyType());
 
         Allure.step("Verify: description field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getDescription()).hasValue(company.description());
