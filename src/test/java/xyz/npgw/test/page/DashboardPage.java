@@ -6,11 +6,11 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
-import xyz.npgw.test.page.common.AlertTrait;
-import xyz.npgw.test.page.common.DateRangePickerTrait;
-import xyz.npgw.test.page.common.HeaderPage;
-import xyz.npgw.test.page.common.SelectBusinessUnitTrait;
-import xyz.npgw.test.page.common.SelectCompanyTrait;
+import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.common.trait.AlertTrait;
+import xyz.npgw.test.page.common.trait.DateRangePickerTrait;
+import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
+import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 
 @Getter
 public final class DashboardPage extends HeaderPage implements DateRangePickerTrait<DashboardPage>,
