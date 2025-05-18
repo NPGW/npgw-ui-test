@@ -8,7 +8,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -16,7 +15,6 @@ import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.common.table.AcquirersTableComponent;
-import xyz.npgw.test.page.dialog.acquirer.ChangeAcquirerActivityDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
@@ -267,7 +265,7 @@ public class AcquirersPageTest extends BaseTest {
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
     }
 
-//    @Ignore("System config in the table does not match the expected value expected")
+    //    @Ignore("System config in the table does not match the expected value expected")
     @Test
     @TmsLink("463")
     @Epic("System/Acquirers")
