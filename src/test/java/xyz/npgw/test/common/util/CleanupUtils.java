@@ -1,10 +1,9 @@
 package xyz.npgw.test.common.util;
 
-import com.google.gson.Gson;
 import com.microsoft.playwright.APIRequestContext;
-import com.microsoft.playwright.APIResponse;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.UserRole;
+import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.User;
@@ -25,11 +24,7 @@ public class CleanupUtils {
             "Luke EUR MID 1");
 
     public static void deleteCompaniesWithoutUsersAndMerchants(APIRequestContext request) {
-
-        APIResponse response = request.get("portal-v1/company");
-        Company[] comp = new Gson().fromJson(response.text(), Company[].class);
-
-        Arrays.stream(comp)
+        Arrays.stream(Company.getAll(request))
                 .filter(c -> !COMPANY.contains(c.companyName()))
                 .filter(c -> !ERR_500.contains(c.companyName()))
                 .forEach(item -> {
@@ -38,17 +33,13 @@ public class CleanupUtils {
 
                     if (users.length == 0 && businessUnits.length == 0) {
                         log.info("---will delete company---> |{}|", item.companyName());
-                        TestUtils.deleteCompany(request, item.companyName());
+                        Company.delete(request, item.companyName());
                     }
                 });
     }
 
     public static void deleteMerchantsForCompaniesWithoutUsersAndWithDefaultValues(APIRequestContext request) {
-
-        APIResponse response = request.get("portal-v1/company");
-        Company[] comp = new Gson().fromJson(response.text(), Company[].class);
-
-        Arrays.stream(comp)
+        Arrays.stream(Company.getAll(request))
                 .filter(c -> !COMPANY.contains(c.companyName()))
                 .filter(c -> !ERR_500.contains(c.companyName()))
                 .forEach(item -> {
@@ -64,12 +55,8 @@ public class CleanupUtils {
                 });
     }
 
-    public static void deleteUnneededUsers(APIRequestContext request) {
-
-        APIResponse response = request.get("portal-v1/company");
-        Company[] comp = new Gson().fromJson(response.text(), Company[].class);
-
-        Arrays.stream(comp)
+    public static void deleteUnprotectedUsers(APIRequestContext request) {
+        Arrays.stream(Company.getAll(request))
                 .filter(c -> !COMPANY.contains(c.companyName()))
                 .filter(c -> !ERR_500.contains(c.companyName()))
                 .forEach(item -> {
@@ -94,7 +81,7 @@ public class CleanupUtils {
                         if (deleteUser) {
                             log.info("any user role is linked to invalid merchantId");
                             log.info("--- will delete user with invalid merchantId ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user.email());
+                            User.delete(request, user);
                         }
 
                         if (user.userRole() == UserRole.ADMIN && user.merchantIds().length != 0) {
@@ -110,20 +97,20 @@ public class CleanupUtils {
                         if (user.userRole() == UserRole.ADMIN) {
                             log.info("all company admins will be removed");
                             log.info("---will delete admin ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user.email());
+                            User.delete(request, user);
                         }
 
 
                         if (user.userRole() == UserRole.USER && user.merchantIds().length == 0) {
                             log.info("company analyst should have some merchantId");
                             log.info("---will delete analyst ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user.email());
+                            User.delete(request, user);
                         }
 
                         if (user.userRole() == UserRole.SUPER && !"super".equals(user.companyName())) {
                             log.info("SUPER user outside SUPER company");
                             log.info("--- will delete outside SUPER ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user.email());
+                            User.delete(request, user);
                         }
 
                         if (user.userRole() == UserRole.SUPER && user.merchantIds().length != 0) {
@@ -139,9 +126,19 @@ public class CleanupUtils {
                         if (user.userRole() == UserRole.SUPER && !USER.contains(user.email())) {
                             log.info("unprotected SUPER user");
                             log.info("--- will delete unprotected SUPER ---> |{}|", user.email());
-                            TestUtils.deleteUser(request, user.email());
+                            User.delete(request, user);
                         }
                     }
+                });
+    }
+
+    public static void deleteUnprotectedAcquirers(APIRequestContext request) {
+        Arrays.stream(Acquirer.getAll(request))
+                .filter(acquirer -> !ACQUIRER.contains(acquirer.acquirerName()))
+                .filter(acquirer -> !acquirer.acquirerName().startsWith("acquirerName "))
+                .forEach(item -> {
+                    log.info("---will delete acquirer ---> |{}|", item.acquirerName());
+                    Acquirer.delete(request, item.acquirerName());
                 });
     }
 }
