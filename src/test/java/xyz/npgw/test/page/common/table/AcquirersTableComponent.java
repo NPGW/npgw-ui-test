@@ -2,7 +2,6 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.acquirer.ChangeAcquirerActivityDialog;
@@ -14,7 +13,6 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
     private final Locator editAcquirerButton = getByTestId("EditAcquirerButton");
     private final Locator changeAcquirerActivityButton = getByTestId("ChangeBusinessUnitActivityButton");
-    private final Locator changeAcquirerActivityDialog = getByRole(AriaRole.DIALOG);
 
     public AcquirersTableComponent(Page page) {
         super(page);
@@ -39,5 +37,4 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
         return new ChangeAcquirerActivityDialog(getPage());
     }
-
 }
