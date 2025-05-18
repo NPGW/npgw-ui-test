@@ -46,6 +46,27 @@ public class DashboardPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
+    @Test
+    @TmsLink("575")
+    @Epic("Dashboard")
+    @Feature("Chart Display")
+    @Description("All key chart elements are correctly displayed")
+    public void testVisibleChartElementsAreDisplayedCorrectly() {
+        DashboardPage dashboardPage = new DashboardPage(getPage());
+
+        Allure.step("Verify: Y-axis percentage labels are correctly displayed");
+        assertThat(dashboardPage.getYAxisLabels())
+                .hasText(new String[]{"100%", "80%", "60%", "40%", "20%", "0%"});
+
+        Allure.step("Verify: status chart legend labels are correctly displayed");
+        assertThat(dashboardPage.getXAxisTexts())
+                .hasText(new String[]{"INITIATED", "FAILED"});
+
+        Allure.step("Verify: currency legend labels are correctly displayed");
+        assertThat(dashboardPage.getCurrencyLegendLabels())
+                .hasText(new String[]{"USD", "EUR"});
+    }
+
 
     // TODO: Add business unit check when enabled
     @Test

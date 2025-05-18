@@ -29,8 +29,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the title of the 'Edit Business Unit' dialog matches the expected result")
     public void testVerifyTitleEditBusinessUnitDialog(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -43,6 +43,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
 
         Allure.step("Verify: the header contains the expected title text");
         assertThat(dialogTitle).hasText("Edit business unit");
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Ignore
@@ -52,8 +54,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the label of each field is correct")
     public void testVerifyLabelOfEachField(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -65,6 +67,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
 
         Allure.step("Verify: all labels are correct for each field");
         assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Ignore
@@ -74,8 +78,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that company name is pre-filled correctly and read-only")
     public void testVerifyFieldCompanyNamePreFilledAndReadOnly(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -89,17 +93,19 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasValue(companyName);
         Allure.step("Verify: Company name field is read-only");
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
-    @Ignore("waiting for getByLabel('Select company')")
+    @Ignore
     @Test
     @TmsLink("528")
     @Epic("System/Companies and business units")
     @Feature("Edit business unit")
     @Description("Verify that the dialog is closed by clicking on the 'Close' button")
     public void testVerifyDialogClosedByClickButtonClose(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -112,6 +118,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
     @Ignore
@@ -121,8 +129,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that the dialog is closed by clicking on the 'Close' icon")
     public void testVerifyDialogClosedByClickIconClose(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createMerchantIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new AboutBlankPage(getPage())
                 .navigate("/login")
@@ -135,5 +143,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
+
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 }
