@@ -238,6 +238,7 @@ public abstract class BaseTest {
 
     private void initPageRequestContext() {
         StorageState storageState = new Gson().fromJson(context.storageState(), StorageState.class);
+        log.info("SS - {}", storageState);
         LocalStorage[] localStorage = storageState.origins()[0].localStorage();
         String tokenData = Arrays.stream(localStorage)
                 .filter(item -> item.name().equals("token_data"))
@@ -245,6 +246,7 @@ public abstract class BaseTest {
                 .map(LocalStorage::value)
                 .orElse("");
         Token token = new Gson().fromJson(tokenData, Token.class);
+        log.info("isToken - {}", token.idToken);
         context.setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken)));
     }
 
