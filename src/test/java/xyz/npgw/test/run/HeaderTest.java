@@ -88,7 +88,7 @@ public class HeaderTest extends BaseTest {
                 .getHeader().clickSaveButton();
 
         Allure.step("Verify: success message for changing password");
-        assertThat(dashboardPage.getAlert().getAlertMessage())
+        assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("SUCCESSPassword was changed successfull");
 
         dashboardPage
@@ -180,7 +180,7 @@ public class HeaderTest extends BaseTest {
                 .getHeader().clickSaveButton();
 
         Allure.step("Verify: error message for missing lowercase");
-        assertThat(dashboardPage.getAlert().getAlertMessage())
+        assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have lowercase characters");
 
         dashboardPage
@@ -189,7 +189,7 @@ public class HeaderTest extends BaseTest {
                 .getHeader().clickSaveButton();
 
         Allure.step("Verify: error message for missing uppercase");
-        assertThat(dashboardPage.getAlert().getAlertMessage())
+        assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have uppercase characters");
 
         dashboardPage
@@ -198,7 +198,7 @@ public class HeaderTest extends BaseTest {
                 .getHeader().clickSaveButton();
 
         Allure.step("Verify: error message for missing numeric");
-        assertThat(dashboardPage.getAlert().getAlertMessage())
+        assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have numeric characters");
 
         dashboardPage
@@ -207,7 +207,7 @@ public class HeaderTest extends BaseTest {
                 .getHeader().clickSaveButton();
 
         Allure.step("Verify: error message for missing symbol");
-        assertThat(dashboardPage.getAlert().getAlertMessage())
+        assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have symbol characters");
     }
 }
