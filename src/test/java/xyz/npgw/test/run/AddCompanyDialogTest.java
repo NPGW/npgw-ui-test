@@ -82,10 +82,8 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButtonAndTriggerError();
 
         Allure.step("Verify: error message for invalid company name: '{name}' is displayed");
-        assertThat(addCompanyDialog
-                .getAlert().getAlertMessage())
-                .containsText(
-                        "Invalid companyName: '%s'. It must contain between 4 and 100 characters".formatted(name));
+        assertThat(addCompanyDialog.getAlert().getMessage()).containsText(
+                "Invalid companyName: '%s'. It must contain between 4 and 100 characters".formatted(name));
     }
 
     @Test
@@ -184,8 +182,8 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: company creation success message is displayed");
-        assertThat(companiesAndBusinessUnitsPage.getAlert().getAlertMessage()).hasText(
-                "SUCCESSCompany was created successfully");
+        assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
+                .hasText("SUCCESSCompany was created successfully");
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
     }
@@ -208,7 +206,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
         Allure.step("Verify: error message is displayed for duplicate company name");
         assertThat(addCompanyDialog
-                .getAlert().getAlertMessage())
+                .getAlert().getMessage())
                 .containsText("Company with name {%s} already exists.".formatted(COMPANY_NAME));
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
