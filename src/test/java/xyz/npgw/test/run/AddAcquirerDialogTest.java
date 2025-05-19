@@ -6,7 +6,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -109,7 +108,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify: Acquirer creation success message is displayed");
-        assertThat(acquirersPage.getAlert().getAlertMessage()).containsText(
+        assertThat(acquirersPage.getAlert().getMessage()).containsText(
                 "SUCCESSAcquirer was created successfully");
 
         Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
@@ -130,7 +129,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     public void testCreateAcquirerWithDuplicateNameShowsError() {
         String acquirerName = "Awesome acquirer";
         if (!getAcquirer(getApiRequestContext(), acquirerName)) {
-            createAcquirer(getApiRequestContext(), acquirerName);
+            createAcquirer(getApiRequestContext(), new Acquirer(acquirerName));
         }
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
@@ -149,7 +148,7 @@ public class AddAcquirerDialogTest extends BaseTest {
 
         Allure.step("Verify: Acquirer Error message is displayed");
         assertThat(acquirerDialog
-                .getAlert().getAlertMessage())
+                .getAlert().getMessage())
                 .containsText("Acquirer with name {" + acquirerName + "} already exists.");
 
         Allure.step("Verify: the 'Add acquirer' dialog is not closed");
@@ -183,9 +182,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify validation messages when creating Acquirer with invalid input.")
     public void testDisplayValidationErrorsForInvalidAcquirerInput(Acquirer acquirer, String expectedError) {
-        if (getAcquirer(getApiRequestContext(), acquirer.acquirerName())) {
-            deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
-        }
+        deleteAcquirer(getApiRequestContext(), acquirer.acquirerName());
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
@@ -196,9 +193,9 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .fillAcquirerForm(acquirer)
                 .clickCreateButton();
 
-        assertThat(acquirersPage.getAlert().getAlertMessage()).isVisible();
+        assertThat(acquirersPage.getAlert().getMessage()).isVisible();
 
         Allure.step(String.format("Verify error message is: %s", expectedError));
-        assertThat(acquirersPage.getAlert().getAlertMessage()).hasText(expectedError);
+        assertThat(acquirersPage.getAlert().getMessage()).hasText(expectedError);
     }
 }
