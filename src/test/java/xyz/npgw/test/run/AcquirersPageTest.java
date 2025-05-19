@@ -407,7 +407,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickCreateButton();
 
         do {
-            if (acquirersPage.getTable().getTableRow(acquirerName).count() > 0) {
+            if (acquirersPage.getTable().getRow(acquirerName).count() > 0) {
                 break;
             }
         } while (!acquirersPage.getTable().isLastPage() && acquirersPage.getTable().clickNextPage() != null);
@@ -438,7 +438,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().typeName(acquirerName)
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirerName)
-                .getTable().clickChangeActivityButton()
+                .getTable().clickChangeActivityButton(acquirerName)
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
@@ -450,7 +450,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("Inactive");
 
         acquirersPage
-                .getTable().clickChangeActivityButton()
+                .getTable().clickChangeActivityButton(acquirerName)
                 .clickActivateButton();
 
         Allure.step("Verify: Successful message");
