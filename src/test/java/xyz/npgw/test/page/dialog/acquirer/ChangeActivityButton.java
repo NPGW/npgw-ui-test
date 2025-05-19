@@ -9,12 +9,12 @@ import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 @Getter
-public class ChangeAcquirerActivityDialog extends BaseDialog<AcquirersPage, ChangeAcquirerActivityDialog> {
+public class ChangeActivityButton extends BaseDialog<AcquirersPage, ChangeActivityButton> {
 
     private final Locator deactivateButton = getByRole(AriaRole.BUTTON, "Deactivate");
     private final Locator activateButton = getByRole(AriaRole.BUTTON, "Activate");
 
-    public ChangeAcquirerActivityDialog(Page page) {
+    public ChangeActivityButton(Page page) {
         super(page);
     }
 

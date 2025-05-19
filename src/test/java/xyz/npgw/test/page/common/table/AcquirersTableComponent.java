@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.dialog.acquirer.ChangeAcquirerActivityDialog;
+import xyz.npgw.test.page.dialog.acquirer.ChangeActivityButton;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
@@ -32,9 +32,9 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
     }
 
     @Step("Click Activate/Deactivate acquirer button")
-    public ChangeAcquirerActivityDialog clickChangeActivityButton() {
+    public ChangeActivityButton clickChangeActivityButton() {
         changeAcquirerActivityButton.click();
 
-        return new ChangeAcquirerActivityDialog(getPage());
+        return new ChangeActivityButton(getPage());
     }
 }
