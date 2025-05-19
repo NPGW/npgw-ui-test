@@ -62,5 +62,4 @@ public class AddUserDialog extends UserDialog<AddUserDialog> {
                 email,
                 password));
     }
-
 }
