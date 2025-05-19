@@ -327,7 +327,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getEditAcquirerButton()).isVisible();
 
         Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getTable().getChangeAcquirerActivityButton()).isVisible();
+        assertThat(acquirersPage.getTable().getChangeActivityButton()).isVisible();
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
