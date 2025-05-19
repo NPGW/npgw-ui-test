@@ -124,6 +124,7 @@ public abstract class BaseTest {
 
         initApiRequestContext();
         openSite(runAs);
+        initPageRequestContext();
     }
 
     @AfterMethod
@@ -201,7 +202,6 @@ public abstract class BaseTest {
         context.storageState(new BrowserContext
                 .StorageStateOptions()
                 .setPath(Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()))));
-        initPageRequestContext();
     }
 
     private void initApiRequestContext() {
@@ -238,16 +238,17 @@ public abstract class BaseTest {
 
     private void initPageRequestContext() {
         StorageState storageState = new Gson().fromJson(context.storageState(), StorageState.class);
-        log.info("SS - {}", storageState);
         LocalStorage[] localStorage = storageState.origins()[0].localStorage();
         String tokenData = Arrays.stream(localStorage)
                 .filter(item -> item.name().equals("token_data"))
                 .findAny()
                 .map(LocalStorage::value)
                 .orElse("");
-        Token token = new Gson().fromJson(tokenData, Token.class);
-        log.info("isToken - {}", token.idToken);
-        context.setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken)));
+        if (!tokenData.isEmpty()) {
+            Token token = new Gson().fromJson(tokenData, Token.class);
+            log.info("isToken - {}", token.idToken);
+            context.setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken)));
+        }
     }
 
     private record StorageState(Cookie[] cookies, Origin[] origins) {
