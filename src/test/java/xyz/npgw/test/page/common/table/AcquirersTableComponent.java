@@ -12,7 +12,7 @@ import xyz.npgw.test.page.system.AcquirersPage;
 public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
     private final Locator editAcquirerButton = getByTestId("EditAcquirerButton");
-    private final Locator changeAcquirerActivityButton = getByTestId("ChangeBusinessUnitActivityButton");
+    private final Locator changeActivityButton = getByTestId("ChangeBusinessUnitActivityButton");
 
     public AcquirersTableComponent(Page page) {
         super(page);
@@ -33,7 +33,7 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
     @Step("Click Activate/Deactivate acquirer button")
     public ChangeActivityButton clickChangeActivityButton() {
-        changeAcquirerActivityButton.click();
+        changeActivityButton.click();
 
         return new ChangeActivityButton(getPage());
     }
