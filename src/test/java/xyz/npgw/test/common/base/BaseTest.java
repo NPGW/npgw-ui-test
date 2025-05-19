@@ -197,11 +197,11 @@ public abstract class BaseTest {
                 UserRole.valueOf(runAs.name()),
                 "target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()));
         new AboutBlankPage(page).navigate("/").loginAs(UserRole.valueOf(runAs.name()));
-        initPageRequestContext();
         setState(runAs);
         context.storageState(new BrowserContext
                 .StorageStateOptions()
                 .setPath(Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()))));
+        initPageRequestContext();
     }
 
     private void initApiRequestContext() {
