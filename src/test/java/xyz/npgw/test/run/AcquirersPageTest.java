@@ -438,7 +438,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().typeName(acquirerName)
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirerName)
-                .getTable().clickActivateDeactivateAcquirerButton()
+                .getTable().clickActivateButton()
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
@@ -450,7 +450,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("Inactive");
 
         acquirersPage
-                .getTable().clickActivateDeactivateAcquirerButton()
+                .getTable().clickActivateButton()
                 .clickActivateButton();
 
         Allure.step("Verify: Successful message");

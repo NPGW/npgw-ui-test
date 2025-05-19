@@ -32,7 +32,7 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
     }
 
     @Step("Click Activate/Deactivate acquirer button")
-    public ChangeAcquirerActivityDialog clickActivateDeactivateAcquirerButton() {
+    public ChangeAcquirerActivityDialog clickActivateButton() {
         changeAcquirerActivityButton.click();
 
         return new ChangeAcquirerActivityDialog(getPage());
