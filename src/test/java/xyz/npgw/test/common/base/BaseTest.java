@@ -246,7 +246,6 @@ public abstract class BaseTest {
                 .orElse("");
         if (!tokenData.isEmpty()) {
             Token token = new Gson().fromJson(tokenData, Token.class);
-            log.info("isToken - {}", token.idToken);
             context.setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken)));
         }
     }
