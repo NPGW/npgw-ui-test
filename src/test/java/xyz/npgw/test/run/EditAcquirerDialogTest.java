@@ -44,7 +44,7 @@ public class EditAcquirerDialogTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirerName)
+                .getSelectAcquirer().typeName(acquirerName)
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirerName);
 
         List<String> actualPlaceholders = acquirersPage

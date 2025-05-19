@@ -265,7 +265,6 @@ public class AcquirersPageTest extends BaseTest {
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
     }
 
-    //    @Ignore("System config in the table does not match the expected value expected")
     @Test
     @TmsLink("463")
     @Epic("System/Acquirers")
@@ -301,7 +300,7 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirer.acquirerName())
+                .getSelectAcquirer().typeName(acquirer.acquirerName())
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirer.acquirerName());
 
         AcquirersTableComponent table = acquirersPage.getTable();
@@ -437,7 +436,7 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeAcquirerNameToSelectAcquirerInputField(acquirerName)
+                .getSelectAcquirer().typeName(acquirerName)
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirerName)
                 .getTable().clickActivateDeactivateAcquirerButton()
                 .clickDeactivateButton();
