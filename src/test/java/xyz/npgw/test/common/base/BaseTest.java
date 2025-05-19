@@ -233,12 +233,12 @@ public abstract class BaseTest {
     private void initPageRequestContext() {
         StorageState storageState = new Gson().fromJson(context.storageState(), StorageState.class);
         LocalStorage[] localStorage = storageState.origins()[0].localStorage();
-        String token_data_value = Arrays.stream(localStorage)
+        String tokenData = Arrays.stream(localStorage)
                 .filter(item -> item.name().equals("token_data"))
                 .findAny()
                 .map(LocalStorage::value)
                 .orElse("");
-        Token token = new Gson().fromJson(token_data_value, Token.class);
+        Token token = new Gson().fromJson(tokenData, Token.class);
         context.setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken)));
     }
 
