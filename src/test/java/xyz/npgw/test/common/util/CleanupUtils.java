@@ -69,7 +69,7 @@ public class CleanupUtils {
                         for (String merchantId : user.merchantIds()) {
                             if (merchantId.isBlank()
                                     || !merchantId.startsWith("id.merchant.")
-                                    || merchantId.matches("^id.merchant.[0-9a-f]{32}$")) {
+                                    || merchantId.matches("^id\\.merchant\\.[0-9a-f]{32}$")) {
 
                                 log.info("---will delete invalid merchant ---> |{}|", merchantId);
                                 BusinessUnit.delete(request,
@@ -84,7 +84,7 @@ public class CleanupUtils {
                             User.delete(request, user);
                         }
 
-                        if (user.userRole() == UserRole.ADMIN && user.merchantIds().length != 0) {
+                        if (user.userRole() == UserRole.ADMIN && user.merchantIds().length > 0) {
                             log.info("company admins with merchant");
                             for (String merchantId : user.merchantIds()) {
                                 log.info("---will delete admin merchant ---> |{}|", merchantId);
@@ -113,7 +113,7 @@ public class CleanupUtils {
                             User.delete(request, user);
                         }
 
-                        if (user.userRole() == UserRole.SUPER && user.merchantIds().length != 0) {
+                        if (user.userRole() == UserRole.SUPER && user.merchantIds().length > 0) {
                             log.info("super admins with merchant");
                             for (String merchantId : user.merchantIds()) {
                                 log.info("---will delete super merchant ---> |{}|", merchantId);
