@@ -446,7 +446,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
-        assertThat(acquirersPage.getAlert().getAlertMessage()).hasText("SUCCESSAcquirer was deactivated successfully");
+        assertThat(acquirersPage.getAlert().getMessage()).hasText("SUCCESSAcquirer was deactivated successfully");
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirersPage
@@ -459,7 +459,7 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: Successful message");
         assertThat(acquirersPage
-                .getAlert().getAlertMessage())
+                .getAlert().getMessage())
                 .hasText("SUCCESSAcquirer was deactivated successfully");
 
         Allure.step("Verify: Acquirer status changed back to Active");
