@@ -8,11 +8,7 @@ import xyz.npgw.test.page.dialog.acquirer.ChangeActivityButton;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
-@Getter
 public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
-
-    private final Locator editAcquirerButton = getByTestId("EditAcquirerButton");
-    private final Locator changeActivityButton = getByTestId("ChangeBusinessUnitActivityButton");
 
     public AcquirersTableComponent(Page page) {
         super(page);
@@ -24,16 +20,26 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
         return new AcquirersPage(getPage());
     }
 
+    public Locator getEditAcquirerButton(Locator row) {
+
+        return row.getByTestId("EditAcquirerButton");
+    }
+
+    public Locator getChangeActivityButton(Locator row) {
+
+        return row.getByTestId("ChangeBusinessUnitActivityButton");
+    }
+
     @Step("Click 'Edit' button to edit acquirer")
-    public EditAcquirerDialog clickEditAcquirerButton() {
-        editAcquirerButton.click();
+    public EditAcquirerDialog clickEditAcquirerButton(Locator row) {
+        getEditAcquirerButton(row).click();
 
         return new EditAcquirerDialog(getPage());
     }
 
     @Step("Click Activate/Deactivate acquirer button")
-    public ChangeActivityButton clickChangeActivityButton() {
-        changeActivityButton.click();
+    public ChangeActivityButton clickChangeActivityButton(Locator row) {
+        getChangeActivityButton(row).click();
 
         return new ChangeActivityButton(getPage());
     }

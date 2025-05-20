@@ -324,10 +324,10 @@ public class AcquirersPageTest extends BaseTest {
         }
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(acquirersPage.getTable().getEditAcquirerButton()).isVisible();
+        assertThat(acquirersPage.getTable().getEditAcquirerButton(row)).isVisible();
 
         Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getTable().getChangeActivityButton()).isVisible();
+        assertThat(acquirersPage.getTable().getChangeActivityButton(row)).isVisible();
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
@@ -437,8 +437,12 @@ public class AcquirersPageTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().typeName(acquirerName)
-                .getSelectAcquirer().clickAcquirerInDropdown(acquirerName)
-                .getTable().clickChangeActivityButton()
+                .getSelectAcquirer().clickAcquirerInDropdown(acquirerName);
+
+        Locator row = acquirersPage.getTable().getRows();
+
+        acquirersPage
+                .getTable().clickChangeActivityButton(row)
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
@@ -450,7 +454,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("Inactive");
 
         acquirersPage
-                .getTable().clickChangeActivityButton()
+                .getTable().clickChangeActivityButton(row)
                 .clickActivateButton();
 
         Allure.step("Verify: Successful message");
