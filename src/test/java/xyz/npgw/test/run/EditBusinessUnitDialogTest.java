@@ -1,5 +1,6 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
@@ -13,6 +14,7 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
+import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
@@ -38,7 +40,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
-                .clickEditBusinessUnitButton()
+                .getTable().clickEditBusinessUnitButton(buName)
                 .getDialogHeader();
 
         Allure.step("Verify: the header contains the expected title text");
@@ -63,7 +65,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
-                .clickEditBusinessUnitButton();
+                .getTable().clickEditBusinessUnitButton(buName);
 
         Allure.step("Verify: all labels are correct for each field");
         assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
@@ -87,7 +89,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
-                .clickEditBusinessUnitButton();
+                .getTable().clickEditBusinessUnitButton(buName);
 
         Allure.step("Verify: Company name is pre-filled correctly");
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasValue(companyName);
@@ -97,53 +99,33 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
-    @Ignore
-    @Test
+    @Test(invocationCount = 20)
     @TmsLink("528")
     @Epic("System/Companies and business units")
     @Feature("Edit business unit")
     @Description("Verify that the dialog is closed by clicking on the 'Close' button")
-    public void testVerifyDialogClosedByClickButtonClose(@Optional("UNAUTHORISED") String userRole) {
+    public void testVerifyDialogClosedByClickClose(){
         TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .loginAs(UserRole.SUPER)
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
-                .clickEditBusinessUnitButton()
+                .getTable().clickEditBusinessUnitButton(buName)
                 .clickCloseButton();
 
-        Allure.step("Verify: Dialog 'Edit business unit' is not displayed");
+        Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' button");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-    }
-
-    @Ignore
-    @Test
-    @TmsLink("544")
-    @Epic("System/Companies and business units")
-    @Feature("Edit business unit")
-    @Description("Verify that the dialog is closed by clicking on the 'Close' icon")
-    public void testVerifyDialogClosedByClickIconClose(@Optional("UNAUTHORISED") String userRole) {
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, buName);
-
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .loginAs(UserRole.SUPER)
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(companyName)
-                .clickEditBusinessUnitButton()
+        companiesAndBusinessUnitsPage
+                .getTable().clickEditBusinessUnitButton(buName)
                 .clickCloseIcon();
 
-        Allure.step("Verify: Dialog 'Edit business unit' is not displayed");
+        Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' icon");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
 
+        TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), companyName, buName);
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 }
