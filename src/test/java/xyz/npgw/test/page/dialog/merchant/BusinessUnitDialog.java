@@ -7,18 +7,13 @@ import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 @Getter
-@SuppressWarnings("unchecked")
 public abstract class BusinessUnitDialog<CurrentDialogT extends BusinessUnitDialog<CurrentDialogT>>
         extends BaseDialog<CompaniesAndBusinessUnitsPage, CurrentDialogT> {
 
     private final Locator companyNameField = getByLabelExact("Company name");
 
-    public BusinessUnitDialog(Page page) {
-        super(page);
+    public BusinessUnitDialog(Page page, CompaniesAndBusinessUnitsPage returnPage) {
+        super(page, returnPage);
     }
 
-    @Override
-    protected CompaniesAndBusinessUnitsPage getReturnPage() {
-        return new CompaniesAndBusinessUnitsPage(getPage());
-    }
 }

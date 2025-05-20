@@ -22,14 +22,8 @@ public class ReportsParametersDialog extends BaseDialog<ReportsPage, ReportsPara
     private final Locator radioButtonPdf = getByRole(AriaRole.RADIO, "PDF");
     private final Locator checkboxes = locator("label:has(input[type='checkbox'])");
 
-    public ReportsParametersDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected ReportsPage getReturnPage() {
-
-        return new ReportsPage(getPage());
+    public ReportsParametersDialog(Page page, ReportsPage returnPage) {
+        super(page, returnPage);
     }
 
     public List<String> getReportColumns() {

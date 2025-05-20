@@ -83,9 +83,9 @@ public class HeaderTest extends BaseTest {
                 .login(email, newPassword)
                 .getHeader().clickUserMenuButton()
                 .getHeader().clickProfileSettingsButton()
-                .getHeader().fillPasswordField(ProjectProperties.getUserPassword())
-                .getHeader().fillRepeatPasswordField(ProjectProperties.getUserPassword())
-                .getHeader().clickSaveButton();
+                .fillPasswordField(ProjectProperties.getUserPassword())
+                .fillRepeatPasswordField(ProjectProperties.getUserPassword())
+                .clickSaveButton();
 
         Allure.step("Verify: success message for changing password");
         assertThat(dashboardPage.getAlert().getMessage())
@@ -173,38 +173,43 @@ public class HeaderTest extends BaseTest {
     @Description("Check password policy validation error messages when changing password in user menu")
     public void testChangePasswordValidationMessages(String userRole) {
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getHeader().clickUserMenuButton()
-                .getHeader().clickProfileSettingsButton()
-                .getHeader().fillPasswordField("QWERTY1!")
-                .getHeader().fillRepeatPasswordField("QWERTY1!")
-                .getHeader().clickSaveButton();
+                .getHeader()
+                .clickUserMenuButton()
+                .getHeader()
+                .clickProfileSettingsButton()
+                .fillPasswordField("QWERTY1!")
+                .fillRepeatPasswordField("QWERTY1!")
+                .clickSaveButton();
 
         Allure.step("Verify: error message for missing lowercase");
         assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have lowercase characters");
 
         dashboardPage
-                .getHeader().fillPasswordField("qwerty1!")
-                .getHeader().fillRepeatPasswordField("qwerty1!")
-                .getHeader().clickSaveButton();
+                .getHeader().clickProfileSettingsButton()
+                .fillPasswordField("qwerty1!")
+                .fillRepeatPasswordField("qwerty1!")
+                .clickSaveButton();
 
         Allure.step("Verify: error message for missing uppercase");
         assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have uppercase characters");
 
         dashboardPage
-                .getHeader().fillPasswordField("Qwertyu!")
-                .getHeader().fillRepeatPasswordField("Qwertyu!")
-                .getHeader().clickSaveButton();
+                .getHeader().clickProfileSettingsButton()
+                .fillPasswordField("Qwertyu!")
+                .fillRepeatPasswordField("Qwertyu!")
+                .clickSaveButton();
 
         Allure.step("Verify: error message for missing numeric");
         assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have numeric characters");
 
         dashboardPage
-                .getHeader().fillPasswordField("Qwertyu1")
-                .getHeader().fillRepeatPasswordField("Qwertyu1")
-                .getHeader().clickSaveButton();
+                .getHeader().clickProfileSettingsButton()
+                .fillPasswordField("Qwertyu1")
+                .fillRepeatPasswordField("Qwertyu1")
+                .clickSaveButton();
 
         Allure.step("Verify: error message for missing symbol");
         assertThat(dashboardPage.getAlert().getMessage())

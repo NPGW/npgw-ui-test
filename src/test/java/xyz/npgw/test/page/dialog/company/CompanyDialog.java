@@ -30,14 +30,8 @@ public abstract class CompanyDialog<CurrentDialogT extends CompanyDialog<Current
     private final Locator apiActiveCheckbox = getByRole(AriaRole.CHECKBOX, "API active");
     private final Locator portalActiveCheckbox = getByRole(AriaRole.CHECKBOX, "Portal active");
 
-    public CompanyDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected CompaniesAndBusinessUnitsPage getReturnPage() {
-
-        return new CompaniesAndBusinessUnitsPage(getPage());
+    public CompanyDialog(Page page, CompaniesAndBusinessUnitsPage returnPage) {
+        super(page, returnPage);
     }
 
     @Step("Fill company name field")

@@ -18,13 +18,8 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
     private final Locator inactiveRadioButton = getByRoleExact(AriaRole.RADIO, "Inactive");
     private final Locator allowedBusinessUnitsTitle = getByTextExact("Allowed business units");
 
-    public UserDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
+    public UserDialog(Page page, TeamPage returnPage) {
+        super(page, returnPage);
     }
 
     @Step("Set user status to {isActive}")

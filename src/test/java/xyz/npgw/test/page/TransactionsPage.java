@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Getter
-public class TransactionsPage extends HeaderPage implements TransactionsTableTrait,
+public class TransactionsPage extends HeaderPage<TransactionsPage> implements TransactionsTableTrait,
         DateRangePickerTrait<TransactionsPage>,
         SelectCompanyTrait<TransactionsPage>,
         SelectBusinessUnitTrait<TransactionsPage> {
@@ -321,6 +321,12 @@ public class TransactionsPage extends HeaderPage implements TransactionsTableTra
     @Step("Click 'Reset filter' button")
     public TransactionsPage clickResetFilterButton() {
         resetFilterButton.click();
+
+        return this;
+    }
+
+    @Override
+    public TransactionsPage self() {
 
         return this;
     }

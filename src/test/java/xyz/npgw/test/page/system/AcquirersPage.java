@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.AcquirersTableTrait;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
@@ -49,5 +50,11 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Acqu
         addAcquirerButton.click();
 
         return new AddAcquirerDialog(getPage());
+    }
+
+    @Override
+    public AcquirersPage self() {
+
+        return this;
     }
 }

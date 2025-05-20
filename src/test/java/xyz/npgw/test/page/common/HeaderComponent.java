@@ -13,10 +13,14 @@ import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.base.BaseComponent;
+import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
 @Getter
-public class HeaderComponent extends BaseComponent {
+public class HeaderComponent<CurrentPageT extends HeaderPage<CurrentPageT>> extends BaseComponent {
+
+    private final CurrentPageT currentPage;
 
     private final Locator img = getPage().getByAltText("logo");
     private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(img));
@@ -26,16 +30,13 @@ public class HeaderComponent extends BaseComponent {
     private final Locator logOutButton = getByTextExact("Log out");
     private final Locator userMenuButton = getByTestId("userMenuToggle");
     private final Locator profileSettingsButton = getByTextExact("Profile Settings");
-    private final Locator passwordField = getByPlaceholder("Enter new password");
-    private final Locator repeatPasswordField = getByPlaceholder("Repeat new password");
-    private final Locator saveButton = locator("button:has-text('Save')");
-    private final Locator closeButton = getByTextExact("Close");
     private final Locator logOutButtonUserMenu = getByRole(AriaRole.MENUITEM, "Log Out");
     private final Locator lightRadioButtonInUserMenu = getByRoleExact(AriaRole.RADIO, "Light");
     private final Locator darkRadioButtonInUserMenu = getByRoleExact(AriaRole.RADIO, "Dark");
 
-    public HeaderComponent(Page page) {
+    public HeaderComponent(Page page, CurrentPageT currentPage) {
         super(page);
+        this.currentPage = currentPage;
     }
 
     @Step("Click on 'Transactions' menu in Header")
@@ -74,46 +75,18 @@ public class HeaderComponent extends BaseComponent {
     }
 
     @Step("Press 'User menu' button")
-    public DashboardPage clickUserMenuButton() {
+    public CurrentPageT clickUserMenuButton() {
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
         userMenuButton.click();
 
-        return new DashboardPage(getPage());
+        return currentPage;
     }
 
     @Step("Press 'Profile Settings' button")
-    public DashboardPage clickProfileSettingsButton() {
+    public ProfileSettingsDialog<CurrentPageT> clickProfileSettingsButton() {
         profileSettingsButton.click();
 
-        return new DashboardPage(getPage());
-    }
-
-    @Step("Enter new password in the 'Password' field")
-    public DashboardPage fillPasswordField(String newPassword) {
-        passwordField.fill(newPassword);
-
-        return new DashboardPage(getPage());
-    }
-
-    @Step("Enter new password in the 'Repeat Password' field")
-    public DashboardPage fillRepeatPasswordField(String newPassword) {
-        repeatPasswordField.fill(newPassword);
-
-        return new DashboardPage(getPage());
-    }
-
-    @Step("Press 'Save' button")
-    public DashboardPage clickSaveButton() {
-        saveButton.click();
-
-        return new DashboardPage(getPage());
-    }
-
-    @Step("Press 'Close' button")
-    public DashboardPage clickCloseButton() {
-        closeButton.click();
-
-        return new DashboardPage(getPage());
+        return new ProfileSettingsDialog<>(getPage(), currentPage);
     }
 
     @Step("Press 'Log out' button in User menu")
@@ -126,17 +99,17 @@ public class HeaderComponent extends BaseComponent {
     }
 
     @Step("Click the 'Light' radio button in the user menu")
-    public DashboardPage clickLightRadioButton() {
+    public CurrentPageT clickLightRadioButton() {
         lightRadioButtonInUserMenu.click();
 
-        return new DashboardPage(getPage());
+        return currentPage;
     }
 
     @Step ("Click the 'Dark' radio button in the user menu")
-    public DashboardPage clickDarkRadioButton() {
+    public CurrentPageT clickDarkRadioButton() {
         darkRadioButtonInUserMenu.click();
 
-        return new DashboardPage(getPage());
+        return currentPage;
     }
 
     public boolean isLogoImageLoaded() {

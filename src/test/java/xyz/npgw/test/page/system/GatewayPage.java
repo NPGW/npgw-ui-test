@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage> {
@@ -37,6 +38,12 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     public GatewayPage selectCurrency(String currency) {
         currencyOptions.filter(new Locator.FilterOptions().setHasText(currency)).click();
         currencyDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+
+        return this;
+    }
+
+    @Override
+    public GatewayPage self() {
 
         return this;
     }

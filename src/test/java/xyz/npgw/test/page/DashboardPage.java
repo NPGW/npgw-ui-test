@@ -13,8 +13,9 @@ import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 
 @Getter
-public final class DashboardPage extends HeaderPage implements DateRangePickerTrait<DashboardPage>,
-        AlertTrait<DashboardPage>, SelectBusinessUnitTrait<DashboardPage>,
+public final class DashboardPage extends HeaderPage<DashboardPage> implements DateRangePickerTrait<DashboardPage>,
+        AlertTrait<DashboardPage>,
+        SelectBusinessUnitTrait<DashboardPage>,
         SelectCompanyTrait<DashboardPage> {
 
     @Getter(AccessLevel.NONE)
@@ -61,6 +62,12 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
     @Step("Select currency from dropdown menu")
     public DashboardPage selectCurrency(String value) {
         getByRole(AriaRole.OPTION, value).click();
+
+        return this;
+    }
+
+    @Override
+    public DashboardPage self() {
 
         return this;
     }

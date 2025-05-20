@@ -1,11 +1,14 @@
 package xyz.npgw.test.page.common.trait;
 
 import xyz.npgw.test.page.base.BaseTrait;
+import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.HeaderComponent;
 
-public interface HeaderTrait extends BaseTrait {
+public interface HeaderTrait<T extends HeaderPage<T>> extends BaseTrait {
 
-    default HeaderComponent getHeader() {
-        return new HeaderComponent(getPage());
+    T self();
+    default HeaderComponent<T> getHeader() {
+
+        return new HeaderComponent<>(getPage(), self());
     }
 }

@@ -20,14 +20,8 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     private final Locator statusSwitch = locator("div[role='radiogroup']");
     private final Locator allowedCurrenciesCheckboxes = locator("div[role='group']");
 
-    public AcquirerDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected AcquirersPage getReturnPage() {
-
-        return new AcquirersPage(getPage());
+    public AcquirerDialog(Page page, AcquirersPage returnPage) {
+        super(page, returnPage);
     }
 
     @Step("Click on the '{option}' radiobutton")

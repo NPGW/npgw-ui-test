@@ -15,6 +15,8 @@ import java.util.List;
 public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT extends BaseDialog<?, ?>>
         extends BaseModel {
 
+    private final ReturnPageT returnPage;
+
     private final Locator dialogHeader = locator("section header");
     private final Locator banner = getByRole(AriaRole.DIALOG).getByRole(AriaRole.BANNER);
     private final Locator closeButton = getByRole(AriaRole.DIALOG).getByText("Close");
@@ -27,11 +29,10 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
     private final Locator alertMessage = locator("[role='alert']");
     private final Locator fieldLabel = getByRole(AriaRole.DIALOG).locator("label[data-slot='label']");
 
-    public BaseDialog(Page page) {
+    public BaseDialog(Page page, ReturnPageT returnPage) {
         super(page);
+        this.returnPage = returnPage;
     }
-
-    protected abstract ReturnPageT getReturnPage();
 
     public List<String> getPlaceholdersOrTextsFromFields() {
         fieldsWithPlaceholder.last().waitFor();
@@ -63,13 +64,13 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
     public ReturnPageT clickCloseButton() {
         closeButton.click();
 
-        return getReturnPage();
+        return returnPage;
     }
 
     @Step("Click on the 'Close' icon to close form")
     public ReturnPageT clickCloseIcon() {
         closeIcon.click();
 
-        return getReturnPage();
+        return returnPage;
     }
 }
