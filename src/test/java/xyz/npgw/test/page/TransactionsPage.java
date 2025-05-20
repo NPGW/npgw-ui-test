@@ -324,4 +324,14 @@ public class TransactionsPage extends HeaderPage implements TransactionsTableTra
 
         return this;
     }
+
+    @Step("Select Payment Method {value} from dropdown menu")
+    public TransactionsPage selectPaymentMethod(String value) {
+        Locator option = getByRole(AriaRole.OPTION, value);
+        option.waitFor();
+        ResponseUtils.clickAndWaitForResponse(getPage(), option, Constants.TRANSACTION_HISTORY_ENDPOINT);
+
+        return this;
+    }
+
 }
