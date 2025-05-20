@@ -17,9 +17,10 @@ public class AddUserDialog extends UserDialog<AddUserDialog> {
     private final Locator passwordField = getByPlaceholder("Enter user password");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
 
-    public AddUserDialog(Page page) {
-        super(page);
+    public AddUserDialog(Page page, TeamPage returnPage) {
+        super(page, returnPage);
     }
+
 
     @Step("Enter user email")
     public AddUserDialog fillEmailField(String email) {

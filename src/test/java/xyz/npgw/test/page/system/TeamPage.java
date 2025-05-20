@@ -29,7 +29,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
     public AddUserDialog clickAddUserButton() {
         getByTestId("AddUserButtonTeamPage").click();
 
-        return new AddUserDialog(getPage());
+        return new AddUserDialog(getPage(), this);
     }
 
     @Step("Click 'Edit user'")
