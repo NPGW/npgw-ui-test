@@ -5,7 +5,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.common.trait.UserTableTrait;

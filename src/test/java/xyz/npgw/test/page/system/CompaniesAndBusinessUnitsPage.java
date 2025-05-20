@@ -6,7 +6,6 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
