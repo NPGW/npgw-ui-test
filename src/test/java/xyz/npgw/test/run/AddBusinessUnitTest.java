@@ -32,7 +32,7 @@ public class AddBusinessUnitTest extends BaseTest {
         Company company = new Company(new Faker());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -56,7 +56,7 @@ public class AddBusinessUnitTest extends BaseTest {
     @Description("Verify 'Add business unit' button is disabled if 'Select company' filter's field is cleaned")
     public void testVerifyAddBusinessUnitButtonDefaultState() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
         Allure.step("Verify: 'Add business unit' button is disabled once no destination company is selected");
@@ -72,7 +72,7 @@ public class AddBusinessUnitTest extends BaseTest {
         Company company = new Company(new Faker());
 
         AddBusinessUnitDialog addBusinessUnitDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -100,7 +100,7 @@ public class AddBusinessUnitTest extends BaseTest {
         Company company = new Company(new Faker());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -127,7 +127,7 @@ public class AddBusinessUnitTest extends BaseTest {
         Company company = new Company(new Faker());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -159,7 +159,7 @@ public class AddBusinessUnitTest extends BaseTest {
         Company company = new Company(new Faker());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -187,7 +187,7 @@ public class AddBusinessUnitTest extends BaseTest {
         BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
         Allure.step("Verify: 'Add business unit' button is disabled before selecting a company");
