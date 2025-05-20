@@ -25,19 +25,11 @@ public class StateManager {
         State state = USER_STATE.get();
         LocalTime now = LocalTime.now();
 
-        switch (runAs) {
-            case SUPER -> {
-                return now.isBefore(state.getSuperExpiration());
-            }
-            case ADMIN -> {
-                return now.isBefore(state.getAdminExpiration());
-            }
-            case USER -> {
-                return now.isBefore(state.getUserExpiration());
-            }
-            default -> {
-                return true;
-            }
-        }
+        return switch (runAs) {
+            case SUPER -> now.isBefore(state.getSuperExpiration());
+            case ADMIN -> now.isBefore(state.getAdminExpiration());
+            case USER -> now.isBefore(state.getUserExpiration());
+            default -> true;
+        };
     }
 }
