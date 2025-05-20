@@ -407,7 +407,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickCreateButton();
 
         do {
-            if (acquirersPage.getTable().getTableRow(acquirerName).count() > 0) {
+            if (acquirersPage.getTable().getRow(acquirerName).count() > 0) {
                 break;
             }
         } while (!acquirersPage.getTable().isLastPage() && acquirersPage.getTable().clickNextPage() != null);
