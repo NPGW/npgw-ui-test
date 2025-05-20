@@ -15,12 +15,7 @@ public class ChangeAcquirerActivityDialog extends BaseDialog<AcquirersPage, Chan
     private final Locator activateButton = getByRole(AriaRole.BUTTON, "Activate");
 
     public ChangeAcquirerActivityDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected AcquirersPage getReturnPage() {
-        return new AcquirersPage(getPage());
+        super(page, new AcquirersPage(page));
     }
 
     @Step("Click 'Deactivate' button")

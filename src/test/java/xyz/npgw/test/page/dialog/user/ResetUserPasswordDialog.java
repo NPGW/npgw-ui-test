@@ -9,12 +9,7 @@ import xyz.npgw.test.page.system.TeamPage;
 public class ResetUserPasswordDialog extends BaseDialog<TeamPage, ResetUserPasswordDialog> {
 
     public ResetUserPasswordDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
+        super(page, new TeamPage(page));
     }
 
     @Step("Enter new password in the 'New password' field")

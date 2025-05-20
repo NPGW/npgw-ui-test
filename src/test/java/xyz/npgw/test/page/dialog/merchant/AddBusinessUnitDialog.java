@@ -20,7 +20,7 @@ public class AddBusinessUnitDialog extends BusinessUnitDialog<AddBusinessUnitDia
     private final Locator getAddMerchantDialogHeader = addMerchantDialog.locator("header");
 
     public AddBusinessUnitDialog(Page page) {
-        super(page);
+        super(page, new CompaniesAndBusinessUnitsPage(page));
     }
 
     @Step("Click on the 'Create' button and trigger an error")

@@ -10,7 +10,7 @@ import xyz.npgw.test.page.system.TeamPage;
 public class EditUserDialog extends UserDialog<EditUserDialog> {
 
     public EditUserDialog(Page page) {
-        super(page);
+        super(page, new TeamPage(page));
     }
 
     @Step("Click 'Save changes' button")

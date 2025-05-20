@@ -7,6 +7,7 @@ import xyz.npgw.test.page.common.HeaderComponent;
 public interface HeaderTrait<T extends HeaderPage<T>> extends BaseTrait {
 
     T self();
+
     default HeaderComponent<T> getHeader() {
 
         return new HeaderComponent<>(getPage(), self());

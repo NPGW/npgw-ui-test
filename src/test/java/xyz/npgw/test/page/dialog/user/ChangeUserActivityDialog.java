@@ -9,12 +9,7 @@ import xyz.npgw.test.page.system.TeamPage;
 public class ChangeUserActivityDialog extends BaseDialog<TeamPage, ChangeUserActivityDialog> {
 
     public ChangeUserActivityDialog(Page page) {
-        super(page);
-    }
-
-    @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
+        super(page, new TeamPage(page));
     }
 
     @Step("Click 'Deactivate' button")

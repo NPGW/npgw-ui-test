@@ -11,7 +11,7 @@ public final class EditCompanyDialog extends CompanyDialog<EditCompanyDialog> {
     private final Locator saveChangesButton = getByRole(AriaRole.BUTTON, "Save changes");
 
     public EditCompanyDialog(Page page) {
-        super(page);
+        super(page, new CompaniesAndBusinessUnitsPage(page));
     }
 
     @Step("Click 'Save changes' button")

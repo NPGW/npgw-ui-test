@@ -15,7 +15,7 @@ public final class AddCompanyDialog extends CompanyDialog<AddCompanyDialog>
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
 
     public AddCompanyDialog(Page page) {
-        super(page);
+        super(page, new CompaniesAndBusinessUnitsPage(page));
     }
 
     @Step("Click on the 'Create' button and trigger an error")
