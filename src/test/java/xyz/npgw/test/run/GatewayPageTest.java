@@ -139,7 +139,7 @@ public class GatewayPageTest extends BaseTest {
     @Epic("System/Gateway")
     @Feature("Currency")
     @Description("Verify that if company is selected all it's business units are presented in the list")
-    public void testCompaniesBusinessUnitsPresence(){
+    public void testCompaniesBusinessUnitsPresence() {
         Company company = new Company(new Faker());
         String businessUnit = new Faker().company().industry();
 
