@@ -2,19 +2,28 @@ package xyz.npgw.test.common.provider;
 
 import org.testng.annotations.DataProvider;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.UserRole;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.entity.UserRole;
 
 public class TestDataProvider {
 
     @DataProvider
-    public static Object[][] getAllUserRoles() {
+    public static Object[][] getUserRole() {
         return new Object[][]{
                 {"SUPER"},
                 {"ADMIN"},
                 {"USER"}
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getUserRoleAndEmail() {
+        return new Object[][]{
+                {"SUPER", ProjectProperties.getSuperEmail()},
+                {"ADMIN", ProjectProperties.getAdminEmail()},
+                {"USER", ProjectProperties.getUserEmail()}
         };
     }
 
