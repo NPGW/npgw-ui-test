@@ -40,15 +40,14 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        selectCompanyField.waitFor();
-        getPage().waitForTimeout(1500);
-
         String lastName = "";
-
-        selectCompanyField.pressSequentially(companyName, new Locator.PressSequentiallyOptions().setDelay(100));
+        getPage().waitForTimeout(1000);
+        selectCompanyField.pressSequentially(
+                companyName,
+                new Locator.PressSequentiallyOptions().setDelay(100));
 
         if (dropdownOptionList.all().isEmpty()) {
-            throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
+            throw new NoSuchElementException("Company '" + companyName + "' not found. Dropdown list is empty.");
         }
 
         while (getCompanyInDropdown(companyName).all().isEmpty()) {
@@ -61,8 +60,10 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         }
 
         getCompanyInDropdown(companyName).first().click();
+
         return page;
     }
+
     @Step("Click select Company clear icon")
     public CurrentPageT clickSelectCompanyClearIcon() {
         selectCompanyClearIcon.dispatchEvent("click");
