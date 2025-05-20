@@ -176,7 +176,7 @@ public class AddBusinessUnitTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
-    @Test(expectedExceptions = AssertionFailedError.class)
+    @Test
     @TmsLink("290")
     @Epic("System/Companies and business units")
     @Feature("Add business unit")
