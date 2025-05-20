@@ -94,16 +94,15 @@ public class DashboardPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("600")
     @Epic("Dashboard")
-    @Feature("")
-    @Description("")
+    @Feature("Transaction summary")
+    @Description("Correct transaction summary is displayed on Dashboard page")
     public void testTransactionSummary() {
         DashboardPage dashboardPage = new DashboardPage(getPage())
                 .getDateRangePicker().setDateRangeFields("01-04-2025", "16-04-2025")
                 .clickRefreshDataButton()
                 .clickCountButton();
-
 
         Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
         assertThat(dashboardPage.getInitiatedBlock())
