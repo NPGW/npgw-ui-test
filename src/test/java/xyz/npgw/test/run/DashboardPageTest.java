@@ -11,6 +11,8 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 
+import java.util.regex.Pattern;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class DashboardPageTest extends BaseTest {
@@ -89,5 +91,69 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
+    }
+
+    @Test
+    @TmsLink("")
+    @Epic("Dashboard")
+    @Feature("")
+    @Description("")
+    public void testTransactionSummary() {
+        DashboardPage dashboardPage = new DashboardPage(getPage())
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "16-04-2025")
+                .clickRefreshDataButton()
+                .clickCountButton();
+
+
+        Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getInitiatedBlock())
+                .containsText(Pattern.compile("INITIATEDUSD.*EUR.*"));
+
+        Allure.step("Verify: PENDING block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getPendingBlock())
+                .containsText(Pattern.compile("PENDINGUSD.*EUR.*"));
+
+        Allure.step("Verify: SUCCESS block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getSuccessBlock())
+                .containsText(Pattern.compile("SUCCESSUSD.*EUR.*"));
+
+        Allure.step("Verify: FAILED block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getFailedBlock())
+                .containsText(Pattern.compile("FAILEDUSD.*EUR.*"));
+
+        Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecycleInitiatedBlock())
+                .containsText(Pattern.compile("INITIATEDUSD.*EUR.*"));
+
+        Allure.step("Verify: PENDING block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecyclePendingBlock())
+                .containsText(Pattern.compile("PENDINGUSD.*EUR.*"));
+
+        Allure.step("Verify: SUCCESS block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecycleSuccessBlock())
+                .containsText(Pattern.compile("SUCCESSUSD.*EUR.*"));
+
+        Allure.step("Verify: FAILED block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecycleFailedBlock())
+                .containsText(Pattern.compile("FAILEDUSD.*EUR.*"));
+
+        dashboardPage
+                .clickAmountButton();
+
+        Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecycleInitiatedBlock())
+                .containsText(Pattern.compile("INITIATEDUSD.*EUR.*"));
+
+        Allure.step("Verify: PENDING block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecyclePendingBlock())
+                .containsText(Pattern.compile("PENDINGUSD.*EUR.*"));
+
+        Allure.step("Verify: SUCCESS block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecycleSuccessBlock())
+                .containsText(Pattern.compile("SUCCESSUSD.*EUR.*"));
+
+        Allure.step("Verify: FAILED block contains 'USD' and 'EUR' currency");
+        assertThat(dashboardPage.getLifecycleFailedBlock())
+                .containsText(Pattern.compile("FAILEDUSD.*EUR.*"));
     }
 }
