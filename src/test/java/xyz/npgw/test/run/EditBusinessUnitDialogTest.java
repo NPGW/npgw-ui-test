@@ -37,7 +37,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         Locator dialogTitle = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().clickEditBusinessUnitButton(buName)
@@ -62,7 +62,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().clickEditBusinessUnitButton(buName);
@@ -86,7 +86,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         EditBusinessUnitDialog editBusinessUnitDialog = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .loginAs(UserRole.SUPER)
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().clickEditBusinessUnitButton(buName);
@@ -109,7 +109,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().clickEditBusinessUnitButton(buName)
