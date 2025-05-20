@@ -11,13 +11,6 @@ import java.nio.charset.StandardCharsets;
 
 public final class TestUtils {
 
-    public static void createUser(APIRequestContext request, String company, String email, String password) {
-        User user = User.newCompanyAdmin(company, email, password);
-        User.delete(request, user);
-        User.create(request, user);
-        User.passChallenge(request, user.email(), user.password());
-    }
-
     public static void createCompanyAdmin(APIRequestContext request, String company, String email, String password) {
         User user = User.newCompanyAdmin(company, email, password);
         User.delete(request, user);
