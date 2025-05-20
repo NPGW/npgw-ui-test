@@ -10,7 +10,6 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.common.table.AcquirersTableComponent;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.List;
