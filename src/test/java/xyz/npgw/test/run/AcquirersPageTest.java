@@ -334,7 +334,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getPaginationItems()).hasText("1");
     }
 
-    @Test(expectedExceptions = {AssertionError.class})
+    @Test
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
