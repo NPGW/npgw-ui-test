@@ -25,9 +25,15 @@ public class AlertComponent<CurrentPageT> extends BaseComponent {
         return currentPage;
     }
 
+    public CurrentPageT waitUntilSuccessAlertIsHidden() {
+        successMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+
+        return currentPage;
+    }
+
     public CurrentPageT waitUntilSuccessAlertIsGone() {
         waitUntilSuccessAlertIsPresent();
-        successMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+        waitUntilSuccessAlertIsHidden();
 
         return currentPage;
     }
