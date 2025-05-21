@@ -91,7 +91,6 @@ public abstract class BaseTest {
         log.info("{}", getTestName(method, testResult).replace("(", "_").split("_")[0]);
         initApiRequestContext();
         openSite(args);
-        initPageRequestContext();
     }
 
     @AfterMethod
@@ -199,6 +198,7 @@ public abstract class BaseTest {
             }
         }
         new AboutBlankPage(page).navigate("/").loginAs(userRole);
+        initPageRequestContext();
     }
 
     private void initApiRequestContext() {
