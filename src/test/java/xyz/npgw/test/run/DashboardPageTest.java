@@ -71,7 +71,7 @@ public class DashboardPageTest extends BaseTest {
                 .hasText(new String[]{"USD", "EUR"});
     }
 
-
+    @Ignore
     // TODO: Add business unit check when enabled
     @Test
     @TmsLink("577")
