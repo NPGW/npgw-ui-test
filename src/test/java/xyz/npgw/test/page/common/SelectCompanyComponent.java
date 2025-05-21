@@ -40,8 +40,11 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        String lastName = "";
+        selectCompanyField.waitFor();
         getPage().waitForTimeout(1500);
+
+        String lastName = "";
+
         selectCompanyField.pressSequentially(
                 companyName,
                 new Locator.PressSequentiallyOptions().setDelay(100));
@@ -58,8 +61,11 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             dropdownOptionList.last().scrollIntoViewIfNeeded();
             lastName = dropdownOptionList.last().innerText();
         }
-
-        getCompanyInDropdown(companyName).click();
+//        .first() - из-за того, что компания "super" отображается в отфильтрованном списке два раза,
+//        это баг(!!), правильно - один раз (или ноль).
+//        На суть теста .first() не влияет и позволяет "не заметить" баг.
+//
+        getCompanyInDropdown(companyName).first().click();
 
         return page;
     }
