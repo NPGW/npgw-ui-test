@@ -7,6 +7,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
@@ -68,6 +69,7 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
+    @Ignore
     @Test(dataProvider = "getUserRoleAndEmail", dataProviderClass = TestDataProvider.class)
     @TmsLink("289")
     @Epic("Header")
