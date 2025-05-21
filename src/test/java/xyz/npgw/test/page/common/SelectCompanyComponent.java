@@ -34,14 +34,14 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         this.page = currentPage;
     }
 
-    public Locator getCompanyInDropdown(String name) {
-        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(name)));
+    public Locator getCompanyInDropdown(String companyName) {
+        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(companyName)));
     }
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
         String lastName = "";
-        getPage().waitForTimeout(1000);
+        getPage().waitForTimeout(1500);
         selectCompanyField.pressSequentially(
                 companyName,
                 new Locator.PressSequentiallyOptions().setDelay(100));
@@ -59,7 +59,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             lastName = dropdownOptionList.last().innerText();
         }
 
-        getCompanyInDropdown(companyName).first().click();
+        getCompanyInDropdown(companyName).click();
 
         return page;
     }
