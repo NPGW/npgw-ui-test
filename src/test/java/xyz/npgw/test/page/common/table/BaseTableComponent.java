@@ -31,10 +31,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
 
     protected abstract CurrentPageT getCurrentPage();
 
-    protected int getColumnIndex(String columnHeader) {
-        this.columnHeader.last().waitFor();
+    protected int getColumnHeaderIndex(String name) {
+        columnHeader.last().waitFor();
 
-        return ((Number) getColumnHeader(columnHeader).evaluate("el => el.cellIndex")).intValue();
+        return ((Number) getColumnHeader(name).evaluate("el => el.cellIndex")).intValue();
     }
 
     public Locator getColumnHeader(String name) {
@@ -42,7 +42,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     }
 
     public List<String> getColumnValues(String name) {
-        int columnIndex = getColumnIndex(name);
+        int columnIndex = getColumnHeaderIndex(name);
         Locator cells = getPage().locator("tr[role='row'] > td:nth-child(" + (columnIndex + 1) + ")");
 
         return cells.allInnerTexts();
@@ -61,11 +61,11 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     public Locator getCell(String columnHeader, String rowHeader) {
         return rows
                 .filter(new Locator.FilterOptions().setHasText(rowHeader))
-                .locator("td:nth-child(" + (getColumnIndex(columnHeader) + 1) + ")");
+                .locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")");
     }
 
     public List<Locator> getCells(String columnHeader) {
-        return rows.locator("td:nth-child(" + (getColumnIndex(columnHeader) + 1) + ")").all();
+        return rows.locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")").all();
     }
 
     @Step("@Step(Click sort icon in '{columnName}' column)")
@@ -100,8 +100,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     }
 
     @Step("Click on page '{pageNumber}'")
-    public CurrentPageT clickPaginationPage(String number) {
-        getPage().getByLabel("pagination item " + number).click();
+    public CurrentPageT clickOnPaginationPage(String pageNumber) {
+        getPage().getByLabel("pagination item " + pageNumber).click();
 
         return getCurrentPage();
     }
