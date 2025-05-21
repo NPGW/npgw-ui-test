@@ -21,10 +21,11 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Epic("System/Companies and business units")
     @Feature("Edit business unit")
     @Description("Verify that all elements of dialog are displayed properly")
-    public void testEditBusinessUnitDialog(){
+    public void testElementsOfEditBusinessUnitDialog(){
         String companyName = "CompanyForBuEdit";
-        TestUtils.createCompany(getApiRequestContext(), companyName);
         String buName = "NewBUForEdit";
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+
         TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new DashboardPage(getPage())
