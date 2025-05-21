@@ -16,6 +16,7 @@ import xyz.npgw.test.page.DashboardPage;
 import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
@@ -96,6 +97,7 @@ public class DashboardPageTest extends BaseTest {
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
     }
+
     @Test
     @TmsLink("609")
     @Epic("Dashboard")
