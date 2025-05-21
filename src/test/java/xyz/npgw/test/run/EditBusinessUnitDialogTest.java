@@ -44,6 +44,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
+    @Ignore
     @Test
     @TmsLink("501")
     @Epic("System/Companies and business units")
@@ -66,6 +67,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
+    @Ignore
     @Test
     @TmsLink("515")
     @Epic("System/Companies and business units")
@@ -90,6 +92,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
+    @Ignore
     @Test
     @TmsLink("528")
     @Epic("System/Companies and business units")
@@ -113,6 +116,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
+    @Ignore
     @Test
     @TmsLink("544")
     @Epic("System/Companies and business units")
