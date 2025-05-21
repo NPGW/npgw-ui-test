@@ -57,7 +57,6 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             if (dropdownOptionList.last().innerText().equals(lastName)) {
                 throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
             }
-
             dropdownOptionList.last().scrollIntoViewIfNeeded();
             lastName = dropdownOptionList.last().innerText();
         }
