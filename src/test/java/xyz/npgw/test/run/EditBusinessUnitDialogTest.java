@@ -27,8 +27,9 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     public void testElementsOfEditBusinessUnitDialog() {
         String companyName = "CompanyForBuEdit";
         String buName = "NewBUForEdit";
-        TestUtils.createCompany(getApiRequestContext(), companyName);
 
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), companyName, buName);
         TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
 
         EditBusinessUnitDialog editBusinessUnitDialog = new DashboardPage(getPage())
