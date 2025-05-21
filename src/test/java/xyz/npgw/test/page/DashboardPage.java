@@ -6,12 +6,16 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.DateRangePickerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+@Log4j2
 @Getter
 public final class DashboardPage extends HeaderPage implements DateRangePickerTrait<DashboardPage>,
         AlertTrait<DashboardPage>, SelectBusinessUnitTrait<DashboardPage>,
@@ -25,6 +29,21 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonDashboardPage");
     @Getter
     private final Locator currencySelector = getByLabelExact("Currency");
+
+    private final Locator initiatedBlock = getByLabelExact("INITIATED").first();
+    private final Locator pendingBlock = getByLabelExact("PENDING").first();
+    private final Locator successBlock = getByLabelExact("SUCCESS").first();
+    private final Locator failedBlock = getByLabelExact("FAILED").first();
+
+    private final Locator paymentLifecycle = getByTextExact("Payment lifecycle overview").locator("../..");
+    private final Locator lifecycleInitiatedBlock = paymentLifecycle.getByLabel("INITIATED");
+    private final Locator lifecyclePendingBlock = paymentLifecycle.getByLabel("PENDING");
+    private final Locator lifecycleSuccessBlock = paymentLifecycle.getByLabel("SUCCESS");
+    private final Locator lifecycleFailedBlock = paymentLifecycle.getByLabel("FAILED");
+
+    private final Locator amountButton = getByTextExact("Amount");
+    private final Locator countButton = getByTextExact("Count");
+
 
     public DashboardPage(Page page) {
         super(page);
@@ -63,5 +82,31 @@ public final class DashboardPage extends HeaderPage implements DateRangePickerTr
         getByRole(AriaRole.OPTION, value).click();
 
         return this;
+    }
+
+    @Step("Click 'Amount' button")
+    public DashboardPage clickAmountButton() {
+        amountButton.click();
+
+        return this;
+    }
+
+    @Step("Click 'Count' button")
+    public DashboardPage clickCountButton() {
+        countButton.click();
+
+        return this;
+    }
+
+    public String getRequestData() {
+        AtomicReference<String> data = new AtomicReference<>("");
+        getPage().waitForResponse(response -> {
+            if (response.url().contains("/transaction/summary")) {
+                data.set(response.request().postData());
+                return true;
+            }
+            return false;
+        }, refreshDataButton::click);
+        return data.get();
     }
 }

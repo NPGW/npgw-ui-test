@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -464,7 +463,6 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(menuItemName));
     }
 
-    @Ignore
     @Test
     @TmsLink("520")
     @Epic("Transactions")
@@ -472,9 +470,9 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Verify that the Company admin can see all the company's business units in the Business unit "
             + "dropdown list")
     public void testTheVisibilityOfTheAvailableBusinessUnitOptions(@Optional("UNAUTHORISED") String userRole) {
-        String[] businessUnitNames = {"Business unit 1", "Business unit 2", "Business unit 3",
+        String[] businessUnitNames = new String[]{"Business unit 1", "Business unit 2", "Business unit 3",
                 "Business unit 4"};
-        String companyAdminEmail = "company.admin.520@gmail.com";
+        String companyAdminEmail = "companyAdmin@gmail.com";
         String companyAdminPassword = "CompanyAdmin1!";
         TestUtils.deleteUser(getApiRequestContext(), companyAdminEmail);
         TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
@@ -486,8 +484,7 @@ public class TransactionsPageTest extends BaseTest {
 
         TransactionsPage transactionsPage = new AboutBlankPage((getPage()))
                 .navigate("/login")
-                .loginAndChangePassword(companyAdminEmail, companyAdminPassword)
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .login(companyAdminEmail, companyAdminPassword)
                 .clickTransactionsLink()
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
