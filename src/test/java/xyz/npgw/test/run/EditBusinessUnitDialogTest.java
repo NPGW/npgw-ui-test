@@ -17,7 +17,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 public class EditBusinessUnitDialogTest extends BaseTest {
 
     @Test
-    @TmsLink("387, 501, 515, 528")
+    @TmsLink("387")    @TmsLink("501")    @TmsLink("515")    @TmsLink("528")
     @Epic("System/Companies and business units")
     @Feature("Edit business unit")
     @Description("Verify that all elements of dialog are displayed properly")
