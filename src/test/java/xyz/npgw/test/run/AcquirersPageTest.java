@@ -341,8 +341,6 @@ public class AcquirersPageTest extends BaseTest {
     @Description("Verifies that table column headers are displayed correctly on each page when navigating"
             + " through paginated results.")
     public void testColumnHeadersDisplayCorrectlyOnAllPages() {
-        Allure.step("Test disabled / Known bug: The column is not visible on the screen!");
-
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
