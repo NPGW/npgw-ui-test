@@ -15,6 +15,7 @@ public class AboutBlankPage extends BasePage {
     public LoginPage navigate(String url) {
         getPage().navigate(url);
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
+        getPage().waitForURL("**%s".formatted(url));
 
         return new LoginPage(getPage());
     }
