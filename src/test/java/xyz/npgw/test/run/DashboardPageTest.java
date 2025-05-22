@@ -87,7 +87,7 @@ public class DashboardPageTest extends BaseTest {
         DashboardPage dashboardPage = new DashboardPage(getPage())
                 .refreshDashboard()
                 .getSelectCompany().selectCompany(companyName)
-                .getSelectBusinessUnit().selectBusinessUnit("")
+                .getSelectBusinessUnit().selectBusinessUnit("testResetFilter")
                 .clickCurrencySelector()
                 .selectCurrency("EUR")
                 .clickResetFilterButton();

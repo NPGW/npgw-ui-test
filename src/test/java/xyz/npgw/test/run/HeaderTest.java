@@ -70,7 +70,6 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
-    @Ignore
     @Test(dataProvider = "getUserRoleAndEmail", dataProviderClass = TestDataProvider.class)
     @TmsLink("289")
     @Epic("Header")
