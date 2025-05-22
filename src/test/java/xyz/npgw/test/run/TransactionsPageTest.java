@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -115,7 +114,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getRowsPerPageOptions()).hasText("102550100");
     }
 
-    @Ignore
     @Test
     @TmsLink("130")
     @Epic("Transactions")
