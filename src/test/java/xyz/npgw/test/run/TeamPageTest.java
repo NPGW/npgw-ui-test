@@ -388,7 +388,6 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new AboutBlankPage(getPage())
                 .navigate("/login")
                 .login(ADMIN_EMAIL, ADMIN_PASSWORD)
-                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(analystEmail)
