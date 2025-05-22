@@ -81,7 +81,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
-        final String companyName = "testResetFilter company";
+        final String companyName = "testResetFilter";
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
 
         DashboardPage dashboardPage = new DashboardPage(getPage())
