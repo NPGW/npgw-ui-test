@@ -144,11 +144,11 @@ public class AddBusinessUnitTest extends BaseTest {
                 .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify: New business unit name appears in the list");
-        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstName())
+        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstRowCell("Business unit name"))
                 .hasText(company.companyType());
 
         Allure.step("Verify: Merchant ID is displayed");
-        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstId())
+        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstRowCell("Business unit ID"))
                 .containsText("id.merchant");
 
         TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), company.companyName(), company.companyType());
@@ -231,11 +231,11 @@ public class AddBusinessUnitTest extends BaseTest {
                 .hasValue(COMPANY_NAME);
 
         Allure.step("Verify: New business unit name appears in the list");
-        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstName())
+        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstRowCell("Business unit name"))
                 .hasText(businessUnit.merchantTitle());
 
         Allure.step("Verify: Merchant ID is displayed");
-        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstId())
+        assertThat(companiesAndBusinessUnitsPage.getTable().getFirstRowCell("Business unit ID"))
                 .containsText("id.merchant");
 
         TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), COMPANY_NAME, businessUnit.merchantTitle());

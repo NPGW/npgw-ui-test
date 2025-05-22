@@ -27,13 +27,4 @@ public class BusinessUnitsTableComponent extends BaseTableComponent<CompaniesAnd
 
         return new EditBusinessUnitDialog(getPage());
     }
-
-    public Locator getFirstName() {
-        return getCells("Business unit name").get(0);
-    }
-
-    public Locator getFirstId() {
-        return getCells("Business unit ID").get(0);
-    }
-
 }

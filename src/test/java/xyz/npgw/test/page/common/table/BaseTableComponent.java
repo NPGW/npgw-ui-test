@@ -117,4 +117,9 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     public boolean isNotLastPage() {
         return !Objects.equals(paginationNext.getAttribute("tabindex"), "-1");
     }
+
+    public Locator getFirstRowCell(String columnHeader) {
+        return getCells(columnHeader).get(0);
+    }
+
 }
