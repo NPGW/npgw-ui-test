@@ -37,9 +37,9 @@ public class EditCompanyDialogTest extends BaseTest {
                 .fillCompanyStateField("Provence")
                 .fillCompanyZipField("75001")
                 .fillCompanyCityField("Paris")
-                .fillCompanyPhoneField("+33 1 22-83-56-11")
-                .fillCompanyMobileField("+33 7 22-83-56-11")
-                .fillCompanyFaxField("84952235611")
+                .fillCompanyPhoneField("+12345678901234")
+                .fillCompanyMobileField("+12345678901234")
+                .fillCompanyFaxField("+12345678901234")
                 .clickSaveChangesButton();
 
         Allure.step("Verify: success message is displayed");
