@@ -73,25 +73,30 @@ public class DashboardPageTest extends BaseTest {
                 .hasText(new String[]{"USD", "EUR"});
     }
 
-    @Ignore
-    // TODO: Add business unit check when enabled
     @Test
     @TmsLink("577")
     @Epic("Dashboard")
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
-        final String companyName = "framework";
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
+        final String companyName = "testResetFilter";
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, "testResetFilter");
 
         DashboardPage dashboardPage = new DashboardPage(getPage())
+                .refreshDashboard()
                 .getSelectCompany().selectCompany(companyName)
+                .getSelectBusinessUnit().selectBusinessUnit("")
                 .clickCurrencySelector()
                 .selectCurrency("EUR")
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
         assertThat(dashboardPage.getSelectCompany().getSelectCompanyField()).hasValue("");
+
+        Allure.step("Verify: the selected business unit field is empty after reset");
+        assertThat(dashboardPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue("");
 
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
