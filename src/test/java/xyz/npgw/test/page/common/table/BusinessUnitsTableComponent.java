@@ -2,12 +2,14 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
+@Getter
 public class BusinessUnitsTableComponent extends BaseTableComponent<CompaniesAndBusinessUnitsPage> {
+
     public BusinessUnitsTableComponent(Page page) {
         super(page);
     }
@@ -24,6 +26,14 @@ public class BusinessUnitsTableComponent extends BaseTableComponent<CompaniesAnd
         editButton.click();
 
         return new EditBusinessUnitDialog(getPage());
+    }
+
+    public Locator getFirstName() {
+        return getCells("Business unit name").get(0);
+    }
+
+    public Locator getFirstId() {
+        return getCells("Business unit ID").get(0);
     }
 
 }
