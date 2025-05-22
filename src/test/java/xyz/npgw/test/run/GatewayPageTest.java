@@ -7,9 +7,9 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
@@ -71,21 +71,22 @@ public class GatewayPageTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test
     @TmsLink("307")
     @Epic("System/Gateway")
     @Feature("Currency")
-    @Description(
-            "Check that selecting a company populates the 'Business units list',"
-                    + " and when no company is selected, the list is empty with 'No items.'")
+    @Description("Check that selecting a company populates the 'Business units list',"
+            + " and when no company is selected, the list is empty with 'No items.'")
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
-
         String companyName = "Company 112172";
         String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant for C112172"};
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        Arrays.stream(expectedBusinessUnitsList).forEach(merchantTitle ->
+                TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle));
         int expectedCount = expectedBusinessUnitsList.length;
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyPlaceholder()
