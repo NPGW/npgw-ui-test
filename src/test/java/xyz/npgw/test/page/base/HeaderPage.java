@@ -95,13 +95,17 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     }
 
     @Step("Click the 'Light' radio button in the user menu")
-    public void clickLightRadioButton() {
+    public CurrentPageT clickLightRadioButton() {
         lightRadioButtonInUserMenu.click();
+
+        return (CurrentPageT) this;
     }
 
     @Step("Click the 'Dark' radio button in the user menu")
-    public void clickDarkRadioButton() {
+    public CurrentPageT clickDarkRadioButton() {
         darkRadioButtonInUserMenu.click();
+
+        return (CurrentPageT) this;
     }
 
     public boolean isLogoImageLoaded() {
