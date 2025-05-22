@@ -547,7 +547,7 @@ public class TeamPageTest extends BaseTest {
                 ProjectProperties.getAdminPassword());
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
-                .reloadDashboard()
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(companyName)
                 .clickAddUserButton()
