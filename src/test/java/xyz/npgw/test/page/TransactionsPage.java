@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Getter
-public class TransactionsPage extends HeaderPage implements TransactionsTableTrait,
+public class TransactionsPage extends HeaderPage<TransactionsPage> implements TransactionsTableTrait,
         DateRangePickerTrait<TransactionsPage>,
         SelectCompanyTrait<TransactionsPage>,
         SelectBusinessUnitTrait<TransactionsPage> {

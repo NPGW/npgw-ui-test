@@ -17,7 +17,7 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
         extends BaseModel implements AlertTrait<CurrentDialogT> {
 
     private final Locator dialog = getByRole(AriaRole.DIALOG);
-    private final Locator dialogHeader = dialog.locator("section header");
+    private final Locator dialogHeader = locator("section header");
     private final Locator closeButton = dialog.getByText("Close");
     private final Locator closeIcon = dialog.getByLabel("Close");
     private final Locator inputFields = dialog.getByRole(AriaRole.TEXTBOX);

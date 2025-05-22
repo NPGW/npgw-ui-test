@@ -16,6 +16,7 @@ import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
 @Getter
+@SuppressWarnings("unchecked")
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {
 
     private final Locator img = getPage().getByAltText("logo");
@@ -81,7 +82,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     public ProfileSettingsDialog<CurrentPageT> clickProfileSettingsButton() {
         profileSettingsButton.click();
 
-        return new ProfileSettingsDialog<CurrentPageT>(getPage(), (CurrentPageT) this);
+        return new ProfileSettingsDialog<>(getPage(), (CurrentPageT) this);
     }
 
     @Step("Click 'Log out' button in User menu")
@@ -94,17 +95,13 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     }
 
     @Step("Click the 'Light' radio button in the user menu")
-    public CurrentPageT clickLightRadioButton() {
+    public void clickLightRadioButton() {
         lightRadioButtonInUserMenu.click();
-
-        return (CurrentPageT) this;
     }
 
     @Step("Click the 'Dark' radio button in the user menu")
-    public CurrentPageT clickDarkRadioButton() {
+    public void clickDarkRadioButton() {
         darkRadioButtonInUserMenu.click();
-
-        return (CurrentPageT) this;
     }
 
     public boolean isLogoImageLoaded() {
