@@ -81,10 +81,11 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
-        final String companyName = "framework";
+        final String companyName = "testResetFilter";
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
 
         DashboardPage dashboardPage = new DashboardPage(getPage())
+                .refreshDashboard()
                 .getSelectCompany().selectCompany(companyName)
                 .clickCurrencySelector()
                 .selectCurrency("EUR")
