@@ -95,7 +95,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
-                .reloadDashboard()
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(user.companyName())
                 .clickAddUserButton();
