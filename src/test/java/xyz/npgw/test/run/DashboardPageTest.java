@@ -85,7 +85,7 @@ public class DashboardPageTest extends BaseTest {
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
 
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .reloadDashboard()
+                .refreshDashboard()
                 .getSelectCompany().selectCompany(companyName)
                 .clickCurrencySelector()
                 .selectCurrency("EUR")
