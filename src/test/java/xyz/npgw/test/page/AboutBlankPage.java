@@ -14,8 +14,8 @@ public class AboutBlankPage extends BasePage {
     @Step("Navigate to '{url}' endpoint")
     public LoginPage navigate(String url) {
         getPage().navigate(url);
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
         getPage().waitForURL("**%s".formatted(url));
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new LoginPage(getPage());
     }
