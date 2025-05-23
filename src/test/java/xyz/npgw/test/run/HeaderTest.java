@@ -209,4 +209,34 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have symbol characters");
     }
+
+    @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)
+    @TmsLink("626")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Verify Minimum and Maximum Password Length Restrictions (negative)")
+    public void testPasswordMinMaxLengthRestrictionsOnChange(String userRole) {
+        DashboardPage dashboardPage = new DashboardPage(getPage())
+                .clickUserMenuButton()
+                .clickProfileSettingsButton()
+                .fillPasswordField("A".repeat(7))
+                .fillRepeatPasswordField("A".repeat(7));
+
+        Allure.step("Verify: error message for 7 characters short password is displayed");
+        assertThat(getPage().getByText("Password must be at least 8 characters long")).isVisible();
+        Allure.step("Verify: Save button is disabled due 7 characters short password using");
+        assertThat(getPage().getByText("Save")).isDisabled();
+
+        dashboardPage
+                .fillPasswordField("A".repeat(21))
+                .fillRepeatPasswordField("A".repeat(21));
+
+        String actualPassword = dashboardPage.getPasswordField().inputValue();
+        String actualRepeatPassword = dashboardPage.getRepeatPasswordField().inputValue();
+
+        Allure.step("Verify that the 'Password' field is limited to 20 characters.");
+        Assert.assertEquals(actualPassword.length(), 20);
+        Allure.step("Verify that the 'RepeatPassword' field is limited to 20 characters.");
+        Assert.assertEquals(actualRepeatPassword.length(), 20);
+    }
 }
