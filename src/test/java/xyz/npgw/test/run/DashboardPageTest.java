@@ -51,7 +51,6 @@ public class DashboardPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
-    @Ignore
     @Test
     @TmsLink("575")
     @Epic("Dashboard")
@@ -66,11 +65,11 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: status chart legend labels are correctly displayed");
         assertThat(dashboardPage.getXAxisTexts())
-                .hasText(new String[]{"INITIATED", "FAILED"});
+                .hasText(new String[]{"INITIATED", "SUCCESS", "FAILED"});
 
         Allure.step("Verify: currency legend labels are correctly displayed");
         assertThat(dashboardPage.getCurrencyLegendLabels())
-                .hasText(new String[]{"USD", "EUR"});
+                .hasText(new String[]{"EUR", "USD", "GBP"});
     }
 
     @Ignore
