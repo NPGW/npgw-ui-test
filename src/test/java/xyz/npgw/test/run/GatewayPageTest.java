@@ -146,7 +146,7 @@ public class GatewayPageTest extends BaseTest {
         String businessUnit = new Faker().company().industry();
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
