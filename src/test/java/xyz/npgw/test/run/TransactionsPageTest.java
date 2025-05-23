@@ -30,12 +30,12 @@ public class TransactionsPageTest extends BaseTest {
 
     private static final List<String> COLUMNS_HEADERS = List.of(
             "Creation Date",
-            "Merchant ID",
+            "Business unit ID",
             "NPGW Reference",
             "Merchant Reference",
             "Amount",
             "Currency",
-            "Payment Method",
+            "Card type",
             "Status");
 
     @Test
@@ -153,7 +153,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getPaymentMethodSelector()).isVisible();
 
         Allure.step("Verify: Status selector is visible");
-        assertThat(transactionsPage.getStatusSelector()).isVisible();
+        assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -177,22 +177,26 @@ public class TransactionsPageTest extends BaseTest {
     @Feature("Status")
     @Description("Verify that user can see selector Status Options")
     public void testTheVisibilityOfTheStatusSelectorOptions() {
-        List<String> options = List.of("ALL",
+        String [] options = {
+                "ALL",
                 "INITIATED",
                 "PENDING",
                 "SUCCESS",
                 "FAILED",
                 "CANCELLED",
-                "EXPIRED");
+                "EXPIRED"
+        };
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickStatusSelector();
+                .getSelectStatus().clickStatusSelector();
 
         Allure.step("Verify: Selector Status Options are visible");
-        assertEquals(transactionsPage.getStatusSelectorOptions(), options);
+        assertThat(transactionsPage.getSelectStatus().getStatusOptions())
+                .hasText(options);
         Allure.step("Verify: Default selected option in status selector is 'ALL'");
-        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue())
+                .containsText("ALL");
     }
 
     @Test
@@ -284,7 +288,8 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Payment Method Options are visible");
         assertEquals(transactionsPage.getPaymentMethodOptions(), options);
         Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
-        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue())
+                .containsText("ALL");
     }
 
     @Test
@@ -583,7 +588,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(companyName)
                 .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
-                .selectStatus("SUCCESS");
+                .getSelectStatus().selectStatus("SUCCESS");
 
         Allure.step("Verify: status is sent to the server");
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));

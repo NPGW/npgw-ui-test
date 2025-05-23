@@ -32,8 +32,9 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
     }
 
     @Step("Select status '{status}'")
-    public CurrentPageT selectStatus(String status) {
-        statusOptions.getByText(status, new Locator.GetByTextOptions().setExact(true)).click();
+    public CurrentPageT selectStatus(String value) {
+        clickStatusSelector();
+        getByRole(AriaRole.OPTION, value).click();
         statusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;
