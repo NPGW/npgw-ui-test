@@ -19,9 +19,10 @@ import xyz.npgw.test.page.common.trait.TransactionsTableTrait;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Getter
-public class TransactionsPage extends HeaderPage implements TransactionsTableTrait,
+public class TransactionsPage extends HeaderPage<TransactionsPage> implements TransactionsTableTrait,
         DateRangePickerTrait<TransactionsPage>,
         SelectCompanyTrait<TransactionsPage>,
         SelectBusinessUnitTrait<TransactionsPage> {
@@ -321,6 +322,33 @@ public class TransactionsPage extends HeaderPage implements TransactionsTableTra
     @Step("Click 'Reset filter' button")
     public TransactionsPage clickResetFilterButton() {
         resetFilterButton.click();
+
+        return this;
+    }
+
+    @Step("Select Payment method '{value}' from dropdown menu")
+    public TransactionsPage selectPaymentMethod(String value) {
+        paymentMethodSelector.click();
+        getByRole(AriaRole.OPTION, value).click();
+
+        return this;
+    }
+
+    public String getRequestData() {
+        AtomicReference<String> data = new AtomicReference<>("");
+        getPage().waitForResponse(response -> {
+            if (response.url().contains("/transaction/history")) {
+                data.set(response.request().postData());
+                return true;
+            }
+            return false;
+        }, refreshDataButton::click);
+        return data.get();
+    }
+
+    public TransactionsPage selectStatus(String value) {
+        clickStatusSelector();
+        getByRole(AriaRole.OPTION, value).click();
 
         return this;
     }

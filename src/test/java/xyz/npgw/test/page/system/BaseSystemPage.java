@@ -4,7 +4,8 @@ import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.MenuTrait;
 
-public abstract class BaseSystemPage<SystemPageT extends BaseSystemPage<SystemPageT>> extends HeaderPage
+public abstract class BaseSystemPage<SystemPageT extends BaseSystemPage<SystemPageT>>
+        extends HeaderPage<SystemPageT>
         implements MenuTrait {
 
     public BaseSystemPage(Page page) {
@@ -13,7 +14,7 @@ public abstract class BaseSystemPage<SystemPageT extends BaseSystemPage<SystemPa
 
 //    @Step("Click on the 'System administration' button in the Header")
 //    public SystemPageT clickSystemAdministrationLink() {
-//        getHeader().getSystemAdministrationButton().click();
+//        getSystemAdministrationButton().click();
 //        getPage().waitForLoadState(LoadState.NETWORKIDLE);
 //
 //        return (SystemPageT) this;

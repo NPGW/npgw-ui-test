@@ -38,38 +38,35 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     }
 
     public Locator getColumnHeader(String name) {
-
         return columnHeader.getByText(name);
     }
 
-    public List<String> getColumnValues(String name) {
-        int columnIndex = getColumnHeaderIndex(name);
-        Locator cells = getPage().locator("tr[role='row'] > td:nth-child(" + (columnIndex + 1) + ")");
+    public String columnSelector(String columnHeader) {
+        return "td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")";
+    }
 
-        return cells.allInnerTexts();
+    public List<String> getColumnValues(String name) {
+        return rows.locator(columnSelector(name)).allInnerTexts();
     }
 
     public List<String> getColumnHeadersText() {
-
         return columnHeader.allInnerTexts();
     }
 
     public Locator getRow(String rowHeader) {
         Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
 
-        return getRows().filter(new Locator.FilterOptions().setHas(header));
+        return rows.filter(new Locator.FilterOptions().setHas(header));
     }
 
     public Locator getCell(String columnHeader, String rowHeader) {
-
         return rows
                 .filter(new Locator.FilterOptions().setHasText(rowHeader))
-                .locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")");
+                .locator(columnSelector(columnHeader));
     }
 
     public List<Locator> getCells(String columnHeader) {
-
-        return rows.locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")").all();
+        return rows.locator(columnSelector(columnHeader)).all();
     }
 
     @Step("@Step(Click sort icon in '{columnName}' column)")
@@ -117,8 +114,12 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
         return getCurrentPage();
     }
 
-    public boolean isLastPage() {
-
-        return Objects.equals(paginationNext.getAttribute("tabindex"), "-1");
+    public boolean isNotLastPage() {
+        return !Objects.equals(paginationNext.getAttribute("tabindex"), "-1");
     }
+
+    public Locator getFirstRowCell(String columnHeader) {
+        return getCells(columnHeader).get(0);
+    }
+
 }

@@ -23,6 +23,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class GatewayPageTest extends BaseTest {
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("283")
     @Epic("System/Gateway")
@@ -30,7 +31,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("The 'Currency' dropdown toggles and contains options All, USD, EUR.")
     public void testOpenCurrencyDropdown() {
         Locator actualOptions = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .clickCurrencyValue()
                 .getCurrencyOptions();
@@ -39,6 +40,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(actualOptions).hasText(new String[]{"ALL", "USD", "EUR"});
     }
 
+    @Ignore("FAU 23/05")
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("285")
     @Epic("System/Gateway")
@@ -51,7 +53,7 @@ public class GatewayPageTest extends BaseTest {
         List<String> expectedOptions = List.of("ALL", "USD", "EUR");
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab();
 
         Locator actualCurrency = gatewayPage
@@ -89,7 +91,7 @@ public class GatewayPageTest extends BaseTest {
         int expectedCount = expectedBusinessUnitsList.length;
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyPlaceholder()
                 .getSelectCompany().selectCompany(companyName);

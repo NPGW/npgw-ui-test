@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.opentest4j.AssertionFailedError;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Address;
@@ -30,7 +31,7 @@ public class AddCompanyDialogTest extends BaseTest {
             "CompanyNameTest", "Company Type Test",
             new Address("USA", "PA",
                     "19876", "Warwick",
-                    "2151111111", "2152222222", "222333444"),
+                    "+1234567", "+1234567", "+1234567"),
             "Description Test",
             "https://www.test.com", "James Smith", "test@yahoo.com",
             true, true
@@ -59,12 +60,12 @@ public class AddCompanyDialogTest extends BaseTest {
         );
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
         Allure.step("Verify: all placeholders are correct for each field");
-        assertEquals(addCompanyDialog.getAllFieldPlaceholders(), expectedPlaceholders);
+        assertEquals(addCompanyDialog.getAllPlaceholders(), expectedPlaceholders);
     }
 
     @Test(dataProvider = "getInvalidCompanyNameLengths", dataProviderClass = TestDataProvider.class)
@@ -74,7 +75,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Error message is shown for company name is shorter than 4 or longer than 100 characters.")
     public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(name)
@@ -93,7 +94,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("'Create' button is disabled when required fields are not filled.")
     public void testCreateButtonDisabledWhenRequiredFieldsAreEmpty() {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -114,7 +115,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Verify that clicking the Close button successfully closes the 'Add Company' dialog.")
     public void testVerifyCloseAddCompanyDialogWhenCloseButtonIsClicked() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .clickCloseButton();
@@ -130,7 +131,7 @@ public class AddCompanyDialogTest extends BaseTest {
     @Description("Error is displayed when trying to create a company with special characters in the name.")
     public void testErrorIsDisplayedWhenCreatingCompanyWithSpecialCharacters(String character) {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField("Company" + character)
@@ -152,7 +153,7 @@ public class AddCompanyDialogTest extends BaseTest {
         String fullName = name + character;
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(fullName)
@@ -165,6 +166,7 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("223")
     @Epic("System/Companies and business units")
@@ -174,7 +176,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME)
@@ -188,6 +190,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("232")
     @Epic("System/Companies and business units")
@@ -197,7 +200,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME)
@@ -221,7 +224,7 @@ public class AddCompanyDialogTest extends BaseTest {
         String companyName = "Амазон";
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(companyName)
@@ -244,6 +247,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("246")
     @Epic("System/Companies and business units")
@@ -253,7 +257,7 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
+                .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 

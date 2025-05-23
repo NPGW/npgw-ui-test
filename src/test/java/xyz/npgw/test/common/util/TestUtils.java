@@ -15,6 +15,7 @@ public final class TestUtils {
         User user = User.newCompanyAdmin(company, email, password);
         User.delete(request, user);
         User.create(request, user);
+        User.passChallenge(request, user.email(), user.password());
     }
 
     public static void deleteUser(APIRequestContext request, String email) {
@@ -25,8 +26,8 @@ public final class TestUtils {
         User.changePassword(request, email, newPassword);
     }
 
-    public static void createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
-        BusinessUnit.create(request, companyName, merchantTitle);
+    public static BusinessUnit createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
+        return BusinessUnit.create(request, companyName, merchantTitle);
     }
 
     public static void createBusinessUnitsIfNeeded(APIRequestContext request, User user) {
