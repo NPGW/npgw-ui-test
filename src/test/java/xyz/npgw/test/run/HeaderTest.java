@@ -168,7 +168,6 @@ public class HeaderTest extends BaseTest {
         assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
     }
 
-    @Ignore
     @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)
     @TmsLink("540")
     @Epic("Header")
@@ -222,8 +221,8 @@ public class HeaderTest extends BaseTest {
     @Epic("Header")
     @Feature("User menu")
     @Description("Verify Minimum and Maximum Password Length Restrictions (negative)")
-    public void testPasswordMinMaxLengthRestrictionsOnChange(String userRole) {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+    public void testPasswordLengthRestrictionsOnChange(String userRole) {
+        ProfileSettingsDialog dialog = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
                 .fillPasswordField("A".repeat(7))
@@ -234,12 +233,12 @@ public class HeaderTest extends BaseTest {
         Allure.step("Verify: Save button is disabled due 7 characters short password using");
         assertThat(getPage().getByText("Save")).isDisabled();
 
-        dashboardPage
+        dialog
                 .fillPasswordField("A".repeat(21))
                 .fillRepeatPasswordField("A".repeat(21));
 
-        String actualPassword = dashboardPage.getPasswordField().inputValue();
-        String actualRepeatPassword = dashboardPage.getRepeatPasswordField().inputValue();
+        String actualPassword = dialog.getPasswordField().inputValue();
+        String actualRepeatPassword = dialog.getRepeatPasswordField().inputValue();
 
         Allure.step("Verify that the 'Password' field is limited to 20 characters.");
         Assert.assertEquals(actualPassword.length(), 20);
