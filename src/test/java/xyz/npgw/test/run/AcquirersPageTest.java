@@ -113,8 +113,8 @@ public class AcquirersPageTest extends BaseTest {
         Locator actualOptions = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .clickStatusValue()
-                .getStatusOptions();
+                .getSelectStatus().clickStatusValue()
+                .getSelectStatus().getStatusOptions();
 
         Allure.step("Verify: The 'Status' dropdown toggles and contains options All, Active, Inactive.");
         assertThat(actualOptions).hasText(new String[]{"All", "Active", "Inactive"});
