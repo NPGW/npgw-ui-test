@@ -29,8 +29,8 @@ public class AddCompanyDialogTest extends BaseTest {
 
     Company company = new Company(
             "CompanyNameTest", "Company Type Test",
-            new Address("USA", "PA",
-                    "19876", "Warwick",
+            new Address("Warwick", "PA",
+                    "19876", "UA",
                     "+1234567", "+1234567", "+1234567"),
             "Description Test",
             "https://www.test.com", "James Smith", "test@yahoo.com",
@@ -166,28 +166,31 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(addCompanyDialog.getCompanyNameField()).hasAttribute("aria-invalid", "true");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("223")
     @Epic("System/Companies and business units")
     @Feature("Add company")
     @Description("Company can be added by filling out required fields")
     public void testAddCompanyByFillRequiredFields() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
-                .fillCompanyNameField(COMPANY_NAME)
-                .fillCompanyTypeField(COMPANY_TYPE)
+                .fillCompanyNameField(company.companyName())
+                .fillCompanyTypeField(company.companyType())
+                .fillCompanyWebsiteField(company.website())
+                .fillCompanyCountryField(company.companyAddress().country())
+                .fillCompanyZipField(company.companyAddress().zip())
+                .fillCompanyCityField(company.companyAddress().city())
                 .clickCreateButton();
 
         Allure.step("Verify: company creation success message is displayed");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("SUCCESSCompany was created successfully");
 
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
     @Ignore("FAU 23/05")
@@ -247,7 +250,6 @@ public class AddCompanyDialogTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("246")
     @Epic("System/Companies and business units")
