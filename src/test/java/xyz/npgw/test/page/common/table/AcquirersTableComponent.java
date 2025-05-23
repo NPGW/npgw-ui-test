@@ -15,23 +15,20 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
 
     @Override
     protected AcquirersPage getCurrentPage() {
-
         return new AcquirersPage(getPage());
     }
 
     public Locator getEditAcquirerButton(Locator row) {
-
         return row.getByTestId("EditAcquirerButton");
     }
 
     public Locator getChangeActivityButton(Locator row) {
-
         return row.getByTestId("ChangeBusinessUnitActivityButton");
     }
 
     @Step("Click 'Edit' button to edit acquirer")
-    public EditAcquirerDialog clickEditAcquirerButton(Locator row) {
-        getEditAcquirerButton(row).click();
+    public EditAcquirerDialog clickEditAcquirerButton(String acquirerName) {
+        getRow(acquirerName).getByTestId("EditAcquirerButton").click();
 
         return new EditAcquirerDialog(getPage());
     }

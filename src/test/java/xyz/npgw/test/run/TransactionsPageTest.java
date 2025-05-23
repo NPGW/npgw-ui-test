@@ -6,17 +6,18 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -463,7 +464,6 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(menuItemName));
     }
 
-    @Ignore
     @Test
     @TmsLink("520")
     @Epic("Transactions")
@@ -471,8 +471,8 @@ public class TransactionsPageTest extends BaseTest {
     @Description("Verify that the Company admin can see all the company's business units in the Business unit "
             + "dropdown list")
     public void testTheVisibilityOfTheAvailableBusinessUnitOptions(@Optional("UNAUTHORISED") String userRole) {
-        List<String> businessUnitNames = List.of("Business unit 1", "Business unit 2", "Business unit 3",
-                "Business unit 4");
+        String[] businessUnitNames = new String[]{"Business unit 1", "Business unit 2", "Business unit 3",
+                "Business unit 4"};
         String companyAdminEmail = "companyAdmin@gmail.com";
         String companyAdminPassword = "CompanyAdmin1!";
         TestUtils.deleteUser(getApiRequestContext(), companyAdminEmail);
@@ -480,19 +480,17 @@ public class TransactionsPageTest extends BaseTest {
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(
                 getApiRequestContext(), ADMIN_COMPANY_NAME, companyAdminEmail, companyAdminPassword);
-        businessUnitNames.forEach(businessUnitName -> TestUtils.createBusinessUnit(
+        Arrays.stream(businessUnitNames).forEach(businessUnitName -> TestUtils.createBusinessUnit(
                 getApiRequestContext(), ADMIN_COMPANY_NAME, businessUnitName));
 
         TransactionsPage transactionsPage = new AboutBlankPage((getPage()))
                 .navigate("/login")
-                .loginAndChangePassword(companyAdminEmail, companyAdminPassword)
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .login(companyAdminEmail, companyAdminPassword)
                 .clickTransactionsLink()
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
         Allure.step("Verify: Company's business units are visible");
-        assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames
-                .toArray(String[]::new));
+        assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames);
     }
 
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
@@ -518,5 +516,78 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
         assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
+    }
+
+    @Test
+    @TmsLink("620")
+    @Epic("Transactions")
+    @Feature("Refresh data")
+    @Description("Verify the request to server contains all the information from the filter")
+    public void testRequestToServer() {
+        String companyName = "Test Request Server";
+        String merchantTitle = "Test Request Server";
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        BusinessUnit businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .refreshDashboard()
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(companyName)
+                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
+                .getDateRangePicker().setDateRangeFields("01-05-2025", "07-05-2025")
+                .clickCurrencySelector()
+                .selectCurrency("USD")
+                .selectPaymentMethod("VISA")
+                .clickAmountButton()
+                .fillAmountFromField("500")
+                .fillAmountToField("10000")
+                .clickAmountApplyButton();
+
+        Allure.step("Verify: merchant ID is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains(businessUnit.merchantId()));
+
+        Allure.step("Verify: dateFrom is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("2025-05-01T00:00:00.000Z"));
+
+        Allure.step("Verify: dateTo is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("2025-05-07T23:59:59.999Z"));
+
+        Allure.step("Verify: currency is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("USD"));
+
+        Allure.step("Verify: paymentMethod is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("VISA"));
+
+        Allure.step("Verify:amountFrom is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("500"));
+
+        Allure.step("Verify: amountTo is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("10000"));
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    @TmsLink("621")
+    @Epic("Transactions")
+    @Feature("Refresh data")
+    @Description("Verify the status is sent to the server")
+    public void testStatusRequestServer() {
+        String companyName = "Test Request Server";
+        String merchantTitle = "Test Request Server";
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .refreshDashboard()
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(companyName)
+                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
+                .selectStatus("SUCCESS");
+
+        Allure.step("Verify: status is sent to the server");
+        assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
+
+
     }
 }

@@ -30,7 +30,7 @@ public class AddCompanyDialogTest extends BaseTest {
             "CompanyNameTest", "Company Type Test",
             new Address("USA", "PA",
                     "19876", "Warwick",
-                    "2151111111", "2152222222", "222333444"),
+                    "+1234567", "+1234567", "+1234567"),
             "Description Test",
             "https://www.test.com", "James Smith", "test@yahoo.com",
             true, true
@@ -64,7 +64,7 @@ public class AddCompanyDialogTest extends BaseTest {
                 .clickAddCompanyButton();
 
         Allure.step("Verify: all placeholders are correct for each field");
-        assertEquals(addCompanyDialog.getAllFieldPlaceholders(), expectedPlaceholders);
+        assertEquals(addCompanyDialog.getAllPlaceholders(), expectedPlaceholders);
     }
 
     @Test(dataProvider = "getInvalidCompanyNameLengths", dataProviderClass = TestDataProvider.class)

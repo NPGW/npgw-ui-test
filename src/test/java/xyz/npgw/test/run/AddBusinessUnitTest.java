@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
@@ -116,7 +115,6 @@ public class AddBusinessUnitTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
-    @Ignore
     @Test
     @TmsLink("218")
     @Epic("Companies and business units")
@@ -186,7 +184,7 @@ public class AddBusinessUnitTest extends BaseTest {
         BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .reloadDashboard()
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 

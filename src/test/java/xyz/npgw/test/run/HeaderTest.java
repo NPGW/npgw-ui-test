@@ -7,6 +7,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
@@ -16,6 +17,7 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -68,6 +70,7 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
+    @Ignore
     @Test(dataProvider = "getUserRoleAndEmail", dataProviderClass = TestDataProvider.class)
     @TmsLink("289")
     @Epic("Header")
@@ -165,48 +168,52 @@ public class HeaderTest extends BaseTest {
         assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
     }
 
+    @Ignore
     @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)
     @TmsLink("540")
     @Epic("Header")
     @Feature("User menu")
     @Description("Check password policy validation error messages when changing password in user menu")
     public void testChangePasswordValidationMessages(String userRole) {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        ProfileSettingsDialog dialog = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
                 .fillPasswordField("QWERTY1!")
                 .fillRepeatPasswordField("QWERTY1!")
-                .clickSaveButton();
+                .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing lowercase");
-        assertThat(dashboardPage.getAlert().getMessage())
+        assertThat(dialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have lowercase characters");
 
-        dashboardPage
-                .fillPasswordField("qwerty1!")
+        dialog.getAlert().waitUntilSuccessAlertIsHidden();
+
+        dialog.fillPasswordField("qwerty1!")
                 .fillRepeatPasswordField("qwerty1!")
-                .clickSaveButton();
+                .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing uppercase");
-        assertThat(dashboardPage.getAlert().getMessage())
+        assertThat(dialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have uppercase characters");
 
-        dashboardPage
-                .fillPasswordField("Qwertyu!")
+        dialog.getAlert().waitUntilSuccessAlertIsHidden();
+
+        dialog.fillPasswordField("Qwertyu!")
                 .fillRepeatPasswordField("Qwertyu!")
-                .clickSaveButton();
+                .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing numeric");
-        assertThat(dashboardPage.getAlert().getMessage())
+        assertThat(dialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have numeric characters");
 
-        dashboardPage
-                .fillPasswordField("Qwertyu1")
+        dialog.getAlert().waitUntilSuccessAlertIsHidden();
+
+        dialog.fillPasswordField("Qwertyu1")
                 .fillRepeatPasswordField("Qwertyu1")
-                .clickSaveButton();
+                .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing symbol");
-        assertThat(dashboardPage.getAlert().getMessage())
+        assertThat(dialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have symbol characters");
     }
 

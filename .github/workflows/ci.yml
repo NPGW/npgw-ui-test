@@ -53,7 +53,8 @@ jobs:
             viewportHeight=953;
             headlessMode=true;
             tracingMode=false;
-            failFast=true;
+            defaultTimeout=10000;
+            failFast=false;
             videoMode=false
           CI_RUN: true
 

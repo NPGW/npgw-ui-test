@@ -12,17 +12,15 @@ import xyz.npgw.test.page.dialog.user.AddUserDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 
 @Log4j2
-public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait, SelectCompanyTrait<TeamPage>,
+public class TeamPage extends BaseSystemPage<TeamPage> implements
+        UserTableTrait,
+        SelectCompanyTrait<TeamPage>,
         AlertTrait<TeamPage> {
 
     private final Locator statusSelector = getByLabelExact("Status");
 
     public TeamPage(Page page) {
         super(page);
-    }
-
-    public Locator userRow(String username) {
-        return getPage().getByRole(AriaRole.ROW, new Page.GetByRoleOptions().setName(username));
     }
 
     @Step("Click 'Add user' button")
@@ -32,9 +30,9 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements UserTableTrait
         return new AddUserDialog(getPage());
     }
 
-    @Step("Click 'Edit user'")
+    @Step("Click 'Edit user' button")
     public EditUserDialog clickEditUserButton(String username) {
-        Locator editButton = userRow(username).getByTestId("EditUserButton");
+        Locator editButton = getTable().getRow(username).getByTestId("EditUserButton");
         editButton.waitFor();
         editButton.click();
 

@@ -239,7 +239,7 @@ public class AcquirersPageTest extends BaseTest {
                         "Verify: The table contains '%s' rows less than or equal to '%s'", actualRowCount, option));
                 Assert.assertTrue(actualRowCount <= Integer.parseInt(option));
 
-            } while (!acquirersPage.getTable().isLastPage() && acquirersPage.getTable().clickNextPage() != null);
+            } while (acquirersPage.getTable().isNotLastPage() && acquirersPage.getTable().clickNextPage() != null);
 
             totalRows.add(rowsSum);
         }
@@ -334,15 +334,13 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getPaginationItems()).hasText("1");
     }
 
-    @Test(expectedExceptions = {AssertionError.class})
+    @Test
     @TmsLink("487")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
     @Description("Verifies that table column headers are displayed correctly on each page when navigating"
             + " through paginated results.")
     public void testColumnHeadersDisplayCorrectlyOnAllPages() {
-        Allure.step("Test disabled / Known bug: The column is not visible on the screen!");
-
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
@@ -371,7 +369,7 @@ public class AcquirersPageTest extends BaseTest {
                         "The header is not fully visible within the viewport on page '%s' with '%s' pagination!",
                         activePage, option));
 
-            } while (!acquirersPage.getTable().isLastPage() && acquirersPage.getTable().clickNextPage() != null);
+            } while (acquirersPage.getTable().isNotLastPage() && acquirersPage.getTable().clickNextPage() != null);
         }
     }
 
@@ -410,7 +408,7 @@ public class AcquirersPageTest extends BaseTest {
             if (acquirersPage.getTable().getRow(acquirerName).count() > 0) {
                 break;
             }
-        } while (!acquirersPage.getTable().isLastPage() && acquirersPage.getTable().clickNextPage() != null);
+        } while (acquirersPage.getTable().isNotLastPage() && acquirersPage.getTable().clickNextPage() != null);
 
         Allure.step("Verify: Acquirer status");
         assertThat(acquirersPage.getTable().getCell("Status", acquirerName)).hasText(status);
