@@ -5,15 +5,17 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
+import lombok.AccessLevel;
+import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
-import xyz.npgw.test.page.system.AcquirersPage;
 
+@Getter
 public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends BaseComponent {
+    @Getter(AccessLevel.NONE)
     private final CurrentPageT currentPage;
-
-    private final Locator statusLabel = getByLabelExact("Status");
-    private final Locator statusValue = statusLabel.locator("span");
+    private final Locator statusSelector = getByLabelExact("Status");
+    private final Locator statusValue = statusSelector.locator("span");
     private final Locator statusDropdown = locator("div[data-slot='listbox']");
     private final Locator statusOptions = statusDropdown.getByRole(AriaRole.OPTION);
 
@@ -30,12 +32,17 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
     }
 
     @Step("Select status '{status}'")
-    public CurrentPageT selectAcquirerStatus(String status) {
+    public CurrentPageT selectStatus(String status) {
         statusOptions.getByText(status, new Locator.GetByTextOptions().setExact(true)).click();
         statusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;
     }
 
+    @Step("Click 'Status' Selector")
+    public CurrentPageT clickStatusSelector() {
+        statusSelector.click();
 
+        return currentPage;
+    }
 }

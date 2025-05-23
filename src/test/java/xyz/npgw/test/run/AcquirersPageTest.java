@@ -57,7 +57,7 @@ public class AcquirersPageTest extends BaseTest {
                 .isVisible();
 
         Allure.step("Verify: Status label is visible");
-        assertThat(acquirersPage.getStatusLabel()).isVisible();
+        assertThat(acquirersPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Reset Filter Button is visible");
         assertThat(acquirersPage.getResetFilterButton()).isVisible();
@@ -129,8 +129,8 @@ public class AcquirersPageTest extends BaseTest {
         List<Locator> statuses = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .clickStatusValue()
-                .selectAcquirerStatus(status)
+                .getSelectStatus().clickStatusValue()
+                .getSelectStatus().selectStatus(status)
                 .getTable().getCells("Status");
 
         Allure.step(String.format("Verify: The 'Acquirers' list shows only '%s' items after filtering.", status));
@@ -151,19 +151,20 @@ public class AcquirersPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        Locator actualStatus = acquirersPage.getStatusValue();
+        Locator actualStatus = acquirersPage
+                .getSelectStatus().getStatusValue();
 
         for (String status : expectedOptions) {
             acquirersPage
-                    .clickStatusValue()
-                    .selectAcquirerStatus(status);
+                    .getSelectStatus().clickStatusValue()
+                    .getSelectStatus().selectStatus(status);
 
             Allure.step("Verify placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
 
             acquirersPage
-                    .clickStatusValue()
-                    .selectAcquirerStatus(status);
+                    .getSelectStatus().clickStatusValue()
+                    .getSelectStatus().selectStatus(status);
 
             Allure.step("Verify again placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
