@@ -152,7 +152,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).isVisible();
 
         Allure.step("Verify: Payment method selector is visible");
-        assertThat(transactionsPage.getPaymentMethodSelector()).isVisible();
+        assertThat(transactionsPage.getCardTypeSelector()).isVisible();
 
         Allure.step("Verify: Status selector is visible");
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();

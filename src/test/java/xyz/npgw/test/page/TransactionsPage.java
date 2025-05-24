@@ -36,13 +36,13 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator paginationItemTwoActiveButton = getByRole(AriaRole.BUTTON, "pagination item 2 active");
     private final Locator businessUnitSelector = getByTextExact("Business unit").locator("../../..");
     private final Locator currencySelector = getByLabelExact("Currency");
-    private final Locator paymentMethodSelector = getByLabelExact("Card type");
-    private final Locator statusSelector = getByLabelExact("Status");
-    private final Locator amountButton = getByRole(AriaRole.BUTTON, "Amount");
+    private final Locator cardTypeSelector = getByLabelExact("Card type");
+    private final Locator cardTypeButton = getByRole(AriaRole.BUTTON, "Card type");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
     private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage");
+    private final Locator amountButton = getByRole(AriaRole.BUTTON, "Amount");
     private final Locator amountFromField = getByLabelExact("From").locator("..");
     private final Locator amountToField = getByLabelExact("To").locator("..");
     private final Locator clearAmountFromButton = amountFromField.locator("//button[@aria-label='clear input']");
@@ -63,7 +63,6 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator downloadCsvOption = getByRole(AriaRole.MENUITEM, "CSV");
     private final Locator downloadExcelOption = getByRole(AriaRole.MENUITEM, "EXCEL");
     private final Locator downloadPdfOption = getByRole(AriaRole.MENUITEM, "PDF");
-    private final Locator cardTypeButton = getByRole(AriaRole.BUTTON, "Card type");
 
     public TransactionsPage(Page page) {
         super(page);
@@ -202,7 +201,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Click Payment Method Selector")
     public TransactionsPage clickPaymentMethodSelector() {
-        paymentMethodSelector.click();
+        cardTypeSelector.click();
 
         return this;
     }
@@ -316,7 +315,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Select Payment method '{value}' from dropdown menu")
     public TransactionsPage selectPaymentMethod(String value) {
-        paymentMethodSelector.click();
+        cardTypeSelector.click();
         getByRole(AriaRole.OPTION, value).click();
 
         return this;
