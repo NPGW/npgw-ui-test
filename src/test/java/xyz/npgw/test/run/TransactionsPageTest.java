@@ -472,7 +472,6 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(menuItemName));
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("520")
     @Epic("Transactions")
@@ -601,6 +600,7 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
     }
 
+    @Ignore("23/05")
     @Test(dataProvider = "getPaymentMethod", dataProviderClass = TestDataProvider.class)
     @TmsLink("598")
     @Epic("Transactions")
