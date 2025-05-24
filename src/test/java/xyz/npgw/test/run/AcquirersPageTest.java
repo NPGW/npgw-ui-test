@@ -129,7 +129,6 @@ public class AcquirersPageTest extends BaseTest {
         List<Locator> statuses = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectStatus().clickSelector()
                 .getSelectStatus().select(status)
                 .getTable().getCells("Status");
 
@@ -154,16 +153,12 @@ public class AcquirersPageTest extends BaseTest {
         Locator actualStatus = acquirersPage.getSelectStatus().getStatusValue();
 
         for (String status : expectedOptions) {
-            acquirersPage
-                    .getSelectStatus().clickSelector()
-                    .getSelectStatus().select(status);
+            acquirersPage.getSelectStatus().select(status);
 
             Allure.step("Verify placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
 
-            acquirersPage
-                    .getSelectStatus().clickSelector()
-                    .getSelectStatus().select(status);
+            acquirersPage.getSelectStatus().select(status);
 
             Allure.step("Verify again placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);

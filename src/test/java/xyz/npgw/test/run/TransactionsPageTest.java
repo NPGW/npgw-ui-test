@@ -594,8 +594,8 @@ public class TransactionsPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(companyName)
                 .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
                 .getSelectStatus().clickSelector()
-                .getSelectStatus().selectStatusAndNotWaitClosedDropdown("SUCCESS")
-                .getSelectStatus().clickStatusValue();
+                .getSelectStatus().clickValue("SUCCESS")
+                .getSelectStatus().clickSelector();
 
         Allure.step("Verify: status is sent to the server");
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));

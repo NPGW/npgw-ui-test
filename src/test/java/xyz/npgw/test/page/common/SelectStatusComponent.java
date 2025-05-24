@@ -24,35 +24,34 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
         this.currentPage = currentPage;
     }
 
-    @Step("Select status '{value}'")
-    public CurrentPageT select(String value) {
+    @Step("Click status '{value}' in dropdown")
+    public CurrentPageT clickValue(String value) {
         statusOptions
                 .getByText(value, new Locator.GetByTextOptions().setExact(true))
                 .click();
 
+        return currentPage;
+    }
+
+    @Step("Wait until Status dropdown gone")
+    public CurrentPageT waitUntilDropdownGone() {
         statusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;
     }
 
-    @Step("Select status '{status}'")
-    public CurrentPageT selectStatusAndNotWaitClosedDropdown(String value) {
-        statusOptions.getByText(value, new Locator.GetByTextOptions().setExact(true)).click();
-
-        return currentPage;
-    }
-
-
     @Step("Click 'Status' Selector")
     public CurrentPageT clickSelector() {
-        statusSelector.click();
+        statusValue.click();
 
         return currentPage;
     }
 
-    @Step("Click 'Status' value in the selector")
-    public CurrentPageT clickStatusValue() {
-        statusValue.click();
+    @Step("Select status '{value}'")
+    public CurrentPageT select(String value) {
+        clickSelector();
+        clickValue(value);
+        waitUntilDropdownGone();
 
         return currentPage;
     }
