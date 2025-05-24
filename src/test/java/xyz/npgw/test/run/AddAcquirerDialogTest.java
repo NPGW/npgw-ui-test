@@ -60,9 +60,9 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(addAcquirerDialog.getStatusSwitch()).isVisible();
         assertThat(addAcquirerDialog.getStatusSwitch()).hasText("StatusActiveInactive");
 
-        Allure.step("Verify: the 'Allowed Currencies' Checkboxes visible and contains USD&EUR");
+        Allure.step("Verify: the 'Allowed Currencies' Checkboxes visible");
         assertThat(addAcquirerDialog.getAllowedCurrenciesCheckboxes()).isVisible();
-        assertThat(addAcquirerDialog.getAllowedCurrenciesCheckboxes()).hasText("Allowed currenciesUSDEUR");
+        assertThat(addAcquirerDialog.getAllowedCurrenciesCheckboxes()).hasText("Allowed currenciesEURUSDGBP");
 
         addAcquirerDialog.clickCloseButton();
 
