@@ -130,7 +130,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getPaginationItemTwoActiveButton()).isVisible();
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("181")
     @Epic("Transactions")
@@ -274,23 +273,22 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("342")
     @Epic("Transactions")
     @Feature("Status")
     @Description("Verify that user can see Payment Method Options")
-    public void testTheVisibilityOfThePaymentMethodOptions() {
+    public void testTheVisibilityOfTheCardTypeOptions() {
         List<String> options = List.of("ALL",
                 "VISA",
                 "MASTERCARD");
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickPaymentMethodSelector();
+                .clickCardTypeSelector();
 
         Allure.step("Verify: Payment Method Options are visible");
-        assertEquals(transactionsPage.getPaymentMethodOptions(), options);
+        assertEquals(transactionsPage.getCardTypeOptions(), options);
         Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
         assertThat(transactionsPage.getSelectStatus().getStatusValue())
                 .containsText("ALL");

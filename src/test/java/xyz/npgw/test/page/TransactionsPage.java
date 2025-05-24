@@ -57,7 +57,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator amountClearButton = getByTextExact("Clear");
     private final Locator amountAppliedClearButton = getByLabelExact("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
-    private final Locator paymentMethodOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
+    private final Locator cardTypeOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
     private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
     private final Locator amountEditButton = locator("svg[data-icon='pencil']");
     private final Locator downloadCsvOption = getByRole(AriaRole.MENUITEM, "CSV");
@@ -199,15 +199,15 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
-    @Step("Click Payment Method Selector")
-    public TransactionsPage clickPaymentMethodSelector() {
+    @Step("Click 'Card type' selector")
+    public TransactionsPage clickCardTypeSelector() {
         cardTypeSelector.click();
 
         return this;
     }
 
-    public List<String> getPaymentMethodOptions() {
-        return paymentMethodOptions.all().stream().map(Locator::innerText).toList();
+    public List<String> getCardTypeOptions() {
+        return cardTypeOptions.all().stream().map(Locator::innerText).toList();
     }
 
     @Step("Click on the Settings button")
