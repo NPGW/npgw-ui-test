@@ -572,6 +572,7 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("10000"));
     }
 
+    // TODO bug - status isn't sent to server
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("621")
     @Epic("Transactions")
@@ -593,8 +594,6 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: status is sent to the server");
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
-
-
     }
 
     @Ignore("23/05")
