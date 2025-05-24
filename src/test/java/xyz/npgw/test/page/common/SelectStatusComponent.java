@@ -15,7 +15,7 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
     @Getter(AccessLevel.NONE)
     private final CurrentPageT currentPage;
     private final Locator statusSelector = getByLabelExact("Status");
-    private final Locator statusValue = statusSelector.locator("span");
+    private final Locator statusValue = statusSelector.locator("[data-slot='value']");
     private final Locator statusDropdown = locator("div[data-slot='listbox']");
     private final Locator statusOptions = statusDropdown.getByRole(AriaRole.OPTION);
 
@@ -33,8 +33,7 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
 
     @Step("Select status '{status}'")
     public CurrentPageT selectStatus(String value) {
-        clickStatusSelector();
-        getByRole(AriaRole.OPTION, value).click();
+        statusOptions.getByText(value, new Locator.GetByTextOptions().setExact(true)).click();
         statusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;

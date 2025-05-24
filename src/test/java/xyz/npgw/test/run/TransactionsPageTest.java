@@ -172,7 +172,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDownloadButton()).isVisible();
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("229")
     @Epic("Transactions")

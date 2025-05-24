@@ -141,7 +141,6 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("268")
     @Epic("System/Acquirers")
