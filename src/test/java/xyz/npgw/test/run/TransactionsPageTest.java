@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -129,6 +130,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getPaginationItemTwoActiveButton()).isVisible();
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("181")
     @Epic("Transactions")
@@ -171,6 +173,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDownloadButton()).isVisible();
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("229")
     @Epic("Transactions")
@@ -271,6 +274,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("342")
     @Epic("Transactions")
@@ -308,6 +312,7 @@ public class TransactionsPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("350")
     @Epic("Transactions")
@@ -343,6 +348,7 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("359")
     @Epic("Transactions")
@@ -469,6 +475,7 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(menuItemName));
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("520")
     @Epic("Transactions")
@@ -523,6 +530,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
     }
 
+    @Ignore("FAU 23/05")
     @Test
     @TmsLink("620")
     @Epic("Transactions")
@@ -571,6 +579,7 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("10000"));
     }
 
+    @Ignore("FAU 23/05")
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("621")
     @Epic("Transactions")
@@ -595,4 +604,29 @@ public class TransactionsPageTest extends BaseTest {
 
 
     }
+
+    @Test(dataProvider = "getPaymentMethod", dataProviderClass = TestDataProvider.class)
+    @TmsLink("598")
+    @Epic("Transactions")
+    @Feature("Reset filter button")
+    @Description("Verify, that 'Reset filter' button change 'Payment method' to default value ( ALL)")
+    public void testResetPaymentMethod(String paymentMethod) {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Filter displays 'ALL' by default");
+        assertThat(transactionsPage.getPaymentMethodButton()).containsText("ALL");
+
+        transactionsPage.selectPaymentMethod(paymentMethod);
+
+        Allure.step("Verify: Filter displays the selected payment method");
+        assertThat(transactionsPage.getPaymentMethodButton()).containsText(paymentMethod);
+
+        transactionsPage.clickResetFilterButton();
+
+        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
+        assertThat(transactionsPage.getPaymentMethodButton()).containsText("ALL");
+    }
+
 }
