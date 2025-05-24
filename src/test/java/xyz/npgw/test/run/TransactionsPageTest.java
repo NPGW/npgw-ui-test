@@ -616,17 +616,17 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
-        assertThat(transactionsPage.getPaymentMethodButton()).containsText("ALL");
+        assertThat(transactionsPage.getCardTypeButton()).containsText("ALL");
 
         transactionsPage.selectPaymentMethod(paymentMethod);
 
         Allure.step("Verify: Filter displays the selected payment method");
-        assertThat(transactionsPage.getPaymentMethodButton()).containsText(paymentMethod);
+        assertThat(transactionsPage.getCardTypeButton()).containsText(paymentMethod);
 
         transactionsPage.clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
-        assertThat(transactionsPage.getPaymentMethodButton()).containsText("ALL");
+        assertThat(transactionsPage.getCardTypeButton()).containsText("ALL");
     }
 
 }
