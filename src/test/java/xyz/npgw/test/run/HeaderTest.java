@@ -237,12 +237,9 @@ public class HeaderTest extends BaseTest {
                 .fillPasswordField("A".repeat(21))
                 .fillRepeatPasswordField("A".repeat(21));
 
-        String actualPassword = dialog.getPasswordField().inputValue();
-        String actualRepeatPassword = dialog.getRepeatPasswordField().inputValue();
-
         Allure.step("Verify that the 'Password' field is limited to 20 characters.");
-        Assert.assertEquals(actualPassword.length(), 20);
+        Assert.assertEquals(dialog.getPasswordField().inputValue().length(), 20);
         Allure.step("Verify that the 'RepeatPassword' field is limited to 20 characters.");
-        Assert.assertEquals(actualRepeatPassword.length(), 20);
+        Assert.assertEquals(dialog.getRepeatPasswordField().inputValue().length(), 20);
     }
 }
