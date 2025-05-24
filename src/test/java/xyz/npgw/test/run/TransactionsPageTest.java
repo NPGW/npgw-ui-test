@@ -547,7 +547,7 @@ public class TransactionsPageTest extends BaseTest {
                 .getDateRangePicker().setDateRangeFields("01-05-2025", "07-05-2025")
                 .clickCurrencySelector()
                 .selectCurrency("USD")
-                .selectPaymentMethod("VISA")
+                .selectCardType("VISA")
                 .clickAmountButton()
                 .fillAmountFromField("500")
                 .fillAmountToField("10000")
@@ -612,16 +612,16 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
-        assertThat(transactionsPage.getCardTypeButton()).containsText("ALL");
+        assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
 
-        transactionsPage.selectPaymentMethod(paymentMethod);
+        transactionsPage.selectCardType(paymentMethod);
 
         Allure.step("Verify: Filter displays the selected payment method");
-        assertThat(transactionsPage.getCardTypeButton()).containsText(paymentMethod);
+        assertThat(transactionsPage.getCardTypeValue()).containsText(paymentMethod);
 
         transactionsPage.clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
-        assertThat(transactionsPage.getCardTypeButton()).containsText("ALL");
+        assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
     }
 }
