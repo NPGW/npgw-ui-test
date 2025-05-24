@@ -190,7 +190,7 @@ public class TransactionsPageTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectStatus().clickStatusSelector();
+                .getSelectStatus().clickSelector();
 
         Allure.step("Verify: Selector Status Options are visible");
         assertThat(transactionsPage.getSelectStatus().getStatusOptions())
@@ -576,7 +576,6 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("10000"));
     }
 
-    @Ignore("FAU 23/05")
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("621")
     @Epic("Transactions")
@@ -594,7 +593,9 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(companyName)
                 .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
-                .getSelectStatus().selectStatus("SUCCESS");
+                .getSelectStatus().clickSelector()
+                .getSelectStatus().selectStatusAndNotWaitClosedDropdown("SUCCESS")
+                .getSelectStatus().clickStatusValue();
 
         Allure.step("Verify: status is sent to the server");
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));

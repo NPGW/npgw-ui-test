@@ -446,7 +446,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(dashboardPage.getUserMenuButton()).hasText(analystEmail.substring(0, 3));
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("531")
     @Epic("System/Team")
@@ -465,15 +464,16 @@ public class TeamPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().deactivateUser(companyAdmin)
-                .getSelectStatus().clickStatusSelector()
-                .getSelectStatus().selectStatus("Active");
+                .getSelectStatus().clickSelector()
+                .getSelectStatus().select("Active");
 
         Allure.step("Verify: All visible users are 'Active' after applying 'Active' filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)
                 .stream().allMatch(value -> value.equals("Active")));
 
-        teamPage.getSelectStatus().clickStatusSelector()
-                .getSelectStatus().selectStatus("Inactive");
+        teamPage
+                .getSelectStatus().clickSelector()
+                .getSelectStatus().select("Inactive");
 
         Allure.step("Verify: All visible users are 'Inactive' after applying Inactive filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)
