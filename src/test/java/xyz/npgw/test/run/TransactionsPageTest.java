@@ -180,7 +180,7 @@ public class TransactionsPageTest extends BaseTest {
     @Feature("Status")
     @Description("Verify that user can see selector Status Options")
     public void testTheVisibilityOfTheStatusSelectorOptions() {
-        String [] options = {
+        String[] options = {
                 "ALL",
                 "INITIATED",
                 "PENDING",
@@ -601,8 +601,6 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: status is sent to the server");
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
-
-
     }
 
     @Test(dataProvider = "getPaymentMethod", dataProviderClass = TestDataProvider.class)
@@ -628,5 +626,4 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
         assertThat(transactionsPage.getCardTypeButton()).containsText("ALL");
     }
-
 }
