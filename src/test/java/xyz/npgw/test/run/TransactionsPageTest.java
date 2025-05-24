@@ -575,6 +575,7 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("10000"));
     }
 
+    // TODO bug - status isn't sent to server
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("621")
     @Epic("Transactions")
