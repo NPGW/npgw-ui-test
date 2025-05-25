@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -309,7 +308,6 @@ public class TransactionsPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("350")
     @Epic("Transactions")
@@ -345,7 +343,6 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("359")
     @Epic("Transactions")
