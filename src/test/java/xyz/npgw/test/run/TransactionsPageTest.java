@@ -526,7 +526,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("620")
     @Epic("Transactions")
