@@ -600,7 +600,6 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
     }
 
-    @Ignore("23/05")
     @Test(dataProvider = "getPaymentMethod", dataProviderClass = TestDataProvider.class)
     @TmsLink("598")
     @Epic("Transactions")
@@ -621,7 +620,7 @@ public class TransactionsPageTest extends BaseTest {
 
         transactionsPage.clickResetFilterButton();
 
-        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
+        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
     }
 }
