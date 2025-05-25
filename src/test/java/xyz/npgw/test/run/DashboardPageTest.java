@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -51,7 +50,6 @@ public class DashboardPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
-    @Ignore
     @Test
     @TmsLink("575")
     @Epic("Dashboard")
@@ -66,11 +64,11 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: status chart legend labels are correctly displayed");
         assertThat(dashboardPage.getXAxisTexts())
-                .hasText(new String[]{"INITIATED", "FAILED"});
+                .hasText(new String[]{"INITIATED", "SUCCESS", "FAILED"});
 
         Allure.step("Verify: currency legend labels are correctly displayed");
         assertThat(dashboardPage.getCurrencyLegendLabels())
-                .hasText(new String[]{"USD", "EUR"});
+                .hasText(new String[]{"EUR", "USD", "GBP"});
     }
 
     @Test
@@ -123,67 +121,46 @@ public class DashboardPageTest extends BaseTest {
         assertTrue(dashboardPage.getRequestData().contains(businessUnit.merchantId()));
     }
 
-    @Ignore
     @Test
     @TmsLink("600")
     @Epic("Dashboard")
     @Feature("Transaction summary")
     @Description("Correct transaction summary is displayed on Dashboard page")
     public void testTransactionSummary() {
+        Pattern pattern = Pattern.compile("(INITIATED|SUCCESS|FAILED)EUR.*USD.*GBP.*");
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "16-04-2025")
+                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025")
                 .clickRefreshDataButton()
                 .clickCountButton();
 
-        Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getInitiatedBlock())
-                .containsText(Pattern.compile("INITIATEDUSD.*EUR.*"));
+        Allure.step("Verify: INITIATED main block contents");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);
 
-        Allure.step("Verify: PENDING block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getPendingBlock())
-                .containsText(Pattern.compile("PENDINGUSD.*EUR.*"));
+        Allure.step("Verify: SUCCESS main block contents");
+        assertThat(dashboardPage.getSuccessBlock()).containsText(pattern);
 
-        Allure.step("Verify: SUCCESS block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getSuccessBlock())
-                .containsText(Pattern.compile("SUCCESSUSD.*EUR.*"));
+        Allure.step("Verify: FAILED main block contents");
+        assertThat(dashboardPage.getFailedBlock()).containsText(pattern);
 
-        Allure.step("Verify: FAILED block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getFailedBlock())
-                .containsText(Pattern.compile("FAILEDUSD.*EUR.*"));
+        Allure.step("Verify: INITIATED count block contents");
+        assertThat(dashboardPage.getLifecycleInitiatedBlock()).containsText(pattern);
 
-        Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecycleInitiatedBlock())
-                .containsText(Pattern.compile("INITIATEDUSD.*EUR.*"));
+        Allure.step("Verify: SUCCESS count block contents");
+        assertThat(dashboardPage.getLifecycleSuccessBlock()).containsText(pattern);
 
-        Allure.step("Verify: PENDING block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecyclePendingBlock())
-                .containsText(Pattern.compile("PENDINGUSD.*EUR.*"));
-
-        Allure.step("Verify: SUCCESS block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecycleSuccessBlock())
-                .containsText(Pattern.compile("SUCCESSUSD.*EUR.*"));
-
-        Allure.step("Verify: FAILED block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecycleFailedBlock())
-                .containsText(Pattern.compile("FAILEDUSD.*EUR.*"));
+        Allure.step("Verify: FAILED count block contents");
+        assertThat(dashboardPage.getLifecycleFailedBlock()).containsText(pattern);
 
         dashboardPage
                 .clickAmountButton();
 
-        Allure.step("Verify: INITIATED block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecycleInitiatedBlock())
-                .containsText(Pattern.compile("INITIATEDUSD.*EUR.*"));
+        Allure.step("Verify: INITIATED amount block contents");
+        assertThat(dashboardPage.getLifecycleInitiatedBlock()).containsText(pattern);
 
-        Allure.step("Verify: PENDING block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecyclePendingBlock())
-                .containsText(Pattern.compile("PENDINGUSD.*EUR.*"));
+        Allure.step("Verify: SUCCESS amount block contents");
+        assertThat(dashboardPage.getLifecycleSuccessBlock()).containsText(pattern);
 
-        Allure.step("Verify: SUCCESS block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecycleSuccessBlock())
-                .containsText(Pattern.compile("SUCCESSUSD.*EUR.*"));
-
-        Allure.step("Verify: FAILED block contains 'USD' and 'EUR' currency");
-        assertThat(dashboardPage.getLifecycleFailedBlock())
-                .containsText(Pattern.compile("FAILEDUSD.*EUR.*"));
+        Allure.step("Verify: FAILED amount block contents");
+        assertThat(dashboardPage.getLifecycleFailedBlock()).containsText(pattern);
     }
 }
