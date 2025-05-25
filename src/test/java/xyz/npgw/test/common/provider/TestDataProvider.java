@@ -75,7 +75,7 @@ public class TestDataProvider {
     @DataProvider
     public static Object[][] getUsers() {
         return new Object[][]{
-//                {User.newSystemAdmin("super@test.com")}, TODO remove after 500bug being fixed
+                {User.newSystemAdmin("super@test.com")},
                 {User.newCompanyAdmin("admin@test.com")},
                 {User.newCompanyAnalyst("user@test.com")}
         };
