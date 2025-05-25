@@ -33,7 +33,7 @@ public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "TeamPageTest company";
     private static final String ADMIN_COMPANY_NAME = "Admin company";
-    private static final String ADMIN_EMAIL = "admin.email@gmail.com";
+    private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(runId);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
@@ -462,15 +462,13 @@ public class TeamPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().deactivateUser(companyAdmin)
-                .clickStatusSelector()
-                .selectActiveStatus();
+                .getSelectStatus().select("Active");
 
         Allure.step("Verify: All visible users are 'Active' after applying 'Active' filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)
                 .stream().allMatch(value -> value.equals("Active")));
 
-        teamPage.clickStatusSelector()
-                .selectInactiveStatus();
+        teamPage.getSelectStatus().select("Inactive");
 
         Allure.step("Verify: All visible users are 'Inactive' after applying Inactive filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)

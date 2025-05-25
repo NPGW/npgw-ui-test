@@ -46,6 +46,8 @@ import static xyz.npgw.test.common.state.StateManager.setState;
 @Listeners(TestListener.class)
 public abstract class BaseTest {
 
+    protected static String runId = new SimpleDateFormat("_MMdd_HHmmss").format(new Date());
+
     private Playwright playwright;
     private Browser browser;
     private BrowserContext context;

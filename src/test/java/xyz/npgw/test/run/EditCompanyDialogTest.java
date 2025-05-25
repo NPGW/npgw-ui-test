@@ -21,19 +21,21 @@ public class EditCompanyDialogTest extends BaseTest {
     @Feature("Edit company")
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
+        TestUtils.deleteCompany(getApiRequestContext(), "Kate");
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), "Kate");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany("Kate")
                 .clickEditCompanyButton()
                 .fillCompanyTypeField("LLC")
                 .fillCompanyDescriptionField("Description of company business model")
-                .fillCompanyWebsiteField("google.com")
+                .fillCompanyWebsiteField("https://google.com")
                 .fillCompanyPrimaryContactField("John Doe")
                 .fillCompanyEmailField("google@gmail.com")
-                .fillCompanyCountryField("France")
+                .fillCompanyCountryField("FR")
                 .fillCompanyStateField("Provence")
                 .fillCompanyZipField("75001")
                 .fillCompanyCityField("Paris")

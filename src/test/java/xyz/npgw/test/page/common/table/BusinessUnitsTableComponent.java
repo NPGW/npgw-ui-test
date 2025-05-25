@@ -3,10 +3,13 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
+@Getter
 public class BusinessUnitsTableComponent extends BaseTableComponent<CompaniesAndBusinessUnitsPage> {
+
     public BusinessUnitsTableComponent(Page page) {
         super(page);
     }
@@ -24,5 +27,4 @@ public class BusinessUnitsTableComponent extends BaseTableComponent<CompaniesAnd
 
         return new EditBusinessUnitDialog(getPage());
     }
-
 }

@@ -19,10 +19,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     private final Locator headersRow = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
     private final Locator rows = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHasNot(columnHeader));
 
-    private final Locator rowsPerPage = locator("button[aria-label='Rows Per Page']");
+    private final Locator rowsPerPage = getByRole(AriaRole.BUTTON, "Rows Per Page");
     private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
     private final Locator paginationItems = getPage().getByLabel("pagination item");
-    private final Locator paginationNext = getByLabelExact("next page button");
+    private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
 
 
     public BaseTableComponent(Page page) {
@@ -41,11 +41,12 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
         return columnHeader.getByText(name);
     }
 
-    public List<String> getColumnValues(String name) {
-        int columnIndex = getColumnHeaderIndex(name);
-        Locator cells = getPage().locator("tr[role='row'] > td:nth-child(" + (columnIndex + 1) + ")");
+    public String columnSelector(String columnHeader) {
+        return "td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")";
+    }
 
-        return cells.allInnerTexts();
+    public List<String> getColumnValues(String name) {
+        return rows.locator(columnSelector(name)).allInnerTexts();
     }
 
     public List<String> getColumnHeadersText() {
@@ -55,17 +56,17 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     public Locator getRow(String rowHeader) {
         Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
 
-        return getRows().filter(new Locator.FilterOptions().setHas(header));
+        return rows.filter(new Locator.FilterOptions().setHas(header));
     }
 
     public Locator getCell(String columnHeader, String rowHeader) {
         return rows
                 .filter(new Locator.FilterOptions().setHasText(rowHeader))
-                .locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")");
+                .locator(columnSelector(columnHeader));
     }
 
     public List<Locator> getCells(String columnHeader) {
-        return rows.locator("td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")").all();
+        return rows.locator(columnSelector(columnHeader)).all();
     }
 
     @Step("@Step(Click sort icon in '{columnName}' column)")
@@ -108,12 +109,21 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
 
     @Step("Click next page")
     public CurrentPageT clickNextPage() {
-        paginationNext.click();
+        nextPageButton.click();
 
         return getCurrentPage();
     }
 
-    public boolean isNotLastPage() {
-        return !Objects.equals(paginationNext.getAttribute("tabindex"), "-1");
+    public  Locator getActivePaginationPage(String number) {
+        return getByRole(AriaRole.BUTTON, "pagination item " + number + " active");
     }
+
+    public boolean isNotLastPage() {
+        return !Objects.equals(nextPageButton.getAttribute("tabindex"), "-1");
+    }
+
+    public Locator getFirstRowCell(String columnHeader) {
+        return getCells(columnHeader).get(0);
+    }
+
 }

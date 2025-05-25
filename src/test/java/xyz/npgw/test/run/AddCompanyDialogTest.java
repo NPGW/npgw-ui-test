@@ -28,8 +28,8 @@ public class AddCompanyDialogTest extends BaseTest {
 
     Company company = new Company(
             "CompanyNameTest", "Company Type Test",
-            new Address("USA", "PA",
-                    "19876", "Warwick",
+            new Address("Warwick", "PA",
+                    "19876", "US",
                     "+1234567", "+1234567", "+1234567"),
             "Description Test",
             "https://www.test.com", "James Smith", "test@yahoo.com",

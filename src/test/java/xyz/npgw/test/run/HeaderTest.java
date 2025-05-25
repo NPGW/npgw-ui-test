@@ -7,13 +7,14 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import lombok.extern.slf4j.Slf4j;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
+import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
@@ -70,32 +71,31 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
-    @Ignore
-    @Test(dataProvider = "getUserRoleAndEmail", dataProviderClass = TestDataProvider.class)
+    @Test(dataProvider = "getNewUsers", dataProviderClass = TestDataProvider.class)
     @TmsLink("289")
     @Epic("Header")
     @Feature("User menu")
     @Description("Check if the user can change the password through the profile settings in the user menu")
-    public void testChangePassword(String userRole, String email) {
+    public void testChangePassword(String userRole, User user) {
+        TestUtils.createUser(getApiRequestContext(), user);
         String newPassword = "QWEdsa123@";
-        TestUtils.changeUserPassword(getPage().request(), email, newPassword);
 
-        DashboardPage dashboardPage = new DashboardPage(getPage())
-                .clickLogOutButton()
-                .login(email, newPassword)
+        DashboardPage dashboardPage = new AboutBlankPage(getPage())
+                .navigate("/")
+                .login(user.email(), user.password())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
-                .fillPasswordField(ProjectProperties.getUserPassword())
-                .fillRepeatPasswordField(ProjectProperties.getUserPassword())
+                .fillPasswordField(newPassword)
+                .fillRepeatPasswordField(newPassword)
                 .clickSaveButton();
 
         Allure.step("Verify: success message for changing password");
         assertThat(dashboardPage.getAlert().getMessage())
-                .hasText("SUCCESSPassword was changed successfull");
+                .hasText("SUCCESSPassword was changed successfull"); // TODO bug - typo in message
 
         dashboardPage
                 .clickLogOutButton()
-                .login(email, ProjectProperties.getUserPassword());
+                .login(user.email(), newPassword);
 
         Allure.step("Verify: Successfully login with changed password");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
@@ -107,7 +107,6 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Log out via button in the user menu")
     public void testLogOutViaButtonInUserMenu() {
-
         LoginPage loginPage = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickLogOutButtonUserMenu();
@@ -122,7 +121,6 @@ public class HeaderTest extends BaseTest {
     @Feature("Log Out")
     @Description("Log out via button in the Header")
     public void testLogOutViaButtonInHeader() {
-
         LoginPage loginPage = new DashboardPage(getPage())
                 .clickLogOutButton();
 
@@ -168,14 +166,13 @@ public class HeaderTest extends BaseTest {
         assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
     }
 
-    @Ignore
     @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)
     @TmsLink("540")
     @Epic("Header")
     @Feature("User menu")
     @Description("Check password policy validation error messages when changing password in user menu")
     public void testChangePasswordValidationMessages(String userRole) {
-        ProfileSettingsDialog dialog = new DashboardPage(getPage())
+        ProfileSettingsDialog<DashboardPage> dialog = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
                 .fillPasswordField("QWERTY1!")
@@ -215,5 +212,32 @@ public class HeaderTest extends BaseTest {
         Allure.step("Verify: error message for missing symbol");
         assertThat(dialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have symbol characters");
+    }
+
+    @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)
+    @TmsLink("626")
+    @Epic("Header")
+    @Feature("User menu")
+    @Description("Verify Minimum and Maximum Password Length Restrictions (negative)")
+    public void testPasswordLengthRestrictionsOnChange(String userRole) {
+        ProfileSettingsDialog<DashboardPage> dialog = new DashboardPage(getPage())
+                .clickUserMenuButton()
+                .clickProfileSettingsButton()
+                .fillPasswordField("A".repeat(7))
+                .fillRepeatPasswordField("A".repeat(7));
+
+        Allure.step("Verify: error message for 7 characters short password is displayed");
+        assertThat(getPage().getByText("Password must be at least 8 characters long")).isVisible();
+        Allure.step("Verify: Save button is disabled due 7 characters short password using");
+        assertThat(getPage().getByText("Save")).isDisabled();
+
+        dialog
+                .fillPasswordField("A".repeat(21))
+                .fillRepeatPasswordField("A".repeat(21));
+
+        Allure.step("Verify that the 'Password' field is limited to 20 characters.");
+        Assert.assertEquals(dialog.getPasswordField().inputValue().length(), 20);
+        Allure.step("Verify that the 'RepeatPassword' field is limited to 20 characters.");
+        Assert.assertEquals(dialog.getRepeatPasswordField().inputValue().length(), 20);
     }
 }
