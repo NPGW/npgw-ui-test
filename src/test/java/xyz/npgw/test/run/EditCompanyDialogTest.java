@@ -16,16 +16,17 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditCompanyDialogTest extends BaseTest {
 
-    @Ignore("FAU 24/05")
     @Test
     @TmsLink("266")
     @Epic("System/Companies and business units")
     @Feature("Edit company")
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
+        TestUtils.deleteCompany(getApiRequestContext(), "Kate");
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), "Kate");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany("Kate")
@@ -39,9 +40,9 @@ public class EditCompanyDialogTest extends BaseTest {
                 .fillCompanyStateField("Provence")
                 .fillCompanyZipField("75001")
                 .fillCompanyCityField("Paris")
-                .fillCompanyPhoneField("+123456789012")
-                .fillCompanyMobileField("+123456789012")
-                .fillCompanyFaxField("+123456789012")
+                .fillCompanyPhoneField("+1234567890123")
+                .fillCompanyMobileField("+1234567890123")
+                .fillCompanyFaxField("+1234567890123")
                 .clickSaveChangesButton();
 
         Allure.step("Verify: success message is displayed");
