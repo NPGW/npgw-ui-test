@@ -92,9 +92,9 @@ public class TestDataProvider {
     @DataProvider
     public static Object[][] getNewUsers() {
         return new Object[][]{
-                {"SUPER", User.newSystemAdmin("newsuper@test.com")},
-                {"ADMIN", User.newCompanyAdmin("newadmin@test.com")},
-                {"USER", User.newCompanyAnalyst("newuser@test.com")}
+                {"UNAUTHORISED", User.newSystemAdmin("newsuper@test.com")},
+                {"UNAUTHORISED", User.newCompanyAdmin("newadmin@test.com")},
+                {"UNAUTHORISED", User.newCompanyAnalyst("newuser@test.com")}
         };
     }
 
