@@ -8,9 +8,9 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -129,8 +129,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
     }
 
-    @Ignore
-    @Test
+    @Test(invocationCount = 10)
     @TmsLink("602")
     @Epic("System/Gateway")
     @Feature("Currency")
