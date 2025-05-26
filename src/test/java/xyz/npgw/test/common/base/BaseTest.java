@@ -24,6 +24,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.entity.BusinessUnit;
+import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.common.util.TestUtils;
@@ -39,6 +41,7 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Log4j2
 public abstract class BaseTest {
@@ -153,6 +156,22 @@ public abstract class BaseTest {
         if (browser != null) {
             browser.close();
         }
+        Arrays.stream(Company.getAll(apiRequestContext))
+                .filter(c -> c.companyName().matches("^.*\\.\\d{4}\\.\\d{6}$"))
+                .forEach(item -> {
+                    Arrays.stream(BusinessUnit.getAll(apiRequestContext, item.companyName()))
+                            .forEach(unit -> BusinessUnit.delete(apiRequestContext, item.companyName(), unit));
+                    Arrays.stream(User.getAll(apiRequestContext, item.companyName()))
+                            .forEach(user -> User.delete(apiRequestContext, user));
+                    Company.delete(apiRequestContext, item.companyName());
+                });
+        Stream.concat(Arrays.stream(User.getAll(apiRequestContext, "super")),
+                        Arrays.stream(User.getAll(apiRequestContext, "defaultCompany")))
+                .filter(u -> u.email().matches("^.*\\.\\d{4}\\.\\d{6}@email.com$"))
+                .forEach(user -> User.delete(apiRequestContext, user));
+//        Arrays.stream(User.getAll(apiRequestContext, "Admin company"))
+//                .filter(u -> u.email().matches("^.*_\\d{4}_\\d{6}@email.com$"))
+//                .forEach(user -> User.delete(apiRequestContext, user));
         if (apiRequestContext != null) {
             apiRequestContext.dispose();
         }

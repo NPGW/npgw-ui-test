@@ -80,13 +80,13 @@ public record User(
 
     public static boolean exists(APIRequestContext request, String email) {
         APIResponse response = request.get("portal-v1/user?email=%s".formatted(encode(email)));
-        log.info("get user '{}' - {} {}", email, response.status(), response.text());
+        log.debug("get user '{}' - {} {}", email, response.status(), response.text());
         return response.ok() && response.text().contains(email);
     }
 
     public static User[] getAll(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/user/list/%s".formatted(encode(companyName)));
-        log.info("get all users for company '{}' - {} {}", companyName, response.status(), response.text());
+        log.debug("get all users for company '{}' - {} {}", companyName, response.status(), response.text());
         return new Gson().fromJson(response.text(), User[].class);
     }
 

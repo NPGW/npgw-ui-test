@@ -47,7 +47,7 @@ public record Company(
 
     public static Company[] getAll(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/company");
-        log.info("get all companies - {} {}", response.status(), response.text());
+        log.debug("get all companies - {} {}", response.status(), response.text());
         return new Gson().fromJson(response.text(), Company[].class);
     }
 
