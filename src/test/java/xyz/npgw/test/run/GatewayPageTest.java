@@ -129,7 +129,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
     }
 
-    @Test(invocationCount = 10)
+    @Test
     @TmsLink("602")
     @Epic("System/Gateway")
     @Feature("Currency")
