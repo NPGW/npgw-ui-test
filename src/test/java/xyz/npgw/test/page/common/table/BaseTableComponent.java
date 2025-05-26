@@ -56,7 +56,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public Locator getRow(String rowHeader) {
         do {
-            System.out.println("сторінка - "+ getActivePage().innerText());
             Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
             rows.first().waitFor();
             Locator row = rows.filter(new Locator.FilterOptions().setHas(header));
