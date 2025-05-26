@@ -187,6 +187,7 @@ public class AddBusinessUnitTest extends BaseTest {
     @Feature("Add business unit")
     @Description("Validates successful business unit addition to company (E2E test).")
     public void testAddBusinessUnitEndToEndTest() {
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), COMPANY_NAME);
 
         BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");

@@ -24,7 +24,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.entity.UserRole;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 
 import java.io.IOException;
@@ -199,7 +201,12 @@ public abstract class BaseTest {
                 }
             }
         }
-        new AboutBlankPage(page).navigate("/").loginAs(userRole);
+        String email = "%s.%s%s@email.com".formatted(userRole, Thread.currentThread().getId(), runId);
+        if (!User.exists(apiRequestContext, email)) {
+            TestUtils.createUser(apiRequestContext, User.newUser(userRole, email));
+        }
+//        new AboutBlankPage(page).navigate("/").loginAs(userRole);
+        new AboutBlankPage(page).navigate("/").login(email, ProjectProperties.getUserPassword());
         initPageRequestContext();
     }
 
