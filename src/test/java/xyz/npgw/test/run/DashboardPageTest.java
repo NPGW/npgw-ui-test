@@ -91,7 +91,7 @@ public class DashboardPageTest extends BaseTest {
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
-        assertThat(dashboardPage.getSelectCompany().getSelectCompanyField()).hasValue("");
+        assertThat(dashboardPage.getSelectCompany().getInputField()).hasValue("");
 
         Allure.step("Verify: the selected business unit field is empty after reset");
         assertThat(dashboardPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue("");

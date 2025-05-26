@@ -12,21 +12,17 @@ import java.util.NoSuchElementException;
 public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Getter
-    private final Locator selectCompanyField = getByLabelExact("Select company")
-            .or(getByLabelExact("Company"));
+    private final Locator inputField = locator("input[aria-label*='company' i]");
     private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
     @Getter
-    private final Locator selectCompanyPlaceholder = locator("input[aria-label='Select company']");
-    @Getter
     private final Locator companyDropdown = locator("div[data-slot='content']");
-    private final Locator selectCompanyContainer =
-            locator("div[data-slot='input-wrapper']")
-                    .filter(new Locator.FilterOptions().setHas(selectCompanyPlaceholder));
-    private final Locator selectCompanyDropdownChevron =
-            selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
+    private final Locator selectCompanyContainer = locator("div[data-slot='input-wrapper']")
+                    .filter(new Locator.FilterOptions().setHas(inputField));
+    private final Locator selectCompanyDropdownChevron = selectCompanyContainer
+            .locator("button[aria-label='Show suggestions']:last-child");
 
-    private final Locator selectCompanyClearIcon =
-            selectCompanyContainer.locator("button[aria-label='Show suggestions']:first-child");
+    private final Locator selectCompanyClearIcon = selectCompanyContainer
+            .locator("button[aria-label='Show suggestions']:first-child");
 
     private final CurrentPageT page;
 
@@ -41,12 +37,12 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        selectCompanyField.waitFor();
+        inputField.waitFor();
         getPage().waitForTimeout(1500);
 
         String lastName = "";
 
-        selectCompanyField.pressSequentially(
+        inputField.pressSequentially(
                 companyName,
                 new Locator.PressSequentiallyOptions().setDelay(100));
 
@@ -61,11 +57,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             dropdownOptionList.last().scrollIntoViewIfNeeded();
             lastName = dropdownOptionList.last().innerText();
         }
-//        .first() - из-за того, что компания "super" отображается в отфильтрованном списке два раза,
-//        это баг(!!), правильно - один раз (или ноль).
-//        На суть теста .first() не влияет и позволяет "не заметить" баг.
-//
-        getCompanyInDropdown(companyName).first().click();
+        getCompanyInDropdown(companyName).click();
 
         return page;
     }
@@ -84,9 +76,9 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         return page;
     }
 
-    @Step("Click 'Select company' placeholder")
-    public CurrentPageT clickSelectCompanyPlaceholder() {
-        selectCompanyPlaceholder.click();
+    @Step("Click 'Select company' input field")
+    public CurrentPageT clickInputField() {
+        inputField.click();
 
         return page;
     }
