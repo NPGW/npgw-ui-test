@@ -41,7 +41,6 @@ import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
-import java.util.stream.Stream;
 
 @Log4j2
 public abstract class BaseTest {
@@ -165,13 +164,12 @@ public abstract class BaseTest {
                             .forEach(user -> User.delete(apiRequestContext, user));
                     Company.delete(apiRequestContext, item.companyName());
                 });
-        Stream.concat(Arrays.stream(User.getAll(apiRequestContext, "super")),
-                        Arrays.stream(User.getAll(apiRequestContext, "defaultCompany")))
+        Arrays.stream(User.getAll(apiRequestContext, "super"))
                 .filter(u -> u.email().matches("^.*\\.\\d{4}\\.\\d{6}@email.com$"))
                 .forEach(user -> User.delete(apiRequestContext, user));
-//        Arrays.stream(User.getAll(apiRequestContext, "Admin company"))
-//                .filter(u -> u.email().matches("^.*_\\d{4}_\\d{6}@email.com$"))
-//                .forEach(user -> User.delete(apiRequestContext, user));
+        Arrays.stream(User.getAll(apiRequestContext, "defaultCompany"))
+                .filter(u -> u.email().matches("^.*\\.\\d{4}\\.\\d{6}@email.com$"))
+                .forEach(user -> User.delete(apiRequestContext, user));
         if (apiRequestContext != null) {
             apiRequestContext.dispose();
         }
