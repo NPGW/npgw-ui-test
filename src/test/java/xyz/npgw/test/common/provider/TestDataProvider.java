@@ -75,7 +75,7 @@ public class TestDataProvider {
     @DataProvider
     public static Object[][] getUsers() {
         return new Object[][]{
-//                {User.newSystemAdmin("super@test.com")}, TODO remove after 500bug being fixed
+                {User.newSystemAdmin("super@test.com")},
                 {User.newCompanyAdmin("admin@test.com")},
                 {User.newCompanyAnalyst("user@test.com")}
         };
@@ -92,9 +92,9 @@ public class TestDataProvider {
     @DataProvider
     public static Object[][] getNewUsers() {
         return new Object[][]{
-                {"SUPER", User.newSystemAdmin("newsuper@test.com")},
-                {"ADMIN", User.newCompanyAdmin("newadmin@test.com")},
-                {"USER", User.newCompanyAnalyst("newuser@test.com")}
+                {"UNAUTHORISED", User.newSystemAdmin("newsuper@test.com")},
+                {"UNAUTHORISED", User.newCompanyAdmin("newadmin@test.com")},
+                {"UNAUTHORISED", User.newCompanyAnalyst("newuser@test.com")}
         };
     }
 
@@ -193,6 +193,14 @@ ERRORsystemConfig.challengeUrl doesn’t qualify for the URL syntax
 systemConfig.fingerprintUrl doesn’t qualify for the URL syntax
 systemConfig.resourceUrl doesn’t qualify for the URL syntax"""
                 }
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getPaymentMethod() {
+        return new Object[][]{
+                {"VISA"},
+                {"MASTERCARD"},
         };
     }
 }

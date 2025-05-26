@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -34,7 +33,7 @@ public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "TeamPageTest company";
     private static final String ADMIN_COMPANY_NAME = "Admin company";
-    private static final String ADMIN_EMAIL = "admin.email@gmail.com";
+    private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(runId);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
@@ -371,7 +370,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword is changed successfully");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("492")
     @Epic("System/Team")
@@ -446,7 +444,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(dashboardPage.getUserMenuButton()).hasText(analystEmail.substring(0, 3));
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("531")
     @Epic("System/Team")
@@ -465,15 +462,13 @@ public class TeamPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(companyName)
                 .getTable().deactivateUser(companyAdmin)
-                .clickStatusSelector()
-                .selectActiveStatus();
+                .getSelectStatus().select("Active");
 
         Allure.step("Verify: All visible users are 'Active' after applying 'Active' filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)
                 .stream().allMatch(value -> value.equals("Active")));
 
-        teamPage.clickStatusSelector()
-                .selectInactiveStatus();
+        teamPage.getSelectStatus().select("Inactive");
 
         Allure.step("Verify: All visible users are 'Inactive' after applying Inactive filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)

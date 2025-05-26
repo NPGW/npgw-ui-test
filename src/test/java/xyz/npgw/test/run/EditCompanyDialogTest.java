@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
@@ -16,26 +15,27 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditCompanyDialogTest extends BaseTest {
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("266")
     @Epic("System/Companies and business units")
     @Feature("Edit company")
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
+        TestUtils.deleteCompany(getApiRequestContext(), "Kate");
         TestUtils.createCompanyIfNeeded(getApiRequestContext(), "Kate");
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany("Kate")
                 .clickEditCompanyButton()
                 .fillCompanyTypeField("LLC")
                 .fillCompanyDescriptionField("Description of company business model")
-                .fillCompanyWebsiteField("google.com")
+                .fillCompanyWebsiteField("https://google.com")
                 .fillCompanyPrimaryContactField("John Doe")
                 .fillCompanyEmailField("google@gmail.com")
-                .fillCompanyCountryField("France")
+                .fillCompanyCountryField("FR")
                 .fillCompanyStateField("Provence")
                 .fillCompanyZipField("75001")
                 .fillCompanyCityField("Paris")

@@ -6,7 +6,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -31,12 +30,12 @@ public class TransactionsPageTest extends BaseTest {
 
     private static final List<String> COLUMNS_HEADERS = List.of(
             "Creation Date",
-            "Merchant ID",
+            "Business unit ID",
             "NPGW Reference",
             "Merchant Reference",
             "Amount",
             "Currency",
-            "Payment Method",
+            "Card type",
             "Status");
 
     @Test
@@ -98,7 +97,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink();
 
         Allure.step("Verify: default row count - 25");
-        assertThat(transactionsPage.getRowsPerPageButton()).containsText("25");
+        assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
     }
 
     @Test
@@ -109,10 +108,10 @@ public class TransactionsPageTest extends BaseTest {
     public void testCountOptionsSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickRowsPerPageButton();
+                .getTable().clickRowsPerPageChevron();
 
         Allure.step("Verify: displaying all options when clicking on Selector Rows");
-        assertThat(transactionsPage.getRowsPerPageOptions()).hasText("102550100");
+        assertThat(transactionsPage.getTable().getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
     }
 
     @Test
@@ -124,13 +123,12 @@ public class TransactionsPageTest extends BaseTest {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getDateRangePicker().setDateRangeFields("01-04-2025", "01-05-2025")
-                .clickNextPageButton();
+                .getTable().clickNextPage();
 
         Allure.step("Verify: button 2 is active");
-        assertThat(transactionsPage.getPaginationItemTwoActiveButton()).isVisible();
+        assertThat(transactionsPage.getTable().getActivePaginationPage("2")).isVisible();
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("181")
     @Epic("Transactions")
@@ -152,10 +150,10 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).isVisible();
 
         Allure.step("Verify: Payment method selector is visible");
-        assertThat(transactionsPage.getPaymentMethodSelector()).isVisible();
+        assertThat(transactionsPage.getCardTypeSelector()).isVisible();
 
         Allure.step("Verify: Status selector is visible");
-        assertThat(transactionsPage.getStatusSelector()).isVisible();
+        assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -173,29 +171,30 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDownloadButton()).isVisible();
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("229")
     @Epic("Transactions")
     @Feature("Status")
     @Description("Verify that user can see selector Status Options")
     public void testTheVisibilityOfTheStatusSelectorOptions() {
-        List<String> options = List.of("ALL",
+        String[] options = {
+                "ALL",
                 "INITIATED",
                 "PENDING",
                 "SUCCESS",
                 "FAILED",
                 "CANCELLED",
-                "EXPIRED");
+                "EXPIRED"
+        };
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickStatusSelector();
+                .getSelectStatus().clickSelector();
 
         Allure.step("Verify: Selector Status Options are visible");
-        assertEquals(transactionsPage.getStatusSelectorOptions(), options);
+        assertThat(transactionsPage.getSelectStatus().getStatusOptions()).hasText(options);
         Allure.step("Verify: Default selected option in status selector is 'ALL'");
-        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
     @Test
@@ -270,25 +269,24 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("342")
     @Epic("Transactions")
     @Feature("Status")
     @Description("Verify that user can see Payment Method Options")
-    public void testTheVisibilityOfThePaymentMethodOptions() {
+    public void testTheVisibilityOfTheCardTypeOptions() {
         List<String> options = List.of("ALL",
                 "VISA",
                 "MASTERCARD");
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickPaymentMethodSelector();
+                .clickCardTypeSelector();
 
         Allure.step("Verify: Payment Method Options are visible");
-        assertEquals(transactionsPage.getPaymentMethodOptions(), options);
+        assertEquals(transactionsPage.getCardTypeOptions(), options);
         Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
-        assertThat(transactionsPage.getActiveOption()).containsText("ALL");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
     @Test
@@ -303,11 +301,10 @@ public class TransactionsPageTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(transactionsPage.getDateRangePicker().getDataRangePickerErrorMessage()).hasText(
-                "Start date must be before end date.");
+        assertThat(transactionsPage.getDateRangePicker().getDataRangePickerErrorMessage())
+                .hasText("Start date must be before end date.");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("350")
     @Epic("Transactions")
@@ -343,7 +340,6 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("359")
     @Epic("Transactions")
@@ -470,7 +466,6 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(menuItemName));
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("520")
     @Epic("Transactions")
@@ -525,7 +520,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("620")
     @Epic("Transactions")
@@ -546,7 +540,7 @@ public class TransactionsPageTest extends BaseTest {
                 .getDateRangePicker().setDateRangeFields("01-05-2025", "07-05-2025")
                 .clickCurrencySelector()
                 .selectCurrency("USD")
-                .selectPaymentMethod("VISA")
+                .selectCardType("VISA")
                 .clickAmountButton()
                 .fillAmountFromField("500")
                 .fillAmountToField("10000")
@@ -574,7 +568,7 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("10000"));
     }
 
-    @Ignore("FAU 23/05")
+    // TODO bug - status isn't sent to server
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("621")
     @Epic("Transactions")
@@ -592,11 +586,35 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(companyName)
                 .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
-                .selectStatus("SUCCESS");
+                .getSelectStatus().clickSelector()
+                .getSelectStatus().clickValue("SUCCESS")
+                .getSelectStatus().clickSelector();
 
         Allure.step("Verify: status is sent to the server");
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
+    }
 
+    @Test(dataProvider = "getPaymentMethod", dataProviderClass = TestDataProvider.class)
+    @TmsLink("598")
+    @Epic("Transactions")
+    @Feature("Reset filter button")
+    @Description("Verify, that 'Reset filter' button change 'Payment method' to default value ( ALL)")
+    public void testResetPaymentMethod(String paymentMethod) {
 
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Filter displays 'ALL' by default");
+        assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
+
+        transactionsPage.selectCardType(paymentMethod);
+
+        Allure.step("Verify: Filter displays the selected payment method");
+        assertThat(transactionsPage.getCardTypeValue()).containsText(paymentMethod);
+
+        transactionsPage.clickResetFilterButton();
+
+        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
+        assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
     }
 }

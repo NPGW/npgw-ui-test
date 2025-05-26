@@ -8,7 +8,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -58,7 +57,7 @@ public class AcquirersPageTest extends BaseTest {
                 .isVisible();
 
         Allure.step("Verify: Status label is visible");
-        assertThat(acquirersPage.getStatusLabel()).isVisible();
+        assertThat(acquirersPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Reset Filter Button is visible");
         assertThat(acquirersPage.getResetFilterButton()).isVisible();
@@ -114,14 +113,13 @@ public class AcquirersPageTest extends BaseTest {
         Locator actualOptions = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .clickStatusValue()
-                .getStatusOptions();
+                .getSelectStatus().clickSelector()
+                .getSelectStatus().getStatusOptions();
 
         Allure.step("Verify: The 'Status' dropdown toggles and contains options All, Active, Inactive.");
         assertThat(actualOptions).hasText(new String[]{"All", "Active", "Inactive"});
     }
 
-    @Ignore("FAU 23/05")
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("243")
     @Epic("System/Acquirers")
@@ -131,8 +129,7 @@ public class AcquirersPageTest extends BaseTest {
         List<Locator> statuses = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .clickStatusValue()
-                .selectAcquirerStatus(status)
+                .getSelectStatus().select(status)
                 .getTable().getCells("Status");
 
         Allure.step(String.format("Verify: The 'Acquirers' list shows only '%s' items after filtering.", status));
@@ -141,7 +138,6 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Ignore("FAU 23/05")
     @Test
     @TmsLink("268")
     @Epic("System/Acquirers")
@@ -154,19 +150,15 @@ public class AcquirersPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        Locator actualStatus = acquirersPage.getStatusValue();
+        Locator actualStatus = acquirersPage.getSelectStatus().getStatusValue();
 
         for (String status : expectedOptions) {
-            acquirersPage
-                    .clickStatusValue()
-                    .selectAcquirerStatus(status);
+            acquirersPage.getSelectStatus().select(status);
 
             Allure.step("Verify placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
 
-            acquirersPage
-                    .clickStatusValue()
-                    .selectAcquirerStatus(status);
+            acquirersPage.getSelectStatus().select(status);
 
             Allure.step("Verify again placeholder matches expected value: " + status);
             assertThat(actualStatus).hasText(status);
