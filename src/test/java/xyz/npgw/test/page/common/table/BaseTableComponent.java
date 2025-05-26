@@ -8,12 +8,13 @@ import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
 @Getter
-public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extends BaseComponent {
+public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> extends BaseComponent {
 
     private final Locator columnHeader = getByRole(AriaRole.COLUMNHEADER);
     private final Locator headersRow = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
@@ -54,9 +55,18 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     }
 
     public Locator getRow(String rowHeader) {
-        Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
+        do {
+            System.out.println("сторінка - "+ getActivePage().innerText());
+            Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
+            rows.first().waitFor();
+            Locator row = rows.filter(new Locator.FilterOptions().setHas(header));
 
-        return rows.filter(new Locator.FilterOptions().setHas(header));
+            if (row.count() > 0) {
+                return row;
+            }
+        } while (goToNextPage());
+
+        throw new NoSuchElementException("Row with header '" + rowHeader + "' not found on any page.");
     }
 
     public Locator getCell(String columnHeader, String rowHeader) {
@@ -89,7 +99,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
     }
 
     @Step("Select Rows Per Page '{option}'")
-    public CurrentPageT selectRowsPerPageOption(String option) {
+    public CurrentPageT selectRowsPerPage(String option) {
+        clickRowsPerPageChevron();
         rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();
         rows.last().waitFor();
 
@@ -100,30 +111,57 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage> extend
         return getPage().getByLabel(Pattern.compile("pagination item.*active.*", Pattern.CASE_INSENSITIVE));
     }
 
-    @Step("Click on page '{pageNumber}'")
-    public CurrentPageT clickOnPaginationPage(String pageNumber) {
-        getPage().getByLabel("pagination item " + pageNumber).click();
-
-        return getCurrentPage();
-    }
-
     @Step("Click next page")
-    public CurrentPageT clickNextPage() {
-        nextPageButton.click();
+    public CurrentPageT clickNextPageButton() {
+         nextPageButton.click();
 
         return getCurrentPage();
     }
 
-    public  Locator getActivePaginationPage(String number) {
-        return getByRole(AriaRole.BUTTON, "pagination item " + number + " active");
-    }
-
-    public boolean isNotLastPage() {
-        return !Objects.equals(nextPageButton.getAttribute("tabindex"), "-1");
+    public boolean hasNextPage() {
+        return nextPageButton.isEnabled();
     }
 
     public Locator getFirstRowCell(String columnHeader) {
         return getCells(columnHeader).get(0);
     }
 
-}
+    public boolean hasRow(String name) {
+        return getRow(name).count() > 0;
+    }
+
+    public boolean goToNextPage() {
+        if (!hasNextPage()) {
+            return false;
+        }
+        clickNextPageButton();
+
+        return true;
+    }
+
+    public int countAllRows(List<Integer> rowCountsPerPage) {
+
+        return rowCountsPerPage.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
+    public List<Integer> getRowCountsPerPage() {
+        List<Integer> rowsPerPage = new ArrayList<>();
+        do {
+            rowsPerPage.add(getRows().count());
+        } while (goToNextPage());
+
+        return rowsPerPage;
+    }
+
+    public interface PageCallback {
+        void accept(String pageNumber);
+    }
+
+    public void forEachPage(String rowsPerPageOption, PageCallback callback) {
+        selectRowsPerPage(rowsPerPageOption);
+        do {
+            callback.accept(getActivePage().innerText());
+        } while (goToNextPage());
+    }}
