@@ -47,6 +47,10 @@ public final class TestUtils {
         return BusinessUnit.create(request, companyName, merchantTitle);
     }
 
+    public static void deleteBusinessUnit(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
+        BusinessUnit.delete(request, companyName, businessUnit);
+    }
+
     public static void createBusinessUnitsIfNeeded(APIRequestContext request, User user) {
         Company.create(request, user.companyName());
         for (String merchantTitle : user.merchantIds()) {

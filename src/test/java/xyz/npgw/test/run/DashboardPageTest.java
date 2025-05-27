@@ -5,6 +5,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -18,6 +20,18 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
+
+    private final String companyName = "Dashboard%s".formatted(runId);
+    private final String merchantTitle = "Dashboard business unit%s".formatted(runId);
+    private BusinessUnit businessUnit;
+
+    @BeforeClass
+    @Override
+    protected void beforeClass() {
+        super.beforeClass();
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
+    }
 
     @Test
     @TmsLink("151")
@@ -77,15 +91,9 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
-        final String companyName = "testResetFilter";
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, "testResetFilter");
-
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .refreshDashboard()
                 .getSelectCompany().selectCompany(companyName)
-                .getSelectBusinessUnit().selectBusinessUnit("testResetFilter")
+                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
                 .clickCurrencySelector()
                 .selectCurrency("EUR")
                 .clickResetFilterButton();
@@ -106,14 +114,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Refresh data")
     @Description("Correct merchant ID is sent to the server")
     public void testCheckMerchantId() {
-        final String companyName = "Amazon";
-        final String merchantTitle = "Amazon business unit 1";
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        BusinessUnit businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
-
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .refreshDashboard()
                 .getSelectCompany().selectCompany(companyName)
                 .getSelectBusinessUnit().selectBusinessUnit(merchantTitle);
 
@@ -130,8 +131,7 @@ public class DashboardPageTest extends BaseTest {
         Pattern pattern = Pattern.compile("(INITIATED|SUCCESS|FAILED)EUR.*USD.*GBP.*");
         DashboardPage dashboardPage = new DashboardPage(getPage())
                 .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025")
-                .clickRefreshDataButton()
-                .clickCountButton();
+                .clickRefreshDataButton();
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);
@@ -141,6 +141,9 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: FAILED main block contents");
         assertThat(dashboardPage.getFailedBlock()).containsText(pattern);
+
+        dashboardPage
+                .clickCountButton();
 
         Allure.step("Verify: INITIATED count block contents");
         assertThat(dashboardPage.getLifecycleInitiatedBlock()).containsText(pattern);
@@ -162,5 +165,13 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: FAILED amount block contents");
         assertThat(dashboardPage.getLifecycleFailedBlock()).containsText(pattern);
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteBusinessUnit(getApiRequestContext(), companyName, businessUnit);
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        super.afterClass();
     }
 }
