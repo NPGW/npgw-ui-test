@@ -227,7 +227,7 @@ public class AddBusinessUnitTest extends BaseTest {
                 .hasText("SUCCESSBusiness unit was created successfully");
 
         Allure.step("Verify: Selected company is preserved after creation");
-        assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getInputField())
+        assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getSelectCompanyField())
                 .hasValue(COMPANY_NAME);
 
         Allure.step("Verify: New business unit name appears in the list");

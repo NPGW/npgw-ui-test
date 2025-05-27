@@ -121,7 +121,7 @@ public class TeamPageTest extends BaseTest {
         teamPage.clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompany().getInputField()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: new user has the role 'USER'");
         assertThat(teamPage.getTable().getCell("User role", user.email())).hasText("USER");
@@ -175,7 +175,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompany().getInputField()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: user role was updated to 'ADMIN'");
         assertThat(teamPage.getTable().getCell("User role", user.email())).hasText("ADMIN");
@@ -236,7 +236,7 @@ public class TeamPageTest extends BaseTest {
                 .getTable().deactivateUser(user.email());
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompany().getInputField()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
 
         Allure.step("Verify: user status becomes 'Inactive' in the table");
         assertThat(teamPage.getTable().getCell("Status", user.email())).hasText("Inactive");

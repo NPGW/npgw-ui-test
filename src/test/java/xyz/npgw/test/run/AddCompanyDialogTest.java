@@ -292,7 +292,7 @@ public class AddCompanyDialogTest extends BaseTest {
 
         Allure.step("Verify: selected company is shown in the input field");
         assertThat(companiesAndBusinessUnitsPage
-                .getSelectCompany().getInputField()).hasValue(company.companyName());
+                .getSelectCompany().getSelectCompanyField()).hasValue(company.companyName());
 
         Allure.step("Verify: name field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getName()).hasValue(company.companyName());

@@ -85,10 +85,10 @@ public class GatewayPageTest extends BaseTest {
                 .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickInputField()
+                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(companyName);
 
-        Locator selectCompanyInputField = gatewayPage.getSelectCompany().getInputField();
+        Locator selectCompanyInputField = gatewayPage.getSelectCompany().getSelectCompanyField();
 
         Allure.step("Verify: The dropdown is closed.");
         assertThat(gatewayPage.getSelectCompany().getCompanyDropdown()).not().isVisible();
