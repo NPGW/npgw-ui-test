@@ -266,7 +266,6 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().clickRowsPerPageChevron()
                 .getTable().selectRowsPerPageOption("100")
                 .getTable().clickEditUserButton(email)
                 .checkInactiveRadiobutton()
@@ -301,7 +300,6 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().clickRowsPerPageChevron()
                 .getTable().selectRowsPerPageOption("100")
                 .getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton();
@@ -354,7 +352,6 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().clickRowsPerPageChevron()
                 .getTable().selectRowsPerPageOption("100")
                 .getTable().clickResetUserPasswordButton(email)
                 .fillPasswordField("NewPassword1!")

@@ -56,6 +56,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public Locator getRow(String rowHeader) {
+        return rows.filter(new Locator.FilterOptions().setHas(getByRole(AriaRole.ROWHEADER, rowHeader)));
+    }
+
+    public Locator getRoweEverywhere(String rowHeader) {
         do {
             waitForTableToRender();
             Locator row = rows.filter(new Locator.FilterOptions().setHas(getByRole(AriaRole.ROWHEADER, rowHeader)));
