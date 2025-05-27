@@ -6,6 +6,7 @@ import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
+@Log4j2
 @Getter
 public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> extends BaseComponent {
 
@@ -63,6 +65,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
                 header.waitFor(new Locator.WaitForOptions().setTimeout(1000));
                 return rows.filter(new Locator.FilterOptions().setHas(header));
             } catch (PlaywrightException ignored) {
+                log.info("Row header not found on this page, trying next page.");
             }
         } while (goToNextPage());
 
