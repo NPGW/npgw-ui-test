@@ -2,8 +2,8 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
@@ -57,11 +57,12 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public Locator getRow(String rowHeader) {
         do {
-            waitForTableToRender();
-            Locator row = rows.filter(new Locator.FilterOptions().setHas(getByRole(AriaRole.ROWHEADER, rowHeader)));
+            Locator header = getByRole(AriaRole.ROWHEADER, rowHeader);
 
-            if (!row.innerText().isEmpty()) {
-                return row;
+            try {
+                header.waitFor(new Locator.WaitForOptions().setTimeout(1000));
+                return rows.filter(new Locator.FilterOptions().setHas(header));
+            } catch (PlaywrightException ignored) {
             }
         } while (goToNextPage());
 
@@ -159,10 +160,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         do {
             callback.accept(getActivePage().innerText());
         } while (goToNextPage());
-    }
-
-    private void waitForTableToRender() {
-        rows.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
     }
 
     public interface PageCallback {

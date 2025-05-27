@@ -16,7 +16,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
-    @Test
+    @Test(invocationCount = 10)
     @TmsLink("387")
     @TmsLink("501")
     @TmsLink("515")
