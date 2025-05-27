@@ -22,10 +22,9 @@ public record BusinessUnit(
     }
 
     public static List<BusinessUnit> create(APIRequestContext request, User user) {
-        List<BusinessUnit> businessUnits = new ArrayList<>();
-        Arrays.stream(user.merchantIds()).forEach(
-                merchantTitle -> businessUnits.add(create(request, user.companyName(), merchantTitle)));
-        return businessUnits;
+        return Arrays.stream(user.merchantIds())
+                .map(merchantTitle -> create(request, user.companyName(), merchantTitle))
+                .toList();
     }
 
     public static BusinessUnit create(APIRequestContext request, String companyName, String merchantTitle) {

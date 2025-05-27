@@ -99,10 +99,10 @@ public class DashboardPageTest extends BaseTest {
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
-        assertThat(dashboardPage.getSelectCompany().getSelectCompanyField()).hasValue("");
+        assertThat(dashboardPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
         Allure.step("Verify: the selected business unit field is empty after reset");
-        assertThat(dashboardPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue("");
+        assertThat(dashboardPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");

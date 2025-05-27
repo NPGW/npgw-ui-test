@@ -69,7 +69,7 @@ public class LoginPageTest extends BaseTest {
                 .clickLogOutButton();
 
         Allure.step("Verify: The user's email is not in the email field");
-        assertThat(loginPage.getEmailField()).hasValue("");
+        assertThat(loginPage.getEmailField()).isEmpty();
     }
 
     @Test(dataProvider = "getAuthenticatedEndpoints", dataProviderClass = TestDataProvider.class)

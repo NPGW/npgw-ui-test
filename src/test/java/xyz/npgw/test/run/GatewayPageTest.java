@@ -6,20 +6,31 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
-
-import java.util.Arrays;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class GatewayPageTest extends BaseTest {
 
-    String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
+    private final String companyName = "Company 112172%s".formatted(runId);
+    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"};
+    private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
+    private BusinessUnit[] businessUnits;
+
+    @BeforeClass
+    @Override
+    protected void beforeClass() {
+        super.beforeClass();
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        businessUnits = TestUtils.createBusinessUnits(getApiRequestContext(), companyName, expectedBusinessUnitsList);
+    }
 
     @Test
     @TmsLink("283")
@@ -73,16 +84,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Check that selecting a company populates the 'Business units list',"
             + " and when no company is selected, the list is empty with 'No items.'")
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
-        String companyName = "Company 112172";
-        String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant for C112172"};
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        Arrays.stream(expectedBusinessUnitsList).forEach(merchantTitle ->
-                TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle));
-        int expectedCount = expectedBusinessUnitsList.length;
-
         GatewayPage gatewayPage = new DashboardPage(getPage())
-                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyPlaceholder()
@@ -94,36 +96,40 @@ public class GatewayPageTest extends BaseTest {
         Allure.step("Verify: The dropdown is closed.");
         assertThat(gatewayPage.getSelectCompany().getCompanyDropdown()).not().isVisible();
 
-        Allure.step(String.format("Verify: Placeholder has value '%s'", companyName));
+        Allure.step("Verify: Placeholder value");
         assertThat(selectCompanyPlaceholder).hasValue(companyName);
 
         Allure.step("Verify: 'Business units list' title is visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
 
-        Allure.step(String.format("Verify: Business units list has expected count of %d", expectedCount));
-        Locator actualBusinessUnitsList = gatewayPage.getBusinessUnitsList();
-        assertThat(actualBusinessUnitsList).hasCount(expectedCount);
+        Allure.step("Verify: Business units list length");
+        assertThat(gatewayPage.getBusinessUnitsList()).hasCount(expectedBusinessUnitsList.length);
 
-        for (int i = 0; i < expectedCount; i++) {
-            String actualBusinessUnitsText = actualBusinessUnitsList.nth(i).innerText().trim();
-            Allure.step(String.format("Verify: '%s' is in expected list", actualBusinessUnitsText));
-            Assert.assertTrue(Arrays.asList(expectedBusinessUnitsList).contains(actualBusinessUnitsText),
-                    String.format("Unexpected item: %s", actualBusinessUnitsText));
-        }
+        Allure.step("Verify: Expected list");
+        assertThat(gatewayPage.getBusinessUnitsList()).hasText(expectedBusinessUnitsList);
 
         gatewayPage
                 .getSelectCompany().clickSelectCompanyClearIcon()
                 .getSelectCompany().clickSelectCompanyDropdownChevron();
 
-        Allure.step("Verify: Placeholder has value 'Search...'", () -> {
-            Assert.assertEquals(selectCompanyPlaceholder.getAttribute("placeholder"), "Search...");
-            assertThat(selectCompanyPlaceholder).hasValue("");
-        });
+        Allure.step("Verify: Placeholder has value 'Search...'");
+        assertThat(selectCompanyPlaceholder).hasAttribute("placeholder", "Search...");
+
+        Allure.step("Verify: Field is empty");
+        assertThat(selectCompanyPlaceholder).isEmpty();
 
         Allure.step("Verify: 'Business units list' title is still visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
 
         Allure.step("Verify: 'Business units list' has 'No items.'");
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteBusinessUnits(getApiRequestContext(), companyName, businessUnits);
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        super.afterClass();
     }
 }
