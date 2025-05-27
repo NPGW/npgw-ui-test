@@ -57,11 +57,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     public Locator getRow(String rowHeader) {
         do {
             Locator header = getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader));
-            rows.first().waitFor();
-            Locator row = rows.filter(new Locator.FilterOptions().setHas(header));
-
-            if (row.count() > 0) {
-                return row;
+            if (header.count() > 0) {
+                return rows.filter(new Locator.FilterOptions().setHas(header));
             }
         } while (goToNextPage());
 
@@ -112,7 +109,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     @Step("Click next page")
     public CurrentPageT clickNextPageButton() {
-         nextPageButton.click();
+        nextPageButton.click();
 
         return getCurrentPage();
     }
@@ -154,13 +151,14 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rowsPerPage;
     }
 
-    public interface PageCallback {
-        void accept(String pageNumber);
-    }
-
     public void forEachPage(String rowsPerPageOption, PageCallback callback) {
         selectRowsPerPage(rowsPerPageOption);
         do {
             callback.accept(getActivePage().innerText());
         } while (goToNextPage());
-    }}
+    }
+
+    public interface PageCallback {
+        void accept(String pageNumber);
+    }
+}

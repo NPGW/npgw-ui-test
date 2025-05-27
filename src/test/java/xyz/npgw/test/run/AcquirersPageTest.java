@@ -381,7 +381,8 @@ public class AcquirersPageTest extends BaseTest {
                 .clickAddAcquirer()
                 .fillAcquirerName(acquirerName)
                 .fillAcquirerForm(acquirer)
-                .clickCreateButton();
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
         do {
             if (acquirersPage.getTable().hasRow(acquirerName)) {
