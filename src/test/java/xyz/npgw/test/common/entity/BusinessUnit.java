@@ -6,7 +6,6 @@ import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public record BusinessUnit(
     public static void delete(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
         APIResponse response = request.delete(
                 "portal-v1/company/%s/merchant/%s".formatted(encode(companyName), businessUnit.merchantId()));
-        log.info("delete merchant '{}' for company '{}':",  businessUnit.merchantId(), companyName);
+        log.info("delete merchant '{}' for company '{}':", businessUnit.merchantId(), companyName);
         log.info("response - {} {}", response.status(), response.text());
     }
 
