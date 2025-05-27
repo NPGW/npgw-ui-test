@@ -198,7 +198,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab();
 
         for (String option : rowsPerPageOptions) {
-            acquirersPage.getTable().selectRowsPerPage(option);
+            acquirersPage.getTable().selectRowsPerPageOption(option);
 
             Allure.step(String.format("Verify: The Rows Per Page' value is set to '%s'", option));
             assertThat(acquirersPage.getTable().getRowsPerPage()).hasText(option);
@@ -218,7 +218,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab();
 
         for (String option : rowsPerPageOptions) {
-            acquirersPage.getTable().selectRowsPerPage(option);
+            acquirersPage.getTable().selectRowsPerPageOption(option);
 
             List<Integer> rowsCountPerPage = acquirersPage.getTable().getRowCountsPerPage();
             int rowsSum = acquirersPage.getTable().countAllRows(rowsCountPerPage);

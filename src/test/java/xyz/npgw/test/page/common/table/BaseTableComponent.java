@@ -98,7 +98,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     @Step("Select Rows Per Page '{option}'")
-    public CurrentPageT selectRowsPerPage(String option) {
+    public CurrentPageT selectRowsPerPageOption(String option) {
         clickRowsPerPageChevron();
         rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();
         rows.last().waitFor();
@@ -155,7 +155,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public void forEachPage(String rowsPerPageOption, PageCallback callback) {
-        selectRowsPerPage(rowsPerPageOption);
+        selectRowsPerPageOption(rowsPerPageOption);
         do {
             callback.accept(getActivePage().innerText());
         } while (goToNextPage());
