@@ -5,6 +5,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
@@ -16,6 +18,17 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
+    private final String companyName = "CompanyForBuEdit%s".formatted(runId);
+    private final String buName = "NewBUForEdit%s".formatted(runId);
+
+    @BeforeClass
+    @Override
+    protected void beforeClass() {
+        super.beforeClass();
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
+    }
+
     @Test
     @TmsLink("387")
     @TmsLink("501")
@@ -25,14 +38,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that all elements of dialog are displayed properly")
     public void testElementsOfEditBusinessUnitDialog() {
-        String companyName = "CompanyForBuEdit";
-        String buName = "NewBUForEdit";
-
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
-
         EditBusinessUnitDialog editBusinessUnitDialog = new DashboardPage(getPage())
-                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(companyName)
@@ -61,7 +67,12 @@ public class EditBusinessUnitDialogTest extends BaseTest {
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' icon");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
+    }
 
+    @AfterClass
+    @Override
+    protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        super.afterClass();
     }
 }

@@ -58,6 +58,7 @@ public abstract class BaseTest {
     @BeforeClass
     protected void beforeClass() {
         playwright = Playwright.create(new Playwright.CreateOptions().setEnv(ProjectProperties.getEnv()));
+        initApiRequestContext();
         browser = BrowserFactory.getBrowser(playwright);
     }
 
@@ -94,7 +95,7 @@ public abstract class BaseTest {
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
 
         log.info("{}", getTestName(method, testResult).replace("(", "_").split("_")[0]);
-        initApiRequestContext();
+//        initApiRequestContext();
         openSite(args);
     }
 

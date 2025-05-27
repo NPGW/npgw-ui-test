@@ -5,6 +5,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
@@ -15,20 +17,26 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditCompanyDialogTest extends BaseTest {
 
+    private final String companyName = "Kate%s".formatted(runId);
+
+    @BeforeClass
+    @Override
+    protected void beforeClass() {
+        super.beforeClass();
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+    }
+
     @Test
     @TmsLink("266")
     @Epic("System/Companies and business units")
     @Feature("Edit company")
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
-        TestUtils.deleteCompany(getApiRequestContext(), "Kate");
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), "Kate");
-
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .refreshDashboard()
+//                .refreshDashboard()
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany("Kate")
+                .getSelectCompany().selectCompany(companyName)
                 .clickEditCompanyButton()
                 .fillCompanyTypeField("LLC")
                 .fillCompanyDescriptionField("Description of company business model")
@@ -47,5 +55,12 @@ public class EditCompanyDialogTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage()).hasText(
                 "SUCCESSCompany was updated successfully");
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        super.afterClass();
     }
 }
