@@ -345,7 +345,7 @@ public class AcquirersPageTest extends BaseTest {
                 Assert.assertTrue(box.x >= 0, String.format(
                         "Headers x-position must be within viewport on page '%s' with '%s'/page", activePage, option));
 
-                Assert.assertTrue( (box.x + box.width) <= pageWidth, String.format(
+                Assert.assertTrue((box.x + box.width) <= pageWidth, String.format(
                         "Headers right edge must be within viewport on page '%s' with '%s'/page", activePage, option));
 
             });
