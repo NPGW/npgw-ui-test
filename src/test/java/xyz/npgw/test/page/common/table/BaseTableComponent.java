@@ -57,13 +57,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public Locator getRow(String rowHeader) {
         do {
-            rows.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
+            waitForTableToRender();
+            Locator row = rows.filter(new Locator.FilterOptions().setHas(getByRole(AriaRole.ROWHEADER, rowHeader)));
 
-            Locator row = rows.filter(new Locator.FilterOptions()
-                    .setHas(getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader)))
-            );
-
-            if (row.count() > 0) {
+            if (row.first().isVisible()) {
                 return row;
             }
         } while (goToNextPage());
@@ -162,6 +159,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         do {
             callback.accept(getActivePage().innerText());
         } while (goToNextPage());
+    }
+
+    private void waitForTableToRender() {
+        rows.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
     }
 
     public interface PageCallback {
