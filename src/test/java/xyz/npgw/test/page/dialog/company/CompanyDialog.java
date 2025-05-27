@@ -13,7 +13,8 @@ public abstract class CompanyDialog<CurrentDialogT extends CompanyDialog<Current
         extends BaseDialog<CompaniesAndBusinessUnitsPage, CurrentDialogT> {
 
     @Getter
-    private final Locator companyNameField = getByPlaceholder("Enter company name");
+    private final Locator companyNameField = getByPlaceholder("Enter name");
+    private final Locator companyTitleField = getByPlaceholder("Enter title");
     @Getter
     private final Locator companyTypeField = getByPlaceholder("Enter type");
     private final Locator companyDescriptionField = getByPlaceholder("Enter company description");
@@ -43,6 +44,13 @@ public abstract class CompanyDialog<CurrentDialogT extends CompanyDialog<Current
     @Step("Fill company name field")
     public CurrentDialogT fillCompanyNameField(String companyName) {
         companyNameField.fill(companyName);
+
+        return (CurrentDialogT) this;
+    }
+
+    @Step("Fill company title field")
+    public CurrentDialogT fillCompanyTitleField(String companyTitle) {
+        companyTitleField.fill(companyTitle);
 
         return (CurrentDialogT) this;
     }
