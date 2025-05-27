@@ -24,10 +24,10 @@ public record User(
     private static final String DEFAULT_COMPANY = "defaultCompany";
     private static final String DEFAULT_TITLE = "defaultTitle";
 
-    public static User newUser(UserRole userRole, String email) {
+    public static User newUser(UserRole userRole, String companyName, String email) {
         return switch (userRole) {
-            case ADMIN -> User.newCompanyAdmin(email);
-            case USER -> User.newCompanyAnalyst(email);
+            case ADMIN -> User.newCompanyAdmin(companyName, email);
+            case USER -> User.newCompanyAnalyst(companyName, email);
             default -> User.newSystemAdmin(email);
         };
     }
@@ -75,7 +75,7 @@ public record User(
 
     public static void create(APIRequestContext request, User user) {
         APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
-        log.info("create company admin '{}' - {} {}", user.email(), response.status(), response.text());
+        log.info("create user '{}' {} - {}", user.email(), user.companyName(), response.status());
     }
 
     public static boolean exists(APIRequestContext request, String email) {
@@ -96,7 +96,7 @@ public record User(
 
     public static void delete(APIRequestContext request, String email) {
         APIResponse response = request.delete("portal-v1/user?email=%s".formatted(encode(email)));
-        log.info("delete user '{}' - {} {}", email, response.status(), response.text());
+        log.info("delete user '{}' - {}", email, response.status());
     }
 
     public static void changePassword(APIRequestContext request, String email, String newPassword) {

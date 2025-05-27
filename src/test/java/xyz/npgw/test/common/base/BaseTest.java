@@ -155,21 +155,12 @@ public abstract class BaseTest {
         if (browser != null) {
             browser.close();
         }
-        Arrays.stream(Company.getAll(apiRequestContext))
-                .filter(c -> c.companyName().matches("^.*\\.\\d{4}\\.\\d{6}$"))
-                .forEach(item -> {
-                    Arrays.stream(BusinessUnit.getAll(apiRequestContext, item.companyName()))
-                            .forEach(unit -> BusinessUnit.delete(apiRequestContext, item.companyName(), unit));
-                    Arrays.stream(User.getAll(apiRequestContext, item.companyName()))
-                            .forEach(user -> User.delete(apiRequestContext, user));
-                    Company.delete(apiRequestContext, item.companyName());
-                });
-        Arrays.stream(User.getAll(apiRequestContext, "super"))
-                .filter(u -> u.email().matches("^.*\\.\\d{4}\\.\\d{6}@email.com$"))
-                .forEach(user -> User.delete(apiRequestContext, user));
-        Arrays.stream(User.getAll(apiRequestContext, "defaultCompany"))
-                .filter(u -> u.email().matches("^.*\\.\\d{4}\\.\\d{6}@email.com$"))
-                .forEach(user -> User.delete(apiRequestContext, user));
+        String uid = "%s%s".formatted(Thread.currentThread().getId(), runId);
+        Arrays.stream(UserRole.values()).forEach(userRole -> {
+            User.delete(apiRequestContext, "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid));
+        });
+        String companyName = "Company %s".formatted(uid);
+        Company.delete(apiRequestContext, companyName);
         if (apiRequestContext != null) {
             apiRequestContext.dispose();
         }
@@ -218,9 +209,11 @@ public abstract class BaseTest {
                 }
             }
         }
-        String email = "%s.%s%s@email.com".formatted(userRole, Thread.currentThread().getId(), runId);
+        String uid = "%s%s".formatted(Thread.currentThread().getId(), runId);
+        String email = "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid);
+        String companyName = "Company %s".formatted(uid);
         if (!User.exists(apiRequestContext, email)) {
-            TestUtils.createUser(apiRequestContext, User.newUser(userRole, email));
+            TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
         }
 //        new AboutBlankPage(page).navigate("/").loginAs(userRole);
         new AboutBlankPage(page).navigate("/").login(email, ProjectProperties.getUserPassword());

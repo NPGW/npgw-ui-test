@@ -31,7 +31,7 @@ public record BusinessUnit(
     public static BusinessUnit create(APIRequestContext request, String companyName, String merchantTitle) {
         APIResponse response = request.post("portal-v1/company/%s/merchant".formatted(encode(companyName)),
                 RequestOptions.create().setData(new BusinessUnit(merchantTitle)));
-        log.info("create merchant for company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("create merchant for company '{}' - {}", companyName, response.status());
         return new Gson().fromJson(response.text(), BusinessUnit.class);
     }
 
@@ -42,7 +42,7 @@ public record BusinessUnit(
 
     public static BusinessUnit[] getAll(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company/%s/merchant".formatted(encode(companyName)));
-        log.info("get all merchants for company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("get all merchants for company '{}' - {}", companyName, response.status());
         return new Gson().fromJson(response.text(), BusinessUnit[].class);
     }
 

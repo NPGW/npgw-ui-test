@@ -42,7 +42,7 @@ public record Company(
     public static void create(APIRequestContext request, String companyName) {
         APIResponse response = request.post("portal-v1/company",
                 RequestOptions.create().setData(new Company(companyName)));
-        log.info("create company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("create company '{}' - {}", companyName, response.status());
     }
 
     public static Company[] getAll(APIRequestContext request) {
@@ -60,7 +60,7 @@ public record Company(
             return;
         }
         APIResponse response = request.delete("portal-v1/company/%s".formatted(encode(companyName)));
-        log.info("delete company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("delete company '{}' - {}", companyName, response.status());
     }
 
     public boolean isEmpty() {
@@ -70,7 +70,7 @@ public record Company(
 
     public static boolean exists(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company/%s".formatted(encode(companyName)));
-        log.info("get company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("get company '{}' - {}", companyName, response.status());
         return response.ok() && response.text().contains(companyName);
     }
 }
