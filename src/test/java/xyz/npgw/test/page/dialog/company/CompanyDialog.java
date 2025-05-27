@@ -18,9 +18,9 @@ public abstract class CompanyDialog<CurrentDialogT extends CompanyDialog<Current
     @Getter
     private final Locator companyTypeField = getByPlaceholder("Enter type");
     private final Locator companyDescriptionField = getByPlaceholder("Enter company description");
-    private final Locator companyWebsiteField = getByPlaceholder("Enter company website");
-    private final Locator companyPrimaryContactField = getByPlaceholder("Enter company primary contact");
-    private final Locator companyEmailField = getByPlaceholder("Enter company email");
+    private final Locator companyWebsiteField = getByPlaceholder("Enter website");
+    private final Locator companyPrimaryContactField = getByPlaceholder("Enter primary contact");
+    private final Locator companyEmailField = getByPlaceholder("Enter email");
     private final Locator companyCountryField = getByPlaceholder("Enter country");
     private final Locator companyStateField = getByPlaceholder("Enter state");
     private final Locator companyZipField = getByPlaceholder("Enter ZIP");
