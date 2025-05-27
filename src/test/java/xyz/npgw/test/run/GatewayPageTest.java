@@ -155,7 +155,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickSelectCompanyPlaceholder()
+                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(company.companyName());
 
         Allure.step("Verify that all the Business units are presented in the list");
