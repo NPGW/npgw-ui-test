@@ -24,7 +24,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.entity.UserRole;
@@ -159,8 +158,7 @@ public abstract class BaseTest {
         Arrays.stream(UserRole.values()).forEach(userRole -> {
             User.delete(apiRequestContext, "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid));
         });
-        String companyName = "Company %s".formatted(uid);
-        Company.delete(apiRequestContext, companyName);
+        Company.delete(apiRequestContext, "Company %s".formatted(uid));
         if (apiRequestContext != null) {
             apiRequestContext.dispose();
         }
@@ -216,7 +214,7 @@ public abstract class BaseTest {
             TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
         }
 //        new AboutBlankPage(page).navigate("/").loginAs(userRole);
-        new AboutBlankPage(page).navigate("/").login(email, ProjectProperties.getUserPassword());
+        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
         initPageRequestContext();
     }
 
