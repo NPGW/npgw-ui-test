@@ -3,6 +3,7 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
@@ -56,7 +57,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public Locator getRow(String rowHeader) {
         do {
-            rows.last().waitFor();
+            rows.last().waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.ATTACHED));
+
             Locator row = rows.filter(new Locator.FilterOptions()
                     .setHas(getPage().getByRole(AriaRole.ROWHEADER, new Page.GetByRoleOptions().setName(rowHeader)))
             );
