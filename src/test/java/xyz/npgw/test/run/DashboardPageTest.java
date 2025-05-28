@@ -21,16 +21,16 @@ import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
 
-    private final String companyName = "Dashboard%s".formatted(runId);
-    private final String merchantTitle = "Dashboard business unit%s".formatted(runId);
+    private static final String COMPANY_NAME = "Dashboard%s".formatted(runId);
+    private static final String MERCHANT_TITLE = "Dashboard business unit%s".formatted(runId);
     private BusinessUnit businessUnit;
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -60,8 +60,8 @@ public class DashboardPageTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(dashboardPage.getDateRangePicker().getDataRangePickerErrorMessage()).hasText(
-                "Start date must be before end date.");
+        assertThat(dashboardPage.getDateRangePicker().getDataRangePickerErrorMessage())
+                .hasText("Start date must be before end date.");
     }
 
     @Test
@@ -92,8 +92,8 @@ public class DashboardPageTest extends BaseTest {
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getSelectCompany().selectCompany(companyName)
-                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
                 .clickCurrencySelector()
                 .selectCurrency("EUR")
                 .clickResetFilterButton();
@@ -115,8 +115,8 @@ public class DashboardPageTest extends BaseTest {
     @Description("Correct merchant ID is sent to the server")
     public void testCheckMerchantId() {
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getSelectCompany().selectCompany(companyName)
-                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle);
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: correct merchant ID is sent to the server");
         assertTrue(dashboardPage.getRequestData().contains(businessUnit.merchantId()));
@@ -170,8 +170,8 @@ public class DashboardPageTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteBusinessUnit(getApiRequestContext(), companyName, businessUnit);
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }
