@@ -19,13 +19,13 @@ import static org.testng.Assert.assertEquals;
 
 public class EditAcquirerDialogTest extends BaseTest {
 
-    private final String acquirerName = "Acquirer for edit form%s".formatted(runId);
+    private static final String ACQUIRER_NAME = "Acquirer for edit form%s".formatted(runId);
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createAcquirer(getApiRequestContext(), new Acquirer(acquirerName));
+        TestUtils.createAcquirer(getApiRequestContext(), new Acquirer(ACQUIRER_NAME));
     }
 
     @Test
@@ -48,9 +48,9 @@ public class EditAcquirerDialogTest extends BaseTest {
         List<String> actualPlaceholders = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeName(acquirerName)
-                .getSelectAcquirer().clickAcquirerInDropdown(acquirerName)
-                .getTable().clickEditAcquirerButton(acquirerName)
+                .getSelectAcquirer().typeName(ACQUIRER_NAME)
+                .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER_NAME)
+                .getTable().clickEditAcquirerButton(ACQUIRER_NAME)
                 .getAllPlaceholders();
 
         Allure.step("Verify placeholders match expected values for all fields");
@@ -60,7 +60,7 @@ public class EditAcquirerDialogTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteAcquirer(getApiRequestContext(), acquirerName);
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_NAME);
         super.afterClass();
     }
 }
