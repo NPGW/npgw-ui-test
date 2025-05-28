@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
@@ -68,37 +69,53 @@ public class ReportsPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
-    @Ignore
     @Test
     @TmsLink("510")
     @Epic("Reports")
     @Feature("Generate report")
     @Description("Verify content of 'Generation Parameters dialog'")
-    public void testContentOfGenerationParametersDalog() {
+    public void testContentOfGenerationParametersDialog() {
+        String companyName = "Generate report";
+        String merchantTitle = "Generate report merchant";
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
+
         ReportsParametersDialog generationParametersDialog = new DashboardPage(getPage())
+                .refreshDashboard()
                 .clickReportsLink()
+                .getSelectCompany().selectCompany(companyName)
+                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
                 .clickGenerateReportButton();
 
-        Allure.step("Verify: error message is shown for invalid date range");
+        Allure.step("Verify: Dialog header text");
         assertThat(generationParametersDialog.getDialogHeader()).hasText("Generation Parameters");
 
-        Allure.step("Verify: 'Generate' button is disabled with not selected business unit");
-        assertThat(generationParametersDialog.getGenerateButton()).isDisabled();
+        Allure.step("Verify: 'Generate' button is enabled");
+        assertThat(generationParametersDialog.getGenerateButton()).isEnabled();
 
         Allure.step("Verify: All report column names are listed in the 'Generation Parameters dialog'");
         Assert.assertEquals(
                 new HashSet<>(generationParametersDialog.getReportColumns()), new HashSet<>(REPORT_COLUMNS));
     }
 
-    @Ignore
     @Test
     @TmsLink("512")
     @Epic("Reports")
     @Feature("Generate report")
     @Description("Check/uncheck reports columns in the 'Generation Parameters dialog'")
     public void testCheckboxesOfGenerationParameters() {
+        String companyName = "Generate report one";
+        String merchantTitle = "Generate report one merchant";
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
+
         ReportsParametersDialog generationParametersDialog = new DashboardPage(getPage())
+                .refreshDashboard()
                 .clickReportsLink()
+                .getSelectCompany().selectCompany(companyName)
+                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
                 .clickGenerateReportButton();
 
         Allure.step("Verify: All report columns are checked at first opening the 'Generation Parameters dialog'");

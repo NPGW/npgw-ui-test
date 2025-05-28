@@ -28,7 +28,7 @@ import static xyz.npgw.test.common.util.TestUtils.deleteAcquirer;
 public class AcquirersPageTest extends BaseTest {
 
     private static final List<String> COLUMNS_HEADERS = List.of(
-            "Acquirer name",
+            "Acquirer title",
             "Acquirer code",
             "Currencies",
             "Acquirer config",
@@ -77,9 +77,9 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab();
 
         Allure.step("Verify: 'Acquirer name' header is visible");
-        assertThat(acquirersPage.getTable().getColumnHeader("Acquirer name")).isVisible();
+        assertThat(acquirersPage.getTable().getColumnHeader("Acquirer title")).isVisible();
 
-        List<Locator> acquirersList = acquirersPage.getTable().getCells("Acquirer name");
+        List<Locator> acquirersList = acquirersPage.getTable().getCells("Acquirer title");
 
         Allure.step(String.format(
                 "Verify: Acquirers list is visible and contains elements. INFO: (%d elements)", acquirersList.size()));
