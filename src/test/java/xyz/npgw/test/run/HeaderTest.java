@@ -73,7 +73,7 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
-    @Test(dataProvider = "getNewUsers", dataProviderClass = TestDataProvider.class)
+    @Test(dataProvider = "getNewUsers", dataProviderClass = TestDataProvider.class, priority = 1)
     @TmsLink("289")
     @Epic("Header")
     @Feature("User menu")
@@ -224,24 +224,27 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Verify Minimum and Maximum Password Length Restrictions (negative)")
     public void testPasswordLengthRestrictionsOnChange(String userRole) {
-        ProfileSettingsDialog<DashboardPage> dialog = new DashboardPage(getPage())
+        ProfileSettingsDialog<DashboardPage> profileSettingsDialog = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
                 .fillPasswordField("A".repeat(7))
                 .fillRepeatPasswordField("A".repeat(7));
 
         Allure.step("Verify: error message for 7 characters short password is displayed");
-        assertThat(getPage().getByText("Password must be at least 8 characters long")).isVisible();
-        Allure.step("Verify: Save button is disabled due 7 characters short password using");
-        assertThat(getPage().getByText("Save")).isDisabled();
+        assertThat(profileSettingsDialog.getErrorMessage())
+                .hasText("Password must be at least 8 characters long");
 
-        dialog
+        Allure.step("Verify: Save button is disabled");
+        assertThat(profileSettingsDialog.getSaveButton()).isDisabled();
+
+        profileSettingsDialog
                 .fillPasswordField("A".repeat(21))
                 .fillRepeatPasswordField("A".repeat(21));
 
         Allure.step("Verify that the 'Password' field is limited to 20 characters.");
-        Assert.assertEquals(dialog.getPasswordField().inputValue().length(), 20);
+        assertThat(profileSettingsDialog.getPasswordField()).hasValue("A".repeat(20));
+
         Allure.step("Verify that the 'RepeatPassword' field is limited to 20 characters.");
-        Assert.assertEquals(dialog.getRepeatPasswordField().inputValue().length(), 20);
+        assertThat(profileSettingsDialog.getRepeatPasswordField()).hasValue("A".repeat(20));
     }
 }
