@@ -79,8 +79,7 @@ public record User(
     }
 
     public static boolean exists(APIRequestContext request, String email) {
-        APIResponse response = request.get("portal-v1/user?email=%s".formatted(encode(email)),
-                RequestOptions.create().setFailOnStatusCode(true));
+        APIResponse response = request.get("portal-v1/user?email=%s".formatted(encode(email)));
         log.debug("get user '{}' - {} {}", email, response.status(), response.text());
         return response.ok() && response.text().contains(email);
     }
