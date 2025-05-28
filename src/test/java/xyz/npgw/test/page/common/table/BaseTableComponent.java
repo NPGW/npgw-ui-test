@@ -174,10 +174,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public List<Integer> getRowCountsPerPage() {
         List<Integer> rowsPerPage = new ArrayList<>();
-
-        if (!getActivePageButton().innerText().equals("1")) {
-            clickPaginationPageButton("1");
-        }
+        goToFirstPageIfNeeded();
 
         do {
             rowsPerPage.add(getRows().count());
@@ -188,6 +185,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public int countValue(String columnHeader, String value) {
         long count = 0;
+        goToFirstPageIfNeeded();
+
         do {
             count += getCells(columnHeader).stream()
                     .filter(locator -> locator.innerText().equals(value))
@@ -197,9 +196,22 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return (int) count;
     }
 
+    public boolean isCurrentPage(String number) {
+        return getActivePageButton().innerText().equals(number);
+    }
+
+    public CurrentPageT goToFirstPageIfNeeded() {
+        if (!isCurrentPage("1")) {
+            clickPaginationPageButton("1");
+        }
+
+        return getCurrentPage();
+    }
 
     public void forEachPage(String rowsPerPageOption, PageCallback callback) {
         selectRowsPerPageOption(rowsPerPageOption);
+        goToFirstPageIfNeeded();
+
         do {
             callback.accept(getActivePageButton().innerText());
         } while (goToNextPage());
