@@ -27,7 +27,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
     private final Locator paginationItems = getPage().getByLabel("pagination item");
     private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
-
+    private final Locator previousPageButton = getByRole(AriaRole.BUTTON, "previous page button");
 
     public BaseTableComponent(Page page) {
         super(page);
@@ -112,13 +112,27 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return getCurrentPage();
     }
 
-    public Locator getActivePage() {
+    @Step("Click on page '{pageNumber}'")
+    public CurrentPageT clickOnPaginationPage(String pageNumber) {
+        getPage().getByLabel("pagination item " + pageNumber).click();
+
+        return getCurrentPage();
+    }
+
+    public Locator getActivePageButton() {
         return getPage().getByLabel(Pattern.compile("pagination item.*active.*", Pattern.CASE_INSENSITIVE));
     }
 
-    @Step("Click next page")
+    @Step("Click next page button")
     public CurrentPageT clickNextPageButton() {
         nextPageButton.click();
+
+        return getCurrentPage();
+    }
+
+    @Step("Click previous page button")
+    public CurrentPageT clickPreviousPageButton() {
+        previousPageButton.click();
 
         return getCurrentPage();
     }
@@ -144,6 +158,13 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return true;
     }
 
+    public int countAllRows() {
+
+        return getRowCountsPerPage().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
     public int countAllRows(List<Integer> rowCountsPerPage) {
 
         return rowCountsPerPage.stream()
@@ -153,6 +174,11 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public List<Integer> getRowCountsPerPage() {
         List<Integer> rowsPerPage = new ArrayList<>();
+
+        if (!getActivePageButton().innerText().equals("1")) {
+            clickOnPaginationPage("1");
+        }
+
         do {
             rowsPerPage.add(getRows().count());
         } while (goToNextPage());
@@ -175,7 +201,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     public void forEachPage(String rowsPerPageOption, PageCallback callback) {
         selectRowsPerPageOption(rowsPerPageOption);
         do {
-            callback.accept(getActivePage().innerText());
+            callback.accept(getActivePageButton().innerText());
         } while (goToNextPage());
     }
 

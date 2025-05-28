@@ -211,7 +211,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify that selecting a 'Rows Per Page' option displays the correct number of rows in the table.")
     public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
-        List<Integer> totalRows = new ArrayList<>();
+        List<Integer> totalRowsForDifferentPaginations = new ArrayList<>();
 
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
@@ -227,10 +227,10 @@ public class AcquirersPageTest extends BaseTest {
             Allure.step(String.format("Verify: The table contains rows less than or equal to '%s' per page", option));
             Assert.assertTrue(allValid, "Not all row counts are less than or equal to " + option);
 
-            totalRows.add(rowsSum);
+            totalRowsForDifferentPaginations.add(rowsSum);
         }
 
-        Assert.assertEquals(totalRows.stream().distinct().count(), 1,
+        Assert.assertEquals(totalRowsForDifferentPaginations.stream().distinct().count(), 1,
                 "Total rows should be the same for all 'Rows Per Page' options");
     }
 
@@ -243,9 +243,7 @@ public class AcquirersPageTest extends BaseTest {
         List<String> acquirerTableHeaders = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getTable()
-                .getColumnHeadersText();
-
+                .getTable().getColumnHeadersText();
 
         Allure.step("Verify: The Acquirer table contains correct column headers");
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
@@ -311,14 +309,14 @@ public class AcquirersPageTest extends BaseTest {
         }
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(acquirersPage.getTable().getEditAcquirerButton(row)).isVisible();
+        assertThat(table.getEditAcquirerButton(row)).isVisible();
 
         Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getTable().getChangeActivityButton(row)).isVisible();
+        assertThat(table.getChangeActivityButton(row)).isVisible();
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
-        assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
-        assertThat(acquirersPage.getTable().getPaginationItems()).hasText("1");
+        assertThat(table.getPaginationItems()).isVisible();
+        assertThat(table.getPaginationItems()).hasText("1");
     }
 
     @Test
