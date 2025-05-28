@@ -9,6 +9,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
@@ -18,15 +19,16 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
-    private final String companyName = "CompanyForBuEdit%s".formatted(runId);
-    private final String buName = "NewBUForEdit%s".formatted(runId);
+    private static final String COMPANY_NAME = "CompanyForBuEdit%s".formatted(runId);
+    private static final String MERCHANT_TITLE = "NewBUForEdit%s".formatted(runId);
+    private BusinessUnit businessUnit;
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, buName);
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -41,14 +43,14 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         EditBusinessUnitDialog editBusinessUnitDialog = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(companyName)
-                .getTable().clickEditBusinessUnitButton(buName);
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE);
 
         Allure.step("Verify: the header contains the expected title text");
         assertThat(editBusinessUnitDialog.getDialogHeader()).hasText("Edit business unit");
 
         Allure.step("Verify: Company name is pre-filled correctly");
-        assertThat(editBusinessUnitDialog.getCompanyNameField()).hasValue(companyName);
+        assertThat(editBusinessUnitDialog.getCompanyNameField()).hasValue(COMPANY_NAME);
 
         Allure.step("Verify: Company name field is read-only");
         assertThat(editBusinessUnitDialog.getCompanyNameField()).hasAttribute("aria-readonly", "true");
@@ -56,13 +58,14 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         Allure.step("Verify: all labels are correct for each field");
         assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = editBusinessUnitDialog.clickCloseButton();
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = editBusinessUnitDialog
+                .clickCloseButton();
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' button");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
 
         companiesAndBusinessUnitsPage
-                .getTable().clickEditBusinessUnitButton(buName)
+                .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE)
                 .clickCloseIcon();
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' icon");
@@ -72,7 +75,8 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }
