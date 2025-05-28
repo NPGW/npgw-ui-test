@@ -264,6 +264,7 @@ public class AcquirersPageTest extends BaseTest {
                 "default",
                 new SystemConfig(),
                 "Acquirer 11.002.01",
+                "Acquirer 11.002.01",
                 new String[]{"USD", "EUR"},
                 true);
 
@@ -371,6 +372,7 @@ public class AcquirersPageTest extends BaseTest {
                         "https://resource.example.com",
                         "notification-queue"),
                 acquirerName,
+                acquirerName,
                 new String[]{"USD"},
                 status.equals("Active")
         );
@@ -405,6 +407,7 @@ public class AcquirersPageTest extends BaseTest {
                 "NGenius",
                 "default",
                 new SystemConfig(),
+                acquirerName,
                 acquirerName,
                 new String[]{"USD", "EUR"},
                 true);
