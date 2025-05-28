@@ -21,7 +21,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class GatewayPageTest extends BaseTest {
 
-    private final String companyName = "Company 112172%s".formatted(runId);
+    private static final String COMPANY_NAME = "Company 112172%s".formatted(runId);
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
     Company company = new Company("Company for 602%s".formatted(runId));
@@ -32,8 +32,8 @@ public class GatewayPageTest extends BaseTest {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        businessUnits = TestUtils.createBusinessUnits(getApiRequestContext(), companyName, expectedBusinessUnitsList);
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        businessUnits = TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyPlaceholder()
-                .getSelectCompany().selectCompany(companyName);
+                .getSelectCompany().selectCompany(COMPANY_NAME);
 
         Locator selectCompanyPlaceholder = gatewayPage
                 .getSelectCompany().getSelectCompanyPlaceholder();
@@ -101,7 +101,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(gatewayPage.getSelectCompany().getCompanyDropdown()).not().isVisible();
 
         Allure.step("Verify: Placeholder value");
-        assertThat(selectCompanyPlaceholder).hasValue(companyName);
+        assertThat(selectCompanyPlaceholder).hasValue(COMPANY_NAME);
 
         Allure.step("Verify: 'Business units list' title is visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
@@ -164,8 +164,8 @@ public class GatewayPageTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteBusinessUnits(getApiRequestContext(), companyName, businessUnits);
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.deleteBusinessUnits(getApiRequestContext(), COMPANY_NAME, businessUnits);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
 
         TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), company.companyName(), company.companyType());
         TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), company.companyName(), merchantTitle);
