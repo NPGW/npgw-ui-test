@@ -32,7 +32,7 @@ import static org.testng.Assert.assertTrue;
 public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "TeamPageTest company";
-    private static final String ADMIN_COMPANY_NAME = "Admin company";
+    private static final String ADMIN_COMPANY_NAME = "Admin company%s".formatted(runId);
     private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(runId);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
@@ -267,6 +267,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
+                .getTable().selectRowsPerPageOption("100")
                 .getTable().clickEditUserButton(email)
                 .checkInactiveRadiobutton()
                 .clickSaveChangesButton();
@@ -300,6 +301,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
+                .getTable().selectRowsPerPageOption("100")
                 .getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton();
 
@@ -351,6 +353,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
+                .getTable().selectRowsPerPageOption("100")
                 .getTable().clickResetUserPasswordButton(email)
                 .fillPasswordField("NewPassword1!")
                 .clickResetButton();

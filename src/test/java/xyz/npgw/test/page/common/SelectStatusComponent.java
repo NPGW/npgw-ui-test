@@ -33,7 +33,7 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
         return currentPage;
     }
 
-       public CurrentPageT waitUntilDropdownGone() {
+    public CurrentPageT waitUntilDropdownGone() {
         statusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;
