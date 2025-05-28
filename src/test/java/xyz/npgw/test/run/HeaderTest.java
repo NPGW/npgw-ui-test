@@ -20,6 +20,8 @@ import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 
+import java.util.regex.Pattern;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Slf4j
@@ -31,17 +33,17 @@ public class HeaderTest extends BaseTest {
     @Feature("Logo")
     @Description("Check that Logo in header contains text 'NPGW' and image")
     public void testLogoContainsTextAndImage() {
-        DashboardPage header = new DashboardPage(getPage());
+        DashboardPage dashboardPage = new DashboardPage(getPage());
 
         Allure.step("Verify: Logo contains text 'NPGW'");
-        assertThat(header.getLogo()).hasText("NPGW");
+        assertThat(dashboardPage.getLogo()).hasText("NPGW");
 
         Allure.step("Verify: Logo contains image");
-        Assert.assertTrue(header.getImg().isVisible(), "Image inside logo should be visible");
-        Assert.assertNotNull(header.getImg().getAttribute("src"), "Image should have a 'src' attribute");
+        assertThat(dashboardPage.getLogoImg()).isVisible();
+        assertThat(dashboardPage.getLogoImg()).hasAttribute("src", Pattern.compile("/assets/.*png"));
 
         Allure.step("Verify: Image inside logo is fully loaded");
-        Assert.assertTrue(header.isLogoImageLoaded(), "Image inside logo should be fully loaded");
+        Assert.assertTrue(dashboardPage.isLogoImageLoaded(), "Image inside logo should be fully loaded");
     }
 
     @Test
@@ -134,12 +136,12 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Verify that the user can switch to the dark theme")
     public void testDarkColorThemeSwitch() {
-        new DashboardPage(getPage())
+        DashboardPage dashboardPage = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickDarkRadioButton();
 
         Allure.step("Verify that the dark color theme is selected");
-        assertThat(getPage().locator("html.dark")).isVisible();
+        assertThat(dashboardPage.getHtmlTag()).hasClass("dark");
     }
 
     @Test
@@ -148,12 +150,12 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Verify that the user can switch to the light theme")
     public void testLightColorThemeSwitch() {
-        new DashboardPage(getPage())
+        DashboardPage dashboardPage = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickLightRadioButton();
 
         Allure.step("Verify that the light color theme is selected");
-        assertThat(getPage().locator("html.light")).isVisible();
+        assertThat(dashboardPage.getHtmlTag()).hasClass("light");
     }
 
     @Test
@@ -162,8 +164,10 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Verify that the color theme matching with the default browser theme")
     public void testDefaultThemeMatching() {
+        DashboardPage dashboardPage = new DashboardPage(getPage());
+
         Allure.step("Verify that the current color theme matches the default browser theme");
-        assertThat(getPage().locator("html")).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
+        assertThat(dashboardPage.getHtmlTag()).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
     }
 
     @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)
@@ -172,7 +176,7 @@ public class HeaderTest extends BaseTest {
     @Feature("User menu")
     @Description("Check password policy validation error messages when changing password in user menu")
     public void testChangePasswordValidationMessages(String userRole) {
-        ProfileSettingsDialog<DashboardPage> dialog = new DashboardPage(getPage())
+        ProfileSettingsDialog<DashboardPage> profileSettingsDialog = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
                 .fillPasswordField("QWERTY1!")
@@ -180,37 +184,37 @@ public class HeaderTest extends BaseTest {
                 .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing lowercase");
-        assertThat(dialog.getAlert().getMessage())
+        assertThat(profileSettingsDialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have lowercase characters");
 
-        dialog.getAlert().waitUntilSuccessAlertIsHidden();
-
-        dialog.fillPasswordField("qwerty1!")
+        profileSettingsDialog
+                .getAlert().waitUntilAlertIsHidden()
+                .fillPasswordField("qwerty1!")
                 .fillRepeatPasswordField("qwerty1!")
                 .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing uppercase");
-        assertThat(dialog.getAlert().getMessage())
+        assertThat(profileSettingsDialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have uppercase characters");
 
-        dialog.getAlert().waitUntilSuccessAlertIsHidden();
-
-        dialog.fillPasswordField("Qwertyu!")
+        profileSettingsDialog
+                .getAlert().waitUntilAlertIsHidden()
+                .fillPasswordField("Qwertyu!")
                 .fillRepeatPasswordField("Qwertyu!")
                 .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing numeric");
-        assertThat(dialog.getAlert().getMessage())
+        assertThat(profileSettingsDialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have numeric characters");
 
-        dialog.getAlert().waitUntilSuccessAlertIsHidden();
-
-        dialog.fillPasswordField("Qwertyu1")
+        profileSettingsDialog
+                .getAlert().waitUntilAlertIsHidden()
+                .fillPasswordField("Qwertyu1")
                 .fillRepeatPasswordField("Qwertyu1")
                 .clickSaveButtonWhenError();
 
         Allure.step("Verify: error message for missing symbol");
-        assertThat(dialog.getAlert().getMessage())
+        assertThat(profileSettingsDialog.getAlert().getMessage())
                 .hasText("ERRORPassword does not conform to policy: Password must have symbol characters");
     }
 

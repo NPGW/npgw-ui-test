@@ -401,7 +401,8 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
-        teamPage.getAlert().waitUntilSuccessAlertIsGone()
+        teamPage
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
@@ -413,13 +414,15 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "ban");
 
-        teamPage.getTable().clickDeactivateUserButton(analystEmail)
+        teamPage
+                .getTable().clickDeactivateUserButton(analystEmail)
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell("Status", analystEmail)).hasText("Inactive");
