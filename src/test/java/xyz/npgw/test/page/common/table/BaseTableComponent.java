@@ -112,8 +112,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return getCurrentPage();
     }
 
-    @Step("Click on page '{pageNumber}'")
-    public CurrentPageT clickOnPaginationPage(String pageNumber) {
+    @Step("Click pagination page button '{pageNumber}'")
+    public CurrentPageT clickPaginationPageButton(String pageNumber) {
         getPage().getByLabel("pagination item " + pageNumber).click();
 
         return getCurrentPage();
@@ -176,7 +176,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         List<Integer> rowsPerPage = new ArrayList<>();
 
         if (!getActivePageButton().innerText().equals("1")) {
-            clickOnPaginationPage("1");
+            clickPaginationPageButton("1");
         }
 
         do {
