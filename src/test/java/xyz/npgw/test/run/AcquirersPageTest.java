@@ -384,14 +384,8 @@ public class AcquirersPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
-        do {
-            if (acquirersPage.getTable().hasRow(acquirerName)) {
-                break;
-            }
-        } while (acquirersPage.getTable().goToNextPage());
-
         Allure.step("Verify: Acquirer status");
-        assertThat(acquirersPage.getTable().getCell("Status", acquirerName)).hasText(status);
+        assertThat(acquirersPage.getTable().getCell(acquirerName, "Status")).hasText(status);
     }
 
     @Test
@@ -428,7 +422,7 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirersPage
-                .getTable().getCell("Status", acquirerName))
+                .getTable().getCell(acquirerName, "Status"))
                 .hasText("Inactive");
 
         acquirersPage
@@ -442,7 +436,7 @@ public class AcquirersPageTest extends BaseTest {
 
         Allure.step("Verify: Acquirer status changed back to Active");
         assertThat(acquirersPage
-                .getTable().getCell("Status", acquirerName))
+                .getTable().getCell(acquirerName, "Status"))
                 .hasText("Active");
     }
 }

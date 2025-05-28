@@ -72,10 +72,12 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         throw new NoSuchElementException("Row with header '" + rowHeader + "' not found on any page.");
     }
 
-    public Locator getCell(String columnHeader, String rowHeader) {
-        return rows
-                .filter(new Locator.FilterOptions().setHasText(rowHeader))
-                .locator(columnSelector(columnHeader));
+    public Locator getCell(String rowHeader, String columnHeader) {
+        return getCell(getRow(rowHeader), columnHeader);
+    }
+
+    public Locator getCell(Locator row, String columnHeader) {
+        return row.locator(columnSelector(columnHeader));
     }
 
     public List<Locator> getCells(String columnHeader) {
@@ -157,6 +159,18 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
         return rowsPerPage;
     }
+
+    public int countValue(String columnHeader, String value) {
+        long count = 0;
+        do {
+            count += getCells(columnHeader).stream()
+                    .filter(locator -> locator.innerText().equals(value))
+                    .count();
+        } while (goToNextPage());
+
+        return (int) count;
+    }
+
 
     public void forEachPage(String rowsPerPageOption, PageCallback callback) {
         selectRowsPerPageOption(rowsPerPageOption);
