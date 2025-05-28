@@ -57,8 +57,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator downloadCsvOption = getByRole(AriaRole.MENUITEM, "CSV");
     private final Locator downloadExcelOption = getByRole(AriaRole.MENUITEM, "EXCEL");
     private final Locator downloadPdfOption = getByRole(AriaRole.MENUITEM, "PDF");
-    private final Locator statusSelector = getByRole(AriaRole.BUTTON, "Status");
-    private final Locator statusSelectorValue = locator("button span[data-slot='value']").nth(2);
+
     public TransactionsPage(Page page) {
         super(page);
     }
@@ -312,13 +311,5 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
             return false;
         }, refreshDataButton::click);
         return data.get();
-    }
-
-    @Step("Select Status type '{value}' from dropdown menu")
-    public TransactionsPage selectStatus(String value) {
-        statusSelector.click();
-        getByRole(AriaRole.OPTION, value).click();
-
-        return this;
     }
 }

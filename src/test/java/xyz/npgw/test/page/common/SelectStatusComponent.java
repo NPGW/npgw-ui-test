@@ -33,8 +33,7 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
         return currentPage;
     }
 
-    @Step("Wait until Status dropdown gone")
-    public CurrentPageT waitUntilDropdownGone() {
+       public CurrentPageT waitUntilDropdownGone() {
         statusDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
 
         return currentPage;
@@ -52,6 +51,14 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
         clickSelector();
         clickValue(value);
         waitUntilDropdownGone();
+
+        return currentPage;
+    }
+
+    @Step("Select status '{value}' from dropdown menu")
+    public CurrentPageT selectStatus(String value) {
+        clickSelector();
+        clickValue(value);
 
         return currentPage;
     }

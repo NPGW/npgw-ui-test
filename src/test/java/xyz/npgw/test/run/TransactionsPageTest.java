@@ -629,16 +629,16 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
-        assertThat(transactionsPage.getStatusSelector()).hasText("StatusALL");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
-        transactionsPage.selectStatus(status);
+        transactionsPage.getSelectStatus().selectStatus(status);
 
         Allure.step("Verify: Filter displays the selected Status");
-        assertThat(transactionsPage.getStatusSelectorValue()).hasText(status);
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status);
 
         transactionsPage.clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
-        assertThat(transactionsPage.getStatusSelectorValue()).hasText("ALL");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 }
