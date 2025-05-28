@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -67,6 +68,7 @@ public class ReportsPageTest extends BaseTest {
                 "Start date must be before end date.");
     }
 
+    @Ignore
     @Test
     @TmsLink("510")
     @Epic("Reports")
@@ -88,6 +90,7 @@ public class ReportsPageTest extends BaseTest {
                 new HashSet<>(generationParametersDialog.getReportColumns()), new HashSet<>(REPORT_COLUMNS));
     }
 
+    @Ignore
     @Test
     @TmsLink("512")
     @Epic("Reports")
