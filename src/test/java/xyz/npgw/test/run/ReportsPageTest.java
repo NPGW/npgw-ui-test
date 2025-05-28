@@ -64,8 +64,8 @@ public class ReportsPageTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(reportsPage.getDateRangePicker().getDataRangePickerErrorMessage()).hasText(
-                "Start date must be before end date.");
+        assertThat(reportsPage.getDateRangePicker().getDataRangePickerErrorMessage())
+                .hasText("Start date must be before end date.");
     }
 
     @Test
