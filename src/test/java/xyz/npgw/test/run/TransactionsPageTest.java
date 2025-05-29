@@ -16,6 +16,7 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class TransactionsPageTest extends BaseTest {
+public class TransactionsPageTest extends BaseTest{
 
     private static final String ADMIN_COMPANY_NAME = "A2 Company";
 
@@ -616,5 +617,32 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
+    }
+
+    @Test
+    @TmsLink("638")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Check that ufter click on transactions in column NPGW reference user see transaction details")
+    public void testCheckTransactionDetails() {
+
+        TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .clickOnTransaction();
+
+        assertThat(transactionDetailsDialog.getDialogHeader()).hasText("Transaction Details");
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Status");
+        assertTrue(transactionDetailsDialog.getStatusField().isVisible());
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Amount");
+        assertTrue(transactionDetailsDialog.getAmountField().isVisible());
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Merchant reference");
+        assertTrue(transactionDetailsDialog.getMerchantReferenceField().isVisible());
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Card details");
+        assertTrue(transactionDetailsDialog.getCardDetailsField().isVisible());
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Payment method");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card type");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card holder");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card number");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Expiry date");
     }
 }
