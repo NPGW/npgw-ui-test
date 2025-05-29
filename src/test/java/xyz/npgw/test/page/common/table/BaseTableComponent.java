@@ -35,18 +35,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     protected abstract CurrentPageT getCurrentPage();
 
-    protected int getColumnHeaderIndex(String name) {
-        columnHeader.last().waitFor();
-
-        return ((Number) getColumnHeader(name).evaluate("el => el.cellIndex")).intValue();
-    }
-
     public Locator getColumnHeader(String name) {
         return columnHeader.getByText(name);
-    }
-
-    public String columnSelector(String columnHeader) {
-        return "td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")";
     }
 
     public List<String> getColumnValues(String name) {
@@ -80,7 +70,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return row.locator(columnSelector(columnHeader));
     }
 
-    public List<Locator> getCells(String columnHeader) {
+    public List<Locator> getColumnCells(String columnHeader) {
         return rows.locator(columnSelector(columnHeader)).all();
     }
 
@@ -114,7 +104,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     @Step("Click pagination page button '{pageNumber}'")
     public CurrentPageT clickPaginationPageButton(String pageNumber) {
-        getPage().getByLabel("pagination item " + pageNumber).click();
+        getByLabelExact("pagination item " + pageNumber).click();
 
         return getCurrentPage();
     }
@@ -137,25 +127,12 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return getCurrentPage();
     }
 
-    public boolean hasNextPage() {
-        return nextPageButton.isEnabled();
-    }
-
     public Locator getFirstRowCell(String columnHeader) {
-        return getCells(columnHeader).get(0);
+        return getColumnCells(columnHeader).get(0);
     }
 
     public boolean hasRow(String name) {
         return getRow(name).count() > 0;
-    }
-
-    public boolean goToNextPage() {
-        if (!hasNextPage()) {
-            return false;
-        }
-        clickNextPageButton();
-
-        return true;
     }
 
     public int countAllRows() {
@@ -185,27 +162,14 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public int countValue(String columnHeader, String value) {
         long count = 0;
-        goToFirstPageIfNeeded();
-
-        do {
-            count += getCells(columnHeader).stream()
-                    .filter(locator -> locator.innerText().equals(value))
-                    .count();
-        } while (goToNextPage());
-
-        return (int) count;
-    }
-
-    public boolean isCurrentPage(String number) {
-        return getActivePageButton().innerText().equals(number);
-    }
-
-    public CurrentPageT goToFirstPageIfNeeded() {
-        if (!isCurrentPage("1")) {
-            clickPaginationPageButton("1");
+        if (goToFirstPageIfNeeded()) {
+            do {
+                count += getColumnCells(columnHeader).stream()
+                        .filter(locator -> locator.innerText().equals(value))
+                        .count();
+            } while (goToNextPage());
         }
-
-        return getCurrentPage();
+        return (int) count;
     }
 
     public void forEachPage(String rowsPerPageOption, PageCallback callback) {
@@ -215,6 +179,44 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         do {
             callback.accept(getActivePageButton().innerText());
         } while (goToNextPage());
+    }
+
+    public boolean goToFirstPageIfNeeded() {
+        if (!paginationItems.first().isVisible()) {
+            return false;
+        }
+        if (!isCurrentPage("1")) {
+            clickPaginationPageButton("1");
+        }
+
+        return true;
+    }
+
+    private boolean isCurrentPage(String number) {
+        return getActivePageButton().innerText().equals(number);
+    }
+
+    private boolean goToNextPage() {
+        if (!hasNextPage()) {
+            return false;
+        }
+        clickNextPageButton();
+
+        return true;
+    }
+
+    private int getColumnHeaderIndex(String name) {
+        columnHeader.last().waitFor();
+
+        return ((Number) getColumnHeader(name).evaluate("el => el.cellIndex")).intValue();
+    }
+
+    private String columnSelector(String columnHeader) {
+        return "td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")";
+    }
+
+    private boolean hasNextPage() {
+        return nextPageButton.isEnabled();
     }
 
     public interface PageCallback {

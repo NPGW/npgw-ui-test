@@ -79,7 +79,7 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: 'Acquirer name' header is visible");
         assertThat(acquirersPage.getTable().getColumnHeader("Acquirer title")).isVisible();
 
-        List<Locator> acquirersList = acquirersPage.getTable().getCells("Acquirer title");
+        List<Locator> acquirersList = acquirersPage.getTable().getColumnCells("Acquirer title");
 
         Allure.step(String.format(
                 "Verify: Acquirers list is visible and contains elements. INFO: (%d elements)", acquirersList.size()));
@@ -130,7 +130,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectStatus().select(status)
-                .getTable().getCells("Status");
+                .getTable().getColumnCells("Status");
 
         Allure.step(String.format("Verify: The 'Acquirers' list shows only '%s' items after filtering.", status));
         for (Locator actualStatus : statuses) {
