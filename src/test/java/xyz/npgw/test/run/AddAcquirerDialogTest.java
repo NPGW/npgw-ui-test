@@ -123,7 +123,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .getSelectAcquirer().typeName(ACQUIRER_NAME);
 
         Allure.step("Verify: Dropdown contains acquirer name");
-        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(ACQUIRER_NAME);
+        assertThat(acquirersPage.getSelectAcquirer().getSelectAcquirersDropdownItems()).hasText(ACQUIRER_NAME);
     }
 
     @Test

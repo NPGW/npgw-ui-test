@@ -91,17 +91,17 @@ public class GatewayPageTest extends BaseTest {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickSelectCompanyPlaceholder()
+                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(COMPANY_NAME);
 
-        Locator selectCompanyPlaceholder = gatewayPage
-                .getSelectCompany().getSelectCompanyPlaceholder();
+        Locator selectCompanyField = gatewayPage
+                .getSelectCompany().getSelectCompanyField();
 
         Allure.step("Verify: The dropdown is closed.");
         assertThat(gatewayPage.getSelectCompany().getCompanyDropdown()).not().isVisible();
 
         Allure.step("Verify: Placeholder value");
-        assertThat(selectCompanyPlaceholder).hasValue(COMPANY_NAME);
+        assertThat(selectCompanyField).hasValue(COMPANY_NAME);
 
         Allure.step("Verify: 'Business units list' title is visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
@@ -117,10 +117,10 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().clickSelectCompanyDropdownChevron();
 
         Allure.step("Verify: Placeholder has value 'Search...'");
-        assertThat(selectCompanyPlaceholder).hasAttribute("placeholder", "Search...");
+        assertThat(selectCompanyField).hasAttribute("placeholder", "Search...");
 
         Allure.step("Verify: Field is empty");
-        assertThat(selectCompanyPlaceholder).isEmpty();
+        assertThat(selectCompanyField).isEmpty();
 
         Allure.step("Verify: 'Business units list' title is still visible");
         assertThat(gatewayPage.getBusinessUnitsListHeader()).isVisible();
@@ -153,7 +153,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickSelectCompanyPlaceholder()
+                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(company.companyName());
 
         Allure.step("Verify that all the Business units are presented in the list");
