@@ -647,7 +647,7 @@ public class TransactionsPageTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter button")
     @Description("Verify, that 'Reset filter' button change 'Status' (two options are checked) to default value ( ALL)")
-    public void testResetMultiStatus(String status1,String status2) {
+    public void testResetMultiStatus(String status1, String status2) {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
@@ -660,7 +660,7 @@ public class TransactionsPageTest extends BaseTest {
                 .getSelectStatus().clickValue(status2);
 
         Allure.step("Verify: Filter displays the selected Status");
-        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status1+", "+status2);
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status1 + ", " + status2);
 
         transactionsPage.clickResetFilterButton();
 
