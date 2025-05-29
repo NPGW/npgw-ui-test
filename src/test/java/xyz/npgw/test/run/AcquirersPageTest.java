@@ -288,9 +288,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getSelectAcquirer().typeName(acquirer.acquirerName())
                 .getSelectAcquirer().clickAcquirerInDropdown(acquirer.acquirerName());
 
-        AcquirersTableComponent table = acquirersPage.getTable();
-
-        Locator row = table.getRows();
+        Locator row = acquirersPage.getTable().getRows();
 
         Allure.step("Verify: List of acquirers has only 1 row in the table");
         assertThat(row).hasCount(1);
@@ -298,7 +296,7 @@ public class AcquirersPageTest extends BaseTest {
         for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
             String header = COLUMNS_HEADERS.get(i);
             String expected = expectedColumnValues.get(header);
-            String actual = table.getColumnValues(header).get(0);
+            String actual = acquirersPage.getTable().getColumnValues(header).get(0);
 
             Allure.step(String.format("Verify that displayed '%s' is: %s", header, expected));
             Assert.assertEquals(
@@ -309,14 +307,14 @@ public class AcquirersPageTest extends BaseTest {
         }
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(table.getEditAcquirerButton(row)).isVisible();
+        assertThat(acquirersPage.getTable().getEditAcquirerButton(row)).isVisible();
 
         Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(table.getChangeActivityButton(row)).isVisible();
+        assertThat(acquirersPage.getTable().getChangeActivityButton(row)).isVisible();
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
-        assertThat(table.getPaginationItems()).isVisible();
-        assertThat(table.getPaginationItems()).hasText("1");
+        assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
+        assertThat(acquirersPage.getTable().getPaginationItems()).hasText("1");
     }
 
     @Test
