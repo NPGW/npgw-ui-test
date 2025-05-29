@@ -168,4 +168,9 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     public interface PageCallback {
         void accept(String pageNumber);
     }
+
+    @Step("Click first page")
+    public void goToFirstPage() {
+        paginationItems.first().click();
+    }
 }

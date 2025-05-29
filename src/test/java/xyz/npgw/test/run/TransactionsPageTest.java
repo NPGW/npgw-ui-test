@@ -17,7 +17,9 @@ import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -640,5 +642,30 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+    }
+
+    @Test
+    @TmsLink("559")
+    @Epic("Transactions")
+    @Feature("Transaction sorting")
+    @Description("'Creation Date' column sorts ascending by default and descending on click.")
+    public void testCreationDataSorting() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().selectRowsPerPageOption("100");
+
+        List<LocalDateTime> actualDates = transactionsPage.getTable().getAllDatesFromAllPages();
+
+        Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
+        assertEquals(actualDates, actualDates.stream().sorted().toList());
+
+        transactionsPage
+                .getTable().clickSortIcon("Creation Date")
+                .getTable().goToFirstPage();
+
+        Allure.step(
+                "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
+        assertEquals(transactionsPage.getTable().getAllDatesFromAllPages(),
+                actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 }
