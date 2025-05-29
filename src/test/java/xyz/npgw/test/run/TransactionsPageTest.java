@@ -16,6 +16,7 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
 import java.util.Arrays;
 import java.util.List;
