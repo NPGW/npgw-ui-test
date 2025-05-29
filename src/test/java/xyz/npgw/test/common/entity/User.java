@@ -96,7 +96,7 @@ public record User(
 
     public static void delete(APIRequestContext request, String email) {
         APIResponse response = request.delete("portal-v1/user?email=%s".formatted(encode(email)));
-        log.info("delete user '{}' - {}", email, response.status());
+        log.info("delete user '{}' - {} {}", email, response.status(), response.text());
     }
 
     public static void changePassword(APIRequestContext request, String email, String newPassword) {
@@ -107,7 +107,7 @@ public record User(
 
     private static TokenResponse getTokenResponse(APIRequestContext request, Credentials credentials) {
         APIResponse response = request.post("/portal-v1/user/token", RequestOptions.create().setData(credentials));
-        log.debug("get token '{}' - {} {}", credentials, response.status(), response.text());
+        log.info("get token '{}' - {}", credentials, response.status());
         return new Gson().fromJson(response.text(), TokenResponse.class);
     }
 
@@ -118,8 +118,9 @@ public record User(
             Challenge challenge = new Challenge(tokenResponse.sessionId, credentials, tokenResponse.userChallengeType);
             APIResponse response = request.post("/portal-v1/user/challenge",
                     RequestOptions.create().setData(challenge));
-            log.debug("pass challenge '{}' - {} {}", credentials, response.status(), response.text());
+            log.info("pass challenge '{}' - {}", credentials, response.status());
         }
+        exists(request, email);
     }
 
     @Override

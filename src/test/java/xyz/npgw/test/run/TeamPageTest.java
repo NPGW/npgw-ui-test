@@ -267,7 +267,6 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().selectRowsPerPageOption("100")
                 .getTable().clickEditUserButton(email)
                 .checkInactiveRadiobutton()
                 .clickSaveChangesButton();
@@ -285,7 +284,7 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Deactivate and activate user under company admin")
     public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "deactivated@gmail.com";
+        String email = "deactivated%s@gmail.com".formatted(runId);
         TestUtils.deleteUser(getApiRequestContext(), email);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
@@ -301,14 +300,14 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().selectRowsPerPageOption("100")
                 .getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell("Status", email)).hasText("Inactive");
@@ -316,13 +315,15 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
 
-        teamPage.getTable().clickActivateUserButton(email)
+        teamPage
+                .getTable().clickActivateUserButton(email)
                 .clickActivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was activated successfully");
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell("Status", email)).hasText("Active");
@@ -353,7 +354,6 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().selectRowsPerPageOption("100")
                 .getTable().clickResetUserPasswordButton(email)
                 .fillPasswordField("NewPassword1!")
                 .clickResetButton();
