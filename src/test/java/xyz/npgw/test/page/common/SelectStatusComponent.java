@@ -54,4 +54,12 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
 
         return currentPage;
     }
+
+    @Step("Select status '{value}' from dropdown menu")
+    public CurrentPageT selectStatus(String value) {
+        clickSelector();
+        clickValue(value);
+
+        return currentPage;
+    }
 }
