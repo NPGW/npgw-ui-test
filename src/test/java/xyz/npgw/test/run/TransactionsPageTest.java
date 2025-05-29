@@ -643,7 +643,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
-    @TmsLink("")
+    @TmsLink("657")
     @Epic("Transactions")
     @Feature("Currency")
     @Description("Compare number of transactions with same currency in the table before and after filter")
