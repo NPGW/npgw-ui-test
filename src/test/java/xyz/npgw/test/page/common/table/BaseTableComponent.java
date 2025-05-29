@@ -131,8 +131,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return getColumnCells(columnHeader).get(0);
     }
 
-    public boolean hasRow(String name) {
-        return getRow(name).count() > 0;
+    public boolean hasRow(String rowHeader) {
+        return getRow(rowHeader).count() > 0;
     }
 
     public int countAllRows() {
@@ -182,7 +182,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public boolean goToFirstPageIfNeeded() {
-        if (!paginationItems.first().isVisible()) {
+        if (hasNoPagination()) {
             return false;
         }
         if (!isCurrentPage("1")) {
@@ -217,6 +217,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     private boolean hasNextPage() {
         return nextPageButton.isEnabled();
+    }
+
+    private boolean hasNoPagination() {
+        return !paginationItems.first().isVisible();
     }
 
     public interface PageCallback {
