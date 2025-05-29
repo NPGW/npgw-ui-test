@@ -49,8 +49,8 @@ jobs:
             USER.email=${{ secrets.COMPANY_ANALYST_EMAIL }};
             USER.password=${{ secrets.USER_PASSWORD }};
             browserType=chromium;
-            viewportWidth=1920;
-            viewportHeight=953;
+#            viewportWidth=1920;
+#            viewportHeight=953;
             headlessMode=true;
             tracingMode=false;
             defaultTimeout=10000;
