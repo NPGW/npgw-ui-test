@@ -16,7 +16,6 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
-import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class TransactionsPageTest extends BaseTest{
+public class TransactionsPageTest extends BaseTest {
 
     private static final String ADMIN_COMPANY_NAME = "A2 Company";
 
@@ -123,7 +122,7 @@ public class TransactionsPageTest extends BaseTest{
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-05-2025")
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "31-05-2025")
                 .getTable().clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
@@ -595,12 +594,12 @@ public class TransactionsPageTest extends BaseTest{
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
     }
 
-    @Test(dataProvider = "getPaymentMethod", dataProviderClass = TestDataProvider.class)
+    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
     @TmsLink("598")
     @Epic("Transactions")
     @Feature("Reset filter button")
-    @Description("Verify, that 'Reset filter' button change 'Payment method' to default value ( ALL)")
-    public void testResetPaymentMethod(String paymentMethod) {
+    @Description("Verify, that 'Reset filter' button change 'Card Type' to default value ( ALL)")
+    public void testResetPaymentMethod(String getCardType) {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
@@ -608,15 +607,39 @@ public class TransactionsPageTest extends BaseTest{
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
 
-        transactionsPage.selectCardType(paymentMethod);
+        transactionsPage.selectCardType(getCardType);
 
         Allure.step("Verify: Filter displays the selected payment method");
-        assertThat(transactionsPage.getCardTypeValue()).containsText(paymentMethod);
+        assertThat(transactionsPage.getCardTypeValue()).containsText(getCardType);
 
         transactionsPage.clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
+    }
+
+    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
+    @TmsLink("639")
+    @Epic("Transactions")
+    @Feature("Reset filter button")
+    @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
+    public void testResetStatus(String status) {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Filter displays 'ALL' by default");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+
+        transactionsPage.getSelectStatus().selectStatus(status);
+
+        Allure.step("Verify: Filter displays the selected Status");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status);
+
+        transactionsPage.clickResetFilterButton();
+
+        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
     @Test
