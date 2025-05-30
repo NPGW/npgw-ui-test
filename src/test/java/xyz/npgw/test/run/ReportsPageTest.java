@@ -9,6 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
@@ -145,5 +146,42 @@ public class ReportsPageTest extends BaseTest {
 
         Allure.step("Verify: All report columns are checked after clicking on them one by one");
         Assert.assertTrue(generationParametersDialog.isAllColumnnsChecked());
+    }
+
+    @Test
+    @TmsLink("653")
+    @Epic("Reports")
+    @Feature("Reset filter")
+    @Description("'Reset filter' clears selected options to default")
+    public void testResetFilter() {
+        final String companyName = "testResetFilter";
+        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        TestUtils.createCompany(getApiRequestContext(), companyName);
+        TestUtils.createBusinessUnit(getApiRequestContext(), companyName, "testResetFilter");
+
+        ReportsPage reportsPage = new ReportsPage(getPage())
+                .clickReportsLink()
+                .refreshReports();
+
+        String defaultStartDate = getPage().locator( "//div[@data-slot='start-input']")
+                .textContent();
+        String defaultEndDate = getPage().locator( "//div[@data-slot='end-input']")
+                .textContent();
+
+        reportsPage
+                .getSelectCompany().selectCompany(companyName)
+                .getSelectBusinessUnit().selectBusinessUnit(companyName)
+                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-05-2025")
+                .clickResetFilterButton();
+
+        Allure.step("Verify: the selected company field is empty after reset");
+        assertThat(reportsPage.getSelectCompany().getSelectCompanyField()).hasValue("");
+
+        Allure.step("Verify: the selected business unit field is empty after reset");
+        assertThat(reportsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue("");
+
+        Allure.step("Verify: the selected date picker date is returned to default");
+        assertThat(getPage().locator("//div[@data-slot='start-input']")).hasText(defaultStartDate);
+        assertThat(getPage().locator("//div[@data-slot='end-input']")).hasText(defaultEndDate);
     }
 }
