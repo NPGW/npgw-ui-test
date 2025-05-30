@@ -15,6 +15,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     protected TransactionsPage getCurrentPage() {
         return new TransactionsPage(getPage());
     }
+
     @Step("Click on transaction in column 'NPGW reference'")
     public TransactionDetailsDialog clickOnTransaction() {
         getFirstRowCell("NPGW reference").click();
