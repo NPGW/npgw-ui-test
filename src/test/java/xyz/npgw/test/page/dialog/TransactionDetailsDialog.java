@@ -6,7 +6,7 @@ import lombok.Getter;
 import xyz.npgw.test.page.TransactionsPage;
 
 
-public class TransactionDetailsDialog extends BaseDialog<TransactionsPage , TransactionDetailsDialog> {
+public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, TransactionDetailsDialog> {
 
     @Getter
     private final Locator statusField = getDialog().getByText("Status");
