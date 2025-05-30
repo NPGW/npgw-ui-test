@@ -181,9 +181,9 @@ public class ReportsPageTest extends BaseTest {
                 .clickReportsLink()
                 .refreshReports();
 
-        String defaultStartDate = getPage().locator( "//div[@data-slot='start-input']")
+        String defaultStartDate = getPage().locator("//div[@data-slot='start-input']")
                 .textContent();
-        String defaultEndDate = getPage().locator( "//div[@data-slot='end-input']")
+        String defaultEndDate = getPage().locator("//div[@data-slot='end-input']")
                 .textContent();
 
         reportsPage
