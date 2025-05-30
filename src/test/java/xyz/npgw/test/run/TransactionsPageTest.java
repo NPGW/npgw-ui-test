@@ -16,6 +16,7 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dialog.TransactionDetailsDialog;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -642,6 +643,81 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+    }
+
+    @Test(dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @TmsLink("655")
+    @Epic("Transactions")
+    @Feature("Reset filter button")
+    @Description("Verify, that 'Reset filter' button change 'Status' (two options are checked) to default value ( ALL)")
+    public void testResetMultiStatus(String status1, String status2) {
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Filter displays 'ALL' by default");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+
+        transactionsPage.getSelectStatus().clickSelector()
+                .getSelectStatus().clickValue(status1)
+                .getSelectStatus().clickValue(status2);
+
+        Allure.step("Verify: Filter displays the selected Status");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status1 + ", " + status2);
+
+        transactionsPage.clickResetFilterButton();
+
+        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+    }
+
+    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
+    @TmsLink("657")
+    @Epic("Transactions")
+    @Feature("Currency")
+    @Description("Compare number of transactions with same currency in the table before and after filter")
+    public void testDisplayAllFilteredByCurrencyRows(String currency) {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
+
+        int numberBeforeFilter = transactionsPage.getTable().countValue("Currency", currency);
+        transactionsPage.getTable().goToFirstPageIfNeeded();
+
+        int numberAfterFilter = transactionsPage
+                .clickCurrencySelector().selectCurrency(currency)
+                .getTable().countValue("Currency", currency);
+
+        Allure.step("Verify: All transactiones with selected currency are shown after filter.");
+        assertEquals(numberBeforeFilter, numberAfterFilter);
+    }
+
+
+    @Test
+    @TmsLink("638")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Check that ufter click on transactions in column NPGW reference user see transaction details")
+    public void testCheckTransactionDetails() {
+
+        TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().clickOnTransaction();
+
+        assertThat(transactionDetailsDialog.getDialogHeader()).hasText("Transaction Details");
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Status");
+        assertTrue(transactionDetailsDialog.getStatusField().isVisible());
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Amount");
+        assertTrue(transactionDetailsDialog.getAmountField().isVisible());
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Merchant reference");
+        assertTrue(transactionDetailsDialog.getMerchantReferenceField().isVisible());
+        assertThat(transactionDetailsDialog.getDialog()).containsText("Card details");
+        assertTrue(transactionDetailsDialog.getCardDetailsField().isVisible());
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Payment method");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card type");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card holder");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card number");
+        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Expiry date");
     }
 
     @Test

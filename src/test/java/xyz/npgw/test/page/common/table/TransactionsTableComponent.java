@@ -2,6 +2,7 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dialog.TransactionDetailsDialog;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,6 +17,12 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     @Override
     protected TransactionsPage getCurrentPage() {
         return new TransactionsPage(getPage());
+    }
+
+    public TransactionDetailsDialog clickOnTransaction() {
+        getFirstRowCell("NPGW reference").click();
+
+        return new TransactionDetailsDialog(getPage());
     }
 
     public List<LocalDateTime> getAllCreationDates() {
