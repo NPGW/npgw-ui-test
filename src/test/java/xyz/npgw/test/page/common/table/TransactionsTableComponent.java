@@ -2,6 +2,11 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dialog.TransactionDetailsDialog;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
 
@@ -27,6 +32,6 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     }
 
     public List<Double> getAllAmounts() {
-        return getAllValuesFromAllPages("Amount", s -> Double.parseDouble(s.replaceAll("[^\\d.]", "")));
+        return getColumnValuesFromAllPages("Amount", s -> Double.parseDouble(s.replaceAll("[^\\d.]", "")));
     }
 }
