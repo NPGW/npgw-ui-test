@@ -36,6 +36,7 @@ public class AddAcquirerDialogTest extends BaseTest {
     public void testAddAcquirerFormOpensWithCorrectHeaderAndFieldsAndClosesCorrectly() {
         List<String> expectedPlaceholders = List.of(
                 "Enter acquirer name",
+                "Enter acquirer title",
                 "Enter acquirer code",
                 "Enter challenge URL",
                 "Enter fingerprint URL",
@@ -118,7 +119,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .getSelectAcquirer().typeName(acquirerName);
 
         Allure.step(String.format("Verify: Dropdown contain '%s' acquirer", acquirerName));
-        assertThat(acquirersPage.getAddAcquirerDialog()).hasText(acquirerName);
+        assertThat(acquirersPage.getSelectAcquirer().getAcquirerInDropdownOption(acquirerName)).isVisible();
     }
 
     @Test

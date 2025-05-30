@@ -13,8 +13,8 @@ import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
 
 public class ReportsPage extends HeaderPage<ReportsPage> implements ReportsTableTrait,
         DateRangePickerTrait<ReportsPage>,
-        SelectBusinessUnitTrait<ReportsPage>,
-        SelectCompanyTrait<ReportsPage> {
+        SelectCompanyTrait<ReportsPage>,
+        SelectBusinessUnitTrait<ReportsPage> {
 
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator generateReportButton = getByRole(AriaRole.BUTTON, "Generate report");
