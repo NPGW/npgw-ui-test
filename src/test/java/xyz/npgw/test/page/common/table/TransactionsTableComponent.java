@@ -21,6 +21,6 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     public List<LocalDateTime> getAllCreationDates() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-        return getAllValuesFromAllPages("Creation Date", s -> LocalDateTime.parse(s, formatter));
+        return getColumnValuesFromAllPages("Creation Date", s -> LocalDateTime.parse(s, formatter));
     }
 }

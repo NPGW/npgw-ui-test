@@ -228,15 +228,9 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         void accept(String pageNumber);
     }
 
-    @Step("Click first page")
-    public CurrentPageT goToFirstPage() {
-        paginationItems.first().click();
-
-        return getCurrentPage();
-    }
-
-    public <T> List<T> getAllValuesFromAllPages(String columnName, Function<String, T> parser) {
-        goToFirstPage();
+    public <T> List<T> getColumnValuesFromAllPages(String columnName, Function<String, T> parser) {
+        selectRowsPerPageOption("100");
+        goToFirstPageIfNeeded();
 
         List<T> allValues = new ArrayList<>();
         do {

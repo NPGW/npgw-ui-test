@@ -651,8 +651,7 @@ public class TransactionsPageTest extends BaseTest {
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
     public void testSortCreationData() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink()
-                .getTable().selectRowsPerPageOption("100");
+                .clickTransactionsLink();
 
         List<LocalDateTime> actualDates = transactionsPage.getTable().getAllCreationDates();
 
