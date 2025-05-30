@@ -649,23 +649,22 @@ public class TransactionsPageTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Transaction sorting")
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
-    public void testCreationDataSorting() {
+    public void testSortCreationData() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getTable().selectRowsPerPageOption("100");
 
-        List<LocalDateTime> actualDates = transactionsPage.getTable().getAllDatesFromAllPages();
+        List<LocalDateTime> actualDates = transactionsPage.getTable().getAllCreationDates();
 
         Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
         assertEquals(actualDates, actualDates.stream().sorted().toList());
 
         transactionsPage
-                .getTable().clickSortIcon("Creation Date")
-                .getTable().goToFirstPage();
+                .getTable().clickSortIcon("Creation Date");
 
         Allure.step(
                 "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
-        assertEquals(transactionsPage.getTable().getAllDatesFromAllPages(),
+        assertEquals(transactionsPage.getTable().getAllCreationDates(),
                 actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 }
