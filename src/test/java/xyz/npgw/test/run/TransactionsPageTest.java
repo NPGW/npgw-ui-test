@@ -686,7 +686,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickCurrencySelector().selectCurrency(currency)
                 .getTable().countValue("Currency", currency);
 
-        Allure.step("Verify: All transactiones with selected currency are shown after filter.");
+        Allure.step("Verify: All transactions with selected currency are shown after filter.");
         assertEquals(numberBeforeFilter, numberAfterFilter);
     }
 
@@ -716,5 +716,34 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card holder");
         assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card number");
         assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Expiry date");
+    }
+
+    @Test
+    @TmsLink("668")
+    @Epic("Transactions")
+    @Feature("Reset filter button")
+    @Description("Verify, that 'Reset filter' button change 'Amount'  to default value ( AMOUNT)")
+    public void testResetAmount() {
+
+        final String amountFrom = "10";
+        final String amountTo = "20";
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Filter 'Amount' displays 'AMOUNT' by default");
+        assertThat(transactionsPage.getAmountButton()).isVisible();
+
+        transactionsPage.clickAmountButton()
+                .fillAmountFromField(amountFrom)
+                .fillAmountToField(amountTo)
+                .clickAmountApplyButton();
+
+        Allure.step("Verify: Filter 'Amount' displays 'Amount: {amountFrom}- {amountTo}'");
+        assertThat(transactionsPage.amountApplied("Amount: " + amountFrom + " - " + amountTo)).isVisible();
+        transactionsPage.clickResetFilterButton();
+
+        Allure.step("Verify: Filter 'Amount' displays 'AMOUNT' by default");
+        assertThat(transactionsPage.getAmountButton()).isVisible();
     }
 }
