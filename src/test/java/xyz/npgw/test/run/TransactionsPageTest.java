@@ -18,6 +18,7 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -640,5 +641,30 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+    }
+
+    @Test
+    @TmsLink("659")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("'Amount' column sorts ascending on first click and descending on second click.")
+    public void testSortAmount() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().selectRowsPerPageOption("100")
+                .getTable().clickSortIcon("Amount");
+
+        List<Double> actualAmount = transactionsPage
+                .getTable().getAllAmounts();
+
+        Allure.step("Verify: transactions are sorted by amount in ascending order after first click");
+        assertEquals(actualAmount, actualAmount.stream().sorted().toList());
+
+        transactionsPage
+                .getTable().clickSortIcon("Amount");
+
+        Allure.step("Verify: transactions are sorted by amount in descending order after second click");
+        assertEquals(transactionsPage.getTable().getAllAmounts(),
+                actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
     }
 }
