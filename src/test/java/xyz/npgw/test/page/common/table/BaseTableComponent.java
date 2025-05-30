@@ -168,10 +168,4 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     public interface PageCallback {
         void accept(String pageNumber);
     }
-
-    public CurrentPageT clickFirstRowCell(String columnHeader) {
-        getCells(columnHeader).get(0).click();
-
-        return getCurrentPage();
-    }
 }

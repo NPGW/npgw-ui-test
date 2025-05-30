@@ -1,13 +1,12 @@
-package xyz.npgw.test.page.dialog.transactions;
+package xyz.npgw.test.page.dialog;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import lombok.Getter;
-import xyz.npgw.test.page.common.trait.AlertTrait;
+import xyz.npgw.test.page.TransactionsPage;
 
 
-public class TransactionDetailsDialog extends TransactionDialog<TransactionDetailsDialog>
-        implements AlertTrait<TransactionDetailsDialog> {
+public class TransactionDetailsDialog extends BaseDialog<TransactionsPage , TransactionDetailsDialog> {
 
     @Getter
     private final Locator statusField = getDialog().getByText("Status");
@@ -18,8 +17,14 @@ public class TransactionDetailsDialog extends TransactionDialog<TransactionDetai
     @Getter
     private final Locator cardDetailsField = getDialog().locator("//div[@aria-label='Card details']");
 
-
     public TransactionDetailsDialog(Page page) {
         super(page);
     }
+
+    @Override
+    protected TransactionsPage getReturnPage() {
+        return new TransactionsPage(getPage());
+    }
 }
+
+

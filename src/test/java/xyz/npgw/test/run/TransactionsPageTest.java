@@ -16,7 +16,7 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
-import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
+import xyz.npgw.test.page.dialog.TransactionDetailsDialog;
 
 import java.util.Arrays;
 import java.util.List;
@@ -652,7 +652,7 @@ public class TransactionsPageTest extends BaseTest {
 
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickOnTransaction();
+                .getTable().clickOnTransaction();
 
         assertThat(transactionDetailsDialog.getDialogHeader()).hasText("Transaction Details");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Status");

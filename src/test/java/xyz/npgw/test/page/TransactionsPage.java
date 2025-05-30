@@ -15,7 +15,6 @@ import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.common.trait.SelectStatusTrait;
 import xyz.npgw.test.page.common.trait.TransactionsTableTrait;
-import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -313,11 +312,5 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
             return false;
         }, refreshDataButton::click);
         return data.get();
-    }
-
-    public TransactionDetailsDialog clickOnTransaction() {
-        getTable().clickFirstRowCell("NPGW Reference");
-
-        return new TransactionDetailsDialog(getPage());
     }
 }
