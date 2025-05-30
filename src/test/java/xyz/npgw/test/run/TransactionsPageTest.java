@@ -18,7 +18,9 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.TransactionDetailsDialog;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -695,7 +697,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("638")
     @Epic("Transactions")
     @Feature("Transaction details")
-    @Description("Check that ufter click on transactions in column NPGW reference user see transaction details")
+    @Description("Check that after click on transactions in column NPGW reference user see transaction details")
     public void testCheckTransactionDetails() {
 
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
@@ -716,6 +718,54 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card holder");
         assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card number");
         assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Expiry date");
+    }
+
+    @Test
+    @TmsLink("559")
+    @Epic("Transactions")
+    @Feature("Transaction sorting")
+    @Description("'Creation Date' column sorts ascending by default and descending on click.")
+    public void testSortCreationData() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        List<LocalDateTime> actualDates = transactionsPage.getTable().getAllCreationDates();
+
+        Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
+        assertEquals(actualDates, actualDates.stream().sorted().toList());
+
+        transactionsPage
+                .getTable().clickSortIcon("Creation Date");
+
+        Allure.step(
+                "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
+        assertEquals(transactionsPage.getTable().getAllCreationDates(),
+                actualDates.stream().sorted(Comparator.reverseOrder()).toList());
+    }
+
+    @Test
+    @TmsLink("659")
+    @Epic("Transactions")
+    @Feature("Amount")
+    @Description("'Amount' column sorts ascending on first click and descending on second click.")
+    public void testSortAmount() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().selectRowsPerPageOption("100")
+                .getTable().clickSortIcon("Amount");
+
+        List<Double> actualAmount = transactionsPage
+                .getTable().getAllAmounts();
+
+        Allure.step("Verify: transactions are sorted by amount in ascending order after first click");
+        assertEquals(actualAmount, actualAmount.stream().sorted().toList());
+
+        transactionsPage
+                .getTable().clickSortIcon("Amount");
+
+        Allure.step("Verify: transactions are sorted by amount in descending order after second click");
+        assertEquals(transactionsPage.getTable().getAllAmounts(),
+                actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
     @Test
