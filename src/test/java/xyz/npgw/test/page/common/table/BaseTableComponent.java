@@ -56,8 +56,13 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
                 header.waitFor(new Locator.WaitForOptions().setTimeout(1000));
                 return rows.filter(new Locator.FilterOptions().setHas(header));
             } catch (PlaywrightException ignored) {
-                log.info("Row header not found on this page, trying next page.");
+                if (hasNoPagination()) {
+                    throw new NoSuchElementException("Row with header '" + rowHeader + "' isn't found! Table is empty");
+                } else {
+                    log.info("Row header not found on this page, trying next page.");
+                }
             }
+
         } while (goToNextPage());
 
         throw new NoSuchElementException("Row with header '" + rowHeader + "' not found on any page.");
@@ -228,15 +233,9 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         void accept(String pageNumber);
     }
 
-    @Step("Click first page")
-    public CurrentPageT goToFirstPage() {
-        paginationItems.first().click();
-
-        return getCurrentPage();
-    }
-
-    public <T> List<T> getAllValuesFromAllPages(String columnName, Function<String, T> parser) {
-        goToFirstPage();
+    public <T> List<T> getColumnValuesFromAllPages(String columnName, Function<String, T> parser) {
+        selectRowsPerPageOption("100");
+        goToFirstPageIfNeeded();
 
         List<T> allValues = new ArrayList<>();
         do {
