@@ -697,7 +697,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("638")
     @Epic("Transactions")
     @Feature("Transaction details")
-    @Description("Check that ufter click on transactions in column NPGW reference user see transaction details")
+    @Description("Check that after click on transactions in column NPGW reference user see transaction details")
     public void testCheckTransactionDetails() {
 
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
