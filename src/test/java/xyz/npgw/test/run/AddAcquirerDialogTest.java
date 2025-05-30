@@ -89,7 +89,6 @@ public class AddAcquirerDialogTest extends BaseTest {
         assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 
-    @Ignore
     @Test
     @TmsLink("412")
     @Epic("System/Acquirers")
