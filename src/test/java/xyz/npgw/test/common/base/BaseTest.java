@@ -15,12 +15,14 @@ import io.qameta.allure.Allure;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Company;
@@ -40,7 +42,11 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+import static xyz.npgw.test.common.state.StateManager.isOk;
+import static xyz.npgw.test.common.state.StateManager.setState;
+
 @Log4j2
+@Listeners(TestListener.class)
 public abstract class BaseTest {
 
     protected static final String RUN_ID = new SimpleDateFormat(".MMdd.HHmmss").format(new Date());
@@ -52,11 +58,13 @@ public abstract class BaseTest {
     private Page page;
     @Getter(AccessLevel.PROTECTED)
     private APIRequestContext apiRequestContext;
+    private LocalTime apiTokenBestBefore = LocalTime.now();
     private LocalTime bestBefore = LocalTime.now();
+
     private String testId;
 
     @BeforeClass
-    protected void beforeClass() {
+    protected void beforeClass(ITestContext testContext) {
         playwright = Playwright.create(new Playwright.CreateOptions().setEnv(ProjectProperties.getEnv()));
         initApiRequestContext();
         browser = BrowserFactory.getBrowser(playwright);
@@ -74,6 +82,7 @@ public abstract class BaseTest {
         log.info(">>> {}", testId);
 
         if (ProjectProperties.isSkipMode() && ProjectProperties.isFailFast()) {
+            log.info("Test {} skipped isSkipMode && isFailFast - true", testId);
             throw new SkipException("Test skipped due to failFast option being true");
         }
 
@@ -84,6 +93,18 @@ public abstract class BaseTest {
                 .setColorScheme(ProjectProperties.getColorScheme())
                 .setViewportSize(ProjectProperties.getViewportWidth(), ProjectProperties.getViewportHeight())
                 .setBaseURL(ProjectProperties.getBaseUrl());
+
+        RunAs runAs = RunAs.SUPER;
+        if (args.length != 0 && Arrays.stream(RunAs.values()).anyMatch(e -> e.name().equals(args[0]))) {
+            runAs = RunAs.valueOf((String) args[0]);
+        }
+        log.debug("current test will runAs {}", runAs);
+
+        if (runAs != RunAs.UNAUTHORISED && isOk(runAs)) {
+            options.setStorageStatePath(
+                    Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId())));
+            log.debug("set for current runAs {} option path {}", runAs, options.storageStatePath);
+        }
 
         if (ProjectProperties.isVideoMode()) {
             options.setRecordVideoDir(Paths.get(ProjectProperties.getArtefactDir()))
@@ -102,7 +123,9 @@ public abstract class BaseTest {
 
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
+
         openSite(args);
+        initPageRequestContext();
     }
 
     @AfterMethod
@@ -152,7 +175,7 @@ public abstract class BaseTest {
     }
 
     @AfterClass(alwaysRun = true)
-    protected void afterClass() {
+    protected void afterClass(ITestContext testContext) {
         if (browser != null) {
             browser.close();
         }
@@ -168,6 +191,7 @@ public abstract class BaseTest {
         if (playwright != null) {
             playwright.close();
         }
+        log.debug("<<< <<< <<< CLASS {}", testContext.getAttribute("testRunId"));
     }
 
     private void openSite(Object[] args) {
@@ -194,10 +218,11 @@ public abstract class BaseTest {
     }
 
     private void initApiRequestContext() {
-        if (LocalTime.now().isBefore(bestBefore)) {
+        log.debug("api context token {} is good till {}", apiRequestContext, apiTokenBestBefore);
+        if (LocalTime.now().isBefore(apiTokenBestBefore)) {
             return;
         }
-
+        log.debug("updating api context token {} is good till {}", apiRequestContext, apiTokenBestBefore);
         APIResponse tokenResponse = playwright
                 .request()
                 .newContext()
@@ -207,6 +232,7 @@ public abstract class BaseTest {
                                 "password", ProjectProperties.getSuperPassword())));
 
         if (tokenResponse.ok()) {
+            log.debug("token response ok");
             Token token = new Gson().fromJson(tokenResponse.text(), TokenResponse.class).token();
             apiRequestContext = playwright
                     .request()
@@ -214,9 +240,10 @@ public abstract class BaseTest {
                             .NewContextOptions()
                             .setBaseURL(ProjectProperties.getBaseUrl())
                             .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken))));
-            bestBefore = LocalTime.now().plusSeconds(token.expiresIn).minusMinutes(1);
+            apiTokenBestBefore = LocalTime.now().plusSeconds(token.expiresIn).minusMinutes(1);
+            log.debug("updating expiration time {} is good till {}", apiRequestContext, apiTokenBestBefore);
         } else {
-            String message = "Retrieve API idToken failed: %s".formatted(tokenResponse.text());
+            String message = "Retrieve API idToken failed: %s".formatted(tokenResponse.statusText());
             log.error(message);
             throw new SkipException(message);
         }
