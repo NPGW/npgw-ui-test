@@ -32,8 +32,8 @@ import static org.testng.Assert.assertTrue;
 public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "TeamPageTest company";
-    private static final String ADMIN_COMPANY_NAME = "Admin company%s".formatted(runId);
-    private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(runId);
+    private static final String ADMIN_COMPANY_NAME = "Admin company%s".formatted(RUN_ID);
+    private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(RUN_ID);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
@@ -284,7 +284,7 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Deactivate and activate user under company admin")
     public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "deactivated%s@gmail.com".formatted(runId);
+        String email = "deactivated%s@gmail.com".formatted(RUN_ID);
         TestUtils.deleteUser(getApiRequestContext(), email);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);

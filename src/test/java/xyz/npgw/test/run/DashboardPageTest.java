@@ -21,8 +21,8 @@ import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
 
-    private static final String COMPANY_NAME = "Dashboard%s".formatted(runId);
-    private static final String MERCHANT_TITLE = "Dashboard business unit%s".formatted(runId);
+    private static final String COMPANY_NAME = "Dashboard%s".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "Dashboard business unit%s".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     @BeforeClass

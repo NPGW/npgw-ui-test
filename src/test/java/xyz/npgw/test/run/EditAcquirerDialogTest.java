@@ -19,7 +19,7 @@ import static org.testng.Assert.assertEquals;
 
 public class EditAcquirerDialogTest extends BaseTest {
 
-    private static final String ACQUIRER_NAME = "Acquirer for edit form%s".formatted(runId);
+    private static final String ACQUIRER_NAME = "Acquirer for edit form%s".formatted(RUN_ID);
 
     @BeforeClass
     @Override
