@@ -823,8 +823,9 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     // TODO bug - status isn't sent to server
-    @Test(expectedExceptions = AssertionError.class, dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
-    @TmsLink("")
+    @Test(expectedExceptions = AssertionError.class,
+            dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @TmsLink("679")
     @Epic("Transactions")
     @Feature("Status")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
