@@ -834,7 +834,9 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
 
-        int numberWithStatusesBeforeFilter = transactionsPage.getTable().countValues("Status", firstStatus, secondStatus);
+        int numberWithStatusesBeforeFilter = transactionsPage
+                .getTable().countValues("Status", firstStatus, secondStatus);
+
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
         int numberWithStatusesAfterFilter = transactionsPage
