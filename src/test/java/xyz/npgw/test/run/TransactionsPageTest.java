@@ -635,7 +635,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
         transactionsPage
-                .getSelectStatus().selectStatus(status);
+                .getSelectStatus().selectTransactionStatuses(status);
 
         Allure.step("Verify: Filter displays the selected Status");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status);
@@ -659,9 +659,7 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
-        transactionsPage.getSelectStatus().clickSelector()
-                .getSelectStatus().clickValue(status1)
-                .getSelectStatus().clickValue(status2);
+        transactionsPage.getSelectStatus().selectTransactionStatuses(status1, status2);
 
         Allure.step("Verify: Filter displays the selected Status");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status1 + ", " + status2);
@@ -682,15 +680,21 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
 
-        int numberBeforeFilter = transactionsPage.getTable().countValue("Currency", currency);
+        int numberWithCurrencyBeforeFilter = transactionsPage.getTable().countValues("Currency", currency);
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int numberAfterFilter = transactionsPage
+        int numberOfSelectedAfterFilter = transactionsPage
                 .clickCurrencySelector().selectCurrency(currency)
-                .getTable().countValue("Currency", currency);
+                .getTable().countValues("Currency", currency);
+
+        int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
 
         Allure.step("Verify: All transactions with selected currency are shown after filter.");
-        assertEquals(numberBeforeFilter, numberAfterFilter);
+        assertEquals(numberWithCurrencyBeforeFilter, numberOfSelectedAfterFilter);
+
+        Allure.step("Verify: Only transactions with selected currency are shown after filter.");
+        assertEquals(totalRowsAfterFilter, numberOfSelectedAfterFilter);
+
     }
 
 
@@ -816,6 +820,33 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Filter 'Amount' displays 'Amount' by default");
         assertThat(transactionsPage.getAmountButton()).isVisible();
         assertThat(transactionsPage.getAmountButton()).hasText("Amount");
+    }
+
+    // TODO bug - status isn't sent to server
+    @Test(expectedExceptions = AssertionError.class, dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @TmsLink("")
+    @Epic("Transactions")
+    @Feature("Status")
+    @Description("Compare number of transactions with selected statuses in the table before and after filter")
+    public void testDisplayAllFilteredByStatusRows(String firstStatus, String secondStatus) {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
+
+        int numberOfSelectedBeforeFilter = transactionsPage.getTable().countValues("Status", firstStatus, secondStatus);
+        transactionsPage.getTable().goToFirstPageIfNeeded();
+
+        int numberOfSelectedAfterFilter = transactionsPage
+                .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
+                .getTable().countValues("Status", firstStatus, secondStatus);
+
+        int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
+
+        Allure.step("Verify: All transactions with selected statuses are shown after filter.");
+        assertEquals(numberOfSelectedBeforeFilter, numberOfSelectedAfterFilter);
+
+        Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
+        assertEquals(totalRowsAfterFilter, numberOfSelectedAfterFilter);
     }
 
     @AfterClass
