@@ -782,8 +782,9 @@ public class TransactionsPageTest extends BaseTest {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
-        Allure.step("Verify: Filter 'Amount' displays 'AMOUNT' by default");
+        Allure.step("Verify: Filter 'Amount' displays 'Amount' by default");
         assertThat(transactionsPage.getAmountButton()).isVisible();
+        assertThat(transactionsPage.getAmountButton()).hasText("Amount");
 
         transactionsPage.clickAmountButton()
                 .fillAmountFromField(amountFrom)
@@ -792,10 +793,13 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Filter 'Amount' displays 'Amount: {amountFrom}- {amountTo}'");
         assertThat(transactionsPage.amountApplied("Amount: " + amountFrom + " - " + amountTo)).isVisible();
+        assertThat(transactionsPage.amountApplied("Amount: " + amountFrom + " - " + amountTo)).hasText("Amount: " + amountFrom + " - " + amountTo);
+
         transactionsPage.clickResetFilterButton();
 
-        Allure.step("Verify: Filter 'Amount' displays 'AMOUNT' by default");
+        Allure.step("Verify: Filter 'Amount' displays 'Amount' by default");
         assertThat(transactionsPage.getAmountButton()).isVisible();
+        assertThat(transactionsPage.getAmountButton()).hasText("Amount");
     }
 
     @AfterClass
