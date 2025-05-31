@@ -683,17 +683,17 @@ public class TransactionsPageTest extends BaseTest {
         int numberWithCurrencyBeforeFilter = transactionsPage.getTable().countValues("Currency", currency);
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int numberOfSelectedAfterFilter = transactionsPage
+        int numberWithCurrencyAfterFilter = transactionsPage
                 .clickCurrencySelector().selectCurrency(currency)
                 .getTable().countValues("Currency", currency);
 
         int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
 
         Allure.step("Verify: All transactions with selected currency are shown after filter.");
-        assertEquals(numberWithCurrencyBeforeFilter, numberOfSelectedAfterFilter);
+        assertEquals(numberWithCurrencyBeforeFilter, numberWithCurrencyAfterFilter);
 
         Allure.step("Verify: Only transactions with selected currency are shown after filter.");
-        assertEquals(totalRowsAfterFilter, numberOfSelectedAfterFilter);
+        assertEquals(totalRowsAfterFilter, numberWithCurrencyAfterFilter);
 
     }
 
@@ -834,20 +834,20 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
 
-        int numberOfSelectedBeforeFilter = transactionsPage.getTable().countValues("Status", firstStatus, secondStatus);
+        int numberWithStatusesBeforeFilter = transactionsPage.getTable().countValues("Status", firstStatus, secondStatus);
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int numberOfSelectedAfterFilter = transactionsPage
+        int numberWithStatusesAfterFilter = transactionsPage
                 .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
                 .getTable().countValues("Status", firstStatus, secondStatus);
 
         int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
 
         Allure.step("Verify: All transactions with selected statuses are shown after filter.");
-        assertEquals(numberOfSelectedBeforeFilter, numberOfSelectedAfterFilter);
+        assertEquals(numberWithStatusesBeforeFilter, numberWithStatusesAfterFilter);
 
         Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
-        assertEquals(totalRowsAfterFilter, numberOfSelectedAfterFilter);
+        assertEquals(totalRowsAfterFilter, numberWithStatusesAfterFilter);
     }
 
     @AfterClass

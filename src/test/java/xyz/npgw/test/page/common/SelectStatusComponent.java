@@ -61,7 +61,7 @@ public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends B
         for (String value : statuses) {
             clickValue(value);
         }
-        locator("body").click();
+        getPage().keyboard().press("Tab");
 
         return currentPage;
     }
