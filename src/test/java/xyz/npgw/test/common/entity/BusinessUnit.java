@@ -47,8 +47,7 @@ public record BusinessUnit(
     public static void delete(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
         APIResponse response = request.delete(
                 "portal-v1/company/%s/merchant/%s".formatted(encode(companyName), businessUnit.merchantId()));
-        log.info("delete merchant '{}' for company '{}':", businessUnit.merchantId(), companyName);
-        log.info("response - {} {}", response.status(), response.text());
+        log.info("delete merchant '{}' - {}", businessUnit.merchantId(), response.status());
     }
 
     public static void delete(APIRequestContext request, String companyName, String merchantTitle) {
