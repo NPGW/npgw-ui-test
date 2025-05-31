@@ -46,7 +46,7 @@ import static xyz.npgw.test.common.state.StateManager.setState;
 @Listeners(TestListener.class)
 public abstract class BaseTest {
 
-    protected static String runId = new SimpleDateFormat(".MMdd.HHmmss").format(new Date());
+    protected static final String RUN_ID = new SimpleDateFormat(".MMdd.HHmmss").format(new Date());
 
     private Playwright playwright;
     private Browser browser;
@@ -59,16 +59,15 @@ public abstract class BaseTest {
     private String testId;
 
     @BeforeClass
-    protected void beforeClass(ITestContext testContext) {
+    protected void beforeClass() {
         playwright = Playwright.create(new Playwright.CreateOptions().setEnv(ProjectProperties.getEnv()));
+        initApiRequestContext();
         browser = BrowserFactory.getBrowser(playwright);
-        log.debug(">>> >>> >>> CLASS {}", testContext.getAttribute("testRunId"));
+//        log.debug(">>> >>> >>> CLASS {}", testContext.getAttribute("testRunId"));
     }
 
     @BeforeMethod
-    protected void beforeMethod(ITestContext testContext, Method method, ITestResult testResult, Object[] args) {
-        log.debug(">>> thread {} is entering before method", Thread.currentThread().getName());
-
+    protected void beforeMethod(Method method, ITestResult testResult, Object[] args) {
         testId = "%s/%s/%s/%s(%d)%s".formatted(
                 ProjectProperties.getArtefactDir(),
                 ProjectProperties.getBrowserType(),
@@ -76,9 +75,6 @@ public abstract class BaseTest {
                 method.getName(),
                 testResult.getMethod().getCurrentInvocationCount(),
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
-//        Thread.currentThread().setName("th%s%s".formatted(
-//                Thread.currentThread().getId(),
-//                testId.substring(testId.length() - 12)));
         log.info(">>> {}", testId);
 
         if (ProjectProperties.isSkipMode() && ProjectProperties.isFailFast()) {
@@ -124,7 +120,6 @@ public abstract class BaseTest {
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
 
-        initApiRequestContext();
         openSite(runAs);
         initPageRequestContext();
     }
@@ -136,8 +131,7 @@ public abstract class BaseTest {
         }
 
         long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
-        log.info("{}_{} <<< {} in {} s",
-                testResult.isSuccess() ? "OK" : "FAILURE", testResult.getStatus(), testId, testDuration);
+        log.info("{} <<< {} in {} s", status(testResult.getStatus()), testId, testDuration);
 
         if (page != null) {
             page.close();
@@ -177,17 +171,23 @@ public abstract class BaseTest {
     }
 
     @AfterClass(alwaysRun = true)
-    protected void afterClass(ITestContext testContext) {
+    protected void afterClass() {
         if (browser != null) {
             browser.close();
         }
         if (apiRequestContext != null) {
+//            String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
+//            Arrays.stream(UserRole.values()).forEach(userRole -> {
+//                User.delete(apiRequestContext, "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid));
+//            });
+//            Company.delete(apiRequestContext, "Company %s".formatted(uid));
+
             apiRequestContext.dispose();
         }
         if (playwright != null) {
             playwright.close();
         }
-        log.debug("<<< <<< <<< CLASS {}", testContext.getAttribute("testRunId"));
+//        log.debug("<<< <<< <<< CLASS {}", testContext.getAttribute("testRunId"));
     }
 
     private void openSite(RunAs runAs) {
@@ -250,6 +250,18 @@ public abstract class BaseTest {
             Token token = new Gson().fromJson(tokenData, Token.class);
             context.setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken)));
         }
+    }
+
+    private String status(int code) {
+        return switch (code) {
+            case -1 -> "CREATED";
+            case 1 -> "SUCCESS";
+            case 2 -> "FAILURE";
+            case 3 -> "SKIP";
+            case 4 -> "SUCCESS_PERCENTAGE_FAILURE";
+            case 16 -> "STARTED";
+            default -> throw new IllegalStateException("Unexpected value: " + code);
+        };
     }
 
     private record StorageState(Cookie[] cookies, Origin[] origins) {
