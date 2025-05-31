@@ -772,7 +772,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("668")
     @Epic("Transactions")
     @Feature("Reset filter button")
-    @Description("Verify, that 'Reset filter' button change 'Amount'  to default value ( AMOUNT)")
+    @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
     public void testResetAmount() {
 
         final String amountFrom = "10";
