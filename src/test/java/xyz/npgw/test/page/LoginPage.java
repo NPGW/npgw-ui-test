@@ -118,6 +118,14 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         return new DashboardPage(getPage());
     }
 
+    @Step("Login to the site as '{email}'")
+    public DashboardPage loginAs(String email, String password) {
+        login(email, password);
+        getPage().waitForURL("**/dashboard");
+
+        return new DashboardPage(getPage());
+    }
+
     @Step("Login with '{email}' user")
     public DashboardPage login(String email, String password) {
         fillEmailField(email);
@@ -141,6 +149,8 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         clickSaveButton();
 
         getAlert().waitUntilSuccessAlertIsGone();
+//        getAlert().clickCloseButton();
+
         return this;
     }
 
