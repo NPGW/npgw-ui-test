@@ -181,10 +181,8 @@ public class ReportsPageTest extends BaseTest {
                 .clickReportsLink()
                 .refreshReports();
 
-        String defaultStartDate = getPage().locator("//div[@data-slot='start-input']")
-                .textContent();
-        String defaultEndDate = getPage().locator("//div[@data-slot='end-input']")
-                .textContent();
+        String defaultStartDate = reportsPage.getDateRangePicker().getDateRangePickerStartDate().textContent();
+        String defaultEndDate = reportsPage.getDateRangePicker().getDateRangePickerEndDate().textContent();
 
         reportsPage
                 .getSelectCompany().selectCompany(companyName)
@@ -193,13 +191,13 @@ public class ReportsPageTest extends BaseTest {
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
-        assertThat(reportsPage.getSelectCompany().getSelectCompanyField()).hasValue("");
+        assertThat(reportsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
         Allure.step("Verify: the selected business unit field is empty after reset");
-        assertThat(reportsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue("");
+        assertThat(reportsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
-        Allure.step("Verify: the selected date picker date is returned to default");
-        assertThat(getPage().locator("//div[@data-slot='start-input']")).hasText(defaultStartDate);
-        assertThat(getPage().locator("//div[@data-slot='end-input']")).hasText(defaultEndDate);
+        Allure.step("Verify: the selected date picker dates are returned to default");
+        assertThat(reportsPage.getDateRangePicker().getDateRangePickerStartDate()).hasText(defaultStartDate);
+        assertThat(reportsPage.getDateRangePicker().getDateRangePickerEndDate()).hasText(defaultEndDate);
     }
 }
