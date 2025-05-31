@@ -29,7 +29,7 @@ public final class DashboardPage extends HeaderPage<DashboardPage> implements
     private final Locator currencyLegendLabels = locator("span.apexcharts-legend-text");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonDashboardPage");
     @Getter
-    private final Locator currencySelector = getByLabelExact("Currency");
+    private final Locator currencySelector = getByRole(AriaRole.BUTTON,"Currency");
 
     private final Locator initiatedBlock = getByLabelExact("INITIATED").first();
     private final Locator pendingBlock = getByLabelExact("PENDING").first();
