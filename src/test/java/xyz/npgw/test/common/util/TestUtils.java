@@ -93,6 +93,7 @@ public final class TestUtils {
     }
 
     public static void deleteCompany(APIRequestContext request, String companyName) {
+        deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
         Company.delete(request, companyName);
     }
 
