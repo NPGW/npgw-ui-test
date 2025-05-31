@@ -793,6 +793,7 @@ public class TransactionsPageTest extends BaseTest {
 
         final String amountFrom = "10";
         final String amountTo = "20";
+        final String chosenAmount = "Amount: " + amountFrom + " - " + amountTo;
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
@@ -807,8 +808,8 @@ public class TransactionsPageTest extends BaseTest {
                 .clickAmountApplyButton();
 
         Allure.step("Verify: Filter 'Amount' displays 'Amount: {amountFrom}- {amountTo}'");
-        assertThat(transactionsPage.amountApplied("Amount: " + amountFrom + " - " + amountTo)).isVisible();
-        assertThat(transactionsPage.amountApplied("Amount: " + amountFrom + " - " + amountTo)).hasText("Amount: " + amountFrom + " - " + amountTo);
+        assertThat(transactionsPage.amountApplied(chosenAmount)).isVisible();
+        assertThat(transactionsPage.amountApplied(chosenAmount)).hasText(chosenAmount);
 
         transactionsPage.clickResetFilterButton();
 
