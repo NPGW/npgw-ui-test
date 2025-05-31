@@ -25,7 +25,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.entity.UserRole;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 
 import java.io.IOException;
@@ -176,11 +179,11 @@ public abstract class BaseTest {
             browser.close();
         }
         if (apiRequestContext != null) {
-//            String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
-//            Arrays.stream(UserRole.values()).forEach(userRole -> {
-//                User.delete(apiRequestContext, "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid));
-//            });
-//            Company.delete(apiRequestContext, "Company %s".formatted(uid));
+            String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
+            Arrays.stream(UserRole.values()).forEach(userRole -> {
+                User.delete(apiRequestContext, "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid));
+            });
+            Company.delete(apiRequestContext, "Company %s".formatted(uid));
 
             apiRequestContext.dispose();
         }
@@ -196,10 +199,17 @@ public abstract class BaseTest {
             new AboutBlankPage(page).navigate("/");
             return;
         }
-        log.debug("login as {} setState and store {}",
-                UserRole.valueOf(runAs.name()),
-                "target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()));
-        new AboutBlankPage(page).navigate("/").loginAs(UserRole.valueOf(runAs.name()));
+        UserRole userRole = UserRole.valueOf(runAs.name());
+        log.debug("login as {} -> {}",
+                userRole, "target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()));
+
+        String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
+        String email = "%s.%s@email.com".formatted(runAs.toString().toLowerCase(), uid);
+        String companyName = "Company %s".formatted(uid);
+        if (!User.exists(apiRequestContext, email)) {
+            TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
+        }
+        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
         setState(runAs);
         context.storageState(new BrowserContext
                 .StorageStateOptions()
