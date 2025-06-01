@@ -678,7 +678,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByCurrencyRows(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
+                .getDateRangePicker().setDateRangeFields("28-05-2025", "31-05-2025");
 
         int numberWithCurrencyBeforeFilter = transactionsPage.getTable().countValues("Currency", currency);
         transactionsPage.getTable().goToFirstPageIfNeeded();
@@ -832,7 +832,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByStatusRows(String firstStatus, String secondStatus) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
+                .getDateRangePicker().setDateRangeFields("28-05-2025", "31-05-2025");
 
         int numberWithStatusesBeforeFilter = transactionsPage
                 .getTable().countValues("Status", firstStatus, secondStatus);
