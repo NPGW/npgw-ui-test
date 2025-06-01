@@ -845,9 +845,6 @@ public class TransactionsPageTest extends BaseTest {
 
         int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
 
-        System.out.println(firstStatus + " " + secondStatus + " - numberWithStatusesBeforeFilter = " + numberWithStatusesBeforeFilter);
-        System.out.println(firstStatus + " " + secondStatus + " - numberWithStatusesAfterFilter = " + numberWithStatusesAfterFilter);
-        System.out.println(firstStatus + " " + secondStatus + " - totalRowsAfterFilter = " + totalRowsAfterFilter);
         Allure.step("Verify: All transactions with selected statuses are shown after filter.");
         assertEquals(numberWithStatusesBeforeFilter, numberWithStatusesAfterFilter);
 
