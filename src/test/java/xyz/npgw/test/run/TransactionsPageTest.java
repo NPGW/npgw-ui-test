@@ -832,7 +832,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByStatusRows(String firstStatus, String secondStatus) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
+                .getSelectDateRange().setDateRangeFields("27-05-2025", "31-05-2025");
 
         int numberWithStatusesBeforeFilter = transactionsPage
                 .getTable().countValues("Status", firstStatus, secondStatus);
@@ -845,6 +845,9 @@ public class TransactionsPageTest extends BaseTest {
 
         int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
 
+        System.out.println(firstStatus + " " + secondStatus + " - numberWithStatusesBeforeFilter = " + numberWithStatusesBeforeFilter);
+        System.out.println(firstStatus + " " + secondStatus + " - numberWithStatusesAfterFilter = " + numberWithStatusesAfterFilter);
+        System.out.println(firstStatus + " " + secondStatus + " - totalRowsAfterFilter = " + totalRowsAfterFilter);
         Allure.step("Verify: All transactions with selected statuses are shown after filter.");
         assertEquals(numberWithStatusesBeforeFilter, numberWithStatusesAfterFilter);
 
