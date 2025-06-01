@@ -832,7 +832,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByStatusRows(String firstStatus, String secondStatus) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("28-05-2025", "31-05-2025");
+                .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
 
         int numberWithStatusesBeforeFilter = transactionsPage
                 .getTable().countValues("Status", firstStatus, secondStatus);
