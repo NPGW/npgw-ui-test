@@ -71,10 +71,6 @@ public final class TestUtils {
         }
     }
 
-    public static void deleteBusinessUnits(APIRequestContext request, String company, BusinessUnit[] businessUnits) {
-        Arrays.stream(businessUnits).forEach(businessUnit -> BusinessUnit.delete(request, company, businessUnit));
-    }
-
     public static void createMerchantTitleIfNeeded(APIRequestContext request, String company, String merchantTitle) {
         if (!BusinessUnit.exists(request, company, merchantTitle)) {
             BusinessUnit.create(request, company, merchantTitle);
