@@ -3,7 +3,6 @@ package xyz.npgw.test.page;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
@@ -71,7 +70,6 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     @Step("Press 'Login' button to change password")
     public LoginPage clickLoginButtonToChangePassword() {
         loginButton.click();
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return this;
     }
@@ -152,8 +150,6 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         clickSaveButton();
 
 //        getAlert().clickCloseButton();
-        getAlert().waitUntilSuccessAlertIsGone();
-
         return this;
     }
 
