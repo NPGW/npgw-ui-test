@@ -854,7 +854,7 @@ public class TransactionsPageTest extends BaseTest {
 
     // TODO bug - transactions isn't present in the table when a currency filter is applied on the last page
     @Test(expectedExceptions = AssertionError.class)
-    @TmsLink("")
+    @TmsLink("682")
     @Epic("Transactions")
     @Feature("Pagination")
     @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
