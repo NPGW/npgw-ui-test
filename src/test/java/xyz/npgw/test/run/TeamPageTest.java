@@ -563,4 +563,35 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: Error message is displayed for existing user");
         assertThat(addUserDialog.getAlert().getMessage()).hasText("ERRORUser account already exists");
     }
+
+    @Test
+    @TmsLink("683")
+    @Epic("System/Team")
+    @Feature("Reset filter")
+    @Description("'Reset filter' button resets the 'Status' filter to 'All' and clears the selected company")
+    public void testResetFilter() {
+        final List<String> statusList = List.of("Active", "Inactive");
+
+        TeamPage teamPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink();
+
+        Allure.step("Verify: 'Status' filter displays 'All' by default");
+        assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
+
+        Allure.step("Verify: 'Select company' filter is empty by default");
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasText("");
+
+        for (String status : statusList) {
+            teamPage
+                    .getSelectCompany().selectCompany(COMPANY_NAME)
+                    .getSelectStatus().selectTransactionStatuses(status)
+                    .clickResetFilterButton();
+
+            Allure.step("Verify: 'Status' filter displays 'All' after reset");
+            assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
+
+            Allure.step("Verify: 'Select company' filter is empty after reset");
+            assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasText("");
+        }
+    }
 }
