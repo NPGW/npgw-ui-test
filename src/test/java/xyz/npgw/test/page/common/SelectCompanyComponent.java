@@ -95,7 +95,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         return page;
     }
 
-    public String firstCompanyName(){
+    public String firstCompanyName() {
 
         return  dropdownOptionList.first().textContent();
     }
