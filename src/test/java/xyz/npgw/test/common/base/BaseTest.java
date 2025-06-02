@@ -42,7 +42,7 @@ import java.util.Map;
 @Log4j2
 public abstract class BaseTest {
 
-    protected static final String RUN_ID = new SimpleDateFormat("MMdd.HHmmss.").format(new Date());
+    protected static final String RUN_ID = new SimpleDateFormat("MMdd.HHmmss").format(new Date());
 
     private Playwright playwright;
     private Browser browser;
@@ -156,7 +156,7 @@ public abstract class BaseTest {
             browser.close();
         }
         if (apiRequestContext != null) {
-            String uid = "%s%s".formatted(RUN_ID, Thread.currentThread().getId());
+            String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
 //            Arrays.stream(UserRole.values()).forEach(userRole -> {
 //                User.delete(apiRequestContext, "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase()));
 //            });
@@ -183,7 +183,7 @@ public abstract class BaseTest {
             }
         }
 
-        String uid = "%s%s".formatted(RUN_ID, Thread.currentThread().getId());
+        String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
         String email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());
         String companyName = "%s test run company".formatted(uid);
         if (!User.exists(apiRequestContext, email)) {
