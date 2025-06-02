@@ -40,6 +40,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
 
+import static xyz.npgw.test.common.state.StateManager.isOk;
+import static xyz.npgw.test.common.state.StateManager.setState;
+
 @Log4j2
 public abstract class BaseTest {
 
@@ -85,6 +88,16 @@ public abstract class BaseTest {
                 .setViewportSize(ProjectProperties.getViewportWidth(), ProjectProperties.getViewportHeight())
                 .setBaseURL(ProjectProperties.getBaseUrl());
 
+        RunAs runAs = RunAs.SUPER;
+        if (args.length != 0 && Arrays.stream(RunAs.values()).anyMatch(e -> e.name().equals(args[0]))) {
+            runAs = RunAs.valueOf((String) args[0]);
+        }
+
+        if (runAs != RunAs.UNAUTHORISED && isOk(runAs)) {
+            options.setStorageStatePath(
+                    Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId())));
+        }
+
         if (ProjectProperties.isVideoMode()) {
             options.setRecordVideoDir(Paths.get(ProjectProperties.getArtefactDir()))
                     .setRecordVideoSize(ProjectProperties.getVideoWidth(), ProjectProperties.getVideoHeight());
@@ -102,7 +115,7 @@ public abstract class BaseTest {
 
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
-        openSite(args);
+        openSite(runAs);
     }
 
     @AfterMethod
@@ -170,19 +183,13 @@ public abstract class BaseTest {
         }
     }
 
-    private void openSite(Object[] args) {
-        UserRole userRole = UserRole.SUPER;
-        if (args.length != 0 && (args[0] instanceof String)) {
-            try {
-                userRole = UserRole.valueOf((String) args[0]);
-            } catch (IllegalArgumentException e) {
-                if (args[0].equals("UNAUTHORISED")) {
-                    new AboutBlankPage(page).navigate("/");
-                    return;
-                }
-            }
+    private void openSite(RunAs runAs) {
+        if (runAs == RunAs.UNAUTHORISED || isOk(runAs)) {
+            new AboutBlankPage(page).navigate("/");
+            return;
         }
 
+        UserRole userRole = UserRole.valueOf(runAs.name());
         String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
         String email = "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid);
         String companyName = "Company %s".formatted(uid);
@@ -191,6 +198,10 @@ public abstract class BaseTest {
         }
         new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
         initPageRequestContext();
+        setState(runAs);
+        context.storageState(new BrowserContext
+                .StorageStateOptions()
+                .setPath(Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()))));
     }
 
     private void initApiRequestContext() {
