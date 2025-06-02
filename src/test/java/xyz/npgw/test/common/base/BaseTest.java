@@ -15,14 +15,12 @@ import io.qameta.allure.Allure;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Company;
@@ -46,7 +44,6 @@ import static xyz.npgw.test.common.state.StateManager.isOk;
 import static xyz.npgw.test.common.state.StateManager.setState;
 
 @Log4j2
-@Listeners(TestListener.class)
 public abstract class BaseTest {
 
     protected static final String RUN_ID = new SimpleDateFormat(".MMdd.HHmmss").format(new Date());
@@ -95,12 +92,10 @@ public abstract class BaseTest {
         if (args.length != 0 && Arrays.stream(RunAs.values()).anyMatch(e -> e.name().equals(args[0]))) {
             runAs = RunAs.valueOf((String) args[0]);
         }
-        log.debug("current test will runAs {}", runAs);
 
         if (runAs != RunAs.UNAUTHORISED && isOk(runAs)) {
             options.setStorageStatePath(
                     Paths.get("target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId())));
-            log.debug("set for current runAs {} option path {}", runAs, options.storageStatePath);
         }
 
         if (ProjectProperties.isVideoMode()) {
@@ -120,7 +115,6 @@ public abstract class BaseTest {
 
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
-
         openSite(runAs);
         initPageRequestContext();
     }
@@ -192,16 +186,12 @@ public abstract class BaseTest {
 
     private void openSite(RunAs runAs) {
         if (runAs == RunAs.UNAUTHORISED || isOk(runAs)) {
-            log.debug("navigate('/') as {}", runAs);
             new AboutBlankPage(page).navigate("/");
             return;
         }
         UserRole userRole = UserRole.valueOf(runAs.name());
-        log.debug("login as {} -> {}",
-                userRole, "target/%s-%s-state.json".formatted(runAs, Thread.currentThread().getId()));
-
         String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
-        String email = "%s.%s@email.com".formatted(runAs.toString().toLowerCase(), uid);
+        String email = "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid);
         String companyName = "Company %s".formatted(uid);
         if (!User.exists(apiRequestContext, email)) {
             TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
