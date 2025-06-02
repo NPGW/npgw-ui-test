@@ -116,7 +116,6 @@ public abstract class BaseTest {
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
         openSite(runAs);
-        initPageRequestContext();
     }
 
     @AfterMethod
@@ -197,6 +196,7 @@ public abstract class BaseTest {
             TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
         }
         new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
+        initPageRequestContext();
         setState(runAs);
         context.storageState(new BrowserContext
                 .StorageStateOptions()
