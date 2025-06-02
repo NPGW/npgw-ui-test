@@ -19,6 +19,14 @@ public class CleanupUtils {
             "test@email.com", "supertest@email.com", "admintest@email.com", "usertest@email.com");
     private static final List<String> ACQUIRER = List.of("Luke EUR MID 1");
 
+
+
+    public static void deleteCompanies(APIRequestContext request) {
+        Arrays.stream(Company.getAll(request))
+                .filter(c -> !COMPANY.contains(c.companyName()))
+                .forEach(item -> TestUtils.deleteCompany(request, item.companyName()));
+    }
+
     public static void clean(APIRequestContext request) {
         deleteUnprotectedAcquirers(request);
 
