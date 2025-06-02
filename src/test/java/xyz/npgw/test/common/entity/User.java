@@ -74,6 +74,7 @@ public record User(
     }
 
     public static void create(APIRequestContext request, User user) {
+        log.info("will create user - {}", user);
         APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
         log.info("create user '{}' {} - {}", user.email(), user.companyName(), response.status());
     }
@@ -126,10 +127,10 @@ public record User(
         exists(request, email);
     }
 
-    @Override
-    public String toString() {
-        return "User: %s %s".formatted(email, userRole);
-    }
+//    @Override
+//    public String toString() {
+//        return "User: %s %s".formatted(email, userRole);
+//    }
 
     private record Credentials(String email, String password) {
     }
