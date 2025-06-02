@@ -87,8 +87,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
     public CurrentPageT selectFirstCompany() {
         if (dropdownOptionList.all().isEmpty()) {
             throw new NoSuchElementException("Dropdown list is empty.");
-        }
-        else {
+        } else {
             dropdownOptionList.first().click();
         }
 
