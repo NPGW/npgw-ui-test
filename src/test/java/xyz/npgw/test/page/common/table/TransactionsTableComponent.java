@@ -38,9 +38,10 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     public boolean isBetween(String dateFrom, String dateTo) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate localDateFrom = LocalDate.parse(dateFrom, formatter);
-        LocalDate localDateTo = LocalDate.parse(dateTo, formatter);
-        return getAllCreationDates().stream().allMatch(date -> date.isAfter(localDateFrom.atStartOfDay())
-                && date.isBefore(localDateTo.plusDays(1).atStartOfDay()));
+        LocalDateTime dateTimeFrom = LocalDate.parse(dateFrom, formatter).atStartOfDay();
+        LocalDateTime dateTimeTo = LocalDate.parse(dateTo, formatter).plusDays(1).atStartOfDay();
+        return getAllCreationDates()
+                .stream()
+                .allMatch(date -> date.isAfter(dateTimeFrom) && date.isBefore(dateTimeTo));
     }
 }
