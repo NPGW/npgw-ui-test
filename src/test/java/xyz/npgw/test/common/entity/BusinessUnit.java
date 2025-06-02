@@ -40,7 +40,7 @@ public record BusinessUnit(
 
     public static BusinessUnit[] getAll(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company/%s/merchant".formatted(encode(companyName)));
-        log.info("get all merchants for company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("get all merchants for company '{}' - {}", companyName, response.status());
         if (response.status() == 404) {
             return new BusinessUnit[0];
         }
