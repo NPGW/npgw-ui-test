@@ -853,7 +853,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("686")
+    @TmsLink("687")
     @Epic("Transactions")
     @Feature("Reset filter button")
     @Description("Verify, that 'Reset filter' clean 'Company' input field")
