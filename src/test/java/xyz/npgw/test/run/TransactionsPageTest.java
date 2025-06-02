@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -95,10 +96,10 @@ public class TransactionsPageTest extends BaseTest {
     public void testFilterTransactionsByCurrency(String currency) {
         List<String> currencyValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "30-04-2025")
+                .getSelectDateRange().setDateRangeFields("01-05-2025", "30-05-2025")
                 .clickCurrencySelector()
                 .selectCurrency(currency)
-                .getTable().getColumnValues("Currency");
+                .getTable().getColumnValuesFromAllPages("Currency", Function.identity());
 
         Allure.step("Verify: All values in the Currency column match the selected currency");
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
@@ -139,7 +140,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "31-05-2025")
+                .getSelectDateRange().setDateRangeFields("01-04-2025", "31-05-2025")
                 .getTable().clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
@@ -158,7 +159,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink();
 
         Allure.step("Verify: DataRange picker is visible");
-        assertThat(transactionsPage.getDateRangePicker().getDateRangePickerField()).isVisible();
+        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).isVisible();
 
         Allure.step("Verify: Business Unit selector is visible");
         assertThat(transactionsPage.getBusinessUnitSelector()).isVisible();
@@ -257,7 +258,7 @@ public class TransactionsPageTest extends BaseTest {
 
         List<String> amountValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-05-2025")
+                .getSelectDateRange().setDateRangeFields("01-04-2025", "01-05-2025")
                 .clickAmountButton()
                 .fillAmountFromField(String.valueOf(amountFrom))
                 .fillAmountToField(String.valueOf(amountTo))
@@ -311,11 +312,11 @@ public class TransactionsPageTest extends BaseTest {
     public void testErrorMessageForReversedDateRange() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-04-2024")
+                .getSelectDateRange().setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(transactionsPage.getDateRangePicker().getDataRangePickerErrorMessage())
+        assertThat(transactionsPage.getSelectDateRange().getErrorMessage())
                 .hasText("Start date must be before end date.");
     }
 
@@ -493,7 +494,7 @@ public class TransactionsPageTest extends BaseTest {
         String companyAdminEmail = "companyAdmin@gmail.com";
         String companyAdminPassword = "CompanyAdmin1!";
         TestUtils.deleteUser(getApiRequestContext(), companyAdminEmail);
-        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+//        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(
                 getApiRequestContext(), ADMIN_COMPANY_NAME, companyAdminEmail, companyAdminPassword);
@@ -546,7 +547,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
-                .getDateRangePicker().setDateRangeFields("01-05-2025", "07-05-2025")
+                .getSelectDateRange().setDateRangeFields("01-05-2025", "07-05-2025")
                 .clickCurrencySelector()
                 .selectCurrency("USD")
                 .selectCardType("VISA")
@@ -634,7 +635,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
         transactionsPage
-                .getSelectStatus().selectStatus(status);
+                .getSelectStatus().selectTransactionStatuses(status);
 
         Allure.step("Verify: Filter displays the selected Status");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status);
@@ -658,9 +659,7 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
-        transactionsPage.getSelectStatus().clickSelector()
-                .getSelectStatus().clickValue(status1)
-                .getSelectStatus().clickValue(status2);
+        transactionsPage.getSelectStatus().selectTransactionStatuses(status1, status2);
 
         Allure.step("Verify: Filter displays the selected Status");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status1 + ", " + status2);
@@ -679,17 +678,23 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByCurrencyRows(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025");
+                .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
 
-        int numberBeforeFilter = transactionsPage.getTable().countValue("Currency", currency);
+        int numberWithCurrencyBeforeFilter = transactionsPage.getTable().countValues("Currency", currency);
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int numberAfterFilter = transactionsPage
+        int numberWithCurrencyAfterFilter = transactionsPage
                 .clickCurrencySelector().selectCurrency(currency)
-                .getTable().countValue("Currency", currency);
+                .getTable().countValues("Currency", currency);
+
+        int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
 
         Allure.step("Verify: All transactions with selected currency are shown after filter.");
-        assertEquals(numberBeforeFilter, numberAfterFilter);
+        assertEquals(numberWithCurrencyBeforeFilter, numberWithCurrencyAfterFilter);
+
+        Allure.step("Verify: Only transactions with selected currency are shown after filter.");
+        assertEquals(totalRowsAfterFilter, numberWithCurrencyAfterFilter);
+
     }
 
 
@@ -766,6 +771,85 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: transactions are sorted by amount in descending order after second click");
         assertEquals(transactionsPage.getTable().getAllAmounts(),
                 actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
+    }
+
+    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
+    @TmsLink("673")
+    @Epic("Transactions")
+    @Feature("Payment method")
+    @Description("Filtering transactions by Card type displays only matching entries in the table.")
+    public void testFilterByCardType(String cardType) {
+        List<String> cardTypeList = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .selectCardType(cardType)
+                .getTable().getColumnValuesFromAllPages("Card type", Function.identity());
+
+        Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
+        assertTrue(cardTypeList.stream().allMatch(value -> value.equals(cardType)));
+    }
+
+    @Test
+    @TmsLink("668")
+    @Epic("Transactions")
+    @Feature("Reset filter button")
+    @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
+    public void testResetAmount() {
+
+        final String amountFrom = "10";
+        final String amountTo = "20";
+        final String chosenAmount = "Amount: " + amountFrom + " - " + amountTo;
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Filter 'Amount' displays 'Amount' by default");
+        assertThat(transactionsPage.getAmountButton()).isVisible();
+        assertThat(transactionsPage.getAmountButton()).hasText("Amount");
+
+        transactionsPage.clickAmountButton()
+                .fillAmountFromField(amountFrom)
+                .fillAmountToField(amountTo)
+                .clickAmountApplyButton();
+
+        Allure.step("Verify: Filter 'Amount' displays 'Amount: {amountFrom}- {amountTo}'");
+        assertThat(transactionsPage.amountApplied(chosenAmount)).isVisible();
+        assertThat(transactionsPage.amountApplied(chosenAmount)).hasText(chosenAmount);
+
+        transactionsPage.clickResetFilterButton();
+
+        Allure.step("Verify: Filter 'Amount' displays 'Amount' by default");
+        assertThat(transactionsPage.getAmountButton()).isVisible();
+        assertThat(transactionsPage.getAmountButton()).hasText("Amount");
+    }
+
+    // TODO bug - status isn't sent to server
+    @Test(expectedExceptions = AssertionError.class,
+            dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @TmsLink("679")
+    @Epic("Transactions")
+    @Feature("Status")
+    @Description("Compare number of transactions with selected statuses in the table before and after filter")
+    public void testDisplayAllFilteredByStatusRows(String firstStatus, String secondStatus) {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields("27-05-2025", "31-05-2025");
+
+        int numberWithStatusesBeforeFilter = transactionsPage
+                .getTable().countValues("Status", firstStatus, secondStatus);
+
+        transactionsPage.getTable().goToFirstPageIfNeeded();
+
+        int numberWithStatusesAfterFilter = transactionsPage
+                .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
+                .getTable().countValues("Status", firstStatus, secondStatus);
+
+        int totalRowsAfterFilter = transactionsPage.getTable().countAllRows();
+
+        Allure.step("Verify: All transactions with selected statuses are shown after filter.");
+        assertEquals(numberWithStatusesBeforeFilter, numberWithStatusesAfterFilter);
+
+        Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
+        assertEquals(totalRowsAfterFilter, numberWithStatusesAfterFilter);
     }
 
     @AfterClass

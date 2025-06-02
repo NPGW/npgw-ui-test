@@ -60,11 +60,11 @@ public class ReportsPageTest extends BaseTest {
     public void testErrorMessageForReversedDateRange() {
         ReportsPage reportsPage = new DashboardPage(getPage())
                 .clickReportsLink()
-                .getDateRangePicker().setDateRangeFields("01-04-2025", "01-04-2024")
+                .getSelectDateRange().setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
-        assertThat(reportsPage.getDateRangePicker().getDataRangePickerErrorMessage())
+        assertThat(reportsPage.getSelectDateRange().getErrorMessage())
                 .hasText("Start date must be before end date.");
     }
 
@@ -161,6 +161,36 @@ public class ReportsPageTest extends BaseTest {
 
         Allure.step("Verify: All report columns are checked after clicking on them one by one");
         Assert.assertTrue(generationParametersDialog.isAllColumnsChecked());
+    }
+
+    @Test
+    @TmsLink("653")
+    @Epic("Reports")
+    @Feature("Reset filter")
+    @Description("'Reset filter' clears selected options to default")
+    public void testResetFilter() {
+        ReportsPage reportsPage = new ReportsPage(getPage())
+                .clickReportsLink()
+                .refreshReports();
+
+        String defaultStartDate = reportsPage.getSelectDateRange().getStartDate().textContent();
+        String defaultEndDate = reportsPage.getSelectDateRange().getEndDate().textContent();
+
+        reportsPage
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
+                .getSelectDateRange().setDateRangeFields("01-04-2025", "01-05-2025")
+                .clickResetFilterButton();
+
+        Allure.step("Verify: the selected company field is empty after reset");
+        assertThat(reportsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
+
+        Allure.step("Verify: the selected business unit field is empty after reset");
+        assertThat(reportsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
+
+        Allure.step("Verify: the selected date picker dates are returned to default");
+        assertThat(reportsPage.getSelectDateRange().getStartDate()).hasText(defaultStartDate);
+        assertThat(reportsPage.getSelectDateRange().getEndDate()).hasText(defaultEndDate);
     }
 
     @AfterClass

@@ -11,8 +11,10 @@ import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -157,6 +159,11 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public List<Integer> getRowCountsPerPage() {
         List<Integer> rowsPerPage = new ArrayList<>();
+
+        if (hasNoPagination()) {
+            return rowsPerPage;
+        }
+
         goToFirstPageIfNeeded();
 
         do {
@@ -166,12 +173,15 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rowsPerPage;
     }
 
-    public int countValue(String columnHeader, String value) {
+    public int countValues(String columnHeader, String... values) {
         long count = 0;
+        Set<String> valueSet = Set.of(values);
+
         if (goToFirstPageIfNeeded()) {
             do {
                 count += getColumnCells(columnHeader).stream()
-                        .filter(locator -> locator.innerText().equals(value))
+                        .map(locator -> locator.innerText().trim())
+                        .filter(valueSet::contains)
                         .count();
             } while (goToNextPage());
         }
@@ -234,6 +244,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public <T> List<T> getColumnValuesFromAllPages(String columnName, Function<String, T> parser) {
+        if (!paginationItems.first().isVisible()) {
+            return Collections.emptyList();
+        }
+
         selectRowsPerPageOption("100");
         goToFirstPageIfNeeded();
 
