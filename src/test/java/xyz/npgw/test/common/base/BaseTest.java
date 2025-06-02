@@ -188,6 +188,7 @@ public abstract class BaseTest {
             new AboutBlankPage(page).navigate("/");
             return;
         }
+
         UserRole userRole = UserRole.valueOf(runAs.name());
         String uid = "%s%s".formatted(Thread.currentThread().getId(), RUN_ID);
         String email = "%s.%s@email.com".formatted(userRole.toString().toLowerCase(), uid);
