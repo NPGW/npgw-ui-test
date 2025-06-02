@@ -852,6 +852,29 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(totalRowsAfterFilter, numberWithStatusesAfterFilter);
     }
 
+    // TODO bug - transactions isn't present in the table when a currency filter is applied on the last page
+    @Test(expectedExceptions = AssertionError.class)
+    @TmsLink("")
+    @Epic("Transactions")
+    @Feature("Pagination")
+    @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
+    public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
+        String euro = "EUR";
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025");
+
+        int numberWithEuroInTable = transactionsPage.getTable().countValues("Currency", euro);
+        transactionsPage.getTable().goToLastPageIfNeeded();
+        int totalRowsAfterFilter = transactionsPage
+                .clickCurrencySelector().selectCurrency(euro)
+                .getTable().countAllRows();
+
+        Allure.step("Verify: Transactions are present in the table");
+        assertTrue(numberWithEuroInTable > 0 && totalRowsAfterFilter > 0);
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {
