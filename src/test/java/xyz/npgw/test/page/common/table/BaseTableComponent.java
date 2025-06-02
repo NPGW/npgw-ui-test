@@ -223,6 +223,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return paginationItems.last().innerText();
     }
 
+    public boolean isTableEmpty() {
+        return rows.first().isVisible();
+    }
+
     private boolean isCurrentPage(String number) {
         return getActivePageButton().innerText().equals(number);
     }
