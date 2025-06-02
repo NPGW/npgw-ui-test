@@ -581,7 +581,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
 
         Allure.step("Verify: 'Select company' filter is empty by default");
-        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasText("");
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
         for (String status : statusList) {
             teamPage
@@ -593,7 +593,7 @@ public class TeamPageTest extends BaseTest {
             assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
 
             Allure.step("Verify: 'Select company' filter is empty after reset");
-            assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasText("");
+            assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
         }
     }
 }
