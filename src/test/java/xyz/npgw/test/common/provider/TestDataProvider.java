@@ -86,6 +86,7 @@ public class TestDataProvider {
         return new Object[][]{
                 {"EUR"},
                 {"USD"},
+                {"GBP"},
         };
     }
 
@@ -123,6 +124,7 @@ public class TestDataProvider {
                                         "https://resource.example.com",
                                         "notification-queue"),
                                 acquirerName,
+                                acquirerName,
                                 new String[]{},
                                 true),
                         """
@@ -137,6 +139,7 @@ ErrorSelect at least one allowed currency"""
                                         "",
                                         "",
                                         ""),
+                                acquirerName,
                                 acquirerName,
                                 new String[]{"USD"},
                                 true),
@@ -155,6 +158,7 @@ systemConfig.resourceUrl must be defined"""
                                         "",
                                         ""),
                                 acquirerName,
+                                acquirerName,
                                 new String[]{"USD"},
                                 true),
                         """
@@ -171,6 +175,7 @@ systemConfig.resourceUrl must be defined"""
                                         "",
                                         ""),
                                 acquirerName,
+                                acquirerName,
                                 new String[]{"USD"},
                                 true),
                         """
@@ -186,6 +191,7 @@ ERRORsystemConfig.resourceUrl must be defined"""
                                         "ps://fingerprint.example.com",
                                         "some.text"),
                                 acquirerName,
+                                acquirerName,
                                 new String[]{"USD"},
                                 true),
                         """
@@ -197,10 +203,31 @@ systemConfig.resourceUrl doesn’t qualify for the URL syntax"""
     }
 
     @DataProvider
-    public static Object[][] getPaymentMethod() {
+    public static Object[][] getCardType() {
         return new Object[][]{
                 {"VISA"},
                 {"MASTERCARD"},
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getStatus() {
+        return new Object[][]{
+                {"PENDING"},
+                {"INITIATED"},
+                {"SUCCESS"},
+                {"FAILED"},
+                {"CANCELLED"},
+                {"EXPIRED"},
+        };
+    }
+
+    @DataProvider
+    public static Object[][] getMultiStatus2() {
+        return new Object[][]{
+                {"PENDING", "INITIATED"},
+                {"SUCCESS", "FAILED"},
+                {"CANCELLED", "EXPIRED"},
         };
     }
 }

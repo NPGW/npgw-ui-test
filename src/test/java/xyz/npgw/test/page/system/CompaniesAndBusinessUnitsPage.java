@@ -9,7 +9,6 @@ import lombok.Getter;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.BusinessUnitsTableTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
-import xyz.npgw.test.page.common.trait.SelectStatusTrait;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
@@ -18,8 +17,7 @@ import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage> implements
         SelectCompanyTrait<CompaniesAndBusinessUnitsPage>,
         AlertTrait<CompaniesAndBusinessUnitsPage>,
-        BusinessUnitsTableTrait,
-        SelectStatusTrait<CompaniesAndBusinessUnitsPage> {
+        BusinessUnitsTableTrait {
 
     private final Locator addCompanyButton = locator("button[data-testid='AddCompanyButton']");
     private final Locator addBusinessUnitButton = getByTestId("ButtonAddMerchant");
@@ -43,6 +41,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator editBusinessUnitDialog = getByRole(AriaRole.DIALOG).getByTitle("Edit business unit");
     private final Locator merchantsTable = getByLabelExact("merchants table");
     private final Locator resetFilterButton = getByTestId("ResetButtonTeamPage");
+    private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator pageContent = locator("[class='contentBlock']");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
@@ -80,6 +79,14 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     @Step("Click 'Reset filter' button")
     public CompaniesAndBusinessUnitsPage clickOnResetFilterButton() {
         resetFilterButton.click();
+
+        return this;
+    }
+
+    @Step("Click 'Refresh data' button")
+    public CompaniesAndBusinessUnitsPage clickRefreshDataButton() {
+        refreshDataButton.click();
+        getPage().waitForTimeout(500);
 
         return this;
     }
