@@ -15,6 +15,8 @@ import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
+import java.time.LocalTime;
+
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {

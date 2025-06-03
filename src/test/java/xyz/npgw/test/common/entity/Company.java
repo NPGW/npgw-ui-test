@@ -60,13 +60,13 @@ public record Company(
         if (companyName.equals("super")) {
             return;
         }
+//        TODO BUG - users are still locking company some time after user delete request fulfilled
         int retries = 0;
         APIResponse response;
         do {
             response = request.delete("portal-v1/company/%s".formatted(encode(companyName)));
             log.info("delete company '{}' - {} {}", companyName, response.status(), response.text());
-        }
-        while (response.status() == 422 && retries++ < 5);
+        } while (response.status() == 422 && retries++ < 5);
     }
 
     public static boolean exists(APIRequestContext request, String companyName) {

@@ -41,7 +41,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Enter '{acquirerName}' into select acquirer placeholder")
     public CurrentPageT typeName(String acquirerName) {
-        selectAcquirerPlaceholder.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(100));
+        selectAcquirerField.fill(acquirerName);
 
         return page;
     }
