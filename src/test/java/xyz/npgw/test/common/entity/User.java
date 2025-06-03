@@ -74,7 +74,6 @@ public record User(
     }
 
     public static void create(APIRequestContext request, User user) {
-        log.info("will create user - {}", user);
         APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
         log.info("create user '{}' {} - {}", user.email(), user.companyName(), response.status());
     }
