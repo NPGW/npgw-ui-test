@@ -88,7 +88,7 @@ public record User(
         APIResponse response = request.get("portal-v1/user/list/%s".formatted(encode(companyName)));
         log.debug("get all users for company '{}' - {}", companyName, response.status());
         if (response.status() == 404) {
-            return new User[0];
+            return new User[]{};
         }
         return new Gson().fromJson(response.text(), User[].class);
     }

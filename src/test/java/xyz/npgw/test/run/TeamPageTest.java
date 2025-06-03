@@ -6,6 +6,8 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
@@ -32,22 +34,32 @@ import static org.testng.Assert.assertTrue;
 
 public class TeamPageTest extends BaseTest {
 
-    private static final String COMPANY_NAME = "TeamPageTest company";
+    private static final String COMPANY_NAME = "%s teamPageTest company".formatted(RUN_ID);
     private static final String ADMIN_COMPANY_NAME = "%s admin company".formatted(RUN_ID);
+    private static final String ANALYST_COMPANY_NAME = "%s analyst company".formatted(RUN_ID);
+    private static final String FRAMEWORK_COMPANY_NAME = "%s framework".formatted(RUN_ID);
+    private static final String DUMMY_COMPANY = "%s dummy company".formatted(RUN_ID);
     private static final String ADMIN_EMAIL = "%s.admin@email.com".formatted(RUN_ID);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
+    private static final String MERCHANT_TITLE = "Business unit 1";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
 
     User user = User.newCompanyAnalyst(COMPANY_NAME, new String[]{"MerchantNameTest"}, "dummy@email.com");
     User updatedUser = User.newCompanyAdmin(COMPANY_NAME, false, "dummy@email.com");
 
+    @BeforeClass
+    @Override
+    protected void beforeClass() {
+        super.beforeClass();
+        TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
+    }
+
     @Test
     @TmsLink("154")
     @Epic("System/Team")
     @Feature("Navigation")
-    @Description("User navigate to 'System administration page' after clicking "
-            + "on 'System administration' link on the header")
+    @Description("User navigate to 'System administration page'")
     public void testNavigateToSystemAdministrationPage() {
         TeamPage systemAdministrationPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink();
@@ -252,15 +264,10 @@ public class TeamPageTest extends BaseTest {
     @Epic("System/Team")
     @Feature("Edit user")
     @Description("Edit user under company admin")
-    public void testEditCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "edit.user@gmail.com";
-        TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
+    public void testEditCompanyUser(@Optional("ADMIN") String userRole) {
+        String email = "%s.edit@gmail.com".formatted(RUN_ID);
 
-        TeamPage teamPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .login(ADMIN_EMAIL, ADMIN_PASSWORD)
+        TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -285,15 +292,10 @@ public class TeamPageTest extends BaseTest {
     @Epic("System/Team")
     @Feature("Edit user")
     @Description("Deactivate and activate user under company admin")
-    public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "%s.deactivated@gmail.com".formatted(RUN_ID);
-        TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
+    public void testDeactivateAndActivateCompanyUser(@Optional("ADMIN") String userRole) {
+        String email = "%s.deactivate.and.activate@gmail.com".formatted(RUN_ID);
 
-        TeamPage teamPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .login(ADMIN_EMAIL, ADMIN_PASSWORD)
+        TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -339,15 +341,10 @@ public class TeamPageTest extends BaseTest {
     @Epic("System/Team")
     @Feature("Edit user")
     @Description("Reset company analyst password under company admin")
-    public void testResetPasswordForCompanyAnalyst(@Optional("UNAUTHORISED") String userRole) {
-        String email = "reset.password@gmail.com";
-        TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
+    public void testResetPasswordForCompanyAnalyst(@Optional("ADMIN") String userRole) {
+        String email = "%s.reset.password@gmail.com".formatted(RUN_ID);
 
-        TeamPage teamPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .login(ADMIN_EMAIL, ADMIN_PASSWORD)
+        TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -362,6 +359,7 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword was reseted successfully");
+//        TODO bug - correct past form of 'reseted' is reset
 
         teamPage.clickLogOutButton()
                 .fillEmailField(email)
@@ -379,24 +377,17 @@ public class TeamPageTest extends BaseTest {
     @TmsLink("492")
     @Epic("System/Team")
     @Feature("Edit user")
-    @Description("Create company analyst")
-    public void testCreateCompanyAnalystAndDeactivate(@Optional("UNAUTHORISED") String userRole) {
-        String analystEmail = "company.analyst@gmail.com";
+    @Description("Create company analyst under admin")
+    public void testCreateCompanyAnalystAndDeactivate(@Optional("ADMIN") String userRole) {
+        String analystEmail = "%s.company.analyst@gmail.com".formatted(RUN_ID);
         String analystPassword = "CompanyAnalyst123!";
-        String companyName = "Analyst company";
-        TestUtils.deleteUser(getApiRequestContext(), analystEmail);
-        TestUtils.createCompany(getApiRequestContext(), companyName);
-        TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, "Business unit 1");
-        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, ADMIN_EMAIL, ADMIN_PASSWORD);
 
-        TeamPage teamPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .login(ADMIN_EMAIL, ADMIN_PASSWORD)
+        TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(analystEmail)
                 .fillPasswordField(analystPassword)
-                .setAllowedBusinessUnit("Business unit 1")
+                .setAllowedBusinessUnit(MERCHANT_TITLE)
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
@@ -439,7 +430,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText("ERRORUser is disabled.");
 
         DashboardPage dashboardPage = loginPage
-                .login(ADMIN_EMAIL, ADMIN_PASSWORD)
+                .login(getEmail(), ProjectProperties.getUserPassword())
                 .clickSystemAdministrationLink()
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()
@@ -492,14 +483,13 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersAlphabetically() {
         final String companyAdmin = "dummyadmin@email.com";
         final String companyAdminPassword = ProjectProperties.getAdminPassword();
-        final String companyName = "framework";
 
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin, companyAdminPassword);
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), FRAMEWORK_COMPANY_NAME, companyAdmin, companyAdminPassword);
 
         List<String> sortedUsersAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(companyName)
+                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
 
@@ -544,17 +534,16 @@ public class TeamPageTest extends BaseTest {
     @Description("Adding a user with an existing email address results in an error message.")
     public void testAddUserWithExistingEmail() {
         final String companyAdmin = "dummyadmin@email.com";
-        final String companyName = "DummyCompany";
 
         TestUtils.deleteUser(getApiRequestContext(), companyAdmin);
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin,
+        TestUtils.createCompanyIfNeeded(getApiRequestContext(), DUMMY_COMPANY);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), DUMMY_COMPANY, companyAdmin,
                 ProjectProperties.getAdminPassword());
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
                 .refreshDashboard()
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(companyName)
+                .getSelectCompany().selectCompany(DUMMY_COMPANY)
                 .clickAddUserButton()
                 .fillEmailField(companyAdmin)
                 .fillPasswordField(ProjectProperties.getSuperPassword())
@@ -595,5 +584,16 @@ public class TeamPageTest extends BaseTest {
             Allure.step("Verify: 'Select company' filter is empty after reset");
             assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
         }
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), ANALYST_COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), DUMMY_COMPANY);
+        super.afterClass();
     }
 }

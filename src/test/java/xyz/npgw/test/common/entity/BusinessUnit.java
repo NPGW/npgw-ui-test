@@ -42,7 +42,7 @@ public record BusinessUnit(
         APIResponse response = request.get("portal-v1/company/%s/merchant".formatted(encode(companyName)));
         log.info("get all merchants for company '{}' - {}", companyName, response.status());
         if (response.status() == 404) {
-            return new BusinessUnit[0];
+            return new BusinessUnit[]{};
         }
         return new Gson().fromJson(response.text(), BusinessUnit[].class);
     }

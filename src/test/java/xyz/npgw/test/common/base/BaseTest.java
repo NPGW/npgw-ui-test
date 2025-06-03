@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import xyz.npgw.test.common.BrowserFactory;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.common.util.TestUtils;
@@ -43,7 +44,8 @@ import java.util.Map;
 public abstract class BaseTest {
 
     protected static final String RUN_ID = new SimpleDateFormat("MMdd.HHmmss").format(new Date());
-
+    @Getter(AccessLevel.PROTECTED)
+    BusinessUnit businessUnit;
     private Playwright playwright;
     private Browser browser;
     private BrowserContext context;
@@ -53,12 +55,20 @@ public abstract class BaseTest {
     private APIRequestContext apiRequestContext;
     private LocalTime bestBefore = LocalTime.now();
     private String testId;
+    @Getter(AccessLevel.PROTECTED)
+    private String companyName;
+    @Getter(AccessLevel.PROTECTED)
+    private String email;
 
     @BeforeClass
     protected void beforeClass() {
         playwright = Playwright.create(new Playwright.CreateOptions().setEnv(ProjectProperties.getEnv()));
         initApiRequestContext();
         browser = BrowserFactory.getBrowser(playwright);
+
+        String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
+        companyName = "%s test run company".formatted(uid);
+        TestUtils.createCompany(apiRequestContext, companyName);
     }
 
     @BeforeMethod
@@ -102,6 +112,41 @@ public abstract class BaseTest {
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
         openSite(args);
+    }
+
+    private void openSite(Object[] args) {
+        UserRole userRole = UserRole.SUPER;
+        if (args.length != 0 && (args[0] instanceof String)) {
+            try {
+                userRole = UserRole.valueOf((String) args[0]);
+            } catch (IllegalArgumentException e) {
+                if (args[0].equals("UNAUTHORISED")) {
+                    new AboutBlankPage(page).navigate("/");
+                    return;
+                }
+            }
+        }
+
+        if (userRole == UserRole.USER) {
+            businessUnit = TestUtils.createBusinessUnit(apiRequestContext, companyName, "default");
+        }
+        String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
+        email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());
+        User user = new User(
+                (userRole == UserRole.SUPER) ? "super" : companyName,
+                true,
+                userRole,
+                (userRole == UserRole.USER) ? new String[]{businessUnit.merchantId()} : new String[]{},
+                email,
+                ProjectProperties.getUserPassword());
+        User.create(apiRequestContext, user);
+        User.passChallenge(apiRequestContext, user.email(), user.password());
+
+//        if (!User.exists(apiRequestContext, email)) {
+//            TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
+//        }
+        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
+        initPageRequestContext();
     }
 
     @AfterMethod
@@ -158,35 +203,12 @@ public abstract class BaseTest {
         if (apiRequestContext != null) {
             String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
             User.delete(apiRequestContext, "%s.super@email.com".formatted(uid));
-            TestUtils.deleteCompany(apiRequestContext, "%s test run company".formatted(uid));
+            TestUtils.deleteCompany(apiRequestContext, companyName);
             apiRequestContext.dispose();
         }
         if (playwright != null) {
             playwright.close();
         }
-    }
-
-    private void openSite(Object[] args) {
-        UserRole userRole = UserRole.SUPER;
-        if (args.length != 0 && (args[0] instanceof String)) {
-            try {
-                userRole = UserRole.valueOf((String) args[0]);
-            } catch (IllegalArgumentException e) {
-                if (args[0].equals("UNAUTHORISED")) {
-                    new AboutBlankPage(page).navigate("/");
-                    return;
-                }
-            }
-        }
-
-        String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
-        String email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());
-        String companyName = "%s test run company".formatted(uid);
-        if (!User.exists(apiRequestContext, email)) {
-            TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
-        }
-        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
-        initPageRequestContext();
     }
 
     private void initApiRequestContext() {
