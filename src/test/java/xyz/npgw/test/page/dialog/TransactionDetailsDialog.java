@@ -31,6 +31,7 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
         getPage().waitForTimeout(500);
         return new TransactionDetailsDialog(getPage());
     }
+
     public Locator cardDetailsParameter(String parameter) {
         return cardDetailsSection.locator("//div[.='" + parameter + "']/following-sibling::div[1]");
     }
