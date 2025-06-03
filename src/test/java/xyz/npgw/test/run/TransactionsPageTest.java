@@ -950,14 +950,14 @@ public class TransactionsPageTest extends BaseTest {
                 .clickChevronInCardDetailsSection();
 
         Allure.step("Verify: Parameter 'Payment method' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.cardDetailsParameter("Payment method").isHidden());
+        assertTrue(transactionDetailsDialog.getPaymentMethodParameter().isHidden());
         Allure.step("Verify: Parameter 'Card type' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.cardDetailsParameter("Card type").isHidden());
+        assertTrue(transactionDetailsDialog.getCardTypeParameter().isHidden());
         Allure.step("Verify: Parameter 'Card holder' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.cardDetailsParameter("Card holder").isHidden());
+        assertTrue(transactionDetailsDialog.getCardHolderParameter().isHidden());
         Allure.step("Verify: Parameter 'Card number' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.cardDetailsParameter("Card number").isHidden());
+        assertTrue(transactionDetailsDialog.getCardNumberParameter().isHidden());
         Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.cardDetailsParameter("Expiry date").isHidden());
+        assertTrue(transactionDetailsDialog.getExpiryDateParameter().isHidden());
     }
 }

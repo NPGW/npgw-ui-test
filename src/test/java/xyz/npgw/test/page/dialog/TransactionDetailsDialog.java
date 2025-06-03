@@ -15,6 +15,11 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
     private final Locator merchantReferenceField = getDialog().getByText("Merchant reference");
     private final Locator cardDetailsSection = getByRole(AriaRole.REGION, "Card details");
     private final Locator chevron = locator("span[data-slot='indicator']");
+    private final Locator paymentMethodParameter = cardDetailsParameter("Payment method");
+    private final Locator cardTypeParameter = cardDetailsParameter("Card type");
+    private final Locator cardHolderParameter = cardDetailsParameter("Card holder");
+    private final Locator cardNumberParameter = cardDetailsParameter("Card number");
+    private final Locator expiryDateParameter = cardDetailsParameter("Expiry date");
 
     public TransactionDetailsDialog(Page page) {
         super(page);
@@ -32,7 +37,7 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
         return new TransactionDetailsDialog(getPage());
     }
 
-    public Locator cardDetailsParameter(String parameter) {
+    private Locator cardDetailsParameter(String parameter) {
         return cardDetailsSection.locator("//div[.='" + parameter + "']/following-sibling::div[1]");
     }
 }
