@@ -303,6 +303,29 @@ public class AddCompanyDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getCity()).hasValue(company.companyAddress().city());
     }
 
+    @Test
+    @TmsLink("691")
+    @Epic("System/Companies and business units")
+    @Feature("Settings")
+    @Description("The company info block can be hidden and shown via settings.")
+    public void testToggleCompanyInfoVisibilityViaSettings() {
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSelectCompany().selectCompany("super")
+                .clickSettings()
+                .checkHideCompanyInfoOption();
+
+        Allure.step("Verify: company info block is hidden after selecting 'Hide' in settings");
+        assertThat(companiesAndBusinessUnitsPage.getCompanyInfoBlock()).isHidden();
+
+        companiesAndBusinessUnitsPage
+                .checkShowCompanyInfoOption();
+
+        Allure.step("Verify: company info block is visible again after selecting 'Show' in settings");
+        assertThat(companiesAndBusinessUnitsPage.getCompanyInfoBlock()).isVisible();
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {

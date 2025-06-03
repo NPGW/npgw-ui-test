@@ -43,6 +43,10 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     private final Locator resetFilterButton = getByTestId("ResetButtonTeamPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator pageContent = locator("[class='contentBlock']");
+    private final Locator settings = getByTestId("SettingsButtonMerchantsPage");
+    private final Locator showRadiobutton = locator("[value='show']");
+    private final Locator hideRadiobutton = locator("[value='hide']");
+    private final Locator companyInfoBlock = locator("//div[text()='Company info']/..");
 
     public CompaniesAndBusinessUnitsPage(Page page) {
         super(page);
@@ -87,6 +91,28 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
     public CompaniesAndBusinessUnitsPage clickRefreshDataButton() {
         refreshDataButton.click();
         getPage().waitForTimeout(500);
+
+        return this;
+    }
+
+    @Step("Click 'Settings'")
+    public CompaniesAndBusinessUnitsPage clickSettings() {
+        getTable().getColumnHeader("Business unit name").waitFor();
+        settings.click();
+
+        return this;
+    }
+
+    @Step("Check 'Show' Company info option")
+    public CompaniesAndBusinessUnitsPage checkShowCompanyInfoOption() {
+        showRadiobutton.check();
+
+        return this;
+    }
+
+    @Step("Check 'Hide' Company info option")
+    public CompaniesAndBusinessUnitsPage checkHideCompanyInfoOption() {
+        hideRadiobutton.check();
 
         return this;
     }
