@@ -721,17 +721,17 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionDetailsDialog.getMerchantReferenceField().isVisible());
         Allure.step("Verify: The dialog box contains text 'Card details' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Card details");
-        assertTrue(transactionDetailsDialog.getCardDetailsField().isVisible());
-        Allure.step("Verify: The Card details field contains text 'Payment method'");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Payment method");
-        Allure.step("Verify: The Card details field contains text 'Card type'");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card type");
-        Allure.step("Verify: The Card details field contains text 'Card holder'");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card holder");
-        Allure.step("Verify: The Card details field contains text 'Card number'");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card number");
-        Allure.step("Verify: The Card details field contains text 'Expiry date'");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Expiry date");
+        assertTrue(transactionDetailsDialog.getCardDetailsSection().isVisible());
+        Allure.step("Verify: The Card details section contains text 'Payment method'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Payment method");
+        Allure.step("Verify: The Card details section contains text 'Card type'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card type");
+        Allure.step("Verify: The Card details section contains text 'Card holder'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card holder");
+        Allure.step("Verify: The Card details section contains text 'Card number'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card number");
+        Allure.step("Verify: The Card details section contains text 'Expiry date'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Expiry date");
     }
 
     @Test
@@ -941,13 +941,13 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("661")
     @Epic("Transactions")
     @Feature("Transaction details")
-    @Description("Check the hiding of parameters by pressing the chevron in Card details field")
+    @Description("Check the hiding of parameters by pressing the chevron in Card details section")
     public void testCheckTheHidingOfParameters() {
 
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getTable().clickOnTransaction()
-                .clickChevronInCardDetailsField();
+                .clickChevronInCardDetailsSection();
 
         Allure.step("Verify: Parameter 'Payment method' is hidden after click on chevron in Card details field ");
         assertTrue(transactionDetailsDialog.getPaymentMethodParameter().isHidden());
