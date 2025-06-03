@@ -17,6 +17,8 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
+import java.util.List;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class GatewayPageTest extends BaseTest {
@@ -159,6 +161,40 @@ public class GatewayPageTest extends BaseTest {
         Allure.step("Verify that all the Business units are presented in the list");
         assertThat(gatewayPage.getBusinessUnitsBlock()).containsText(company.companyType());
         assertThat(gatewayPage.getBusinessUnitsBlock()).containsText(merchantTitle);
+    }
+
+    @Test
+    @TmsLink("693")
+    @Epic("System/Gateway")
+    @Feature("Currency")
+    @Description("Verify Reset filter cleans all the filters applied")
+    public void testResetAllTheFilters() {
+        List<String> expectedCurrency = List.of("All", "EUR", "USD", "GBP");
+
+        GatewayPage gatewayPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .clickAddCompanyButton()
+                .fillCompanyNameField(company.companyName())
+                .fillCompanyTypeField(company.companyType())
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSelectCompany().selectCompany(company.companyName())
+                .clickOnAddBusinessUnitButton()
+                .fillBusinessUnitNameField(company.companyType())
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().clickSelectCompanyField()
+                .getSelectCompany().selectCompany(company.companyName())
+                .clickCurrencyValue()
+                .selectCurrency(expectedCurrency.get(2))
+                .clickRefreshFilterButton();
+
+        Allure.step("Verify that all the filter are cleaned");
+        assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
+        assertThat(gatewayPage.getAcquirerDropdownTrigger()).hasAttribute("placeholder", "Search...");
+        assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("placeholder", "Search...");
     }
 
     @AfterClass

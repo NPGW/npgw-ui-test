@@ -16,10 +16,30 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     private final Locator businessUnitsList = locator("div[data-slot='base'] li");
     private final Locator companyDropdown = locator("div[data-slot='content']");
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
+    private final Locator acquirerDropdownTrigger = locator("input[aria-label='Select acquirer']");
+    private final Locator companyDropdownTrigger = locator("input[aria-label='Select company']");
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
     private final Locator businessUnitsBlock = locator("div[label='Business units list']");
+    private final Locator resetFilterButton = locator("[data-icon='xmark']");
+//    private final Locator acquirerDropdownList = locator("div[data-slot='listbox']");
+//    private final Locator acquirerOptions = acquirerDropdownList.getByRole(AriaRole.OPTION);
+//
+//    @Step("Click 'Select acquirer' and choose one option")
+//    public GatewayPage selectRandomAcquirer() {
+//        acquirerDropdownTrigger.click();
+//
+//        acquirerDropdownList.waitFor(new Locator.WaitForOptions()
+//                .setTimeout(500)
+//                .setState(WaitForSelectorState.VISIBLE));
+//
+//        acquirerOptions.nth(0).click();
+//
+//        acquirerDropdownList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+//
+//        return this;
+//    }
 
     public GatewayPage(Page page) {
         super(page);
@@ -36,6 +56,14 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     public GatewayPage selectCurrency(String currency) {
         currencyOptions.filter(new Locator.FilterOptions().setHasText(currency)).click();
         currencyDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
+
+        return this;
+    }
+
+    @Step("Click 'Refresh filter' button")
+    public GatewayPage clickRefreshFilterButton() {
+        resetFilterButton.click();
+        getPage().waitForTimeout(500);
 
         return this;
     }
