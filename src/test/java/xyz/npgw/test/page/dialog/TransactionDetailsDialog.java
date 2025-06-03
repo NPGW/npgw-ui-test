@@ -14,18 +14,7 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
     private final Locator amountField = getDialog().getByText("Amount");
     private final Locator merchantReferenceField = getDialog().getByText("Merchant reference");
     private final Locator cardDetailsSection = getByRole(AriaRole.REGION, "Card details");
-    @Getter
     private final Locator chevron = locator("span[data-slot='indicator']");
-    @Getter
-    private final Locator paymentMethodParameter = cardDetailsSection.locator("//div[.='Payment method']/following-sibling::div[1]");
-    @Getter
-    private final Locator cardTypeParameter = cardDetailsSection.locator("//div[.='Card type']/following-sibling::div[1]");
-    @Getter
-    private final Locator cardHolderParameter = cardDetailsSection.locator("//div[.='Card holder']/following-sibling::div[1]");
-    @Getter
-    private final Locator cardNumberParameter = cardDetailsSection.locator("//div[.='Card number']/following-sibling::div[1]");
-    @Getter
-    private final Locator expiryDateParameter = cardDetailsSection.locator("//div[.='Expiry date']/following-sibling::div[1]");
 
     public TransactionDetailsDialog(Page page) {
         super(page);
@@ -41,5 +30,8 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
         chevron.click();
         getPage().waitForTimeout(500);
         return new TransactionDetailsDialog(getPage());
+    }
+    public Locator cardDetailsParameter(String parameter) {
+        return cardDetailsSection.locator("//div[.='" + parameter + "']/following-sibling::div[1]");
     }
 }
