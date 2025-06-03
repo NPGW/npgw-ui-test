@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -165,14 +166,15 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         }
 
         goToFirstPageIfNeeded();
-
         do {
             rowsPerPage.add(getRows().count());
         } while (goToNextPage());
+        goToFirstPageIfNeeded();
 
         return rowsPerPage;
     }
 
+    @Step("Count rows with {columnHeader} = {values}")
     public int countValues(String columnHeader, String... values) {
         long count = 0;
         Set<String> valueSet = Set.of(values);
@@ -185,6 +187,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
                         .count();
             } while (goToNextPage());
         }
+        goToFirstPageIfNeeded();
+
         return (int) count;
     }
 
@@ -255,6 +259,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public boolean hasNoPagination() {
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+
         return !paginationItems.first().isVisible();
     }
 

@@ -678,10 +678,9 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByCurrencyRows(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
+                .getSelectDateRange().setDateRangeFields("28-05-2025", "30-05-2025");
 
         int currencyCount = transactionsPage.getTable().countValues("Currency", currency);
-        transactionsPage.getTable().goToFirstPageIfNeeded();
 
         int filteredTransactionCount = transactionsPage
                 .clickCurrencySelector().selectCurrency(currency)
@@ -696,7 +695,6 @@ public class TransactionsPageTest extends BaseTest {
         assertEquals(totalFilteredRows, filteredTransactionCount);
 
     }
-
 
     @Test
     @TmsLink("638")
@@ -837,8 +835,6 @@ public class TransactionsPageTest extends BaseTest {
         int statusesCount = transactionsPage
                 .getTable().countValues("Status", firstStatus, secondStatus);
 
-        transactionsPage.getTable().goToFirstPageIfNeeded();
-
         int filteredTransactionCount  = transactionsPage
                 .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
                 .getTable().countValues("Status", firstStatus, secondStatus);
@@ -856,7 +852,7 @@ public class TransactionsPageTest extends BaseTest {
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("682")
     @Epic("Transactions")
-    @Feature("Pagination")
+    @Feature("Currency")
     @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         String euro = "EUR";
