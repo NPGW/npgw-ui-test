@@ -169,6 +169,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         do {
             rowsPerPage.add(getRows().count());
         } while (goToNextPage());
+
         goToFirstPageIfNeeded();
 
         return rowsPerPage;
@@ -259,9 +260,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public boolean hasNoPagination() {
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-
-        return !paginationItems.first().isVisible();
+        return paginationItems.first().isHidden();
     }
 
     public interface PageCallback {

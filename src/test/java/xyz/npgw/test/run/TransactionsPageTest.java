@@ -678,7 +678,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testDisplayAllFilteredByCurrencyRows(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("28-05-2025", "30-05-2025");
+                .getSelectDateRange().setDateRangeFields("01-06-2025", "03-06-2025");
 
         int currencyCount = transactionsPage.getTable().countValues("Currency", currency);
 
