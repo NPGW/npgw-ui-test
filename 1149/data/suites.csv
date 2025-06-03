@@ -1,2 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Add users with roles [SUPER, ADMIN, USER] as super admin","1","testAddUser","suite name","Mon Jun 02 08:19:39 GMT 2025","unknown","Mon Jun 02 08:19:39 GMT 2025","xyz.npgw.test.run.TeamPageTest","test name","xyz.npgw.test.run.TeamPageTest","testAddUser"
