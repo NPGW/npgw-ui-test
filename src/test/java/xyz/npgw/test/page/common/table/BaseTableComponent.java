@@ -11,8 +11,11 @@ import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 @Log4j2
@@ -79,7 +82,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rows.locator(columnSelector(columnHeader)).all();
     }
 
-    @Step("@Step(Click sort icon in '{columnName}' column)")
+    @Step("Click sort icon in '{columnName}' column")
     public CurrentPageT clickSortIcon(String columnName) {
         getColumnHeader(columnName).locator("svg").click();
         getPage().waitForTimeout(500);
@@ -156,6 +159,11 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public List<Integer> getRowCountsPerPage() {
         List<Integer> rowsPerPage = new ArrayList<>();
+
+        if (hasNoPagination()) {
+            return rowsPerPage;
+        }
+
         goToFirstPageIfNeeded();
 
         do {
@@ -165,12 +173,15 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rowsPerPage;
     }
 
-    public int countValue(String columnHeader, String value) {
+    public int countValues(String columnHeader, String... values) {
         long count = 0;
+        Set<String> valueSet = Set.of(values);
+
         if (goToFirstPageIfNeeded()) {
             do {
                 count += getColumnCells(columnHeader).stream()
-                        .filter(locator -> locator.innerText().equals(value))
+                        .map(locator -> locator.innerText().trim())
+                        .filter(valueSet::contains)
                         .count();
             } while (goToNextPage());
         }
@@ -195,6 +206,25 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         }
 
         return true;
+    }
+
+    public boolean goToLastPageIfNeeded() {
+        if (hasNoPagination()) {
+            return false;
+        }
+        if (!isCurrentPage(getLastPageNumber())) {
+            clickPaginationPageButton(getLastPageNumber());
+        }
+
+        return true;
+    }
+
+    public String getLastPageNumber() {
+        return paginationItems.last().innerText();
+    }
+
+    public boolean isTableEmpty() {
+        return rows.first().isVisible();
     }
 
     private boolean isCurrentPage(String number) {
@@ -224,11 +254,31 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return nextPageButton.isEnabled();
     }
 
-    private boolean hasNoPagination() {
+    public boolean hasNoPagination() {
         return !paginationItems.first().isVisible();
     }
 
     public interface PageCallback {
         void accept(String pageNumber);
+    }
+
+    public <T> List<T> getColumnValuesFromAllPages(String columnName, Function<String, T> parser) {
+        if (hasNoPagination()) {
+            return Collections.emptyList();
+        }
+
+        selectRowsPerPageOption("100");
+        goToFirstPageIfNeeded();
+
+        List<T> allValues = new ArrayList<>();
+        do {
+            List<T> pageValues = getColumnValues(columnName).stream()
+                    .map(String::trim)
+                    .map(parser)
+                    .toList();
+            allValues.addAll(pageValues);
+        } while (goToNextPage());
+
+        return allValues;
     }
 }

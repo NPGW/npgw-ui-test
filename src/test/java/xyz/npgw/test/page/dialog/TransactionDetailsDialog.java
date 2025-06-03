@@ -6,16 +6,12 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.TransactionsPage;
 
-
+@Getter
 public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, TransactionDetailsDialog> {
 
-    @Getter
     private final Locator statusField = getDialog().getByText("Status");
-    @Getter
     private final Locator amountField = getDialog().getByText("Amount");
-    @Getter
     private final Locator merchantReferenceField = getDialog().getByText("Merchant reference");
-    @Getter
     private final Locator cardDetailsField = getDialog().locator("//div[@aria-label='Card details']");
     @Getter
     private final Locator chevron = locator("span[data-slot='indicator']");
@@ -45,5 +41,3 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
         return new TransactionDetailsDialog(getPage());
     }
 }
-
-

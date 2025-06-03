@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
@@ -32,8 +33,8 @@ import static org.testng.Assert.assertTrue;
 public class TeamPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "TeamPageTest company";
-    private static final String ADMIN_COMPANY_NAME = "Admin company%s".formatted(runId);
-    private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(runId);
+    private static final String ADMIN_COMPANY_NAME = "Admin company%s".formatted(RUN_ID);
+    private static final String ADMIN_EMAIL = "admin%s@email.com".formatted(RUN_ID);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
@@ -58,6 +59,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
+    @Ignore("All business units with same name added that is make it fail at some point")
     @Test(dataProvider = "getUsers", dataProviderClass = TestDataProvider.class)
     @TmsLink("298")
     @Epic("System/Team")
@@ -284,7 +286,7 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Deactivate and activate user under company admin")
     public void testDeactivateAndActivateCompanyUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "deactivated@gmail.com";
+        String email = "deactivated%s@gmail.com".formatted(RUN_ID);
         TestUtils.deleteUser(getApiRequestContext(), email);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
@@ -306,7 +308,8 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
@@ -314,13 +317,15 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
 
-        teamPage.getTable().clickActivateUserButton(email)
+        teamPage
+                .getTable().clickActivateUserButton(email)
                 .clickActivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was activated successfully");
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Active");
@@ -380,7 +385,6 @@ public class TeamPageTest extends BaseTest {
         String analystPassword = "CompanyAnalyst123!";
         String companyName = "Analyst company";
         TestUtils.deleteUser(getApiRequestContext(), analystEmail);
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
         TestUtils.createCompany(getApiRequestContext(), companyName);
         TestUtils.createMerchantTitleIfNeeded(getApiRequestContext(), companyName, "Business unit 1");
         TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, ADMIN_EMAIL, ADMIN_PASSWORD);
@@ -398,7 +402,8 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
-        teamPage.getAlert().waitUntilSuccessAlertIsGone()
+        teamPage
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
@@ -410,13 +415,15 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: deactivate user icon appears");
         assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "ban");
 
-        teamPage.getTable().clickDeactivateUserButton(analystEmail)
+        teamPage
+                .getTable().clickDeactivateUserButton(analystEmail)
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(analystEmail, "Status")).hasText("Inactive");
@@ -557,5 +564,36 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: Error message is displayed for existing user");
         assertThat(addUserDialog.getAlert().getMessage()).hasText("ERRORUser account already exists");
+    }
+
+    @Test
+    @TmsLink("683")
+    @Epic("System/Team")
+    @Feature("Reset filter")
+    @Description("'Reset filter' button resets the 'Status' filter to 'All' and clears the selected company")
+    public void testResetFilter() {
+        final List<String> statusList = List.of("Active", "Inactive");
+
+        TeamPage teamPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink();
+
+        Allure.step("Verify: 'Status' filter displays 'All' by default");
+        assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
+
+        Allure.step("Verify: 'Select company' filter is empty by default");
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
+
+        for (String status : statusList) {
+            teamPage
+                    .getSelectCompany().selectCompany(COMPANY_NAME)
+                    .getSelectStatus().selectTransactionStatuses(status)
+                    .clickResetFilterButton();
+
+            Allure.step("Verify: 'Status' filter displays 'All' after reset");
+            assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
+
+            Allure.step("Verify: 'Select company' filter is empty after reset");
+            assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
+        }
     }
 }
