@@ -23,23 +23,6 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
     private final Locator businessUnitsBlock = locator("div[label='Business units list']");
     private final Locator resetFilterButton = locator("[data-icon='xmark']");
-//    private final Locator acquirerDropdownList = locator("div[data-slot='listbox']");
-//    private final Locator acquirerOptions = acquirerDropdownList.getByRole(AriaRole.OPTION);
-//
-//    @Step("Click 'Select acquirer' and choose one option")
-//    public GatewayPage selectRandomAcquirer() {
-//        acquirerDropdownTrigger.click();
-//
-//        acquirerDropdownList.waitFor(new Locator.WaitForOptions()
-//                .setTimeout(500)
-//                .setState(WaitForSelectorState.VISIBLE));
-//
-//        acquirerOptions.nth(0).click();
-//
-//        acquirerDropdownList.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
-//
-//        return this;
-//    }
 
     public GatewayPage(Page page) {
         super(page);
