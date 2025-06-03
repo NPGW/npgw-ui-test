@@ -92,9 +92,12 @@ public final class TestUtils {
     }
 
     public static void deleteCompany(APIRequestContext request, String companyName) {
-        deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
-        Arrays.stream(User.getAll(request, companyName)).forEach(user -> User.delete(request, user.email()));
-        Company.delete(request, companyName);
+        if (Company.exists(request, companyName)) {
+            deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
+            Arrays.stream(User.getAll(request, companyName))
+                    .forEach(user -> User.delete(request, user.email()));
+            Company.delete(request, companyName);
+        }
     }
 
     public static String encode(String value) {

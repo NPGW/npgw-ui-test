@@ -127,11 +127,6 @@ public record User(
         exists(request, email);
     }
 
-//    @Override
-//    public String toString() {
-//        return "User: %s %s".formatted(email, userRole);
-//    }
-
     private record Credentials(String email, String password) {
     }
 

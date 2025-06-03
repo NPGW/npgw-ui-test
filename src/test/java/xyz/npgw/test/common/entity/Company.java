@@ -57,6 +57,9 @@ public record Company(
     }
 
     public static void delete(APIRequestContext request, String companyName) {
+        if (companyName.equals("super")) {
+            return;
+        }
         int retries = 0;
         APIResponse response;
         do {
@@ -64,11 +67,6 @@ public record Company(
             log.info("delete company '{}' - {} {}", companyName, response.status(), response.text());
         }
         while (response.status() == 422 && retries++ < 3);
-    }
-
-    public boolean isEmpty() {
-        return companyAddress.isEmpty() && description.isEmpty() && website.isEmpty() && primaryContact.isEmpty()
-                && isPortalActive && isApiActive;
     }
 
     public static boolean exists(APIRequestContext request, String companyName) {
