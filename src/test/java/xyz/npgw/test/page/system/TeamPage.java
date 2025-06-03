@@ -18,6 +18,8 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements
         AlertTrait<TeamPage>,
         SelectStatusTrait<TeamPage> {
 
+    private final Locator resetFilterButton = getByTestId("ResetFilterButtonTeamPage");
+
     public TeamPage(Page page) {
         super(page);
     }
@@ -43,6 +45,14 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements
 //        TODO remove after bugfix
         getPage().waitForTimeout(500);
         getByTestId("ApplyFilterButtonTeamPage").click();
+        getPage().waitForTimeout(500);
+
+        return this;
+    }
+
+    @Step("Click 'Reset filter' button")
+    public TeamPage clickResetFilterButton() {
+        resetFilterButton.click();
 
         return this;
     }

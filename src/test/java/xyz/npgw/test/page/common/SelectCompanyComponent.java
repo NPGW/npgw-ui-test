@@ -5,10 +5,13 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.base.BaseComponent;
 
+import java.time.LocalTime;
 import java.util.NoSuchElementException;
 
+@Log4j2
 public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Getter
@@ -16,17 +19,14 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             .or(getByLabelExact("Company"));
     private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
     @Getter
-    private final Locator selectCompanyPlaceholder = locator("input[aria-label='Select company']");
-    @Getter
     private final Locator companyDropdown = locator("div[data-slot='content']");
-    private final Locator selectCompanyContainer =
-            locator("div[data-slot='input-wrapper']")
-                    .filter(new Locator.FilterOptions().setHas(selectCompanyPlaceholder));
-    private final Locator selectCompanyDropdownChevron =
-            selectCompanyContainer.locator("button[aria-label='Show suggestions']:last-child");
+    private final Locator selectCompanyContainer = locator("div[data-slot='input-wrapper']")
+                    .filter(new Locator.FilterOptions().setHas(selectCompanyField));
+    private final Locator selectCompanyDropdownChevron = selectCompanyContainer
+            .locator("button[aria-label='Show suggestions']:last-child");
 
-    private final Locator selectCompanyClearIcon =
-            selectCompanyContainer.locator("button[aria-label='Show suggestions']:first-child");
+    private final Locator selectCompanyClearIcon = selectCompanyContainer
+            .locator("button[aria-label='Show suggestions']:first-child");
 
     private final CurrentPageT page;
 
@@ -41,14 +41,10 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
-        selectCompanyField.waitFor();
-        getPage().waitForTimeout(1500);
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
-
-        selectCompanyField.pressSequentially(
-                companyName,
-                new Locator.PressSequentiallyOptions().setDelay(100));
+        selectCompanyField.fill(companyName);
 
         if (dropdownOptionList.all().isEmpty()) {
             throw new NoSuchElementException("Company '" + companyName + "' not found. Dropdown list is empty.");
@@ -61,11 +57,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             dropdownOptionList.last().scrollIntoViewIfNeeded();
             lastName = dropdownOptionList.last().innerText();
         }
-//        .first() - из-за того, что компания "super" отображается в отфильтрованном списке два раза,
-//        это баг(!!), правильно - один раз (или ноль).
-//        На суть теста .first() не влияет и позволяет "не заметить" баг.
-//
-        getCompanyInDropdown(companyName).first().click();
+        getCompanyInDropdown(companyName).click();
 
         return page;
     }
@@ -84,10 +76,26 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         return page;
     }
 
-    @Step("Click 'Select company' placeholder")
-    public CurrentPageT clickSelectCompanyPlaceholder() {
-        selectCompanyPlaceholder.click();
+    @Step("Click 'Select company' field")
+    public CurrentPageT clickSelectCompanyField() {
+        selectCompanyField.click();
 
         return page;
+    }
+
+    @Step("Select first company in dropdown")
+    public CurrentPageT selectFirstCompany() {
+        if (dropdownOptionList.all().isEmpty()) {
+            throw new NoSuchElementException("Dropdown list is empty.");
+        } else {
+            dropdownOptionList.first().click();
+        }
+
+        return page;
+    }
+
+    public String firstCompanyName() {
+
+        return  dropdownOptionList.first().textContent();
     }
 }

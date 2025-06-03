@@ -43,12 +43,12 @@ public record Company(
     public static void create(APIRequestContext request, String companyName) {
         APIResponse response = request.post("portal-v1/company",
                 RequestOptions.create().setData(new Company(companyName)));
-        log.info("create company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("create company '{}' - {}", companyName, response.status());
     }
 
     public static Company[] getAll(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/company");
-        log.info("get all companies - {} {}", response.status(), response.text());
+        log.debug("get all companies - {} {}", response.status(), response.text());
         return new Gson().fromJson(response.text(), Company[].class);
     }
 
@@ -71,7 +71,7 @@ public record Company(
 
     public static boolean exists(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company/%s".formatted(encode(companyName)));
-        log.info("get company '{}' - {} {}", companyName, response.status(), response.text());
+        log.info("get company '{}' - {}", companyName, response.status());
         return response.ok() && response.text().contains(companyName);
     }
 }

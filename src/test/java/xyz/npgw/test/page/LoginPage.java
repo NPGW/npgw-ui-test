@@ -11,6 +11,8 @@ import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 
+import java.time.LocalTime;
+
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
@@ -116,6 +118,15 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         return new DashboardPage(getPage());
     }
 
+    @Step("Login to the site as '{email}'")
+    public DashboardPage loginAs(String email, String password) {
+        login(email, password);
+//        getPage().waitForURL("**/dashboard");
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+
+        return new DashboardPage(getPage());
+    }
+
     @Step("Login with '{email}' user")
     public DashboardPage login(String email, String password) {
         fillEmailField(email);
@@ -138,7 +149,7 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         fillRepeatNewPasswordField(newPassword);
         clickSaveButton();
 
-        getAlert().clickCloseButton();
+//        getAlert().clickCloseButton();
         return this;
     }
 
