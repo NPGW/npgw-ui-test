@@ -157,11 +157,7 @@ public abstract class BaseTest {
         }
         if (apiRequestContext != null) {
             String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
-            Arrays.stream(UserRole.values()).forEach(userRole -> {
-                User.delete(apiRequestContext, "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase()));
-            });
-//            Company.delete(apiRequestContext, "%s test run company".formatted(uid));
-
+            User.delete(apiRequestContext, "%s.super@email.com".formatted(uid));
             TestUtils.deleteCompany(apiRequestContext, "%s test run company".formatted(uid));
             apiRequestContext.dispose();
         }

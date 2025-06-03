@@ -839,7 +839,7 @@ public class TransactionsPageTest extends BaseTest {
 
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int filteredTransactionCount  = transactionsPage
+        int filteredTransactionCount = transactionsPage
                 .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
                 .getTable().countValues("Status", firstStatus, secondStatus);
 
@@ -904,8 +904,8 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
         transactionsPage.getSelectCompany().clickSelectCompanyDropdownChevron()
-                        .getSelectCompany().clickSelectCompanyField()
-                        .getSelectCompany().selectFirstCompany();
+                .getSelectCompany().clickSelectCompanyField()
+                .getSelectCompany().selectFirstCompany();
 
         String firstCompanyName = transactionsPage.getSelectCompany().firstCompanyName();
 

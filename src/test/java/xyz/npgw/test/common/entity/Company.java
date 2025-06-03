@@ -57,11 +57,13 @@ public record Company(
     }
 
     public static void delete(APIRequestContext request, String companyName) {
-        if (companyName.equals("super")) {
-            return;
+        int retries = 0;
+        APIResponse response;
+        do {
+            response = request.delete("portal-v1/company/%s".formatted(encode(companyName)));
+            log.info("delete company '{}' - {} {}", companyName, response.status(), response.text());
         }
-        APIResponse response = request.delete("portal-v1/company/%s".formatted(encode(companyName)));
-        log.info("delete company '{}' - {} {}", companyName, response.status(), response.text());
+        while (response.status() == 422 && retries++ < 3);
     }
 
     public boolean isEmpty() {
