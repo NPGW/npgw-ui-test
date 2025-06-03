@@ -21,11 +21,11 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
     @Getter
     private final Locator cardTypeParameter = cardDetailsSection.locator("//div[.='Card type']/following-sibling::div[1]");
     @Getter
-    private final Locator cardHolderParameter = getByLabelExact("Card holder");
+    private final Locator cardHolderParameter = cardDetailsSection.locator("//div[.='Card holder']/following-sibling::div[1]");
     @Getter
-    private final Locator cardNumberParameter = getByLabelExact("Card number");
+    private final Locator cardNumberParameter = cardDetailsSection.locator("//div[.='Card number']/following-sibling::div[1]");
     @Getter
-    private final Locator expiryDateParameter = getByLabelExact("Expiry date");
+    private final Locator expiryDateParameter = cardDetailsSection.locator("//div[.='Expiry date']/following-sibling::div[1]");
 
     public TransactionDetailsDialog(Page page) {
         super(page);
