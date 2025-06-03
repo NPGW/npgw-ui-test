@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.base.HeaderPage;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -129,19 +128,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return getCurrentPage();
     }
 
-    @Step("Click previous page button")
-    public CurrentPageT clickPreviousPageButton() {
-        previousPageButton.click();
-
-        return getCurrentPage();
-    }
-
     public Locator getFirstRowCell(String columnHeader) {
         return getColumnCells(columnHeader).get(0);
-    }
-
-    public boolean hasRow(String rowHeader) {
-        return getRow(rowHeader).count() > 0;
     }
 
     public int countAllRows() {
@@ -166,6 +154,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         }
 
         goToFirstPageIfNeeded();
+
         do {
             rowsPerPage.add(getRows().count());
         } while (goToNextPage());
@@ -206,7 +195,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         if (hasNoPagination()) {
             return false;
         }
-        if (!isCurrentPage("1")) {
+        if (isNotCurrentPage("1")) {
             clickPaginationPageButton("1");
         }
 
@@ -217,7 +206,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         if (hasNoPagination()) {
             return false;
         }
-        if (!isCurrentPage(getLastPageNumber())) {
+        if (isNotCurrentPage(getLastPageNumber())) {
             clickPaginationPageButton(getLastPageNumber());
         }
 
@@ -232,8 +221,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rows.first().isVisible();
     }
 
-    private boolean isCurrentPage(String number) {
-        return getActivePageButton().innerText().equals(number);
+    private boolean isNotCurrentPage(String number) {
+        return !getActivePageButton().innerText().equals(number);
     }
 
     private boolean goToNextPage() {

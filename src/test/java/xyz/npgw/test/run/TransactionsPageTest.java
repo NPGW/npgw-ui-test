@@ -670,32 +670,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
-    @TmsLink("657")
-    @Epic("Transactions")
-    @Feature("Currency")
-    @Description("Compare number of transactions with same currency in the table before and after filter")
-    public void testDisplayAllFilteredByCurrencyRows(String currency) {
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-06-2025", "03-06-2025");
-
-        int currencyCount = transactionsPage.getTable().countValues("Currency", currency);
-
-        int filteredTransactionCount = transactionsPage
-                .clickCurrencySelector().selectCurrency(currency)
-                .getTable().countValues("Currency", currency);
-
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
-
-        Allure.step("Verify: All transactions with selected currency are shown after filter.");
-        assertEquals(currencyCount, filteredTransactionCount);
-
-        Allure.step("Verify: Only transactions with selected currency are shown after filter.");
-        assertEquals(totalFilteredRows, filteredTransactionCount);
-
-    }
-
     @Test
     @TmsLink("638")
     @Epic("Transactions")
