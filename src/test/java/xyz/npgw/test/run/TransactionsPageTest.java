@@ -898,7 +898,6 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: the 'Company' input field is empty after reset");
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
-
     }
 
     @Test
@@ -948,10 +947,8 @@ public class TransactionsPageTest extends BaseTest {
 
         transactionsPage.clickResetFilterButton();
 
-
         Allure.step("Verify: the 'Business Unit' input field is empty after reset");
         assertThat(transactionsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
-
     }
 
     @AfterClass
