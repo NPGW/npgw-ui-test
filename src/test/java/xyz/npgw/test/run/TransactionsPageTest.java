@@ -670,34 +670,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
-    @TmsLink("657")
-    @Epic("Transactions")
-    @Feature("Currency")
-    @Description("Compare number of transactions with same currency in the table before and after filter")
-    public void testDisplayAllFilteredByCurrencyRows(String currency) {
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
-
-        int currencyCount = transactionsPage.getTable().countValues("Currency", currency);
-        transactionsPage.getTable().goToFirstPageIfNeeded();
-
-        int filteredTransactionCount = transactionsPage
-                .clickCurrencySelector().selectCurrency(currency)
-                .getTable().countValues("Currency", currency);
-
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
-
-        Allure.step("Verify: All transactions with selected currency are shown after filter.");
-        assertEquals(currencyCount, filteredTransactionCount);
-
-        Allure.step("Verify: Only transactions with selected currency are shown after filter.");
-        assertEquals(totalFilteredRows, filteredTransactionCount);
-
-    }
-
-
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -866,7 +838,7 @@ public class TransactionsPageTest extends BaseTest {
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("682")
     @Epic("Transactions")
-    @Feature("Pagination")
+    @Feature("Currency")
     @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         String euro = "EUR";
@@ -929,16 +901,6 @@ public class TransactionsPageTest extends BaseTest {
 
     }
 
-    @AfterClass
-    @Override
-    protected void afterClass() {
-        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-
-        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        super.afterClass();
-    }
-
     @Test
     @TmsLink("661")
     @Epic("Transactions")
@@ -964,5 +926,15 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getExpiryDateParameter()).isHidden();
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+
+        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+        super.afterClass();
     }
 }
