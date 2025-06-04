@@ -24,8 +24,10 @@ import xyz.npgw.test.page.dialog.user.AddUserDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -53,6 +55,7 @@ public class TeamPageTest extends BaseTest {
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createBusinessUnit(getApiRequestContext(), "%s test run company".formatted(getUid()), MERCHANT_TITLE);
+        TestUtils.createCompany(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
     }
 
     @Test
@@ -265,7 +268,8 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Edit user under company admin")
     public void testEditCompanyUser(@Optional("ADMIN") String userRole) {
-        String email = "%s.edit@gmail.com".formatted(RUN_ID);
+        String email = "%s.edit@gmail.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
@@ -293,7 +297,8 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Deactivate and activate user under company admin")
     public void testDeactivateAndActivateCompanyUser(@Optional("ADMIN") String userRole) {
-        String email = "%s.deactivate.and.activate@gmail.com".formatted(RUN_ID);
+        String email = "%s.deactivate.and.activate@gmail.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
@@ -342,7 +347,8 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Reset company analyst password under company admin")
     public void testResetPasswordForCompanyAnalyst(@Optional("ADMIN") String userRole) {
-        String email = "%s.reset.password@gmail.com".formatted(RUN_ID);
+        String email = "%s.reset.password@gmail.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
@@ -379,7 +385,8 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Create company analyst under admin")
     public void testCreateCompanyAnalystAndDeactivate(@Optional("ADMIN") String userRole) {
-        String analystEmail = "%s.company.analyst@gmail.com".formatted(RUN_ID);
+        String analystEmail = "%s.company.analyst@gmail.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
         String analystPassword = "CompanyAnalyst123!";
 
         TeamPage teamPage = new DashboardPage(getPage())
@@ -436,7 +443,12 @@ public class TeamPageTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .clickSaveChangesButton()
                 .clickLogOutButton()
-                .loginAndChangePassword(analystEmail, analystPassword);
+                .fillEmailField(analystEmail)
+                .fillPasswordField(analystPassword)
+                .clickLoginButtonToChangePassword()
+                .fillNewPasswordField(analystPassword)
+                .fillRepeatNewPasswordField(analystPassword)
+                .clickSaveButton();
 
         Allure.step("Verify: error message is displayed");
         assertThat(dashboardPage.getUserMenuButton()).hasText(analystEmail.substring(0, 3));
@@ -481,12 +493,6 @@ public class TeamPageTest extends BaseTest {
     @Feature("Sorting in table")
     @Description("Verify that users can be sorted alphabetically")
     public void testCheckSortingListOfUsersAlphabetically() {
-        final String companyAdmin = "dummyadmin@email.com";
-        final String companyAdminPassword = ProjectProperties.getAdminPassword();
-
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), FRAMEWORK_COMPANY_NAME, companyAdmin, companyAdminPassword);
-
         List<String> sortedUsersAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
@@ -506,16 +512,9 @@ public class TeamPageTest extends BaseTest {
     @Feature("Sorting in table")
     @Description("Verify that users can be sorted in reverse alphabetical order")
     public void testCheckSortingListOfUsersReverse() {
-        final String companyAdmin = "dummyadmin@email.com";
-        final String companyAdminPassword = ProjectProperties.getAdminPassword();
-        final String companyName = "framework";
-
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin, companyAdminPassword);
-
         List<String> sortedUsersReverseAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(companyName)
+                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
                 .getTable().clickSortIcon("Username")
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");

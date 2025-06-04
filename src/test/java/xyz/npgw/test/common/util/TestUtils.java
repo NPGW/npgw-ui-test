@@ -103,7 +103,7 @@ public final class TestUtils {
         if (companyName.equals("super")) {
             return;
         }
-        while (Company.delete(request, companyName) == 422 ) {
+        while (Company.delete(request, companyName) == 422) {
             deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
             deleteUsers(request, User.getAll(request, companyName));
         }

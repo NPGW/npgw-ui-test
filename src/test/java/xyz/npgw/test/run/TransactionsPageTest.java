@@ -945,21 +945,24 @@ public class TransactionsPageTest extends BaseTest {
     @Feature("Transaction details")
     @Description("Check the hiding of parameters by pressing the chevron in Card details section")
     public void testCheckTheHidingOfParameters() {
-
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getTable().clickOnTransaction()
                 .clickChevronInCardDetailsSection();
 
         Allure.step("Verify: Parameter 'Payment method' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.getPaymentMethodParameter().isHidden());
+        assertThat(transactionDetailsDialog.getPaymentMethodParameter()).isHidden();
+
         Allure.step("Verify: Parameter 'Card type' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.getCardTypeParameter().isHidden());
+        assertThat(transactionDetailsDialog.getCardTypeParameter()).isHidden();
+
         Allure.step("Verify: Parameter 'Card holder' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.getCardHolderParameter().isHidden());
+        assertThat(transactionDetailsDialog.getCardHolderParameter()).isHidden();
+
         Allure.step("Verify: Parameter 'Card number' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.getCardNumberParameter().isHidden());
+        assertThat(transactionDetailsDialog.getCardNumberParameter()).isHidden();
+
         Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
-        assertTrue(transactionDetailsDialog.getExpiryDateParameter().isHidden());
+        assertThat(transactionDetailsDialog.getExpiryDateParameter()).isHidden();
     }
 }
