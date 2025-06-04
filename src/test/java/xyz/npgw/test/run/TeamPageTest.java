@@ -83,7 +83,7 @@ public class TeamPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany("super")
                 .clickAddUserButton()
-                .fillEmailField("newsuper@email.com")
+                .fillEmailField("%s.newsuper@email.com".formatted(getUid()))
                 .fillPasswordField("Qwerty123!")
                 .setUserRoleRadiobutton(UserRole.SUPER)
                 .clickCreateButton();
@@ -102,7 +102,7 @@ public class TeamPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
-                .fillEmailField("newadmin@email.com")
+                .fillEmailField("%s.newadmin@email.com".formatted(getUid()))
                 .fillPasswordField("Qwerty123!")
                 .setUserRoleRadiobutton(UserRole.ADMIN)
                 .clickCreateButton();
