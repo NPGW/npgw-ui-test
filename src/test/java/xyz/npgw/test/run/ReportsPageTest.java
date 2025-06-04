@@ -203,7 +203,7 @@ public class ReportsPageTest extends BaseTest {
     public void testSortingByFilename() {
         ReportsPage reportsPage = new ReportsPage(getPage())
                 .clickReportsLink()
-                .clickFilenameColumnHeader();
+                .getTable().clickFilenameColumnHeader();
 
         List<String> actualFilenameList = reportsPage.getTable().getColumnValues("Filename");
         List<String> sortedFilenameListAsc = new ArrayList<>(actualFilenameList);
@@ -213,7 +213,8 @@ public class ReportsPageTest extends BaseTest {
         Assert.assertEquals(actualFilenameList, sortedFilenameListAsc,
                 "Filenames are not in alphabetical order");
 
-        reportsPage.clickFilenameColumnHeader();
+        reportsPage
+                .getTable().clickFilenameColumnHeader();
 
         actualFilenameList = reportsPage.getTable().getColumnValues("filename");
         List<String> sortedFilenameListDesc = new ArrayList<>(sortedFilenameListAsc);
