@@ -172,8 +172,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
         ReportsPage reportsPage = new ReportsPage(getPage())
-                .clickReportsLink()
-                .refreshReports();
+                .clickReportsLink();
 
         String defaultStartDate = reportsPage.getSelectDateRange().getStartDate().textContent();
         String defaultEndDate = reportsPage.getSelectDateRange().getEndDate().textContent();
