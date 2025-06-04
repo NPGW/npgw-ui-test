@@ -49,14 +49,6 @@ public class TransactionsTableTest extends BaseTest {
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
-    @AfterClass
-    @Override
-    protected void afterClass() {
-        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        super.afterClass();
-    }
-
     @Test
     @TmsLink("311")
     @Epic("Transactions")
@@ -350,4 +342,11 @@ public class TransactionsTableTest extends BaseTest {
         });
     }
 
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        super.afterClass();
+    }
 }
