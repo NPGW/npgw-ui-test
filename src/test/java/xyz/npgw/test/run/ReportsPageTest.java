@@ -205,8 +205,8 @@ public class ReportsPageTest extends BaseTest {
                 .clickReportsLink()
                 .clickFilenameColumnHeader();
 
-        List <String> actualFilenameList = reportsPage.getTable().getColumnValues("Filename");
-        List <String> sortedFilenameListAsc = new ArrayList<>(actualFilenameList);
+        List<String> actualFilenameList = reportsPage.getTable().getColumnValues("Filename");
+        List<String> sortedFilenameListAsc = new ArrayList<>(actualFilenameList);
         Collections.sort(sortedFilenameListAsc);
 
         Allure.step("Verify that entries are displayed in alphabetical order");
@@ -216,7 +216,7 @@ public class ReportsPageTest extends BaseTest {
         reportsPage.clickFilenameColumnHeader();
 
         actualFilenameList = reportsPage.getTable().getColumnValues("filename");
-        List <String> sortedFilenameListDesc = new ArrayList<>(sortedFilenameListAsc);
+        List<String> sortedFilenameListDesc = new ArrayList<>(sortedFilenameListAsc);
         Collections.reverse(sortedFilenameListDesc);
 
         Allure.step("Verify that entries are displayed in reverse alphabetical order");
