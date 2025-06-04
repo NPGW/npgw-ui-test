@@ -52,7 +52,7 @@ public class TeamPageTest extends BaseTest {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
+        TestUtils.createBusinessUnit(getApiRequestContext(), "%s test run company".formatted(getUid()), MERCHANT_TITLE);
     }
 
     @Test
@@ -430,7 +430,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText("ERRORUser is disabled.");
 
         DashboardPage dashboardPage = loginPage
-                .login(getEmail(), ProjectProperties.getUserPassword())
+                .login("%s.admin@email.com".formatted(getUid()), ProjectProperties.getUserPassword())
                 .clickSystemAdministrationLink()
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()

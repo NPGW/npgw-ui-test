@@ -55,6 +55,7 @@ public abstract class BaseTest {
     private LocalTime bestBefore = LocalTime.now();
     private String testId;
 
+    @Getter(AccessLevel.PROTECTED)
     private String uid;
     private String companyName;
     private BusinessUnit businessUnit;
