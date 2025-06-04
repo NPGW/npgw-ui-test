@@ -8,14 +8,13 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.User;
-import xyz.npgw.test.common.provider.TestDataProvider;
+import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
@@ -74,25 +73,38 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
-    @Ignore("All business units with same name added that is make it fail at some point")
-    @Test(dataProvider = "getUsers", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("298")
     @Epic("System/Team")
     @Feature("Add user")
-    @Description("Add users with roles [SUPER, ADMIN, USER] as super admin")
-    public void testAddUser(User user) {
-        TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-
+    @Description("Add new system admin under super admin")
+    public void testAddSystemAdmin() {
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(user.companyName())
+                .getSelectCompany().selectCompany("super")
                 .clickAddUserButton()
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
-                .setStatusRadiobutton(user.enabled())
-                .setUserRoleRadiobutton(user.userRole())
-                .setAllowedBusinessUnits(user.merchantIds())
+                .fillEmailField("newsuper@email.com")
+                .fillPasswordField("Qwerty123!")
+                .setUserRoleRadiobutton(UserRole.SUPER)
+                .clickCreateButton();
+
+        Allure.step("Verify: success message is displayed");
+        assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
+    }
+
+    @Test
+    @TmsLink("298")
+    @Epic("System/Team")
+    @Feature("Add user")
+    @Description("Add new company admin under super admin")
+    public void testAddCompanyAdmin() {
+        TeamPage teamPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSelectCompany().selectCompany(getCompanyName())
+                .clickAddUserButton()
+                .fillEmailField("newadmin@email.com")
+                .fillPasswordField("Qwerty123!")
+                .setUserRoleRadiobutton(UserRole.ADMIN)
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");

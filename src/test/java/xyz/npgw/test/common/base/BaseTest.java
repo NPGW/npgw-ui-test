@@ -57,6 +57,7 @@ public abstract class BaseTest {
 
     @Getter(AccessLevel.PROTECTED)
     private String uid;
+    @Getter(AccessLevel.PROTECTED)
     private String companyName;
     private BusinessUnit businessUnit;
 
