@@ -44,8 +44,7 @@ import java.util.Map;
 public abstract class BaseTest {
 
     protected static final String RUN_ID = new SimpleDateFormat("MMdd.HHmmss").format(new Date());
-    @Getter(AccessLevel.PROTECTED)
-    BusinessUnit businessUnit;
+
     private Playwright playwright;
     private Browser browser;
     private BrowserContext context;
@@ -55,10 +54,10 @@ public abstract class BaseTest {
     private APIRequestContext apiRequestContext;
     private LocalTime bestBefore = LocalTime.now();
     private String testId;
-    @Getter(AccessLevel.PROTECTED)
+
+    private String uid;
     private String companyName;
-    @Getter(AccessLevel.PROTECTED)
-    private String email;
+    private BusinessUnit businessUnit;
 
     @BeforeClass
     protected void beforeClass() {
@@ -66,7 +65,7 @@ public abstract class BaseTest {
         initApiRequestContext();
         browser = BrowserFactory.getBrowser(playwright);
 
-        String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
+        uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
         companyName = "%s test run company".formatted(uid);
         TestUtils.createCompany(apiRequestContext, companyName);
     }
@@ -127,24 +126,23 @@ public abstract class BaseTest {
             }
         }
 
-        if (userRole == UserRole.USER) {
+        if (userRole == UserRole.USER && businessUnit == null) {
             businessUnit = TestUtils.createBusinessUnit(apiRequestContext, companyName, "default");
         }
-        String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
-        email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());
-        User user = new User(
-                (userRole == UserRole.SUPER) ? "super" : companyName,
-                true,
-                userRole,
-                (userRole == UserRole.USER) ? new String[]{businessUnit.merchantId()} : new String[]{},
-                email,
-                ProjectProperties.getUserPassword());
-        User.create(apiRequestContext, user);
-        User.passChallenge(apiRequestContext, user.email(), user.password());
 
-//        if (!User.exists(apiRequestContext, email)) {
-//            TestUtils.createUser(apiRequestContext, User.newUser(userRole, companyName, email));
-//        }
+        String email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());
+        if (!User.exists(apiRequestContext, email)) {
+            User user = new User(
+                    (userRole == UserRole.SUPER) ? "super" : companyName,
+                    true,
+                    userRole,
+                    (userRole == UserRole.USER) ? new String[]{businessUnit.merchantId()} : new String[]{},
+                    email,
+                    ProjectProperties.getUserPassword());
+            User.create(apiRequestContext, user);
+            User.passChallenge(apiRequestContext, user.email(), user.password());
+        }
+
         new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getUserPassword());
         initPageRequestContext();
     }
@@ -201,9 +199,9 @@ public abstract class BaseTest {
             browser.close();
         }
         if (apiRequestContext != null) {
-            String uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
             User.delete(apiRequestContext, "%s.super@email.com".formatted(uid));
             TestUtils.deleteCompany(apiRequestContext, companyName);
+            log.info("                 --- Class finished ---                 ");
             apiRequestContext.dispose();
         }
         if (playwright != null) {
@@ -234,7 +232,7 @@ public abstract class BaseTest {
                             .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken))));
             bestBefore = LocalTime.now().plusSeconds(token.expiresIn).minusMinutes(1);
         } else {
-            String message = "Retrieve API idToken failed: %s".formatted(tokenResponse.text());
+            String message = "Retrieve API idToken failed: %s".formatted(tokenResponse.statusText());
             log.error(message);
             throw new SkipException(message);
         }

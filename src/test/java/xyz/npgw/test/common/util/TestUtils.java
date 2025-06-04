@@ -13,8 +13,12 @@ import java.util.List;
 
 public final class TestUtils {
 
+    public static String encode(String value) {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+    }
+
     public static void createUser(APIRequestContext request, User user) {
-        Company.delete(request, user);
+        TestUtils.deleteCompany(request, user.companyName());
         Company.create(request, user);
         List<BusinessUnit> businessUnits = BusinessUnit.create(request, user);
         User newUser = new User(
@@ -38,6 +42,10 @@ public final class TestUtils {
 
     public static void deleteUser(APIRequestContext request, String email) {
         User.delete(request, email);
+    }
+
+    public static void deleteUsers(APIRequestContext request, User[] users) {
+        Arrays.stream(users).forEach(user -> User.delete(request, user.email()));
     }
 
     public static void changeUserPassword(APIRequestContext request, String email, String newPassword) {
@@ -92,24 +100,17 @@ public final class TestUtils {
     }
 
     public static void deleteCompany(APIRequestContext request, String companyName) {
-        if (Company.exists(request, companyName)) {
-            deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
-            Arrays.stream(User.getAll(request, companyName))
-                    .forEach(user -> User.delete(request, user.email()));
-            Company.delete(request, companyName);
+        if (companyName.equals("super")) {
+            return;
         }
-    }
-
-    public static String encode(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        while (Company.delete(request, companyName) != 204) {
+            deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
+            deleteUsers(request, User.getAll(request, companyName));
+        }
     }
 
     public static void createAcquirer(APIRequestContext request, Acquirer acquirer) {
         Acquirer.create(request, acquirer);
-    }
-
-    public static boolean getAcquirer(APIRequestContext request, String acquirerName) {
-        return Acquirer.get(request, acquirerName);
     }
 
     public static void deleteAcquirer(APIRequestContext request, String acquirerName) {

@@ -20,7 +20,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class AddBusinessUnitTest extends BaseTest {
 
-    private static final String COMPANY_NAME = "CompanyName";
+    private static final String COMPANY_NAME = "%s CompanyName".formatted(RUN_ID);
     BusinessUnit businessUnit = new BusinessUnit("MerchantNameTest");
     Company company213 = new Company("%s company 213".formatted(RUN_ID));
     Company company238 = new Company("%s company 238".formatted(RUN_ID));
