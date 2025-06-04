@@ -452,7 +452,7 @@ public class TransactionsPageTest extends BaseTest {
     @Test
     @TmsLink("639")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
     public void testResetStatus() {
         String status = "SUCCESS";
@@ -630,7 +630,7 @@ public class TransactionsPageTest extends BaseTest {
     @Test
     @TmsLink("701")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' clean 'Business Unit' input field")
     public void testResetBusinessUnit() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())

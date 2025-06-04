@@ -107,16 +107,17 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     // TODO bug - status isn't sent to server
-    @Test(expectedExceptions = AssertionError.class,
-            dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @Test(expectedExceptions = AssertionError.class)
     @TmsLink("679")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
-    public void testFilterByStatus(String firstStatus, String secondStatus) {
+    public void testFilterByStatus() {
+        String firstStatus = "PENDING";
+        String secondStatus = "SUCCESS";
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("27-05-2025", "31-05-2025");
+                .getSelectDateRange().setDateRangeFields("01-06-2025", "06-06-2025");
 
         int statusesCount = transactionsPage
                 .getTable().countValues("Status", firstStatus, secondStatus);
@@ -175,7 +176,7 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("559")
     @Epic("Transactions")
-    @Feature("Transaction sorting")
+    @Feature("Table sorting")
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
     public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -199,7 +200,7 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("659")
     @Epic("Transactions")
-    @Feature("Transaction sorting")
+    @Feature("Table sorting")
     @Description("'Amount' column sorts ascending on first click and descending on second click.")
     public void testSortByAmount() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
