@@ -84,7 +84,7 @@ public class TransactionsTableTest extends BaseTest {
     @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
     @TmsLink("673")
     @Epic("Transactions")
-    @Feature("Payment method")
+    @Feature("Filter")
     @Description("Filtering transactions by Card type displays only matching entries in the table.")
     public void testFilterByCardType(String cardType) {
         List<String> cardTypeList = new DashboardPage(getPage())
@@ -99,9 +99,9 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("677")
     @Epic("Transactions")
-    @Feature("Date range")
+    @Feature("Filter")
     @Description("Filtering transactions by date range")
-    public void testFilteringTransactionsByDataRange() {
+    public void testFilteringTransactionsByDateRange() {
         String startDate = "01-06-2025";
         String endDate = "05-06-2025";
 
@@ -119,9 +119,9 @@ public class TransactionsTableTest extends BaseTest {
             dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
     @TmsLink("679")
     @Epic("Transactions")
-    @Feature("Status")
+    @Feature("Filter")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
-    public void testDisplayAllFilteredByStatusRows(String firstStatus, String secondStatus) {
+    public void testFilterByStatus(String firstStatus, String secondStatus) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields("27-05-2025", "31-05-2025");
@@ -145,7 +145,7 @@ public class TransactionsTableTest extends BaseTest {
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("319")
     @Epic("Transactions")
-    @Feature("Currency")
+    @Feature("Filter")
     @Description("Filtering transactions by Currency")
     public void testFilterTransactionsByCurrency(String currency) {
         List<String> currencyValues = new DashboardPage(getPage())
@@ -163,7 +163,7 @@ public class TransactionsTableTest extends BaseTest {
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("682")
     @Epic("Transactions")
-    @Feature("Currency")
+    @Feature("Filter")
     @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         String euro = "EUR";
@@ -185,7 +185,7 @@ public class TransactionsTableTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Transaction sorting")
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
-    public void testSortCreationData() {
+    public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -207,9 +207,9 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("659")
     @Epic("Transactions")
-    @Feature("Amount")
+    @Feature("Transaction sorting")
     @Description("'Amount' column sorts ascending on first click and descending on second click.")
-    public void testSortAmount() {
+    public void testSortByAmount() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getTable().selectRowsPerPageOption("100")
@@ -232,8 +232,8 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("106")
     @Epic("Transactions")
-    @Feature("Number of lines per page field")
-    @Description("Displaying the number of rows on the screen when selecting Selector Rows.")
+    @Feature("Pagination")
+    @Description("Displaying the default number of rows on the RowsPerPage selector")
     public void testCountSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
@@ -245,8 +245,8 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("127")
     @Epic("Transactions")
-    @Feature("Selector rows options")
-    @Description("Displaying rows per page options when clicking on Selector Rows")
+    @Feature("Pagination")
+    @Description("Displaying rows per page options when clicking on the RowsPerPage selector")
     public void testCountOptionsSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
@@ -274,7 +274,7 @@ public class TransactionsTableTest extends BaseTest {
     @Test
     @TmsLink("350")
     @Epic("Transactions")
-    @Feature("Transactions table header")
+    @Feature("Settings")
     @Description("Verify full lists of column headers in table and visible columns from Settings")
     public void testCheckUncheckAllVisibleColumns() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -307,7 +307,7 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("359")
+    @TmsLink("358")
     @Epic("Transactions")
     @Feature("Settings")
     @Description("Check/Uncheck Visible columns in the Settings and verify table column headers")

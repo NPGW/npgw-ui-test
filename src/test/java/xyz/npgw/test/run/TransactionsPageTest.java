@@ -10,6 +10,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.provider.TestDataProvider;
@@ -23,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class TransactionsPageTest extends BaseTest {
@@ -40,21 +42,21 @@ public class TransactionsPageTest extends BaseTest {
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
-//    @Test
-//    @TmsLink("108")
-//    @Epic("Transactions")
-//    @Feature("Navigation")
-//    @Description("User navigate to 'Transactions page' after clicking on 'Transactions' link on the header")
-//    public void testNavigateToTransactionsPage() {
-//        TransactionsPage transactionsPage = new DashboardPage(getPage())
-//                .clickTransactionsLink();
-//
-//        Allure.step("Verify: Transactions Page URL");
-//        assertThat(transactionsPage.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
-//
-//        Allure.step("Verify: Transactions Page Title");
-//        assertThat(transactionsPage.getPage()).hasTitle(Constants.TRANSACTIONS_URL_TITLE);
-//    }
+    @Test
+    @TmsLink("108")
+    @Epic("Transactions")
+    @Feature("Navigation")
+    @Description("User navigate to 'Transactions page' after clicking on 'Transactions' link on the header")
+    public void testNavigateToTransactionsPage() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        Allure.step("Verify: Transactions Page URL");
+        assertThat(transactionsPage.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
+
+        Allure.step("Verify: Transactions Page Title");
+        assertThat(transactionsPage.getPage()).hasTitle(Constants.TRANSACTIONS_URL_TITLE);
+    }
 
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("128")
@@ -76,10 +78,10 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("181")
     @Epic("Transactions")
     @Feature("Panel")
-    @Description("Verify that on Transactions Page after clicking on Transactions user can see Panel:"
+    @Description("Verify that on the Transactions Page user can see Panel:"
             + " Date range, Business unit, Currency, Payment method, Status, Amount, Reset filter, "
             + "Apply data, Download file, Settings.")
-    public void testTheVisibilityOfTheControlPanelElementsOnTheTransactionsPage() {
+    public void testVisibilityOfControlPanelElements() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -114,30 +116,30 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDownloadButton()).isVisible();
     }
 
-//    @Test
-//    @TmsLink("229")
-//    @Epic("Transactions")
-//    @Feature("Status")
-//    @Description("Verify that user can see selector Status Options")
-//    public void testTheVisibilityOfTheStatusSelectorOptions() {
-//        TransactionsPage transactionsPage = new DashboardPage(getPage())
-//                .clickTransactionsLink()
-//                .getSelectStatus().clickSelector();
-//
-//        Allure.step("Verify: Selector Status Options are visible");
-//        assertThat(transactionsPage.getSelectStatus().getStatusOptions()).hasText(new String[]{
-//                "ALL",
-//                "INITIATED",
-//                "PENDING",
-//                "SUCCESS",
-//                "FAILED",
-//                "CANCELLED",
-//                "EXPIRED"
-//        });
-//
-//        Allure.step("Verify: Default selected option in status selector is 'ALL'");
-//        assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
-//    }
+    @Test
+    @TmsLink("229")
+    @Epic("Transactions")
+    @Feature("Status")
+    @Description("Verify that user can see selector Status Options")
+    public void testTheVisibilityOfTheStatusSelectorOptions() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectStatus().clickSelector();
+
+        Allure.step("Verify: Selector Status Options are visible");
+        assertThat(transactionsPage.getSelectStatus().getStatusOptions()).hasText(new String[]{
+                "ALL",
+                "INITIATED",
+                "PENDING",
+                "SUCCESS",
+                "FAILED",
+                "CANCELLED",
+                "EXPIRED"
+        });
+
+        Allure.step("Verify: Default selected option in status selector is 'ALL'");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
+    }
 
     @Test
     @TmsLink("263")
@@ -176,7 +178,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("335")
     @Epic("Transactions")
     @Feature("Amount")
-    @Description("error message 'From should be lesser than To' appears")
+    @Description("Error message 'From should be lesser than To' appears")
     public void testErrorMessageByAmount() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
@@ -188,27 +190,27 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountErrorMessage()).hasText("\"From\" should be lesser than \"To");
     }
 
-//    @Test
-//    @TmsLink("342")
-//    @Epic("Transactions")
-//    @Feature("Status")
-//    @Description("Verify that user can see Payment Method Options")
-//    public void testTheVisibilityOfTheCardTypeOptions() {
-//        TransactionsPage transactionsPage = new DashboardPage(getPage())
-//                .clickTransactionsLink()
-//                .clickCardTypeSelector();
-//
-//        Allure.step("Verify: Payment Method Options are visible");
-//        assertEquals(transactionsPage.getCardTypeOptions(), List.of("ALL", "VISA", "MASTERCARD"));
-//
-//        Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
-//        assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
-//    }
+    @Test
+    @TmsLink("342")
+    @Epic("Transactions")
+    @Feature("Card type")
+    @Description("Verify that user can see 'Card type' options")
+    public void testTheVisibilityOfTheCardTypeOptions() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .clickCardTypeSelector();
+
+        Allure.step("Verify: Payment Method Options are visible");
+        assertEquals(transactionsPage.getCardTypeOptions(), List.of("ALL", "VISA", "MASTERCARD"));
+
+        Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
+        assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
+    }
 
     @Test
     @TmsLink("340")
     @Epic("Transactions")
-    @Feature("Data range")
+    @Feature("Date range")
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -273,7 +275,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("356")
     @Epic("Transactions")
     @Feature("Export table data")
-    @Description("The presence of the dropdown options export table data to  file")
+    @Description("The presence of the dropdown options export table data to file")
     public void testPresenceOfDownloadFilesOptions() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
@@ -305,7 +307,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("520")
+    @TmsLink("503")
     @Epic("Transactions")
     @Feature("Business unit")
     @Description("Verify that the Company admin can see all the company's business units in the Business unit "
@@ -333,12 +335,13 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames);
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("567")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Currency' to default value ( ALL)")
-    public void testResetCurrency(String currency) {
+    public void testResetCurrency() {
+        String currency = "USD";
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -419,12 +422,14 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
     }
 
-    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("598")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Card Type' to default value ( ALL)")
-    public void testResetPaymentMethod(String getCardType) {
+    public void testResetCardType() {
+        String cardType = "MASTERCARD";
+
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -432,10 +437,10 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
 
         transactionsPage
-                .selectCardType(getCardType);
+                .selectCardType(cardType);
 
         Allure.step("Verify: Filter displays the selected payment method");
-        assertThat(transactionsPage.getCardTypeValue()).containsText(getCardType);
+        assertThat(transactionsPage.getCardTypeValue()).containsText(cardType);
 
         transactionsPage
                 .clickResetFilterButton();
@@ -444,12 +449,14 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
     }
 
-    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("639")
     @Epic("Transactions")
     @Feature("Reset filter button")
     @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
-    public void testResetStatus(String status) {
+    public void testResetStatus() {
+        String status = "SUCCESS";
+
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -469,12 +476,15 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Test(dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("655")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' (two options are checked) to default value ( ALL)")
-    public void testResetMultiStatus(String status1, String status2) {
+    public void testResetMultiStatus() {
+        String status1 = "PENDING";
+        String status2 = "INITIATED";
+
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -531,7 +541,7 @@ public class TransactionsPageTest extends BaseTest {
     @Test
     @TmsLink("668")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
     public void testResetAmount() {
 
@@ -563,9 +573,9 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("687")
+    @TmsLink("686")
     @Epic("Transactions")
-    @Feature("Reset filter button")
+    @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' clean 'Company' input field")
     public void testResetCompany() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
@@ -590,14 +600,6 @@ public class TransactionsPageTest extends BaseTest {
 
     }
 
-    @AfterClass
-    @Override
-    protected void afterClass() {
-        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        super.afterClass();
-    }
-
     @Test
     @TmsLink("661")
     @Epic("Transactions")
@@ -620,5 +622,13 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionDetailsDialog.getCardNumberParameter().isHidden());
         Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
         assertTrue(transactionDetailsDialog.getExpiryDateParameter().isHidden());
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        super.afterClass();
     }
 }
