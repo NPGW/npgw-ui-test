@@ -920,7 +920,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("687")
+    @TmsLink("701")
     @Epic("Transactions")
     @Feature("Reset filter button")
     @Description("Verify, that 'Reset filter' clean 'Business Unit' input field")
@@ -931,22 +931,17 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: the 'Business Unit' input field is empty by default");
         assertThat(transactionsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
-        transactionsPage.getSelectBusinessUnit().clickSelectBusinessUnitDropdownChevron()
-                        .getSelectBusinessUnit().selectFirstBusinessUnit();
-//
-//        clickSelectCompanyDropdownChevron()
-//                .getSelectCompany().clickSelectCompanyField()
-//                .getSelectCompany().selectFirstCompany();
-//
-//        String firstCompanyName = transactionsPage.getSelectCompany().firstCompanyName();
-//
-//        Allure.step("Verify: selected company is displayed in the 'Company' input field");
-//        assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).hasValue(firstCompanyName);
-//
-//        transactionsPage.clickResetFilterButton();
-//
-//        Allure.step("Verify: the 'Company' input field is empty after reset");
-//        assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
+        transactionsPage.getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
+
+        Allure.step("Verify: selected Business Unit is displayed in the 'Business Unit' input field");
+        assertThat(transactionsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue(MERCHANT_TITLE);
+
+        transactionsPage.clickResetFilterButton();
+
+
+        Allure.step("Verify: the 'Business Unit' input field is empty after reset");
+        assertThat(transactionsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
     }
 

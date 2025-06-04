@@ -86,15 +86,4 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
 
         return page;
     }
-
-    @Step("Select first business unit  in dropdown")
-    public CurrentPageT selectFirstBusinessUnit() {
-        if (dropdownOptionList.all().isEmpty()) {
-            throw new NoSuchElementException("Dropdown list is empty.");
-        } else {
-            dropdownOptionList.first().click();
-        }
-
-        return page;
-    }
 }
