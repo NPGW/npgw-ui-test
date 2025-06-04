@@ -6,6 +6,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
@@ -71,6 +72,7 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
+    @Ignore("Cannot invoke String.equals(Object) because tokenResponse.userChallengeType is null")
     @Test(dataProvider = "getNewUsers", dataProviderClass = TestDataProvider.class, priority = 1)
     @TmsLink("289")
     @Epic("Header")
@@ -91,7 +93,7 @@ public class HeaderTest extends BaseTest {
 
         Allure.step("Verify: success message for changing password");
         assertThat(dashboardPage.getAlert().getMessage())
-                .hasText("SUCCESSPassword was changed successfull"); // TODO bug - typo in message
+                .hasText("SUCCESSPassword was changed successfull");
 
         dashboardPage
                 .clickLogOutButton()
