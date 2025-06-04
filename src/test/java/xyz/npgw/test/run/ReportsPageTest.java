@@ -210,7 +210,8 @@ public class ReportsPageTest extends BaseTest {
         Collections.sort(sortedFilenameListAsc);
 
         Allure.step("Verify that entries are displayed in alphabetical order");
-        Assert.assertEquals(actualFilenameList, sortedFilenameListAsc, "Filenames are not in alphabetical order");
+        Assert.assertEquals(actualFilenameList, sortedFilenameListAsc,
+                "Filenames are not in alphabetical order");
 
         reportsPage.clickFilenameColumnHeader();
 
@@ -219,7 +220,8 @@ public class ReportsPageTest extends BaseTest {
         Collections.reverse(sortedFilenameListDesc);
 
         Allure.step("Verify that entries are displayed in reverse alphabetical order");
-        Assert.assertEquals(actualFilenameList, sortedFilenameListDesc, "Filenames are not in reverse alphabetical order");
+        Assert.assertEquals(actualFilenameList, sortedFilenameListDesc,
+                "Filenames are not in reverse alphabetical order");
     }
 
     @AfterClass
