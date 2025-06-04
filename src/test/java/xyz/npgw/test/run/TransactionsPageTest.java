@@ -659,12 +659,14 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
-        transactionsPage.getSelectStatus().selectTransactionStatuses(status1, status2);
+        transactionsPage
+                .getSelectStatus().selectTransactionStatuses(status1, status2);
 
         Allure.step("Verify: Filter displays the selected Status");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status1 + ", " + status2);
 
-        transactionsPage.clickResetFilterButton();
+        transactionsPage
+                .clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
@@ -681,13 +683,15 @@ public class TransactionsPageTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
 
         int currencyCount = transactionsPage.getTable().countValues("Currency", currency);
-        transactionsPage.getTable().goToFirstPageIfNeeded();
+        transactionsPage
+                .getTable().goToFirstPageIfNeeded();
 
         int filteredTransactionCount = transactionsPage
                 .clickCurrencySelector().selectCurrency(currency)
                 .getTable().countValues("Currency", currency);
 
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
+        int totalFilteredRows = transactionsPage
+                .getTable().countAllRows();
 
         Allure.step("Verify: All transactions with selected currency are shown after filter.");
         assertEquals(currencyCount, filteredTransactionCount);
@@ -794,7 +798,6 @@ public class TransactionsPageTest extends BaseTest {
     @Feature("Reset filter button")
     @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
     public void testResetAmount() {
-
         final String amountFrom = "10";
         final String amountTo = "20";
         final String chosenAmount = "Amount: " + amountFrom + " - " + amountTo;
@@ -806,7 +809,8 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getAmountButton()).isVisible();
         assertThat(transactionsPage.getAmountButton()).hasText("Amount");
 
-        transactionsPage.clickAmountButton()
+        transactionsPage
+                .clickAmountButton()
                 .fillAmountFromField(amountFrom)
                 .fillAmountToField(amountTo)
                 .clickAmountApplyButton();
@@ -815,7 +819,8 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.amountApplied(chosenAmount)).isVisible();
         assertThat(transactionsPage.amountApplied(chosenAmount)).hasText(chosenAmount);
 
-        transactionsPage.clickResetFilterButton();
+        transactionsPage
+                .clickResetFilterButton();
 
         Allure.step("Verify: Filter 'Amount' displays 'Amount' by default");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -839,11 +844,12 @@ public class TransactionsPageTest extends BaseTest {
 
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int filteredTransactionCount  = transactionsPage
+        int filteredTransactionCount = transactionsPage
                 .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
                 .getTable().countValues("Status", firstStatus, secondStatus);
 
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
+        int totalFilteredRows = transactionsPage
+                .getTable().countAllRows();
 
         Allure.step("Verify: All transactions with selected statuses are shown after filter.");
         assertEquals(statusesCount, filteredTransactionCount);
@@ -866,8 +872,11 @@ public class TransactionsPageTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields("26-05-2025", "31-05-2025");
 
         int numberWithEuroInTable = transactionsPage.getTable().countValues("Currency", euro);
-        transactionsPage.getTable().goToLastPageIfNeeded();
-        transactionsPage.clickCurrencySelector().selectCurrency(euro);
+        transactionsPage
+                .getTable().goToLastPageIfNeeded();
+        transactionsPage
+                .clickCurrencySelector()
+                .selectCurrency(euro);
 
         Allure.step("Verify: Transactions are present in the table");
         assertTrue(numberWithEuroInTable > 0 && !transactionsPage.getTable().isTableEmpty());
@@ -903,20 +912,20 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: the 'Company' input field is empty by default");
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
-        transactionsPage.getSelectCompany().clickSelectCompanyDropdownChevron()
-                        .getSelectCompany().clickSelectCompanyField()
-                        .getSelectCompany().selectFirstCompany();
+        transactionsPage
+                .getSelectCompany().clickSelectCompanyDropdownChevron()
+                .getSelectCompany().selectFirstCompany();
 
         String firstCompanyName = transactionsPage.getSelectCompany().firstCompanyName();
 
         Allure.step("Verify: selected company is displayed in the 'Company' input field");
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).hasValue(firstCompanyName);
 
-        transactionsPage.clickResetFilterButton();
+        transactionsPage
+                .clickResetFilterButton();
 
         Allure.step("Verify: the 'Company' input field is empty after reset");
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
-
     }
 
     @AfterClass

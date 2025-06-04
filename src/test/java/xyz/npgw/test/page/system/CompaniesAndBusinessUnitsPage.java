@@ -13,6 +13,8 @@ import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 
+import java.time.LocalTime;
+
 @Getter
 public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage> implements
         SelectCompanyTrait<CompaniesAndBusinessUnitsPage>,
@@ -97,21 +99,21 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Settings'")
     public CompaniesAndBusinessUnitsPage clickSettings() {
-        getTable().getColumnHeader("Business unit name").waitFor();
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         settings.click();
 
         return this;
     }
 
     @Step("Check 'Show' Company info option")
-    public CompaniesAndBusinessUnitsPage checkShowCompanyInfoOption() {
+    public CompaniesAndBusinessUnitsPage checkShowCompanyInfo() {
         showRadiobutton.check();
 
         return this;
     }
 
     @Step("Check 'Hide' Company info option")
-    public CompaniesAndBusinessUnitsPage checkHideCompanyInfoOption() {
+    public CompaniesAndBusinessUnitsPage checkHideCompanyInfo() {
         hideRadiobutton.check();
 
         return this;
