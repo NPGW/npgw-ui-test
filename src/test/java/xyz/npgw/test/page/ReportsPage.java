@@ -19,6 +19,7 @@ public class ReportsPage extends HeaderPage<ReportsPage> implements ReportsTable
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator generateReportButton = getByRole(AriaRole.BUTTON, "Generate report");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonReportsPage");
+    private final Locator filenameColumnHeader = getByRole(AriaRole.COLUMNHEADER, "Filename");
 
     public ReportsPage(Page page) {
         super(page);
@@ -48,6 +49,13 @@ public class ReportsPage extends HeaderPage<ReportsPage> implements ReportsTable
     @Step("Click 'Reset filter' button")
     public ReportsPage clickResetFilterButton() {
         resetFilterButton.click();
+
+        return this;
+    }
+
+    @Step("Click the 'Filename' column header")
+    public ReportsPage clickFilenameColumnHeader() {
+        filenameColumnHeader.click();
 
         return this;
     }
