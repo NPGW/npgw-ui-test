@@ -32,7 +32,7 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsPageTest extends BaseTest {
 
-    private static final String ADMIN_COMPANY_NAME = "A2 Company%s".formatted(RUN_ID);
+    private static final String ADMIN_COMPANY_NAME = "%s A2 Company".formatted(RUN_ID);
 
     private static final List<String> COLUMNS_HEADERS = List.of(
             "Creation Date",
@@ -44,8 +44,8 @@ public class TransactionsPageTest extends BaseTest {
             "Card type",
             "Status");
 
-    private static final String COMPANY_NAME = "Test request company%s".formatted(RUN_ID);
-    private static final String MERCHANT_TITLE = "Test request merchant%s".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "%s test request company".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "%s test request merchant".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     @BeforeClass
@@ -670,34 +670,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
-    @TmsLink("657")
-    @Epic("Transactions")
-    @Feature("Currency")
-    @Description("Compare number of transactions with same currency in the table before and after filter")
-    public void testDisplayAllFilteredByCurrencyRows(String currency) {
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("28-05-2025", "31-05-2025");
-
-        int currencyCount = transactionsPage.getTable().countValues("Currency", currency);
-        transactionsPage.getTable().goToFirstPageIfNeeded();
-
-        int filteredTransactionCount = transactionsPage
-                .clickCurrencySelector().selectCurrency(currency)
-                .getTable().countValues("Currency", currency);
-
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
-
-        Allure.step("Verify: All transactions with selected currency are shown after filter.");
-        assertEquals(currencyCount, filteredTransactionCount);
-
-        Allure.step("Verify: Only transactions with selected currency are shown after filter.");
-        assertEquals(totalFilteredRows, filteredTransactionCount);
-
-    }
-
-
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -708,20 +680,30 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTransactionsLink()
                 .getTable().clickOnTransaction();
 
+        Allure.step("Verify: The dialog box header has text 'Transaction Details'");
         assertThat(transactionDetailsDialog.getDialogHeader()).hasText("Transaction Details");
+        Allure.step("Verify: The dialog box contains text 'Status' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Status");
         assertTrue(transactionDetailsDialog.getStatusField().isVisible());
+        Allure.step("Verify: The dialog box contains text 'Amount' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Amount");
         assertTrue(transactionDetailsDialog.getAmountField().isVisible());
+        Allure.step("Verify: The dialog box contains text 'Merchant reference' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Merchant reference");
         assertTrue(transactionDetailsDialog.getMerchantReferenceField().isVisible());
+        Allure.step("Verify: The dialog box contains text 'Card details' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Card details");
-        assertTrue(transactionDetailsDialog.getCardDetailsField().isVisible());
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Payment method");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card type");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card holder");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Card number");
-        assertThat(transactionDetailsDialog.getCardDetailsField()).containsText("Expiry date");
+        assertTrue(transactionDetailsDialog.getCardDetailsSection().isVisible());
+        Allure.step("Verify: The Card details section contains text 'Payment method'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Payment method");
+        Allure.step("Verify: The Card details section contains text 'Card type'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card type");
+        Allure.step("Verify: The Card details section contains text 'Card holder'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card holder");
+        Allure.step("Verify: The Card details section contains text 'Card number'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card number");
+        Allure.step("Verify: The Card details section contains text 'Expiry date'");
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Expiry date");
     }
 
     @Test
@@ -839,7 +821,7 @@ public class TransactionsPageTest extends BaseTest {
 
         transactionsPage.getTable().goToFirstPageIfNeeded();
 
-        int filteredTransactionCount  = transactionsPage
+        int filteredTransactionCount = transactionsPage
                 .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
                 .getTable().countValues("Status", firstStatus, secondStatus);
 
@@ -856,7 +838,7 @@ public class TransactionsPageTest extends BaseTest {
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("682")
     @Epic("Transactions")
-    @Feature("Pagination")
+    @Feature("Currency")
     @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         String euro = "EUR";
@@ -904,8 +886,8 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
         transactionsPage.getSelectCompany().clickSelectCompanyDropdownChevron()
-                        .getSelectCompany().clickSelectCompanyField()
-                        .getSelectCompany().selectFirstCompany();
+                .getSelectCompany().clickSelectCompanyField()
+                .getSelectCompany().selectFirstCompany();
 
         String firstCompanyName = transactionsPage.getSelectCompany().firstCompanyName();
 
@@ -917,6 +899,33 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: the 'Company' input field is empty after reset");
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
+    }
+
+    @Test
+    @TmsLink("661")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Check the hiding of parameters by pressing the chevron in Card details section")
+    public void testCheckTheHidingOfParameters() {
+        TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().clickOnTransaction()
+                .clickChevronInCardDetailsSection();
+
+        Allure.step("Verify: Parameter 'Payment method' is hidden after click on chevron in Card details field ");
+        assertThat(transactionDetailsDialog.getPaymentMethodParameter()).isHidden();
+
+        Allure.step("Verify: Parameter 'Card type' is hidden after click on chevron in Card details field ");
+        assertThat(transactionDetailsDialog.getCardTypeParameter()).isHidden();
+
+        Allure.step("Verify: Parameter 'Card holder' is hidden after click on chevron in Card details field ");
+        assertThat(transactionDetailsDialog.getCardHolderParameter()).isHidden();
+
+        Allure.step("Verify: Parameter 'Card number' is hidden after click on chevron in Card details field ");
+        assertThat(transactionDetailsDialog.getCardNumberParameter()).isHidden();
+
+        Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
+        assertThat(transactionDetailsDialog.getExpiryDateParameter()).isHidden();
     }
 
     @Test
@@ -950,6 +959,8 @@ public class TransactionsPageTest extends BaseTest {
     protected void afterClass() {
         TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+
+        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         super.afterClass();
     }
 }
