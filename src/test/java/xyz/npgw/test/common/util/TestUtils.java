@@ -9,28 +9,11 @@ import xyz.npgw.test.common.entity.User;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
 
 public final class TestUtils {
 
     public static String encode(String value) {
         return URLEncoder.encode(value, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-    }
-
-    public static void createUser(APIRequestContext request, User user) {
-        TestUtils.deleteCompany(request, user.companyName());
-        Company.create(request, user);
-        List<BusinessUnit> businessUnits = BusinessUnit.create(request, user);
-        User newUser = new User(
-                user.companyName(),
-                user.enabled(),
-                user.userRole(),
-                businessUnits.stream().map(BusinessUnit::merchantId).toArray(String[]::new),
-                user.email(),
-                user.password());
-        User.delete(request, newUser);
-        User.create(request, newUser);
-        User.passChallenge(request, user.email(), user.password());
     }
 
     public static void createCompanyAdmin(APIRequestContext request, String company, String email, String password) {
@@ -48,10 +31,6 @@ public final class TestUtils {
         Arrays.stream(users).forEach(user -> User.delete(request, user.email()));
     }
 
-    public static void changeUserPassword(APIRequestContext request, String email, String newPassword) {
-        User.changePassword(request, email, newPassword);
-    }
-
     public static BusinessUnit createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
         return BusinessUnit.create(request, companyName, merchantTitle);
     }
@@ -60,10 +39,6 @@ public final class TestUtils {
         return Arrays.stream(merchants)
                 .map(merchantTitle -> BusinessUnit.create(request, company, merchantTitle))
                 .toArray(BusinessUnit[]::new);
-    }
-
-    public static void deleteBusinessUnit(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
-        BusinessUnit.delete(request, companyName, businessUnit);
     }
 
     public static void deleteBusinessUnits(APIRequestContext request, String company, BusinessUnit[] businessUnits) {
@@ -77,16 +52,6 @@ public final class TestUtils {
                 BusinessUnit.create(request, user.companyName(), merchantTitle);
             }
         }
-    }
-
-    public static void createMerchantTitleIfNeeded(APIRequestContext request, String company, String merchantTitle) {
-        if (!BusinessUnit.exists(request, company, merchantTitle)) {
-            BusinessUnit.create(request, company, merchantTitle);
-        }
-    }
-
-    public static void deleteAllByMerchantTitle(APIRequestContext request, String companyName, String merchantTitle) {
-        BusinessUnit.delete(request, companyName, merchantTitle);
     }
 
     public static void createCompany(APIRequestContext request, String companyName) {
