@@ -76,15 +76,6 @@ public record User(
         log.info("delete user '{}' - {}", email, response.status());
     }
 
-    public static void changePassword(APIRequestContext request, String email, String newPassword) {
-        APIResponse response = request.post("portal-v1/user/password/change",
-                RequestOptions.create().setData(Map.of("email", email, "password", newPassword)));
-        log.info("change user '{}' password - {}", email, response.status());
-        if (response.status() >= 500) {
-            throw new SkipException(response.text());
-        }
-    }
-
     private static TokenResponse getTokenResponse(APIRequestContext request, Credentials credentials) {
         APIResponse response = request.post("/portal-v1/user/token", RequestOptions.create().setData(credentials));
         log.info("get token '{}' - {}", credentials.email, response.status());
