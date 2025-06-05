@@ -53,10 +53,10 @@ public final class TestUtils {
             return;
         }
         while (Company.delete(request, companyName) == 422) {
-            Arrays.stream(BusinessUnit.getAll(request, companyName))
-                    .forEach(businessUnit -> BusinessUnit.delete(request, companyName, businessUnit));
             Arrays.stream(User.getAll(request, companyName))
                     .forEach(user -> User.delete(request, user.email()));
+            Arrays.stream(BusinessUnit.getAll(request, companyName))
+                    .forEach(businessUnit -> BusinessUnit.delete(request, companyName, businessUnit));
         }
     }
 

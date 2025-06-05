@@ -38,7 +38,7 @@ public class TeamPageTest extends BaseTest {
     private static final String COMPANY_NAME = "%s teamPageTest company".formatted(RUN_ID);
     private static final String ADMIN_COMPANY_NAME = "%s admin company".formatted(RUN_ID);
     private static final String ANALYST_COMPANY_NAME = "%s analyst company".formatted(RUN_ID);
-    private static final String FRAMEWORK_COMPANY_NAME = "%s framework".formatted(RUN_ID);
+    private static final String FRAMEWORK_COMPANY = "%s framework".formatted(RUN_ID);
     private static final String DUMMY_COMPANY = "%s dummy company".formatted(RUN_ID);
     private static final String ADMIN_EMAIL = "%s.admin@email.com".formatted(RUN_ID);
     private static final String ADMIN_PASSWORD = "AdminPassword1!";
@@ -57,7 +57,7 @@ public class TeamPageTest extends BaseTest {
 
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.createCompany(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
+        TestUtils.createCompany(getApiRequestContext(), FRAMEWORK_COMPANY);
     }
 
     @Test
@@ -477,11 +477,11 @@ public class TeamPageTest extends BaseTest {
         final String companyAdmin = "dummyadmin@email.com";
         final String companyAdminPassword = ProjectProperties.getAdminPassword();
 
-        TestUtils.createCompanyAdmin(getApiRequestContext(), FRAMEWORK_COMPANY_NAME, companyAdmin, companyAdminPassword);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), FRAMEWORK_COMPANY, companyAdmin, companyAdminPassword);
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
+                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY)
                 .getTable().deactivateUser(companyAdmin)
                 .getSelectStatus().select("Active");
 
@@ -504,7 +504,7 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersAlphabetically() {
         List<String> sortedUsersAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
+                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY)
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
 
@@ -523,7 +523,7 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersReverse() {
         List<String> sortedUsersReverseAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
+                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY)
                 .getTable().clickSortIcon("Username")
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
@@ -599,7 +599,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), ANALYST_COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), FRAMEWORK_COMPANY);
         TestUtils.deleteCompany(getApiRequestContext(), DUMMY_COMPANY);
         super.afterClass();
     }
