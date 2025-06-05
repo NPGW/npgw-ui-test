@@ -8,8 +8,6 @@ import lombok.extern.log4j.Log4j2;
 import org.testng.SkipException;
 import xyz.npgw.test.common.ProjectProperties;
 
-import java.util.Map;
-
 import static xyz.npgw.test.common.util.TestUtils.encode;
 
 @Log4j2

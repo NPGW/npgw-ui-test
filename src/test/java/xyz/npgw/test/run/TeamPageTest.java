@@ -462,7 +462,7 @@ public class TeamPageTest extends BaseTest {
                 .fillRepeatNewPasswordField(analystPassword)
                 .clickSaveButton();
 
-        Allure.step("Verify: error message is displayed");
+        Allure.step("Verify: logged in successfully, user menu available");
         assertThat(dashboardPage.getUserMenuButton()).hasText(analystEmail.substring(0, 3));
     }
 
