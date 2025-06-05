@@ -447,14 +447,12 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
     }
 
-    @Test
+    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("639")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
-    public void testResetStatus() {
-        String status = "SUCCESS";
-
+    public void testResetStatus(String status) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
