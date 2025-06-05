@@ -422,14 +422,12 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("SUCCESS"));
     }
 
-    @Test
+    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
     @TmsLink("598")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Card Type' to default value ( ALL)")
-    public void testResetCardType() {
-        String cardType = "MASTERCARD";
-
+    public void testResetCardType(String cardType) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 
@@ -476,15 +474,12 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Test
+    @Test(dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
     @TmsLink("655")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' (two options are checked) to default value ( ALL)")
-    public void testResetMultiStatus() {
-        String status1 = "PENDING";
-        String status2 = "INITIATED";
-
+    public void testResetMultiStatus(String status1, String status2) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink();
 

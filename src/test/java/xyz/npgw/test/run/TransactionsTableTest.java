@@ -27,6 +27,11 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsTableTest extends BaseTest {
 
+    private static final String ADMIN_COMPANY_NAME = "A2 Company%s".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "Test request company%s".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "Test request merchant%s".formatted(RUN_ID);
+    private BusinessUnit businessUnit;
+
     private static final List<String> COLUMNS_HEADERS = List.of(
             "Creation Date",
             "Business unit ID",
@@ -36,10 +41,6 @@ public class TransactionsTableTest extends BaseTest {
             "Currency",
             "Card type",
             "Status");
-
-    private static final String COMPANY_NAME = "Test request company%s".formatted(RUN_ID);
-    private static final String MERCHANT_TITLE = "Test request merchant%s".formatted(RUN_ID);
-    private BusinessUnit businessUnit;
 
     @BeforeClass
     @Override
