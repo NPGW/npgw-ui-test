@@ -434,7 +434,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText("ERRORUser is disabled.");
 
         DashboardPage dashboardPage = loginPage
-                .login("%s.admin@email.com".formatted(getUid()), ProjectProperties.getUserPassword())
+                .loginAs("%s.admin@email.com".formatted(getUid()), ProjectProperties.getUserPassword())
                 .clickSystemAdministrationLink()
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()
