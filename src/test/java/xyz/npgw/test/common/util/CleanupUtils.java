@@ -39,6 +39,6 @@ public class CleanupUtils {
     private static void deleteUsersFromSuper(APIRequestContext request) {
         Arrays.stream(User.getAll(request, "super"))
                 .filter(user -> !USER.contains(user.email()))
-                .forEach(user -> User.delete(request, user));
+                .forEach(user -> User.delete(request, user.email()));
     }
 }

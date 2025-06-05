@@ -6,7 +6,6 @@ import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.extern.log4j.Log4j2;
 import org.testng.SkipException;
-import xyz.npgw.test.common.ProjectProperties;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
 
@@ -18,23 +17,6 @@ public record User(
         String[] merchantIds,
         String email,
         String password) {
-
-    public static User newCompanyAdmin(String companyName, boolean enabled, String email) {
-        return new User(companyName, enabled, UserRole.ADMIN, new String[]{}, email,
-                ProjectProperties.getUserPassword());
-    }
-
-    public static User newCompanyAdmin(String companyName, String email, String password) {
-        return new User(companyName, true, UserRole.ADMIN, new String[]{}, email, password);
-    }
-
-    public static User newCompanyAnalyst(String companyName, String[] merchantIds, String email, String password) {
-        return new User(companyName, true, UserRole.USER, merchantIds, email, password);
-    }
-
-    public static User newCompanyAnalyst(String companyName, String[] merchantIds, String email) {
-        return newCompanyAnalyst(companyName, merchantIds, email, ProjectProperties.getUserPassword());
-    }
 
     public static void create(APIRequestContext request, User user) {
         APIResponse response = request.post("portal-v1/user/create", RequestOptions.create().setData(user));
@@ -63,10 +45,6 @@ public record User(
             return new User[]{};
         }
         return new Gson().fromJson(response.text(), User[].class);
-    }
-
-    public static void delete(APIRequestContext request, User user) {
-        delete(request, user.email());
     }
 
     public static void delete(APIRequestContext request, String email) {

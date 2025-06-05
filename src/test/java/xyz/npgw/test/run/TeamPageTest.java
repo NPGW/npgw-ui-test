@@ -13,10 +13,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.entity.User;
-import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
@@ -35,30 +32,15 @@ import static org.testng.Assert.assertTrue;
 
 public class TeamPageTest extends BaseTest {
 
-    private static final String COMPANY_NAME = "%s teamPageTest company".formatted(RUN_ID);
-    private static final String ADMIN_COMPANY_NAME = "%s admin company".formatted(RUN_ID);
-    private static final String ANALYST_COMPANY_NAME = "%s analyst company".formatted(RUN_ID);
-    private static final String FRAMEWORK_COMPANY = "%s framework".formatted(RUN_ID);
-    private static final String DUMMY_COMPANY = "%s dummy company".formatted(RUN_ID);
-    private static final String ADMIN_EMAIL = "%s.admin@email.com".formatted(RUN_ID);
-    private static final String ADMIN_PASSWORD = "AdminPassword1!";
     private static final String MERCHANT_TITLE = "Business unit 1";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
-
-    User user = User.newCompanyAnalyst(COMPANY_NAME, new String[]{"MerchantNameTest"}, "dummy@email.com");
-    User updatedUser = User.newCompanyAdmin(COMPANY_NAME, false, "dummy@email.com");
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
-
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createCompany(getApiRequestContext(), DUMMY_COMPANY);
-        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.createCompany(getApiRequestContext(), FRAMEWORK_COMPANY);
     }
 
     @Test
@@ -83,13 +65,16 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Add new system admin under super admin")
     public void testAddSystemAdmin() {
+        String email = "%s.newsuper@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
+
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany("super")
                 .clickAddUserButton()
-                .fillEmailField("%s.newsuper@email.com".formatted(getUid()))
+                .fillEmailField(email)
                 .fillPasswordField("Qwerty123!")
-                .setUserRoleRadiobutton(UserRole.SUPER)
+                .checkSystemAdminRadiobutton()
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
@@ -102,13 +87,16 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Add new company admin under super admin")
     public void testAddCompanyAdmin() {
+        String email = "%s.newadmin@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
+
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
-                .fillEmailField("%s.newadmin@email.com".formatted(getUid()))
+                .fillEmailField(email)
                 .fillPasswordField("Qwerty123!")
-                .setUserRoleRadiobutton(UserRole.ADMIN)
+                .checkCompanyAdminRadiobutton()
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
@@ -121,48 +109,47 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Add a new user and verify that all fields, statuses, and icons are correctly displayed(e2e).")
     public void testAddCompanyAnalyst() {
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
+        String email = "%s.newuser@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
-                .refreshDashboard()
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(user.companyName())
+                .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton();
 
         Allure.step("Verify: 'Add user' header is displayed");
         assertThat(addUserDialog.getDialogHeader()).hasText("Add user");
 
         Allure.step("Verify: company name is pre-filled correctly ");
-        assertThat(addUserDialog.getCompanyNameField()).hasValue(user.companyName());
+        assertThat(addUserDialog.getCompanyNameField()).hasValue(getCompanyName());
 
         Allure.step("Verify: company name field is not editable");
         assertThat(addUserDialog.getCompanyNameField()).isDisabled();
 
         TeamPage teamPage = addUserDialog
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
-                .setStatusRadiobutton(user.enabled())
-                .setUserRoleRadiobutton(user.userRole())
-                .setAllowedBusinessUnits(user.merchantIds())
+                .fillEmailField(email)
+                .fillPasswordField("Qwerty123!")
+                .checkCompanyAnalystRadiobutton()
+                .setAllowedBusinessUnit(MERCHANT_TITLE)
                 .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
-        teamPage.clickRefreshDataButton();
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(getCompanyName());
 
         Allure.step("Verify: new user has the role 'USER'");
-        assertThat(teamPage.getTable().getCell(user.email(), "User role")).hasText("USER");
+        assertThat(teamPage.getTable().getCell(email, "User role")).hasText("USER");
 
         Allure.step("Verify: new user has status 'Active'");
-        assertThat(teamPage.getTable().getCell(user.email(), "Status")).hasText("Active");
+        assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Active");
 
         Allure.step("Verify: 'Deactivate' icon is shown for the new user");
-        assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "ban");
+        assertEquals(teamPage.getTable().getUserActivityIcon(email).getAttribute("data-icon"), "ban");
     }
 
     @Test
@@ -171,35 +158,35 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Edits the user's role and status, verifies the updates, and reactivates the user(e2e).")
     public void testEditUser() {
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
+        String email = "%s.edit.analyst@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         EditUserDialog editUserDialog = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(user.companyName())
+                .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
+                .fillEmailField(email)
+                .fillPasswordField("Qwerty123!")
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user.merchantIds())
+                .setAllowedBusinessUnit(MERCHANT_TITLE)
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .clickEditUserButton(user.email());
+                .clickEditUserButton(email);
 
         Allure.step("Verify: 'Edit user' header is displayed");
         assertThat(editUserDialog.getDialogHeader()).hasText("Edit user");
 
         Allure.step("Verify: company name is pre-filled correctly ");
-        assertThat(editUserDialog.getCompanyNameField()).hasValue(user.companyName());
+        assertThat(editUserDialog.getCompanyNameField()).hasValue(getCompanyName());
 
         Allure.step("Verify: company name field is not editable");
         assertThat(editUserDialog.getCompanyNameField()).isDisabled();
 
         TeamPage teamPage = editUserDialog
-                .setStatusRadiobutton(updatedUser.enabled())
-                .unsetAllowedBusinessUnits(user.merchantIds())
-                .setUserRoleRadiobutton(updatedUser.userRole())
+                .setStatusRadiobutton(false)
+                .unsetAllowedBusinessUnits(new String[]{MERCHANT_TITLE})
+                .checkCompanyAdminRadiobutton()
                 .clickSaveChangesButton()
                 .clickRefreshDataButton();
 
@@ -207,32 +194,28 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(getCompanyName());
 
         Allure.step("Verify: user role was updated to 'ADMIN'");
-        assertThat(teamPage.getTable().getCell(user.email(), "User role")).hasText("ADMIN");
+        assertThat(teamPage.getTable().getCell(email, "User role")).hasText("ADMIN");
 
         Allure.step("Verify: Verify that user status was updated to 'Inactive'");
-        assertThat(teamPage.getTable().getCell(user.email(), "Status")).hasText("Inactive");
+        assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
 
         Allure.step("Verify: 'Activate' icon is shown for the user");
-        assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "check");
+        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
     }
 
     @Test
     @TmsLink("474")
     @Epic("System/Team")
     @Feature("Add user")
-    @Description("Create new company admin user")
-    public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
-        String email = "email@gmail.com";
-        TestUtils.deleteUser(getApiRequestContext(), email);
+    @Description("Create new company admin user under admin")
+    public void testCreateCompanyAdminUser(@Optional("ADMIN") String userRole) {
+        String email = "%s.email@gmail.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
-        TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
-
-        TeamPage teamPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .login(ADMIN_EMAIL, ADMIN_PASSWORD)
+        TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -250,30 +233,30 @@ public class TeamPageTest extends BaseTest {
     @Feature("Edit user")
     @Description("Deactivate user by 'Change user activity button' and verify status change")
     public void testDeactivateUserViaChangeUserActivityButton() {
-        TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
+        String email = "%s.change@gmail.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(user.companyName())
+                .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
-                .fillEmailField(user.email())
-                .fillPasswordField(user.password())
+                .fillEmailField(email)
+                .fillPasswordField("Qwerty123!")
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnits(user.merchantIds())
+                .setAllowedBusinessUnit(MERCHANT_TITLE)
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().deactivateUser(user.email());
+                .getTable().deactivateUser(email);
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
-        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(user.companyName());
+        assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(getCompanyName());
 
         Allure.step("Verify: user status becomes 'Inactive' in the table");
-        assertThat(teamPage.getTable().getCell(user.email(), "Status")).hasText("Inactive");
+        assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
 
         Allure.step("Verify: 'Activate user' icon is shown for the user");
-        assertEquals(teamPage.getTable().getUserActivityIcon(user.email()).getAttribute("data-icon"), "check");
+        assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
     }
 
     @Test
@@ -475,15 +458,19 @@ public class TeamPageTest extends BaseTest {
     @Description("Status filter correctly displays users with 'Active' or 'Inactive' status")
     public void testStatusFilterDisplaysCorrectUsers() {
         final String statusColumnName = "Status";
-        final String companyAdmin = "dummyadmin@email.com";
-        final String companyAdminPassword = ProjectProperties.getAdminPassword();
-
-        TestUtils.createCompanyAdmin(getApiRequestContext(), FRAMEWORK_COMPANY, companyAdmin, companyAdminPassword);
+        final String email = "%s.filter@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY)
-                .getTable().deactivateUser(companyAdmin)
+                .getSelectCompany().selectCompany(getCompanyName())
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("Password1!")
+                .checkCompanyAdminRadiobutton()
+                .clickCreateButton()
+                .clickRefreshDataButton()
+                .getTable().deactivateUser(email)
                 .getSelectStatus().select("Active");
 
         Allure.step("Verify: All visible users are 'Active' after applying 'Active' filter");
@@ -505,7 +492,7 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersAlphabetically() {
         List<String> sortedUsersAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY)
+                .getSelectCompany().selectCompany(getCompanyName())
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
 
@@ -524,7 +511,7 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersReverse() {
         List<String> sortedUsersReverseAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY)
+                .getSelectCompany().selectCompany(getCompanyName())
                 .getTable().clickSortIcon("Username")
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
@@ -542,20 +529,21 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Adding a user with an existing email address results in an error message.")
     public void testAddUserWithExistingEmail() {
-        final String companyAdmin = "dummyadmin@email.com";
-
-        TestUtils.deleteUser(getApiRequestContext(), companyAdmin);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), DUMMY_COMPANY, companyAdmin,
-                ProjectProperties.getAdminPassword());
+        final String companyAdmin = "%s.companydmin@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
-                .refreshDashboard()
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(DUMMY_COMPANY)
+                .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(companyAdmin)
-                .fillPasswordField(ProjectProperties.getSuperPassword())
+                .fillPasswordField("Qwerty123!")
                 .checkActiveRadiobutton()
+                .checkSystemAdminRadiobutton()
+                .clickCreateButton()
+                .clickAddUserButton()
+                .fillEmailField(companyAdmin)
+                .fillPasswordField("Qwerty123!")
                 .checkSystemAdminRadiobutton()
                 .clickCreateButtonAndTriggerError();
 
@@ -569,8 +557,6 @@ public class TeamPageTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' button resets the 'Status' filter to 'All' and clears the selected company")
     public void testResetFilter() {
-        final List<String> statusList = List.of("Active", "Inactive");
-
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink();
 
@@ -580,9 +566,9 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: 'Select company' filter is empty by default");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
-        for (String status : statusList) {
+        List.of("Active", "Inactive").forEach(status -> {
             teamPage
-                    .getSelectCompany().selectCompany(COMPANY_NAME)
+                    .getSelectCompany().selectCompany(getCompanyName())
                     .getSelectStatus().selectTransactionStatuses(status)
                     .clickResetFilterButton();
 
@@ -591,17 +577,12 @@ public class TeamPageTest extends BaseTest {
 
             Allure.step("Verify: 'Select company' filter is empty after reset");
             assertThat(teamPage.getSelectCompany().getSelectCompanyField()).isEmpty();
-        }
+        });
     }
 
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), ANALYST_COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), FRAMEWORK_COMPANY);
-        TestUtils.deleteCompany(getApiRequestContext(), DUMMY_COMPANY);
         super.afterClass();
     }
 }
