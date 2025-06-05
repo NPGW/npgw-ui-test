@@ -56,6 +56,7 @@ public class TeamPageTest extends BaseTest {
         TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
 
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.createCompany(getApiRequestContext(), DUMMY_COMPANY);
         TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompany(getApiRequestContext(), FRAMEWORK_COMPANY);
     }
