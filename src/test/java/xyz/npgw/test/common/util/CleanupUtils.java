@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Log4j2
+@SuppressWarnings("unused")
 public class CleanupUtils {
 
     private static final List<String> COMPANY = List.of("Amazon", "CompanyForTestRunOnly Inc.", "super");
