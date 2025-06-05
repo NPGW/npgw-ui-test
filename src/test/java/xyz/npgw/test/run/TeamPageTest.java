@@ -445,7 +445,8 @@ public class TeamPageTest extends BaseTest {
                 .clickLoginButtonToChangePassword()
                 .fillNewPasswordField(analystPassword)
                 .fillRepeatNewPasswordField(analystPassword)
-                .clickSaveButton();
+                .clickSaveButton()
+                .loginAs("%s.admin@email.com".formatted(getUid()), analystPassword);
 
         Allure.step("Verify: logged in successfully, user menu available");
         assertThat(dashboardPage.getUserMenuButton()).hasText(analystEmail.substring(0, 3));
