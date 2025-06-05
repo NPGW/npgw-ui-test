@@ -11,7 +11,6 @@ import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
-import xyz.npgw.test.common.util.CleanupUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.LoginPage;
 
@@ -83,9 +82,4 @@ public class LoginPageTest extends BaseTest {
         Allure.step("Verify: Unauthenticated user is on 'Login page'");
         assertThat(loginPage.getLoginFormTitle()).hasText("Welcome to NPGW");
     }
-
-//    @Test
-//    public void testClean() {
-//        CleanupUtils.clean(getApiRequestContext());
-//    }
 }
