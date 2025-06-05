@@ -6,15 +6,11 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.provider.TestDataProvider;
-import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.AboutBlankPage;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.TransactionsPage;
@@ -72,8 +68,7 @@ public class HeaderTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
     }
 
-    @Ignore("Cannot invoke String.equals(Object) because tokenResponse.userChallengeType is null")
-    @Test(dataProvider = "getNewUsers", dataProviderClass = TestDataProvider.class, priority = 1)
+    @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class, priority = 1)
     @TmsLink("289")
     @Epic("Header")
     @Feature("User menu")
@@ -82,9 +77,7 @@ public class HeaderTest extends BaseTest {
         TestUtils.createUser(getApiRequestContext(), user);
         String newPassword = "QWEdsa123@";
 
-        DashboardPage dashboardPage = new AboutBlankPage(getPage())
-                .navigate("/")
-                .login(user.email(), user.password())
+        DashboardPage dashboardPage = new DashboardPage(getPage())
                 .clickUserMenuButton()
                 .clickProfileSettingsButton()
                 .fillPasswordField(newPassword)
@@ -97,7 +90,7 @@ public class HeaderTest extends BaseTest {
 
         dashboardPage
                 .clickLogOutButton()
-                .login(user.email(), newPassword);
+                .login("%s.%s@email.com".formatted(getUid(), userRole.toLowerCase()), newPassword);
 
         Allure.step("Verify: Successfully login with changed password");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
