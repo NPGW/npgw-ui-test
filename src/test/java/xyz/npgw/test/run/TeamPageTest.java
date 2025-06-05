@@ -53,7 +53,10 @@ public class TeamPageTest extends BaseTest {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createBusinessUnit(getApiRequestContext(), "%s test run company".formatted(getUid()), MERCHANT_TITLE);
+        TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
+
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompany(getApiRequestContext(), FRAMEWORK_COMPANY_NAME);
     }
 
@@ -118,7 +121,6 @@ public class TeamPageTest extends BaseTest {
     @Description("Add a new user and verify that all fields, statuses, and icons are correctly displayed(e2e).")
     public void testAddCompanyAnalyst() {
         TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), user.companyName());
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
 
         AddUserDialog addUserDialog = new DashboardPage(getPage())
@@ -224,7 +226,7 @@ public class TeamPageTest extends BaseTest {
     public void testCreateCompanyAdminUser(@Optional("UNAUTHORISED") String userRole) {
         String email = "email@gmail.com";
         TestUtils.deleteUser(getApiRequestContext(), email);
-        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+
         TestUtils.createCompanyAdmin(getApiRequestContext(), ADMIN_COMPANY_NAME, ADMIN_EMAIL, ADMIN_PASSWORD);
 
         TeamPage teamPage = new AboutBlankPage(getPage())
@@ -248,7 +250,6 @@ public class TeamPageTest extends BaseTest {
     @Description("Deactivate user by 'Change user activity button' and verify status change")
     public void testDeactivateUserViaChangeUserActivityButton() {
         TestUtils.deleteUser(getApiRequestContext(), user.email());
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), user.companyName());
         TestUtils.createBusinessUnitsIfNeeded(getApiRequestContext(), user);
 
         TeamPage teamPage = new DashboardPage(getPage())
@@ -475,14 +476,12 @@ public class TeamPageTest extends BaseTest {
         final String statusColumnName = "Status";
         final String companyAdmin = "dummyadmin@email.com";
         final String companyAdminPassword = ProjectProperties.getAdminPassword();
-        final String companyName = "framework";
 
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        TestUtils.createCompanyAdmin(getApiRequestContext(), companyName, companyAdmin, companyAdminPassword);
+        TestUtils.createCompanyAdmin(getApiRequestContext(), FRAMEWORK_COMPANY_NAME, companyAdmin, companyAdminPassword);
 
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(companyName)
+                .getSelectCompany().selectCompany(FRAMEWORK_COMPANY_NAME)
                 .getTable().deactivateUser(companyAdmin)
                 .getSelectStatus().select("Active");
 
@@ -495,8 +494,6 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: All visible users are 'Inactive' after applying Inactive filter");
         assertTrue(teamPage.getTable().getColumnValues(statusColumnName)
                 .stream().allMatch(value -> value.equals("Inactive")));
-
-        TestUtils.deleteUser(getApiRequestContext(), companyAdmin);
     }
 
     @Test
@@ -547,7 +544,6 @@ public class TeamPageTest extends BaseTest {
         final String companyAdmin = "dummyadmin@email.com";
 
         TestUtils.deleteUser(getApiRequestContext(), companyAdmin);
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), DUMMY_COMPANY);
         TestUtils.createCompanyAdmin(getApiRequestContext(), DUMMY_COMPANY, companyAdmin,
                 ProjectProperties.getAdminPassword());
 

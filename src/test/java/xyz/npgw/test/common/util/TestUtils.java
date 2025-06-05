@@ -27,22 +27,12 @@ public final class TestUtils {
         User.delete(request, email);
     }
 
-    public static void deleteUsers(APIRequestContext request, User[] users) {
-        Arrays.stream(users).forEach(user -> User.delete(request, user.email()));
-    }
-
     public static BusinessUnit createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
         return BusinessUnit.create(request, companyName, merchantTitle);
     }
 
-    public static BusinessUnit[] createBusinessUnits(APIRequestContext request, String company, String[] merchants) {
-        return Arrays.stream(merchants)
-                .map(merchantTitle -> BusinessUnit.create(request, company, merchantTitle))
-                .toArray(BusinessUnit[]::new);
-    }
-
-    public static void deleteBusinessUnits(APIRequestContext request, String company, BusinessUnit[] businessUnits) {
-        Arrays.stream(businessUnits).forEach(businessUnit -> BusinessUnit.delete(request, company, businessUnit));
+    public static void createBusinessUnits(APIRequestContext request, String company, String[] merchants) {
+        Arrays.stream(merchants).forEach(merchantTitle -> BusinessUnit.create(request, company, merchantTitle));
     }
 
     public static void createBusinessUnitsIfNeeded(APIRequestContext request, User user) {
@@ -58,19 +48,15 @@ public final class TestUtils {
         Company.create(request, companyName);
     }
 
-    public static void createCompanyIfNeeded(APIRequestContext request, String companyName) {
-        if (!Company.exists(request, companyName)) {
-            Company.create(request, companyName);
-        }
-    }
-
     public static void deleteCompany(APIRequestContext request, String companyName) {
         if (companyName.equals("super")) {
             return;
         }
         while (Company.delete(request, companyName) == 422) {
-            deleteBusinessUnits(request, companyName, BusinessUnit.getAll(request, companyName));
-            deleteUsers(request, User.getAll(request, companyName));
+            Arrays.stream(BusinessUnit.getAll(request, companyName))
+                    .forEach(businessUnit -> BusinessUnit.delete(request, companyName, businessUnit));
+            Arrays.stream(User.getAll(request, companyName))
+                    .forEach(user -> User.delete(request, user.email()));
         }
     }
 

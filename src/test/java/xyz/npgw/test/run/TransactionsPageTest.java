@@ -52,6 +52,7 @@ public class TransactionsPageTest extends BaseTest {
     @Override
     protected void beforeClass() {
         super.beforeClass();
+        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
@@ -494,8 +495,7 @@ public class TransactionsPageTest extends BaseTest {
         String companyAdminEmail = "companyAdmin@gmail.com";
         String companyAdminPassword = "CompanyAdmin1!";
         TestUtils.deleteUser(getApiRequestContext(), companyAdminEmail);
-//        TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
-        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
+//        TestUtils.createCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         TestUtils.createCompanyAdmin(
                 getApiRequestContext(), ADMIN_COMPANY_NAME, companyAdminEmail, companyAdminPassword);
         Arrays.stream(businessUnitNames).forEach(businessUnitName -> TestUtils.createBusinessUnit(
