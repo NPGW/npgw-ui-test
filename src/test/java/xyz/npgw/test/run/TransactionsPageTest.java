@@ -29,9 +29,9 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsPageTest extends BaseTest {
 
-    private static final String ADMIN_COMPANY_NAME = "A2 Company%s".formatted(RUN_ID);
-    private static final String COMPANY_NAME = "Test request company%s".formatted(RUN_ID);
-    private static final String MERCHANT_TITLE = "Test request merchant%s".formatted(RUN_ID);
+    private static final String ADMIN_COMPANY_NAME = "%s A2 Company".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "%s test request company".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "%s test request merchant".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     @BeforeClass

@@ -27,9 +27,9 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsTableTest extends BaseTest {
 
-    private static final String ADMIN_COMPANY_NAME = "A2 Company%s".formatted(RUN_ID);
-    private static final String COMPANY_NAME = "Test request company%s".formatted(RUN_ID);
-    private static final String MERCHANT_TITLE = "Test request merchant%s".formatted(RUN_ID);
+    private static final String ADMIN_COMPANY_NAME = "%s A2 Company".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "%s test request company".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "%s test request merchant".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     private static final List<String> COLUMNS_HEADERS = List.of(
@@ -108,14 +108,13 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     // TODO bug - status isn't sent to server
-    @Test(expectedExceptions = AssertionError.class)
+    @Test(expectedExceptions = AssertionError.class,
+            dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
     @TmsLink("679")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
-    public void testFilterByStatus() {
-        String firstStatus = "PENDING";
-        String secondStatus = "SUCCESS";
+    public void testFilterByStatus(String firstStatus, String secondStatus) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields("01-06-2025", "06-06-2025");
