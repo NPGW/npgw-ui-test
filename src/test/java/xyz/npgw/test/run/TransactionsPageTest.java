@@ -682,26 +682,35 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: The dialog box header has text 'Transaction Details'");
         assertThat(transactionDetailsDialog.getDialogHeader()).hasText("Transaction Details");
+
         Allure.step("Verify: The dialog box contains text 'Status' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Status");
-        assertTrue(transactionDetailsDialog.getStatusField().isVisible());
+        assertThat(transactionDetailsDialog.getStatusField()).isVisible();
+
         Allure.step("Verify: The dialog box contains text 'Amount' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Amount");
-        assertTrue(transactionDetailsDialog.getAmountField().isVisible());
+        assertThat(transactionDetailsDialog.getAmountField()).isVisible();
+
         Allure.step("Verify: The dialog box contains text 'Merchant reference' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Merchant reference");
-        assertTrue(transactionDetailsDialog.getMerchantReferenceField().isVisible());
+        assertThat(transactionDetailsDialog.getMerchantReferenceField()).isVisible();
+
         Allure.step("Verify: The dialog box contains text 'Card details' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Card details");
-        assertTrue(transactionDetailsDialog.getCardDetailsSection().isVisible());
+        assertThat(transactionDetailsDialog.getCardDetailsSection()).isVisible();
+
         Allure.step("Verify: The Card details section contains text 'Payment method'");
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Payment method");
+
         Allure.step("Verify: The Card details section contains text 'Card type'");
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card type");
+
         Allure.step("Verify: The Card details section contains text 'Card holder'");
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card holder");
+
         Allure.step("Verify: The Card details section contains text 'Card number'");
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Card number");
+
         Allure.step("Verify: The Card details section contains text 'Expiry date'");
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Expiry date");
     }
@@ -954,9 +963,7 @@ public class TransactionsPageTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-
         TestUtils.deleteCompany(getApiRequestContext(), ADMIN_COMPANY_NAME);
         super.afterClass();
     }

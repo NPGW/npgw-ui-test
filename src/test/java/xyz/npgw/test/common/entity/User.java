@@ -21,26 +21,6 @@ public record User(
         String email,
         String password) {
 
-    private static final String SUPER_COMPANY = "super";
-    private static final String DEFAULT_COMPANY = "newDefaultCompany";
-    private static final String DEFAULT_TITLE = "newDefaultTitle";
-
-    public static User newUser(UserRole userRole, String companyName, String email) {
-        return switch (userRole) {
-            case ADMIN -> User.newCompanyAdmin(companyName, email);
-            case USER -> User.newCompanyAnalyst(companyName, email);
-            default -> User.newSystemAdmin(email);
-        };
-    }
-
-    public static User newSystemAdmin(String email, String password) {
-        return new User(SUPER_COMPANY, true, UserRole.SUPER, new String[]{}, email, password);
-    }
-
-    public static User newSystemAdmin(String email) {
-        return newSystemAdmin(email, ProjectProperties.getUserPassword());
-    }
-
     public static User newCompanyAdmin(String companyName, boolean enabled, String email) {
         return new User(companyName, enabled, UserRole.ADMIN, new String[]{}, email,
                 ProjectProperties.getUserPassword());
@@ -50,28 +30,12 @@ public record User(
         return new User(companyName, true, UserRole.ADMIN, new String[]{}, email, password);
     }
 
-    public static User newCompanyAdmin(String companyName, String email) {
-        return newCompanyAdmin(companyName, email, ProjectProperties.getUserPassword());
-    }
-
-    public static User newCompanyAdmin(String email) {
-        return newCompanyAdmin(DEFAULT_COMPANY, email);
-    }
-
     public static User newCompanyAnalyst(String companyName, String[] merchantIds, String email, String password) {
         return new User(companyName, true, UserRole.USER, merchantIds, email, password);
     }
 
     public static User newCompanyAnalyst(String companyName, String[] merchantIds, String email) {
         return newCompanyAnalyst(companyName, merchantIds, email, ProjectProperties.getUserPassword());
-    }
-
-    public static User newCompanyAnalyst(String companyName, String email) {
-        return newCompanyAnalyst(companyName, new String[]{DEFAULT_TITLE}, email);
-    }
-
-    public static User newCompanyAnalyst(String email) {
-        return newCompanyAnalyst(DEFAULT_COMPANY, email);
     }
 
     public static void create(APIRequestContext request, User user) {
