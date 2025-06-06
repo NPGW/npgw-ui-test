@@ -1,7 +1,6 @@
 package xyz.npgw.test.run;
 
 import com.google.gson.Gson;
-import com.microsoft.playwright.Request;
 import com.microsoft.playwright.Route;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
@@ -15,6 +14,9 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
+import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.Status;
+import xyz.npgw.test.common.entity.TransactionSummary;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 
@@ -175,69 +177,45 @@ public class DashboardPageTest extends BaseTest {
         assertThat(dashboardPage.getLifecycleFailedBlock()).containsText(pattern);
     }
 
-    @AfterClass
-    @Override
-    protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        super.afterClass();
-    }
-
-    record TransactionSummary(
-            String merchantId,
-            String updatedOn,
-            String currency,
-            String status,
-            long totalAmount,
-            long totalCount) {
-    }
-
-    BusinessUnit businessUnit;
     public void summaryHandler(Route route) {
-        Request request = route.request();
         List<TransactionSummary> arr = new ArrayList<>();
 
-        if (route.request().postData().contains(businessUnit.merchantId()) && route.request().postData().contains("USD")){
-            arr.add(new TransactionSummary("","", "USD","SUCCESS", 55, 11));
+        if (route.request().postData().contains(businessUnit.merchantId())
+                && route.request().postData().contains("USD")) {
+            arr.add(new TransactionSummary(Currency.USD, Status.SUCCESS, 55, 11));
             route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
             return;
         }
 
-        if (route.request().postData().contains(businessUnit.merchantId()) && route.request().postData().contains("EUR")){
-            arr.add(new TransactionSummary("","", "EUR","SUCCESS", 40, 2));
+        if (route.request().postData().contains(businessUnit.merchantId())
+                && route.request().postData().contains("EUR")) {
+            arr.add(new TransactionSummary(Currency.EUR, Status.SUCCESS, 40, 2));
             route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
             return;
         }
 
-        arr.add(new TransactionSummary("","", "USD","SUCCESS", 55, 11));
-        arr.add(new TransactionSummary("","", "USD","PENDING", 45, 9));
-        arr.add(new TransactionSummary("","", "GBP","FAILED", 20, 1));
-        arr.add(new TransactionSummary("","", "EUR","INITIATED", 100, 20));
-        arr.add(new TransactionSummary("","", "GDB","CANCELLED", 100, 20));
-        arr.add(new TransactionSummary("","", "EUR","EXPIRED", 10, 2));
+        arr.add(new TransactionSummary(Currency.USD, Status.SUCCESS, 55L, 11L));
+        arr.add(new TransactionSummary(Currency.USD, Status.PENDING, 45, 9));
+        arr.add(new TransactionSummary(Currency.GBP, Status.FAILED, 20, 1));
+        arr.add(new TransactionSummary(Currency.EUR, Status.INITIATED, 100, 20));
+        arr.add(new TransactionSummary(Currency.GBP, Status.CANCELLED, 100, 20));
+        arr.add(new TransactionSummary(Currency.EUR, Status.EXPIRED, 10, 2));
 
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
+
     @Test
     @TmsLink("")
     @Epic("Dashboard")
     @Feature("Transaction summary mock data")
     @Description("Correct transaction summary is displayed on Dashboard page")
     public void testTransactionSummaryMock() {
-        final String companyName = "Amazon";
-        final String merchantTitle = "Amazon business unit 1";
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
-        TestUtils.createCompanyIfNeeded(getApiRequestContext(), companyName);
-        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), companyName, merchantTitle);
-
         getPage().route("**/summary", this::summaryHandler);
 
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .refreshDashboard()
-                .getDateRangePicker().setDateRangeFields("01-05-2025", "31-05-2025")
-                .getSelectCompany().selectCompany(companyName)
-                .getSelectBusinessUnit().selectBusinessUnit(merchantTitle)
-                .clickRefreshDataButton();
-
+                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025")
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR11022USD10020GBP201");
@@ -246,5 +224,22 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDUSD5511");
+
+        dashboardPage.clickCurrencySelector().selectCurrency("EUR");
+
+        Allure.step("Verify: INITIATED main block contents");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR402");
+
+        dashboardPage.clickCurrencySelector().selectCurrency("GBP");
+
+        Allure.step("Verify: INITIATED main block contents");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP201");
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        super.afterClass();
     }
 }
