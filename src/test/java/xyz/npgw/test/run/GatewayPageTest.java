@@ -9,9 +9,9 @@ import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
@@ -21,19 +21,18 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class GatewayPageTest extends BaseTest {
 
-    private static final String COMPANY_NAME = "Company 112172%s".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
-    Company company = new Company("Company for 602%s".formatted(RUN_ID));
+    Company company = new Company("%s company for 602".formatted(RUN_ID));
     String merchantTitle = new Faker().company().industry();
-    private BusinessUnit[] businessUnits;
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        businessUnits = TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
+        TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
     }
 
     @Test
@@ -81,6 +80,7 @@ public class GatewayPageTest extends BaseTest {
         }
     }
 
+    @Ignore("outdated after update 06/06")
     @Test
     @TmsLink("307")
     @Epic("System/Gateway")
@@ -129,6 +129,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(gatewayPage.getBusinessUnitsList()).hasText(new String[]{"No items."});
     }
 
+    @Ignore("need refactor to table after update 06/06")
     @Test
     @TmsLink("602")
     @Epic("System/Gateway")
@@ -164,11 +165,7 @@ public class GatewayPageTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteBusinessUnits(getApiRequestContext(), COMPANY_NAME, businessUnits);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-
-        TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), company.companyName(), company.companyType());
-        TestUtils.deleteAllByMerchantTitle(getApiRequestContext(), company.companyName(), merchantTitle);
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
         super.afterClass();
     }

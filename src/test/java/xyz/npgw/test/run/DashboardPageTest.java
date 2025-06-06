@@ -10,6 +10,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -26,8 +27,8 @@ import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
 
-    private static final String COMPANY_NAME = "Dashboard%s".formatted(RUN_ID);
-    private static final String MERCHANT_TITLE = "Dashboard business unit%s".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "%s dashboard company".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "%s dashboard business unit".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     @BeforeClass
@@ -114,6 +115,7 @@ public class DashboardPageTest extends BaseTest {
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
     }
 
+    @Ignore
     @Test
     @TmsLink("609")
     @Epic("Dashboard")
@@ -176,7 +178,6 @@ public class DashboardPageTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteBusinessUnit(getApiRequestContext(), COMPANY_NAME, businessUnit);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }

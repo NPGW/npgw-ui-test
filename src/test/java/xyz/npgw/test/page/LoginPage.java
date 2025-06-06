@@ -6,8 +6,6 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 
@@ -95,82 +93,24 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         return this;
     }
 
-    @Step("Login to the site as '{userRole}'")
-    public DashboardPage loginAs(UserRole userRole) {
-        switch (userRole) {
-            case SUPER -> {
-                fillEmailField(ProjectProperties.getSuperEmail());
-                fillPasswordField(ProjectProperties.getSuperPassword());
-            }
-            case ADMIN -> {
-                fillEmailField(ProjectProperties.getAdminEmail());
-                fillPasswordField(ProjectProperties.getAdminPassword());
-            }
-            case USER -> {
-                fillEmailField(ProjectProperties.getUserEmail());
-                fillPasswordField(ProjectProperties.getUserPassword());
-            }
-            default -> throw new IllegalArgumentException("Login as %s not supported".formatted(userRole));
-        }
-        clickLoginButton();
-        getPage().waitForURL("**/dashboard");
-
-        return new DashboardPage(getPage());
-    }
-
     @Step("Login to the site as '{email}'")
     public DashboardPage loginAs(String email, String password) {
-        login(email, password);
-//        getPage().waitForURL("**/dashboard");
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-
-        return new DashboardPage(getPage());
-    }
-
-    @Step("Login with '{email}' user")
-    public DashboardPage login(String email, String password) {
         fillEmailField(email);
         fillPasswordField(password);
         clickLoginButton();
+
+        getPage().waitForURL("**/dashboard");
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         return new DashboardPage(getPage());
     }
 
     @Step("Login as disabled user with '{email}'")
     public LoginPage loginAsDisabledUser(String email, String password) {
-        login(email, password);
+        fillEmailField(email);
+        fillPasswordField(password);
+        clickLoginButton();
 
         return new LoginPage(getPage());
-    }
-
-    @Step("Change password")
-    public LoginPage changePassword(String newPassword) {
-        fillNewPasswordField(newPassword);
-        fillRepeatNewPasswordField(newPassword);
-        clickSaveButton();
-
-//        getAlert().clickCloseButton();
-        return this;
-    }
-
-    public DashboardPage loginAndChangePassword(String email, String password) {
-        return loginAndChangePassword(email, password, password);
-    }
-
-    @Step("Login with '{email}' user and change password")
-    public DashboardPage loginAndChangePassword(String email, String password, String newPassword) {
-        login(email, password);
-        changePassword(newPassword);
-        waitUntilLoginPageIsLoaded();
-        login(email, newPassword);
-
-        return new DashboardPage(getPage());
-    }
-
-    private void waitUntilLoginPageIsLoaded() {
-        getPage().waitForCondition(() ->
-                emailField.isEnabled()
-                        && emailField.inputValue().isEmpty(), new Page.WaitForConditionOptions().setTimeout(5000)
-        );
     }
 }
