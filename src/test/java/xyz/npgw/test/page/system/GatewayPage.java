@@ -44,7 +44,7 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     }
 
     @Step("Click 'Refresh filter' button")
-    public GatewayPage clickRefreshFilterButton() {
+    public GatewayPage clickResetFilterButton() {
         resetFilterButton.click();
         getPage().waitForTimeout(500);
 

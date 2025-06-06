@@ -189,7 +189,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickCurrencyValue()
                 .selectCurrency(expectedCurrency.get(2))
-                .clickRefreshFilterButton();
+                .clickResetFilterButton();
 
         Allure.step("Verify that all the filter are cleaned");
         assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
