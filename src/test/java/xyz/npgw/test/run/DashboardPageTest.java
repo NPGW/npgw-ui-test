@@ -205,10 +205,10 @@ public class DashboardPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("720")
     @Epic("Dashboard")
     @Feature("Transaction summary mock data")
-    @Description("Correct transaction summary is displayed on Dashboard page")
+    @Description("Correct transaction summary mock data is displayed on Dashboard page")
     public void testTransactionSummaryMock() {
         getPage().route("**/summary", this::summaryHandler);
 
@@ -218,7 +218,7 @@ public class DashboardPageTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: INITIATED main block contents");
-        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR11022USD10020GBP201");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR11022USD10020GBP12021");
 
         dashboardPage.clickCurrencySelector().selectCurrency("USD");
 
@@ -233,7 +233,7 @@ public class DashboardPageTest extends BaseTest {
         dashboardPage.clickCurrencySelector().selectCurrency("GBP");
 
         Allure.step("Verify: INITIATED main block contents");
-        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP201");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP12021");
     }
 
     @AfterClass
