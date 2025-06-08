@@ -54,7 +54,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @TmsLink("723")
     @Epic("System/Companies and business units")
     @Feature("Delete Company")
-    @Description("Delete company")
+    @Description("Verify that company can be deleted")
     public void testDeleteCompany() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
