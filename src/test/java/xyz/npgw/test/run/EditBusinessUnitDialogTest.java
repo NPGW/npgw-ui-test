@@ -70,7 +70,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
     }
 
-    @Test
+    @Test(priority = 1)
     @TmsLink("")
     @Epic("System/Companies and business units")
     @Feature("Delete business unit")

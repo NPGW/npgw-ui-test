@@ -7,6 +7,7 @@ import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 public class DeleteBusinessUnitDialog extends BaseDialog<CompaniesAndBusinessUnitsPage, DeleteBusinessUnitDialog> {
+
     public DeleteBusinessUnitDialog(Page page) {
         super(page);
     }
