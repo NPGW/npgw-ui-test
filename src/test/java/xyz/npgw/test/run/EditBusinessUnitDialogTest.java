@@ -71,7 +71,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     }
 
     @Test(priority = 1)
-    @TmsLink("")
+    @TmsLink("722")
     @Epic("System/Companies and business units")
     @Feature("Delete business unit")
     @Description("Verify that business unit can be deleted")
