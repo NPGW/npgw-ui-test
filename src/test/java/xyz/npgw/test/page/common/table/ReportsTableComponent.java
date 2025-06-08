@@ -27,7 +27,7 @@ public class ReportsTableComponent extends BaseTableComponent<ReportsPage> {
     }
 
     @Step("Click the 'Size' column header")
-    public ReportsPage clickSizeColumnHeader(){
+    public ReportsPage clickSizeColumnHeader() {
         sizeColumnHeader. click();
 
         return new ReportsPage(getPage());
