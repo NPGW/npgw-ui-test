@@ -24,7 +24,6 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
                     .filter(new Locator.FilterOptions().setHas(selectCompanyField));
     private final Locator selectCompanyDropdownChevron = selectCompanyContainer
             .locator("button[aria-label='Show suggestions']:last-child");
-
     private final Locator selectCompanyClearIcon = selectCompanyContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
@@ -46,7 +45,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         String lastName = "";
         selectCompanyField.fill(companyName);
 
-        if (dropdownOptionList.all().isEmpty()) {
+        if (locator("div[data-slot='empty-content']").isVisible()) {
             throw new NoSuchElementException("Company '" + companyName + "' not found. Dropdown list is empty.");
         }
 

@@ -11,11 +11,9 @@ import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 
 @Getter
-public class GatewayPage extends BaseSystemPage<GatewayPage>
-        implements SelectCompanyTrait<GatewayPage>, SelectBusinessUnitTrait<GatewayPage> {
+public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
+        SelectBusinessUnitTrait<GatewayPage> {
 
-    private final Locator businessUnitsListHeader = getByTextExact("Business units list");
-    private final Locator businessUnitsList = locator("div[data-slot='base'] li");
     private final Locator companyDropdown = locator("div[data-slot='content']");
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
     private final Locator businessUnitDropdownTrigger = locator("input[aria-label='Business unit']");
