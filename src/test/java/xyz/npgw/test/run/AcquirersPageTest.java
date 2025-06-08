@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertTrue;
 
 public class AcquirersPageTest extends BaseTest {
 
@@ -45,7 +46,7 @@ public class AcquirersPageTest extends BaseTest {
             new String[]{"USD", "EUR"},
             true);
 
-    private static final Acquirer CHANGE_StATE_ACQUIRER = new Acquirer(
+    private static final Acquirer CHANGE_STATE_ACQUIRER = new Acquirer(
             "NGenius",
             "default",
             new SystemConfig(),
@@ -55,6 +56,7 @@ public class AcquirersPageTest extends BaseTest {
 
     private static final String ACTIVE_ACQUIRER_NAME = "%s active acquirer".formatted(RUN_ID);
     private static final String INACTIVE_ACQUIRER_NAME = "%s inactive acquirer".formatted(RUN_ID);
+    private static final String ACQUIRER_NAME = "%s dummy acquirer".formatted(RUN_ID);
 
     String[] rowsPerPageOptions = new String[]{"10", "25", "50", "100"};
 
@@ -63,7 +65,8 @@ public class AcquirersPageTest extends BaseTest {
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
-        TestUtils.createAcquirer(getApiRequestContext(), CHANGE_StATE_ACQUIRER);
+        TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
+        TestUtils.createAcquirer(getApiRequestContext(), new Acquirer(ACQUIRER_NAME));
     }
 
     @Test
@@ -251,7 +254,7 @@ public class AcquirersPageTest extends BaseTest {
             boolean allValid = rowsCountPerPage.stream().allMatch(count -> count <= Integer.parseInt(option));
 
             Allure.step(String.format("Verify: The table contains rows less than or equal to '%s' per page", option));
-            Assert.assertTrue(allValid, "Not all row counts are less than or equal to " + option);
+            assertTrue(allValid, "Not all row counts are less than or equal to " + option);
 
             totalRowsForDifferentPaginations.add(rowsSum);
         }
@@ -353,10 +356,10 @@ public class AcquirersPageTest extends BaseTest {
                 Assert.assertEquals(table.getColumnHeader().allTextContents(), COLUMNS_HEADERS,
                         String.format("Headers mismatch on page %s with '%s' rows per page", activePage, option));
 
-                Assert.assertTrue(box.x >= 0, String.format(
+                assertTrue(box.x >= 0, String.format(
                         "Headers x-position must be within viewport on page '%s' with '%s'/page", activePage, option));
 
-                Assert.assertTrue((box.x + box.width) <= pageWidth, String.format(
+                assertTrue((box.x + box.width) <= pageWidth, String.format(
                         "Headers right edge must be within viewport on page '%s' with '%s'/page", activePage, option));
 
             });
@@ -370,6 +373,7 @@ public class AcquirersPageTest extends BaseTest {
     @Description("Verify Acquirer status 'Active/Inactive' is displayed in column 'Status'")
     public void testVerifyAcquirerStatus(String status) {
         String acquirerName = status.equals("Active") ? ACTIVE_ACQUIRER_NAME : INACTIVE_ACQUIRER_NAME;
+
         Acquirer acquirer = new Acquirer(
                 "",
                 "Acquirer Config",
@@ -400,8 +404,8 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeName(CHANGE_StATE_ACQUIRER.acquirerName())
-                .getSelectAcquirer().clickAcquirerInDropdown(CHANGE_StATE_ACQUIRER.acquirerName());
+                .getSelectAcquirer().typeName(CHANGE_STATE_ACQUIRER.acquirerName())
+                .getSelectAcquirer().clickAcquirerInDropdown(CHANGE_STATE_ACQUIRER.acquirerName());
 
         Locator row = acquirersPage.getTable().getRows();
 
@@ -413,7 +417,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getAlert().getMessage()).hasText("SUCCESSAcquirer was deactivated successfully");
 
         Allure.step("Verify: Acquirer status changed to Inactive");
-        assertThat(acquirersPage.getTable().getCell(CHANGE_StATE_ACQUIRER.acquirerName(), "Status"))
+        assertThat(acquirersPage.getTable().getCell(CHANGE_STATE_ACQUIRER.acquirerName(), "Status"))
                 .hasText("Inactive");
 
         acquirersPage
@@ -425,7 +429,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("SUCCESSAcquirer was deactivated successfully");
 
         Allure.step("Verify: Acquirer status changed back to Active");
-        assertThat(acquirersPage.getTable().getCell(CHANGE_StATE_ACQUIRER.acquirerName(), "Status"))
+        assertThat(acquirersPage.getTable().getCell(CHANGE_STATE_ACQUIRER.acquirerName(), "Status"))
                 .hasText("Active");
     }
 
@@ -449,13 +453,34 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText("All");
     }
 
+    @Test
+    @TmsLink("726")
+    @Epic("System/Acquirers")
+    @Feature("Delete acquirer")
+    @Description("Verify that an acquirer can be deleted")
+    public void testDeleteAcquirer() {
+        AcquirersPage acquirersPage = new AcquirersPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER_NAME)
+                .clickDeleteAcquirer()
+                .clickDeleteButton();
+
+        Allure.step("Verify: a success message appears after deleting the acquirer");
+        assertThat(acquirersPage.getAlert().getMessage())
+                .hasText("SUCCESSAcquirer was deleted successfully");
+
+        Allure.step("Verify: the deleted acquirer is no longer present in the dropdown list");
+        assertTrue(acquirersPage.getSelectAcquirer().isAcquirerAbsent(ACQUIRER_NAME));
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.acquirerName());
         TestUtils.deleteAcquirer(getApiRequestContext(), ACTIVE_ACQUIRER_NAME);
         TestUtils.deleteAcquirer(getApiRequestContext(), INACTIVE_ACQUIRER_NAME);
-        TestUtils.deleteAcquirer(getApiRequestContext(), CHANGE_StATE_ACQUIRER.acquirerName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.acquirerName());
         super.afterClass();
     }
 }
