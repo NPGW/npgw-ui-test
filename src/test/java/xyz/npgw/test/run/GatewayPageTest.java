@@ -187,13 +187,14 @@ public class GatewayPageTest extends BaseTest {
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(company.companyName())
+                .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
                 .clickCurrencyValue()
                 .selectCurrency(expectedCurrency.get(2))
                 .clickResetFilterButton();
 
         Allure.step("Verify that all the filter are cleaned");
         assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
-        assertThat(gatewayPage.getAcquirerDropdownTrigger()).hasAttribute("placeholder", "Search...");
+        assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("placeholder", "Select business unit");
         assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("placeholder", "Search...");
     }
 

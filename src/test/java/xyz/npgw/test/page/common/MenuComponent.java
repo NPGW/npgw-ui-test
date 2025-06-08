@@ -32,8 +32,9 @@ public class MenuComponent extends BaseComponent {
 
     @Step("Click 'Gateway' tab")
     public GatewayPage clickGatewayTab() {
-        ResponseUtils.clickAndWaitForText(getPage(),
-                getByRole(AriaRole.TAB, "Gateway"), "Business units list");
+//        ResponseUtils.clickAndWaitForText(getPage(),
+//                getByRole(AriaRole.TAB, "Gateway"), "Business units list");
+        getByRole(AriaRole.TAB, "Gateway").click();
 
         return new GatewayPage(getPage());
     }
