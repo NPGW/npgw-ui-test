@@ -18,6 +18,7 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -170,6 +171,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify Reset filter cleans all the filters applied")
     public void testResetAllTheFilters() {
         List<String> expectedCurrency = List.of("All", "EUR", "USD", "GBP");
+        String selectedCurrency = expectedCurrency.get(new Random().nextInt(expectedCurrency.size() - 1) + 1);
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
@@ -189,13 +191,21 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
                 .clickCurrencyValue()
-                .selectCurrency(expectedCurrency.get(2))
-                .clickResetFilterButton();
+                .selectCurrency(selectedCurrency);
+
+        Allure.step("Verify that all the values are presented in filter's filter");
+        assertThat(gatewayPage.getCurrencyValue()).containsText(selectedCurrency);
+        assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("value", company.companyType());
+        assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("value", company.companyName());
+
+                gatewayPage.clickResetFilterButton();
 
         Allure.step("Verify that all the filter are cleaned");
         assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
         assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("placeholder", "Select business unit");
         assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("placeholder", "Search...");
+        assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("value", "");
+        assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("value", "");
     }
 
     @AfterClass
