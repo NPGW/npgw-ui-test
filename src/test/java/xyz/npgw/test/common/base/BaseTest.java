@@ -146,7 +146,7 @@ public abstract class BaseTest {
         }
 
         new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getSuperPassword());
-//        initPageRequestContext();
+        initPageRequestContext();
     }
 
     @AfterMethod
