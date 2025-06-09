@@ -187,8 +187,8 @@ public class TeamPageTest extends BaseTest {
                 .setStatusRadiobutton(false)
                 .unsetAllowedBusinessUnits(new String[]{MERCHANT_TITLE})
                 .checkCompanyAdminRadiobutton()
-                .clickSaveChangesButton()
-                .clickRefreshDataButton();
+                .clickSaveChangesButton();
+//                .clickRefreshDataButton();
 
         Allure.step("Verify: success alert appears after user update");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);

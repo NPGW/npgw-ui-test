@@ -88,7 +88,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     @Step("Click sort icon in '{columnName}' column")
     public CurrentPageT clickSortIcon(String columnName) {
         getColumnHeader(columnName).locator("svg").click();
-        getPage().waitForTimeout(500);
+//        getPage().waitForTimeout(500);
 
         return getCurrentPage();
     }

@@ -28,7 +28,7 @@ public record User(
 
     public static boolean exists(APIRequestContext request, String email) {
         APIResponse response = request.get("portal-v1/user?email=%s".formatted(encode(email)));
-        log.info("exist user '{}' - {}", email, response.status());
+//        log.info("exist user '{}' - {}", email, response.status());
         if (response.status() >= 500) {
             throw new SkipException(response.text());
         }

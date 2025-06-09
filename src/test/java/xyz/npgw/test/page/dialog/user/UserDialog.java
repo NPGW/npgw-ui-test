@@ -55,12 +55,12 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
         return (CurrentDialogT) this;
     }
 
-    @Step("Set 'User role' radiobutton checked for '{userRole}'")
-    public CurrentDialogT setUserRoleRadiobutton(UserRole userRole) {
-        getByRoleExact(AriaRole.RADIO, userRole.getName()).check();
-
-        return (CurrentDialogT) this;
-    }
+//    @Step("Set 'User role' radiobutton checked for '{userRole}'")
+//    public CurrentDialogT setUserRoleRadiobutton(UserRole userRole) {
+//        getByRoleExact(AriaRole.RADIO, userRole.getName()).check();
+//
+//        return (CurrentDialogT) this;
+//    }
 
     @Step("Check 'System admin' user role radiobutton")
     public CurrentDialogT checkSystemAdminRadiobutton() {
