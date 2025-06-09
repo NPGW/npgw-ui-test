@@ -183,7 +183,8 @@ public class GatewayPageTest extends BaseTest {
         assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("value", company.companyType());
         assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("value", company.companyName());
 
-                gatewayPage.clickResetFilterButton();
+        gatewayPage
+                .clickResetFilterButton();
 
         Allure.step("Verify that all the filter are cleaned");
         assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
