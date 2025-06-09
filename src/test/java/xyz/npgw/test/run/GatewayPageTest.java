@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import net.datafaker.Faker;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -155,6 +156,7 @@ public class GatewayPageTest extends BaseTest {
     public void testResetAllTheFilters() {
         List<String> expectedCurrency = List.of("All", "EUR", "USD", "GBP");
         String selectedCurrency = expectedCurrency.get(new Random().nextInt(expectedCurrency.size() - 1) + 1);
+        Company company = new Company(new Faker().company().name(), new Faker().company().industry());
 
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
