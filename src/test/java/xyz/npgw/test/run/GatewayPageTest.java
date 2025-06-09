@@ -190,8 +190,10 @@ public class GatewayPageTest extends BaseTest {
         assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
         assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("placeholder", "Select business unit");
         assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("placeholder", "Search...");
-        assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).hasAttribute("value", "");
-        assertThat(gatewayPage.getCompanyDropdownTrigger()).hasAttribute("value", "");
+        assertThat(gatewayPage.getBusinessUnitDropdownTrigger()).isEmpty();
+        assertThat(gatewayPage.getCompanyDropdownTrigger()).isEmpty();
+
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
     @AfterClass
