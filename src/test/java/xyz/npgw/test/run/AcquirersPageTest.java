@@ -56,7 +56,6 @@ public class AcquirersPageTest extends BaseTest {
 
     private static final String ACTIVE_ACQUIRER_NAME = "%s active acquirer".formatted(RUN_ID);
     private static final String INACTIVE_ACQUIRER_NAME = "%s inactive acquirer".formatted(RUN_ID);
-    private static final String ACQUIRER_NAME = "%s dummy acquirer".formatted(RUN_ID);
 
     String[] rowsPerPageOptions = new String[]{"10", "25", "50", "100"};
 
@@ -66,7 +65,6 @@ public class AcquirersPageTest extends BaseTest {
         super.beforeClass();
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
         TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
-        TestUtils.createAcquirer(getApiRequestContext(), new Acquirer(ACQUIRER_NAME));
     }
 
     @Test
@@ -453,7 +451,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText("All");
     }
 
-    @Test
+    @Test(priority = 1)
     @TmsLink("726")
     @Epic("System/Acquirers")
     @Feature("Delete acquirer")
@@ -462,7 +460,7 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new AcquirersPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().selectAcquirer(ACQUIRER_NAME)
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
                 .clickDeleteAcquirer()
                 .clickDeleteButton();
 
@@ -471,7 +469,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("SUCCESSAcquirer was deleted successfully");
 
         Allure.step("Verify: the deleted acquirer is no longer present in the dropdown list");
-        assertTrue(acquirersPage.getSelectAcquirer().isAcquirerAbsent(ACQUIRER_NAME));
+        assertTrue(acquirersPage.getSelectAcquirer().isAcquirerAbsent(ACQUIRER.acquirerName()));
     }
 
     @AfterClass

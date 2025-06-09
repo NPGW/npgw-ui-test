@@ -42,7 +42,7 @@ public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements Acqu
         return this;
     }
 
-    @Step("Click 'Delete acquirer'")
+    @Step("Click 'Delete acquirer' button")
     public DeleteAcquirerDialog clickDeleteAcquirer() {
         deleteAcquirerButton.click();
 
