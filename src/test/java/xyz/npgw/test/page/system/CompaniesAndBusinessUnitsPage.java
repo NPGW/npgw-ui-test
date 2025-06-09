@@ -121,7 +121,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
         return this;
     }
 
-    @Step("Click 'Delete selected company'")
+    @Step("Click 'Delete selected company' button")
     public DeleteCompanyDialog clickDeleteSelectedCompany() {
         deleteSelectedCompany.click();
 
