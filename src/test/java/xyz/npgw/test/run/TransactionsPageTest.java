@@ -645,7 +645,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("736")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that ")
@@ -676,6 +676,35 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
     }
 
+    @Test
+    @TmsLink("738")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Check the Transaction details dialog is closed after clicking on 'Close' button")
+    public void testCloseButton() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().clickOnTransaction()
+                .clickCloseButton();
+
+        Allure.step("Verify: Transaction details dialog is closed ");
+        assertThat(transactionsPage.getDialog()).not().isAttached();
+    }
+
+    @Test
+    @TmsLink("740")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Check the Transaction details dialog is closed after clicking on 'x' icon")
+    public void testCloseXIcon() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getTable().clickOnTransaction()
+                .clickCloseIcon();
+
+        Allure.step("Verify: Transaction details dialog is closed ");
+        assertThat(transactionsPage.getDialog()).not().isAttached();
+    }
     @AfterClass
     @Override
     protected void afterClass() {
