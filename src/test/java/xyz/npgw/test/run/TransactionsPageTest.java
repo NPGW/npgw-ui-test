@@ -680,9 +680,9 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("738")
     @Epic("Transactions")
     @Feature("Transaction details")
-    @Description("Check the Transaction detail dialog is closed after clicking on 'Close' button" )
+    @Description("Check the Transaction detail dialog is closed after clicking on 'Close' button")
     public void testCloseButton() {
-        TransactionsPage transactionsPage= new DashboardPage(getPage())
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getTable().clickOnTransaction()
                 .clickCloseButton();
