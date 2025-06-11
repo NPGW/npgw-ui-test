@@ -673,7 +673,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickResetFilterButton();
 
         Allure.step("Verify: the 'Data' input field value is current month after reset");
-        assertThat(transactionsPage.getDialog()).hasText(currentRange);
+        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
     }
 
     @Test
