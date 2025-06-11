@@ -692,7 +692,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("740")
     @Epic("Transactions")
     @Feature("Transaction details")
     @Description("Check the Transaction details dialog is closed after clicking on 'x' icon")
