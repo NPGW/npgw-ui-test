@@ -39,7 +39,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     }
 
 
-    @Test
+    @Test(priority = 1)
     @TmsLink("723")
     @Epic("System/Companies and business units")
     @Feature("Delete Company")
