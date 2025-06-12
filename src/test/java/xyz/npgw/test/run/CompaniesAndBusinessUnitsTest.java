@@ -5,8 +5,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
@@ -22,13 +22,15 @@ import static org.testng.Assert.assertTrue;
 public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s company to delete".formatted(RUN_ID);
+    private static final String COMPANY_DELETION_BLOCKED_NAME = "%s deletion-blocked company".formatted(RUN_ID);
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, "Business unit 1");
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
+        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME, "Business unit 1");
     }
 
     @Test
@@ -84,7 +86,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickDeleteSelectedCompany()
                 .clickDeleteButton();
 
@@ -94,7 +96,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
     }
 
-    @Test(priority = 1)
+    @Test(priority = 2)
     @TmsLink("743")
     @Epic("System/Companies and business units")
     @Feature("Delete Company")
@@ -105,7 +107,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Qwerty123!")
@@ -113,7 +115,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickDeleteSelectedCompany()
                 .clickDeleteButton();
 
@@ -125,7 +127,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
         super.afterClass();
     }
 }
