@@ -36,7 +36,6 @@ public class TransactionsPageTest extends BaseTest {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-//        TestUtils.createCompany(getApiRequestContext(), getCompanyName());
         TestUtils.createBusinessUnits(getApiRequestContext(), getCompanyName(), businessUnitNames);
 
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);

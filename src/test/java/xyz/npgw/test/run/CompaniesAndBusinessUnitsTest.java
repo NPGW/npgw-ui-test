@@ -13,9 +13,6 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class CompaniesAndBusinessUnitsTest extends BaseTest {
@@ -101,8 +98,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Delete Company")
     @Description("Verify that company cannot be deleted if there are users assigned to it")
     public void testCannotDeleteCompanyWithAssignedUser() {
-        String email = "%s.admin123@email.com"
-                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
+        String email = "%s.admin123@email.com".formatted(TestUtils.now());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
