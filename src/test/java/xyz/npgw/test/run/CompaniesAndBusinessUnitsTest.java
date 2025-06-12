@@ -5,15 +5,31 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertTrue;
 
 public class CompaniesAndBusinessUnitsTest extends BaseTest {
+
+    private static final String COMPANY_NAME = "%s company name".formatted(RUN_ID);
+
+    @BeforeClass
+    @Override
+    protected void beforeClass() {
+        super.beforeClass();
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, "Business unit 1");
+    }
 
     @Test
     @TmsLink("691")
@@ -60,5 +76,59 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
         Allure.step("Verify: the deleted company is no longer present in the dropdown list");
         assertTrue(companiesAndBusinessUnitsPage.getSelectCompany().isCompanyAbsentInDropdown(companyName));
+    }
+
+    @Test
+    @TmsLink("728")
+    @Epic("System/Companies and business units")
+    @Feature("Delete Company")
+    @Description("Verify that company cannot be deleted if there are associated business units")
+    public void testCannotDeleteCompanyWithAssociatedBusinessUnit() {
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .clickDeleteSelectedCompany()
+                .clickDeleteButton();
+
+        Allure.step("Verify: error message is shown when trying to delete a company with business unit");
+        assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
+                .hasText("ERRORCompany could not be deleted: there are still merchants associated with it");
+
+    }
+
+    @Test(priority = 1)
+    @TmsLink("743")
+    @Epic("System/Companies and business units")
+    @Feature("Delete Company")
+    @Description("Verify that company cannot be deleted if there are users assigned to it")
+    public void testCannotDeleteCompanyWithAssignedUser() {
+        String email = "%s.admin123@email.com"
+                .formatted(new SimpleDateFormat("MMdd.HHmmss").format(new Date()));
+
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("Qwerty123!")
+                .checkCompanyAdminRadiobutton()
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .clickDeleteSelectedCompany()
+                .clickDeleteButton();
+
+        Allure.step("Verify: error message is shown when trying to delete a company with users");
+        assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
+                .hasText("ERRORCompany could not be deleted: there are still users associated with it");
+    }
+
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        super.afterClass();
     }
 }
