@@ -12,13 +12,13 @@ import java.util.List;
 public class Run {
 
     public static void main(String[] args) {
-        TestNG testng = new TestNG();
+        String suiteXml = System.getProperty("testng.suiteXml", "config/testng.xml");
 
-        XmlSuite xmlSuite = new XmlSuite();
-        new XmlTest(xmlSuite).setXmlClasses(new XmlPackage("xyz.npgw.test.run.*").getXmlClasses());
-        testng.setXmlSuites(List.of(xmlSuite));
+        TestNG testng = new TestNG();
+        testng.setTestSuites(List.of(suiteXml));
 
         testng.run();
         System.exit(testng.getStatus());
+
     }
 }
