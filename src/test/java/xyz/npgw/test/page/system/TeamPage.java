@@ -10,6 +10,8 @@ import xyz.npgw.test.page.common.trait.UserTableTrait;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 
+import java.time.LocalTime;
+
 @Log4j2
 public class TeamPage extends BaseSystemPage<TeamPage> implements
         UserTableTrait,
@@ -42,6 +44,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements
 //        TODO remove after bugfix
 //        getPage().waitForTimeout(500);
         getByTestId("ApplyFilterButtonTeamPage").click();
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 //        getPage().waitForTimeout(500);
 
         return this;
