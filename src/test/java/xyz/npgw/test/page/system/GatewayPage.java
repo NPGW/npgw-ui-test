@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
+import xyz.npgw.test.page.dialog.merchant.AddMerchantAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
@@ -19,6 +20,7 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
     private final Locator resetFilterButton = locator("[data-icon='xmark']");
+    private final Locator addMerchantAcquirerButton = getByTestId("AddMerchantAcquirerButton");
 
     public GatewayPage(Page page) {
         super(page);
@@ -45,5 +47,12 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
 //        getPage().waitForTimeout(500);
 
         return this;
+    }
+
+    @Step("Click 'Add merchant acquirer button'")
+    public AddMerchantAcquirerDialog clickAddMerchantAcquirerButton(){
+        addMerchantAcquirerButton.click();
+
+        return new AddMerchantAcquirerDialog(getPage());
     }
 }

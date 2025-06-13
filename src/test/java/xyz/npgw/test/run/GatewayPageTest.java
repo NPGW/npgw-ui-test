@@ -1,5 +1,6 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
@@ -11,6 +12,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
@@ -197,6 +199,32 @@ public class GatewayPageTest extends BaseTest {
 
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
+
+    @Test
+    @TmsLink("")
+    @Epic("System/Gateway")
+    @Feature("Merchant acquirer")
+    @Description("Verify the merchant acquirer can be added")
+    public void testAddMerchantAcquirer() {
+//        TestUtils.createAcquirer(getApiRequestContext(), new Acquirer("acquirer_test122"));
+
+        GatewayPage gatewayPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().clickSelectCompanyField()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit("Merchant 1 for C112172")
+                .clickAddMerchantAcquirerButton()
+                .selectAcquirerFromDropdown(COMPANY_NAME)
+                .clickCreateButton();
+
+//        TestUtils.deleteAcquirer(getApiRequestContext(), "acquirer_test122");
+
+    }
+
+
+
+
 
     @AfterClass
     @Override
