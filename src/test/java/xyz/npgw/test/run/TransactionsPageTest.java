@@ -723,7 +723,7 @@ public class TransactionsPageTest extends BaseTest {
         String checkedAmount = transactionsPage
                 .getTable().getFirstRowCell("Amount")
                 .textContent();
-        String checkedMerchantRef= transactionsPage
+        String checkedMerchantRef = transactionsPage
                 .getTable().getFirstRowCell("Merchant reference")
                 .textContent();
         String checkedCardType = transactionsPage
@@ -738,7 +738,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetails.getStatusValue()).hasText(checkedStatus);
 
         Allure.step("Verify: Merchant Reference  is the same as in the table ");
-        assertThat(transactionDetails .getMerchantReferenceValue()).hasText(checkedMerchantRef);
+        assertThat(transactionDetails.getMerchantReferenceValue()).hasText(checkedMerchantRef);
 
         Allure.step("Verify: Amount value and Currency are the same as in the table ");
         assertThat(transactionDetails .getAmountValue()).hasText(amountValueExpected);
