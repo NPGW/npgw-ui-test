@@ -741,7 +741,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetails.getMerchantReferenceValue()).hasText(checkedMerchantRef);
 
         Allure.step("Verify: Amount value and Currency are the same as in the table ");
-        assertThat(transactionDetails .getAmountValue()).hasText(amountValueExpected);
+        assertThat(transactionDetails.getAmountValue()).hasText(amountValueExpected);
 
         Allure.step("Verify: Card type is the same as in table ");
         assertThat(transactionDetails.getCardTypeParameter()).hasText(checkedCardType);
