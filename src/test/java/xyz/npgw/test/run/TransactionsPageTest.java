@@ -745,10 +745,7 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Card type is the same as in table ");
         assertThat(transactionDetails.getCardTypeParameter()).hasText(checkedCardType);
-
-
     }
-
 
     @AfterClass
     @Override
