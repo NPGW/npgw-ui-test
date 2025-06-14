@@ -18,9 +18,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     private final Locator acquirerNamePlaceholder = getByPlaceholder("Enter acquirer name");
     private final Locator statusSwitch = getByRole(AriaRole.RADIOGROUP, "Status");
-    // locator("div[role='radiogroup']");
     private final Locator allowedCurrenciesCheckboxes = getByRole(AriaRole.RADIOGROUP, "Allowed currency");
-    // locator("div[role='group']");
 
     public AcquirerDialog(Page page) {
         super(page);
