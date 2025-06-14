@@ -6,8 +6,6 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.util.ResponseUtils;
 import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 

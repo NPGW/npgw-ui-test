@@ -241,7 +241,7 @@ public class ReportsPageTest extends BaseTest {
                 .getTable().clickSizeColumnHeader();
 
         List<String> actualSizeList = reportsPage.getTable().getColumnValues("Size");
-        List<String> sortedSizeListAsc = new ArrayList<String>(actualSizeList);
+        List<String> sortedSizeListAsc = new ArrayList<>(actualSizeList);
         Collections.sort(sortedSizeListAsc);
 
         Allure.step("Verify that entries are displayed in ascending order by Size");
@@ -252,7 +252,7 @@ public class ReportsPageTest extends BaseTest {
                 .getTable().clickSizeColumnHeader();
 
         actualSizeList = reportsPage.getTable().getColumnValues("Size");
-        List<String> sortedSizeListDesc = new ArrayList<String>(sortedSizeListAsc);
+        List<String> sortedSizeListDesc = new ArrayList<>(sortedSizeListAsc);
         Collections.reverse(sortedSizeListDesc);
 
         Allure.step("Verify that entries are displayed in descending order by Size");

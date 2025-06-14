@@ -72,8 +72,7 @@ public record User(
             TimeUnit.SECONDS.sleep(1);
             tokenResponse = getTokenResponse(request, credentials);
         } while (tokenResponse.userChallengeType() == null);
-        String challengeType = tokenResponse.userChallengeType();
-        if (challengeType != null && challengeType.equals("NEW_PASSWORD_REQUIRED")) {
+        if (tokenResponse.userChallengeType().equals("NEW_PASSWORD_REQUIRED")) {
             APIResponse response = request.post("/portal-v1/user/challenge",
                     RequestOptions.create().setData(new Challenge(
                             tokenResponse.sessionId(),
