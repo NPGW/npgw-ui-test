@@ -57,7 +57,7 @@ public record User(
 
     public static TokenResponse getTokenResponse(APIRequestContext request, Credentials credentials) {
         APIResponse response = request.post("/portal-v1/user/token", RequestOptions.create().setData(credentials));
-        log.info("get token '{}' {} - {}", credentials.email(), credentials.password(), response.status());
+        log.info("get token '{}' - {}", credentials.email(), response.status());
         if (response.status() >= 500) {
             throw new SkipException(response.text());
         }
