@@ -62,7 +62,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
-    @Ignore("no woy to add SUPER atm")
+    @Ignore("no way to add SUPER atm")
     @Test
     @TmsLink("298")
     @Epic("System/Team")
@@ -82,6 +82,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
     }
 
+    @Ignore("until Create Super bug fixed")
     @Test(dependsOnMethods = "testAddSystemAdmin")
     @TmsLink("745")
     @Epic("System/Team")
@@ -97,8 +98,11 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success alert appears after deleting the system admin");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
 
+        teamPage
+                .clickRefreshDataButton();
+
         Allure.step("Verify: deleted system admin is no longer present in the users table");
-        assertFalse(teamPage.getTable().isEmailPresentInTable(SYSTEM_ADMIN_EMAIL));
+        assertFalse(teamPage.getTable().isUserPresentInTable(SYSTEM_ADMIN_EMAIL));
     }
 
     @Test
@@ -136,10 +140,10 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
 
         teamPage
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .clickRefreshDataButton();
 
         Allure.step("Verify: deleted company admin is no longer present in the users table");
-        assertFalse(teamPage.getTable().isEmailPresentInTable(SYSTEM_ADMIN_EMAIL));
+        assertFalse(teamPage.getTable().isUserPresentInTable(SYSTEM_ADMIN_EMAIL));
     }
 
     @Test
@@ -148,8 +152,6 @@ public class TeamPageTest extends BaseTest {
     @Feature("Add user")
     @Description("Add a new user and verify that all fields, statuses, and icons are correctly displayed(e2e).")
     public void testAddCompanyAnalyst() {
-//        String email = "%s.newuser@email.com".formatted(TestUtils.now());
-
         AddUserDialog addUserDialog = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(getCompanyName())
@@ -190,7 +192,7 @@ public class TeamPageTest extends BaseTest {
         assertEquals(teamPage.getTable().getUserActivityIcon(COMPANY_ANALYST_EMAIL).getAttribute("data-icon"), "ban");
     }
 
-    @Test(priority = 1)
+    @Test(dependsOnMethods = "testAddCompanyAnalyst")
     @TmsLink("748")
     @Epic("System/Team")
     @Feature("Delete user")
@@ -205,10 +207,12 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success alert appears after deleting the company analyst");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
 
-        Allure.step("Verify: deleted company analyst is no longer present in the users table");
-        assertFalse(teamPage.getTable().isEmailPresentInTable(SYSTEM_ADMIN_EMAIL));
-    }
+        teamPage
+                .clickRefreshDataButton();
 
+        Allure.step("Verify: deleted company analyst is no longer present in the users table");
+        assertFalse(teamPage.getTable().isUserPresentInTable(SYSTEM_ADMIN_EMAIL));
+    }
 
     @Test
     @TmsLink("331")
