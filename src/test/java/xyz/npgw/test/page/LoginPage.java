@@ -61,7 +61,6 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     @Step("Press 'Login' button")
     public DashboardPage clickLoginButton() {
         loginButton.click();
-//        ResponseUtils.clickAndWaitForResponse(getPage(), loginButton, Constants.COMPANY_ENDPOINT);
 
         return new DashboardPage(getPage());
     }
