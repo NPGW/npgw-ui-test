@@ -705,6 +705,7 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Transaction details dialog is closed ");
         assertThat(transactionsPage.getDialog()).not().isAttached();
     }
+
     @Test
     @TmsLink("749")
     @Epic("Transactions")
