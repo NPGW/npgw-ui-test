@@ -126,7 +126,7 @@ public final class ProjectProperties {
     }
 
     public static double getDefaultTimeout() {
-        return Double.parseDouble(properties.getProperty(DEFAULT_TIMEOUT, "50000"));
+        return Double.parseDouble(properties.getProperty(DEFAULT_TIMEOUT, "5000"));
     }
 
     public static String getEmail() {
