@@ -59,8 +59,8 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator downloadExcelOption = getByRole(AriaRole.MENUITEM, "EXCEL");
     private final Locator downloadPdfOption = getByRole(AriaRole.MENUITEM, "PDF");
     private final Locator dialog = locator("[role='dialog']");
-    private final Locator cardLogo =locator("td").getByRole(AriaRole.IMG);
-    private final Locator cardTypeName =locator("[data-slot='content']");
+    private final Locator cardLogo = locator("td").getByRole(AriaRole.IMG);
+    private final Locator cardTypeName = locator("[data-slot='content']");
 
     public TransactionsPage(Page page) {
         super(page);
