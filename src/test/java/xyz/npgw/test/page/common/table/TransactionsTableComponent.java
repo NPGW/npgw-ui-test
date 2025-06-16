@@ -52,6 +52,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
                 .stream()
                 .allMatch(date -> date.isAfter(dateTimeFrom) && date.isBefore(dateTimeTo));
     }
+
     private Locator getCardLogo() {
         return cardLogo;
     }
