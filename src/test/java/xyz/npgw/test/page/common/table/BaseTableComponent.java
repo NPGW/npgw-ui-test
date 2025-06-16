@@ -32,7 +32,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     private final Locator paginationItems = getPage().getByLabel("pagination item");
     private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
     private final Locator previousPageButton = getByRole(AriaRole.BUTTON, "previous page button");
-
+    private final Locator cardLogo = locator("td").getByRole(AriaRole.IMG);
+    private final Locator cardTypeModal = locator("[data-slot='content']");
     public BaseTableComponent(Page page) {
         super(page);
     }
@@ -277,5 +278,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         } while (goToNextPage());
 
         return allValues;
+    }
+
+    public void hoverCardLogo () {
+        getCardLogo().nth(0).hover();
+
     }
 }

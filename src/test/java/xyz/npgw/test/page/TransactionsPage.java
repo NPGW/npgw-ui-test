@@ -59,8 +59,6 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator downloadExcelOption = getByRole(AriaRole.MENUITEM, "EXCEL");
     private final Locator downloadPdfOption = getByRole(AriaRole.MENUITEM, "PDF");
     private final Locator dialog = locator("[role='dialog']");
-    private final Locator cardLogo = locator("td").getByRole(AriaRole.IMG);
-    private final Locator cardTypeName = locator("[data-slot='content']");
 
     public TransactionsPage(Page page) {
         super(page);
@@ -316,19 +314,5 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
             return false;
         }, refreshDataButton::click);
         return data.get();
-    }
-
-    @Step("Hover on credit card logo in first row")
-    public TransactionsPage hoverOnFirstCardLogo() {
-        cardLogo.nth(0).hover();
-
-        return this;
-    }
-
-    public String getFirstRowCardType() {
-        return this
-                .hoverOnFirstCardLogo()
-                .getCardTypeName()
-                .textContent();
     }
 }

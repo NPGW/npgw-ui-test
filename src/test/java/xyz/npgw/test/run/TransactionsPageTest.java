@@ -727,7 +727,13 @@ public class TransactionsPageTest extends BaseTest {
         String checkedMerchantRef = transactionsPage
                 .getTable().getFirstRowCell("Merchant reference")
                 .textContent();
-        String checkedCardType = transactionsPage.getFirstRowCardType();
+
+        transactionsPage.getTable().hoverCardLogo();
+
+        String checkedCardType = transactionsPage
+                .getTable()
+                .getCardTypeModal()
+                .textContent();
 
         TransactionDetailsDialog transactionDetails = transactionsPage.getTable().clickOnTransaction();
 
