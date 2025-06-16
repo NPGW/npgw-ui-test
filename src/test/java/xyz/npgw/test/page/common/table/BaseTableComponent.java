@@ -280,7 +280,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return allValues;
     }
 
-    public void hoverCardLogo () {
+    public void hoverCardLogo() {
         getCardLogo().nth(0).hover();
 
     }
