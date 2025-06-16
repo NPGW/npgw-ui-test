@@ -1,13 +1,16 @@
-FROM mcr.microsoft.com/playwright/java:v1.50.0-noble
+FROM mcr.microsoft.com/playwright/java:v1.51.0-noble
 
 # Usage:
+# 1. build jar:
+# mvn clean package -DskipTests
 #
-# build image:
+# 2. build image:
 #   cd ../
 #   docker build -t ui-test:latest -f ./docker/Dockerfile .
 #
-# run container:
+# 3. run container:
 #   docker run ui-test:latest
+#
 #
 # required in .env:
 # local.baseURL=<>
