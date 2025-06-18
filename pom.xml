@@ -97,7 +97,7 @@
                             <includeTestSourceDirectory>true</includeTestSourceDirectory>
                             <violationSeverity>warning</violationSeverity>
                             <failOnViolation>false</failOnViolation>
-                            <configLocation>checkstyle/mod_v10.17.0_google_checks.xml</configLocation>
+                            <configLocation>config/checkstyle/mod_v10.17.0_google_checks.xml</configLocation>
                         </configuration>
                         <goals>
                             <goal>check</goal>
