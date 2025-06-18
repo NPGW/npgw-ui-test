@@ -54,12 +54,12 @@ public final class ProjectProperties {
                 }
             }
         } else {
-            String configPath = System.getProperty("configPath", "./config/.env");
+            String configPath = System.getProperty("configPath", ".properties");
             try (InputStream inputStream = Files.newInputStream(Paths.get(configPath))) {
                 properties.load(inputStream);
             } catch (IOException e) {
-                log.error("The '.env' file not found in ./config/ directory.");
-                log.error("You need to create it from ./config/.env.TEMPLATE file.");
+                log.error("The '.properties' file not found in project directory.");
+                log.error("You need to create it from .properties.TEMPLATE file.");
                 throw new RuntimeException(e);
             }
         }
