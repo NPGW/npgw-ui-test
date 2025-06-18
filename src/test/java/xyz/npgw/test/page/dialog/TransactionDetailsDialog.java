@@ -17,7 +17,7 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
     private final Locator cardTypeParameter = parameter("Card type", "Card details");
     private final Locator cardHolderParameter = parameter("Card holder", "Card details");
     private final Locator cardNumberParameter = parameter("Card number", "Card details");
-    private final Locator expiryDateParameter = parameter("Card number", "Card details");
+    private final Locator expiryDateParameter = parameter("Expiry date", "Card details");
     private final Locator statusValue = statusField.locator("+div");
     private final Locator amountValue = amountField.locator("+div");
     private final Locator merchantReferenceValue = merchantReferenceField.locator("+div");
