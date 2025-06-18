@@ -56,8 +56,8 @@ public record Company(
     }
 
     public static boolean exists(APIRequestContext request, String companyName) {
-        APIResponse response = request.get("portal-v1/company/%s".formatted(encode(companyName)));
-        log.info("get one company - {}", response.status());
+        APIResponse response = request.get("portal-v1/company");
+        log.info("exists via all companies - {}", response.status());
         if (response.status() >= 500) {
             throw new SkipException(response.text());
         }
