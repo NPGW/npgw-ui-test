@@ -33,12 +33,9 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
 
     @Step("Click on chevron in Card details section")
     public TransactionDetailsDialog clickChevronInSection(String sectionName) {
-
-            Locator section = locator("div[aria-label='" + sectionName + "']");
-
-            Locator chevron = section.locator("svg[role='presentation']");
-
-            chevron.click();
+        Locator section = locator("div[aria-label='" + sectionName + "']");
+        Locator chevron = section.locator("svg[role='presentation']");
+        chevron.click();
         return new TransactionDetailsDialog(getPage());
     }
 
