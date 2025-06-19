@@ -507,6 +507,9 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: The dialog box contains text 'Status' and this text is visible ");
         assertThat(transactionDetailsDialog.getCommonSection()).containsText("Status");
 
+        Allure.step("Verify: The dialog box contains text 'Updated on' and this text is visible ");
+        assertThat(transactionDetailsDialog.getCommonSection()).containsText("Updated on");
+
         Allure.step("Verify: The dialog box contains text 'Amount' and this text is visible ");
         assertThat(transactionDetailsDialog.getCommonSection()).containsText("Amount");
 
