@@ -351,7 +351,8 @@ public class TransactionsTableTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only two column headers are displayed in the transactions table - '{item}' column header and 'Actions'");
+            Allure.step("Verify: Only two column headers are displayed in the transactions table -"
+                    + " '{item}' column header and 'Actions'");
             assertTrue((headersListAfterCheckOnlyOne.size() == 2) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
