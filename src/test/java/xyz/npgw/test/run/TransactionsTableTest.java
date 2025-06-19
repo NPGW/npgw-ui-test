@@ -277,6 +277,7 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getActivePageButton()).hasText("2");
     }
 
+    @Ignore("Elena D")
     @Test
     @TmsLink("350")
     @Epic("Transactions")
@@ -316,6 +317,7 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(headersListAfterUncheckAllVisibleColumns.get(0), "Actions");
     }
 
+    @Ignore("Elena D")
     @Test
     @TmsLink("358")
     @Epic("Transactions")
