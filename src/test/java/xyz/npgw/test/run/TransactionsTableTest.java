@@ -30,8 +30,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class TransactionsTableTest extends BaseTest {
 
@@ -306,11 +305,15 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
 
         Allure.step("Verify: All column headers are displayed in the transactions table");
-        assertEquals(headersList, COLUMNS_HEADERS);
+        assertTrue(headersList.containsAll(COLUMNS_HEADERS));
 
         Allure.step("Verify: Column headers are not displayed in the transactions table "
                 + "after it's unchecking in the Settings");
-        assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
+        assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 1);
+
+        Allure.step("Verify: Only 'Actions' is displayed in the transactions table "
+                + "after it's unchecking in the Settings");
+        assertEquals(headersListAfterUncheckAllVisibleColumns.get(0), "Actions");
     }
 
     @Test
@@ -331,7 +334,7 @@ public class TransactionsTableTest extends BaseTest {
                     .getTable().getColumnHeadersText();
 
             Allure.step("Verify: Only one column header is NOT displayed in the Transactions. And it's - '{item}'");
-            assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1)
+            assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size())
                     && !headersListAfterUncheckOne.contains(item));
 
             transactionsPage
@@ -348,8 +351,8 @@ public class TransactionsTableTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only one column header is displayed in the transactions table. And it's - '{item}'");
-            assertTrue((headersListAfterCheckOnlyOne.size() == 1) && headersListAfterCheckOnlyOne.contains(item));
+            Allure.step("Verify: Only two column headers are displayed in the transactions table - '{item}' column header and 'Actions'");
+            assertTrue((headersListAfterCheckOnlyOne.size() == 2) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
                     .clickSettingsButton()
