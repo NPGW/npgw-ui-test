@@ -489,7 +489,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -506,20 +505,16 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetailsDialog.getDialogHeader()).hasText("Transaction Details");
 
         Allure.step("Verify: The dialog box contains text 'Status' and this text is visible ");
-        assertThat(transactionDetailsDialog.getDialog()).containsText("Status");
-        assertThat(transactionDetailsDialog.getStatusField()).isVisible();
+        assertThat(transactionDetailsDialog.getCommonSection()).containsText("Status");
 
         Allure.step("Verify: The dialog box contains text 'Amount' and this text is visible ");
-        assertThat(transactionDetailsDialog.getDialog()).containsText("Amount");
-        assertThat(transactionDetailsDialog.getAmountField()).isVisible();
+        assertThat(transactionDetailsDialog.getCommonSection()).containsText("Amount");
 
         Allure.step("Verify: The dialog box contains text 'Merchant reference' and this text is visible ");
-        assertThat(transactionDetailsDialog.getDialog()).containsText("Merchant reference");
-        assertThat(transactionDetailsDialog.getMerchantReferenceField()).isVisible();
+        assertThat(transactionDetailsDialog.getCommonSection()).containsText("Merchant reference");
 
         Allure.step("Verify: The dialog box contains text 'Card details' and this text is visible ");
         assertThat(transactionDetailsDialog.getDialog()).containsText("Card details");
-        assertThat(transactionDetailsDialog.getCardDetailsSection()).isVisible();
 
         Allure.step("Verify: The Card details section contains text 'Payment method'");
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Payment method");

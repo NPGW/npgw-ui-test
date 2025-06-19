@@ -12,6 +12,8 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
     private final Locator statusField = getDialog().getByText("Status");
     private final Locator amountField = getDialog().getByText("Amount");
     private final Locator merchantReferenceField = getDialog().getByText("Merchant reference");
+    private final Locator commonSection = locator(
+            "//div[.//header[contains(text(),'Transaction Details')]]//div[contains(@class,'flex-row') and contains(@class,'gap-3')][1]");
     private final Locator cardDetailsSection = locator("div[aria-label='Card details']");
     private final Locator paymentMethodParameter = parameter("Payment method", "Card details");
     private final Locator cardTypeParameter = parameter("Card type", "Card details");
