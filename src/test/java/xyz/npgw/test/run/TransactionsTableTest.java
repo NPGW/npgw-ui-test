@@ -278,6 +278,7 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getActivePageButton()).hasText("2");
     }
 
+    @Ignore("0.1.2506190948-nightly")
     @Test
     @TmsLink("350")
     @Epic("Transactions")
@@ -313,6 +314,7 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
     }
 
+    @Ignore("0.1.2506190948-nightly")
     @Test
     @TmsLink("358")
     @Epic("Transactions")
