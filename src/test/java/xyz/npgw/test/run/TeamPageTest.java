@@ -62,7 +62,6 @@ public class TeamPageTest extends BaseTest {
         assertThat(systemAdministrationPage.getPage()).hasTitle(Constants.SYSTEM_URL_TITLE);
     }
 
-    @Ignore("no way to add SUPER atm")
     @Test
     @TmsLink("298")
     @Epic("System/Team")
@@ -71,7 +70,7 @@ public class TeamPageTest extends BaseTest {
     public void testAddSystemAdmin() {
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany("super")
+                .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(SYSTEM_ADMIN_EMAIL)
                 .fillPasswordField("Qwerty123!")
