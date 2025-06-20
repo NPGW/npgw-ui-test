@@ -29,6 +29,8 @@ import static org.testng.Assert.assertTrue;
 
 public class DashboardPageTest extends BaseTest {
 
+    private static final String COMPANY_NAME_FOR_TEST_RUN = "CompanyForTestRunOnly Inc.";
+    private static final String BUSINESS_UNIT_FOR_TEST_RUN = "MerchantInCompany";
     private static final String COMPANY_NAME = "%s dashboard company".formatted(RUN_ID);
     private static final String MERCHANT_TITLE = "%s dashboard business unit".formatted(RUN_ID);
     private BusinessUnit businessUnit;
@@ -72,7 +74,6 @@ public class DashboardPageTest extends BaseTest {
                 .hasText("Start date must be before end date.");
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("575")
     @Epic("Dashboard")
@@ -80,9 +81,9 @@ public class DashboardPageTest extends BaseTest {
     @Description("All key chart elements are correctly displayed")
     public void testVisibleChartElementsAreDisplayedCorrectly() {
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getSelectCompany().selectCompany("CompanyForTestRunOnly Inc.")
-                .getSelectBusinessUnit().selectBusinessUnit("MerchantInCompany")
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025");
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
         assertThat(dashboardPage.getYAxisLabels())
@@ -90,7 +91,7 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: status chart legend labels are correctly displayed");
         assertThat(dashboardPage.getXAxisTexts())
-                .hasText(new String[]{"INITIATED", "SUCCESS", "FAILED"});
+                .hasText(new String[]{"INITIATED", "PENDING", "SUCCESS", "FAILED"});
 
         Allure.step("Verify: currency legend labels are correctly displayed");
         assertThat(dashboardPage.getCurrencyLegendLabels())
