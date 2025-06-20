@@ -57,7 +57,6 @@ public class TransactionsTableTest extends BaseTest {
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("311")
     @Epic("Transactions")
@@ -69,7 +68,9 @@ public class TransactionsTableTest extends BaseTest {
 
         List<String> amountValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-04-2025", "01-05-2025")
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setOneWeekBeforeNowRange()
                 .clickAmountButton()
                 .fillAmountFromField(String.valueOf(amountFrom))
                 .fillAmountToField(String.valueOf(amountTo))
@@ -78,7 +79,7 @@ public class TransactionsTableTest extends BaseTest {
 
         Allure.step("Verify: Amount column has values within the specified amount range");
         assertTrue(amountValues.stream()
-                .map(Integer::parseInt)
+                .map(Double::parseDouble)
                 .allMatch(value -> value >= amountFrom && value <= amountTo));
     }
 
