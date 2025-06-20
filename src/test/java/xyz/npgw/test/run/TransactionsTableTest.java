@@ -8,7 +8,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
@@ -70,7 +69,7 @@ public class TransactionsTableTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setOneWeekBeforeNowRange()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .clickAmountButton()
                 .fillAmountFromField(String.valueOf(amountFrom))
                 .fillAmountToField(String.valueOf(amountTo))
@@ -116,25 +115,24 @@ public class TransactionsTableTest extends BaseTest {
         Assert.assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
     }
 
-    // TODO bug - status isn't sent to server
-    @Ignore("multistatus not working atm")
-    @Test(expectedExceptions = AssertionError.class,
-            dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
+    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("679")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
-    public void testFilterByStatus(String firstStatus, String secondStatus) {
+    public void testFilterByStatus(String status) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-06-2025", "06-06-2025");
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         int statusesCount = transactionsPage
-                .getTable().countValues("Status", firstStatus, secondStatus);
+                .getTable().countValues("Status", status);
 
         int filteredTransactionCount = transactionsPage
-                .getSelectStatus().selectTransactionStatuses(firstStatus, secondStatus)
-                .getTable().countValues("Status", firstStatus, secondStatus);
+                .getSelectStatus().select(status)
+                .getTable().countValues("Status", status);
 
         int totalFilteredRows = transactionsPage.getTable().countAllRows();
 
@@ -279,7 +277,7 @@ public class TransactionsTableTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setOneWeekBeforeNowRange()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getTable().clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
@@ -395,11 +393,5 @@ public class TransactionsTableTest extends BaseTest {
 
         Allure.step("Verify mock transaction is displayed");
         assertThat(transactionsPage.getTable().getFirstRowCell("NPGW Reference")).hasText("12345");
-    }
-
-    @AfterClass
-    @Override
-    protected void afterClass() {
-        super.afterClass();
     }
 }
