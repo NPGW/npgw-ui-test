@@ -143,7 +143,6 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(totalFilteredRows, filteredTransactionCount);
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("319")
     @Epic("Transactions")
@@ -152,7 +151,9 @@ public class TransactionsTableTest extends BaseTest {
     public void testFilterTransactionsByCurrency(String currency) {
         List<String> currencyValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "30-05-2025")
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .clickCurrencySelector()
                 .selectCurrency(currency)
                 .getTable().getColumnValuesFromAllPages("Currency", Function.identity());
