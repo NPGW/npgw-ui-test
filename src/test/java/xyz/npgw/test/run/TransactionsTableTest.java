@@ -162,7 +162,6 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
     }
 
-    @Ignore("0.1.2506170300-nightly")
     // TODO bug - transactions isn't present in the table when a currency filter is applied on the last page
     @Test(expectedExceptions = AssertionError.class)
     @TmsLink("682")
@@ -174,11 +173,18 @@ public class TransactionsTableTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("26-05-2025", "31-05-2025");
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
-        int numberWithEuroInTable = transactionsPage.getTable().countValues("Currency", euro);
-        transactionsPage.getTable().goToLastPageIfNeeded();
-        transactionsPage.clickCurrencySelector().selectCurrency(euro);
+        int numberWithEuroInTable = transactionsPage
+                .getTable().countValues("Currency", euro);
+
+        transactionsPage
+                .getTable().goToLastPageIfNeeded();
+
+        transactionsPage
+                .clickCurrencySelector().selectCurrency("USD");
 
         Allure.step("Verify: Transactions are present in the table");
         assertTrue(numberWithEuroInTable > 0 && !transactionsPage.getTable().isTableEmpty());
