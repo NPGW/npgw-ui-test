@@ -268,7 +268,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("130")
     @Epic("Transactions")
@@ -277,7 +276,9 @@ public class TransactionsTableTest extends BaseTest {
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-04-2025", "31-05-2025")
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setOneWeekBeforeNowRange()
                 .getTable().clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
