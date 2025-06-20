@@ -579,7 +579,6 @@ public class TeamPageTest extends BaseTest {
                 "Список пользователей не отсортирован по алфавиту в обратном порядке");
     }
 
-    @Ignore("due to slow creation user is created[UI message] successfully twice")
     @Test
     @TmsLink("612")
     @Epic("System/Team")
