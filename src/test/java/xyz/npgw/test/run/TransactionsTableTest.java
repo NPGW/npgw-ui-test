@@ -237,7 +237,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("106")
     @Epic("Transactions")
@@ -245,7 +244,9 @@ public class TransactionsTableTest extends BaseTest {
     @Description("Displaying the default number of rows on the RowsPerPage selector")
     public void testCountSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink();
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: default row count - 25");
         assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
