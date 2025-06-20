@@ -35,6 +35,8 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsTableTest extends BaseTest {
 
+    private static final String COMPANY_NAME_FOR_TEST_RUN = "CompanyForTestRunOnly Inc.";
+    private static final String BUSINESS_UNIT_FOR_TEST_RUN = "MerchantInCompany";
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final List<String> COLUMNS_HEADERS = List.of(
             "Creation Date",
@@ -182,7 +184,6 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(numberWithEuroInTable > 0 && !transactionsPage.getTable().isTableEmpty());
     }
 
-    @Ignore
     @Test
     @TmsLink("559")
     @Epic("Transactions")
@@ -190,7 +191,9 @@ public class TransactionsTableTest extends BaseTest {
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
     public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink();
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         List<LocalDateTime> actualDates = transactionsPage
                 .getTable().getAllCreationDates();
