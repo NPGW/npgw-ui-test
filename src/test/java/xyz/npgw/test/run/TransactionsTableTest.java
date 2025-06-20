@@ -35,6 +35,8 @@ import static org.testng.Assert.assertTrue;
 
 public class TransactionsTableTest extends BaseTest {
 
+    private static final String COMPANY_NAME_FOR_TEST_RUN = "CompanyForTestRunOnly Inc.";
+    private static final String BUSINESS_UNIT_FOR_TEST_RUN = "MerchantInCompany";
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final List<String> COLUMNS_HEADERS = List.of(
             "Creation Date",
@@ -55,7 +57,6 @@ public class TransactionsTableTest extends BaseTest {
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("311")
     @Epic("Transactions")
@@ -67,7 +68,9 @@ public class TransactionsTableTest extends BaseTest {
 
         List<String> amountValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-04-2025", "01-05-2025")
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setOneWeekBeforeNowRange()
                 .clickAmountButton()
                 .fillAmountFromField(String.valueOf(amountFrom))
                 .fillAmountToField(String.valueOf(amountTo))
@@ -76,7 +79,7 @@ public class TransactionsTableTest extends BaseTest {
 
         Allure.step("Verify: Amount column has values within the specified amount range");
         assertTrue(amountValues.stream()
-                .map(Integer::parseInt)
+                .map(Double::parseDouble)
                 .allMatch(value -> value >= amountFrom && value <= amountTo));
     }
 
@@ -182,7 +185,6 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(numberWithEuroInTable > 0 && !transactionsPage.getTable().isTableEmpty());
     }
 
-    @Ignore
     @Test
     @TmsLink("559")
     @Epic("Transactions")
@@ -190,7 +192,9 @@ public class TransactionsTableTest extends BaseTest {
     @Description("'Creation Date' column sorts ascending by default and descending on click.")
     public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink();
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         List<LocalDateTime> actualDates = transactionsPage
                 .getTable().getAllCreationDates();
@@ -207,7 +211,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore
     @Test
     @TmsLink("659")
     @Epic("Transactions")
@@ -216,6 +219,8 @@ public class TransactionsTableTest extends BaseTest {
     public void testSortByAmount() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().selectRowsPerPageOption("100")
                 .getTable().clickSortIcon("Amount");
 
@@ -233,7 +238,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("106")
     @Epic("Transactions")
@@ -241,13 +245,14 @@ public class TransactionsTableTest extends BaseTest {
     @Description("Displaying the default number of rows on the RowsPerPage selector")
     public void testCountSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink();
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: default row count - 25");
         assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("127")
     @Epic("Transactions")
@@ -256,13 +261,14 @@ public class TransactionsTableTest extends BaseTest {
     public void testCountOptionsSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickRowsPerPageChevron();
 
         Allure.step("Verify: displaying all options when clicking on Selector Rows");
         assertThat(transactionsPage.getTable().getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("130")
     @Epic("Transactions")
@@ -271,7 +277,9 @@ public class TransactionsTableTest extends BaseTest {
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields("01-04-2025", "31-05-2025")
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setOneWeekBeforeNowRange()
                 .getTable().clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
@@ -306,11 +314,15 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
 
         Allure.step("Verify: All column headers are displayed in the transactions table");
-        assertEquals(headersList, COLUMNS_HEADERS);
+        assertTrue(headersList.containsAll(COLUMNS_HEADERS));
 
         Allure.step("Verify: Column headers are not displayed in the transactions table "
                 + "after it's unchecking in the Settings");
-        assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 0);
+        assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 1);
+
+        Allure.step("Verify: Only 'Actions' is displayed in the transactions table "
+                + "after it's unchecking in the Settings");
+        assertEquals(headersListAfterUncheckAllVisibleColumns.get(0), "Actions");
     }
 
     @Test
@@ -331,7 +343,7 @@ public class TransactionsTableTest extends BaseTest {
                     .getTable().getColumnHeadersText();
 
             Allure.step("Verify: Only one column header is NOT displayed in the Transactions. And it's - '{item}'");
-            assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size() - 1)
+            assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size())
                     && !headersListAfterUncheckOne.contains(item));
 
             transactionsPage
@@ -348,8 +360,9 @@ public class TransactionsTableTest extends BaseTest {
                     .clickRefreshDataButton()
                     .getTable().getColumnHeadersText();
 
-            Allure.step("Verify: Only one column header is displayed in the transactions table. And it's - '{item}'");
-            assertTrue((headersListAfterCheckOnlyOne.size() == 1) && headersListAfterCheckOnlyOne.contains(item));
+            Allure.step("Verify: Only two column headers are displayed in the transactions table -"
+                    + " '{item}' column header and 'Actions'");
+            assertTrue((headersListAfterCheckOnlyOne.size() == 2) && headersListAfterCheckOnlyOne.contains(item));
 
             transactionsPage
                     .clickSettingsButton()
