@@ -210,7 +210,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore
     @Test
     @TmsLink("659")
     @Epic("Transactions")
@@ -219,6 +218,8 @@ public class TransactionsTableTest extends BaseTest {
     public void testSortByAmount() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().selectRowsPerPageOption("100")
                 .getTable().clickSortIcon("Amount");
 
