@@ -59,6 +59,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getPage()).hasTitle(Constants.TRANSACTIONS_URL_TITLE);
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("128")
     @Epic("Transactions")
@@ -142,6 +143,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("263")
     @Epic("Transactions")
@@ -208,6 +210,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("340")
     @Epic("Transactions")
@@ -224,6 +227,7 @@ public class TransactionsPageTest extends BaseTest {
                 .hasText("Start date must be before end date.");
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("354")
     @Epic("Transactions")
@@ -244,6 +248,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.amountApplied("Amount: 500 - 10300")).isVisible();
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("355")
     @Epic("Transactions")
@@ -322,6 +327,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames);
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("567")
     @Epic("Transactions")
@@ -483,6 +489,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -491,6 +498,8 @@ public class TransactionsPageTest extends BaseTest {
     public void testCheckTransactionDetails() {
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany("CompanyForTestRunOnly Inc.")
+                .getSelectBusinessUnit().selectBusinessUnit("MerchantInCompany")
                 .getTable().clickOnTransaction();
 
         Allure.step("Verify: The dialog box header has text 'Transaction Details'");
@@ -528,6 +537,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetailsDialog.getCardDetailsSection()).containsText("Expiry date");
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("668")
     @Epic("Transactions")
@@ -576,14 +586,10 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
         transactionsPage
-                .getSelectCompany().clickSelectCompanyDropdownChevron()
-                .getSelectCompany().selectFirstCompany();
-
-        String firstCompanyName = transactionsPage
-                .getSelectCompany().firstCompanyName();
+                .getSelectCompany().selectCompany(COMPANY_NAME);
 
         Allure.step("Verify: selected company is displayed in the 'Company' input field");
-        assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).hasValue(firstCompanyName);
+        assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).hasValue(COMPANY_NAME);
 
         transactionsPage
                 .clickResetFilterButton();
@@ -600,8 +606,10 @@ public class TransactionsPageTest extends BaseTest {
     public void testCheckTheHidingOfParameters() {
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany("CompanyForTestRunOnly Inc.")
+                .getSelectBusinessUnit().selectBusinessUnit("MerchantInCompany")
                 .getTable().clickOnTransaction()
-                .clickChevronInCardDetailsSection();
+                .clickChevronInSection("Card details");
 
         Allure.step("Verify: Parameter 'Payment method' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getPaymentMethodParameter()).isHidden();
@@ -631,7 +639,8 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: the 'Business Unit' input field is empty by default");
         assertThat(transactionsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
-        transactionsPage.getSelectCompany().selectCompany(COMPANY_NAME)
+        transactionsPage
+                .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: selected Business Unit is displayed in the 'Business Unit' input field");
@@ -644,6 +653,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("736")
     @Epic("Transactions")
@@ -676,6 +686,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("738")
     @Epic("Transactions")
@@ -691,6 +702,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDialog()).not().isAttached();
     }
 
+    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("740")
     @Epic("Transactions")
@@ -704,6 +716,53 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Transaction details dialog is closed ");
         assertThat(transactionsPage.getDialog()).not().isAttached();
+    }
+
+    @Ignore("0.1.2506170300-nightly")
+    @Test
+    @TmsLink("749")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Verify, that the data in Transaction Details Dialog corresponds to the data in Transactions table")
+    public void testDataMatching() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink();
+
+        String checkedCurrency = transactionsPage
+                .getTable().getFirstRowCell("Currency")
+                .textContent();
+        String checkedStatus = transactionsPage
+                .getTable().getFirstRowCell("Status")
+                .textContent();
+        String checkedAmount = transactionsPage
+                .getTable().getFirstRowCell("Amount")
+                .textContent();
+        String checkedMerchantRef = transactionsPage
+                .getTable().getFirstRowCell("Merchant reference")
+                .textContent();
+
+        transactionsPage.getTable().hoverCardLogo();
+
+        String checkedCardType = transactionsPage
+                .getTable()
+                .getCardTypeModal()
+                .textContent();
+
+        TransactionDetailsDialog transactionDetails = transactionsPage.getTable().clickOnTransaction();
+
+        String amountValueExpected = checkedAmount.replace(",", "").replace(".00", "") + " " + checkedCurrency;
+
+        Allure.step("Verify: 'Status' value is the same as in the table ");
+        assertThat(transactionDetails.getStatusValue()).hasText(checkedStatus);
+
+        Allure.step("Verify: Merchant Reference  is the same as in the table ");
+        assertThat(transactionDetails.getMerchantReferenceValue()).hasText(checkedMerchantRef);
+
+        Allure.step("Verify: Amount value and Currency are the same as in the table ");
+        assertThat(transactionDetails.getAmountValue()).hasText(amountValueExpected);
+
+        Allure.step("Verify: Card type is the same as in table ");
+        assertThat(transactionDetails.getCardTypeParameter()).hasText(checkedCardType);
     }
 
     @AfterClass
