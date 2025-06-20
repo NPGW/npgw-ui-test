@@ -252,7 +252,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("127")
     @Epic("Transactions")
@@ -261,6 +260,8 @@ public class TransactionsTableTest extends BaseTest {
     public void testCountOptionsSelectorRows() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickRowsPerPageChevron();
 
         Allure.step("Verify: displaying all options when clicking on Selector Rows");
