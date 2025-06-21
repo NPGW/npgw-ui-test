@@ -35,6 +35,7 @@ public class TeamPageTest extends BaseTest {
     private static final String MERCHANT_TITLE = "Business unit 1";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
     private static final String SUCCESS_MESSAGE_USER_UPDATED = "SUCCESSUser was updated successfully";
+    private static final String SUCCESS_MESSAGE_USER_DELETED = "SUCCESSUser was deleted successfully";
     private static final String SYSTEM_ADMIN_EMAIL = "%s.newsuper@email.com".formatted(TestUtils.now());
     private static final String COMPANY_ADMIN_EMAIL = "%s.newadmin@email.com".formatted(TestUtils.now());
     private static final String COMPANY_ANALYST_EMAIL = "%s.newuser@email.com".formatted(TestUtils.now());
@@ -96,7 +97,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeleteButton();
 
         Allure.step("Verify: success alert appears after deleting the system admin");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
+        assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_DELETED);
 
         teamPage
                 .clickRefreshDataButton();
@@ -137,7 +138,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeleteButton();
 
         Allure.step("Verify: success alert appears after deleting the company admin");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
+        assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_DELETED);
 
         teamPage
                 .clickRefreshDataButton();
@@ -146,7 +147,6 @@ public class TeamPageTest extends BaseTest {
         assertFalse(teamPage.getTable().isUserPresentInTable(SYSTEM_ADMIN_EMAIL));
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("330")
     @Epic("System/Team")
@@ -189,11 +189,13 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: new user has status 'Active'");
         assertThat(teamPage.getTable().getCell(COMPANY_ANALYST_EMAIL, "Status")).hasText("Active");
 
+        Allure.step("Verify: 'Business units' column contains correct Merchant title for created Company Analyst");
+        assertThat(teamPage.getTable().getCell(COMPANY_ANALYST_EMAIL, "Business units")).hasText(MERCHANT_TITLE);
+
         Allure.step("Verify: 'Deactivate' icon is shown for the new user");
         assertEquals(teamPage.getTable().getUserActivityIcon(COMPANY_ANALYST_EMAIL).getAttribute("data-icon"), "ban");
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test(dependsOnMethods = "testAddCompanyAnalyst")
     @TmsLink("748")
     @Epic("System/Team")
@@ -207,7 +209,7 @@ public class TeamPageTest extends BaseTest {
                 .clickDeleteButton();
 
         Allure.step("Verify: success alert appears after deleting the company analyst");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
+        assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_DELETED);
 
         teamPage
                 .clickRefreshDataButton();
@@ -420,7 +422,7 @@ public class TeamPageTest extends BaseTest {
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword was reseted successfully");
-//        TODO bug - correct past form of 'reseted' is reset
+//        TODO bug - correct past form of 'reseted' is reset(Done)
 
         teamPage.clickLogOutButton()
                 .fillEmailField(email)
@@ -579,7 +581,6 @@ public class TeamPageTest extends BaseTest {
                 "Список пользователей не отсортирован по алфавиту в обратном порядке");
     }
 
-    @Ignore("due to slow creation user is created[UI message] successfully twice")
     @Test
     @TmsLink("612")
     @Epic("System/Team")
@@ -597,6 +598,7 @@ public class TeamPageTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .clickAddUserButton()
                 .fillEmailField(companyAdmin)
                 .fillPasswordField("Qwerty123!")
