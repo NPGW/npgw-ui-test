@@ -275,15 +275,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return allValues;
     }
 
-    public boolean doesCellExist(String rowHeader, String columnHeader) {
-        try {
-            Locator cell = getCell(rowHeader, columnHeader);
-            return cell.count() > 0 && cell.isVisible();
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
     public interface PageCallback {
         void accept(String pageNumber);
     }
