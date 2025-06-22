@@ -89,7 +89,7 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany("super")
-                .getTable().clickDeleteUserButton(SYSTEM_ADMIN_EMAIL)
+                .getTable().clickDeleteUserIcon(SYSTEM_ADMIN_EMAIL)
                 .clickDeleteButton();
 
         Allure.step("Verify: success alert appears after deleting the system admin");
@@ -130,7 +130,7 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(getCompanyName())
-                .getTable().clickDeleteUserButton(COMPANY_ADMIN_EMAIL)
+                .getTable().clickDeleteUserIcon(COMPANY_ADMIN_EMAIL)
                 .clickDeleteButton();
 
         Allure.step("Verify: success alert appears after deleting the company admin");
@@ -198,7 +198,7 @@ public class TeamPageTest extends BaseTest {
         TeamPage teamPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(getCompanyName())
-                .getTable().clickDeleteUserButton(COMPANY_ANALYST_EMAIL)
+                .getTable().clickDeleteUserIcon(COMPANY_ANALYST_EMAIL)
                 .clickDeleteButton();
 
         Allure.step("Verify: success alert appears after deleting the company analyst");
@@ -331,7 +331,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().clickEditUserButton(email)
+                .getTable().clickEditUserIcon(email)
                 .checkInactiveRadiobutton()
                 .clickSaveChangesButton();
 
@@ -359,14 +359,14 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().clickDeactivateUserButton(email)
+                .getTable().clickDeactivateUserIcon(email)
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
 
         teamPage
-                .clickRefreshDataButton();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
@@ -375,14 +375,14 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserActivityIcon(email)).hasAttribute("data-icon", "check");
 
         teamPage
-                .getTable().clickActivateUserButton(email)
+                .getTable().clickActivateUserIcon(email)
                 .clickActivateButton();
 
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was activated successfully");
 
         teamPage
-                .clickRefreshDataButton();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Active");
@@ -408,7 +408,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickRefreshDataButton()
-                .getTable().clickResetUserPasswordButton(email)
+                .getTable().clickResetUserPasswordIcon(email)
                 .fillPasswordField("NewPassword1!")
                 .clickResetButton();
 
@@ -461,7 +461,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "ban");
 
         teamPage
-                .getTable().clickDeactivateUserButton(analystEmail)
+                .getTable().clickDeactivateUserIcon(analystEmail)
                 .clickDeactivateButton();
 
         Allure.step("Verify: success message is displayed");
@@ -486,7 +486,7 @@ public class TeamPageTest extends BaseTest {
         loginPage
                 .loginAs("%s.admin@email.com".formatted(getUid()), ProjectProperties.getPassword())
                 .clickSystemAdministrationLink()
-                .getTable().clickEditUserButton(analystEmail)
+                .getTable().clickEditUserIcon(analystEmail)
                 .checkActiveRadiobutton()
                 .clickSaveChangesButton()
                 .clickLogOutButton()
