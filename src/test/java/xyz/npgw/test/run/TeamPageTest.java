@@ -27,6 +27,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
 public class TeamPageTest extends BaseTest {
 
@@ -412,7 +413,7 @@ public class TeamPageTest extends BaseTest {
                 .clickResetButton();
 
         Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword was reseted successfully");
+        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword was reset successfully");
 
         teamPage.clickLogOutButton()
                 .fillEmailField(email)
@@ -466,8 +467,8 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
 
-        teamPage
-                .clickRefreshDataButton();
+//        teamPage
+//                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(analystEmail, "Status")).hasText("Inactive");
@@ -540,7 +541,7 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersAlphabetically() {
         List<String> sortedUsersAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(getCompanyName())
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
 
@@ -559,7 +560,7 @@ public class TeamPageTest extends BaseTest {
     public void testCheckSortingListOfUsersReverse() {
         List<String> sortedUsersReverseAlphabetically = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(getCompanyName())
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getTable().clickSortIcon("Username")
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
