@@ -15,11 +15,14 @@ import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 
 public class EditBusinessUnitDialogTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s company for bu edit".formatted(RUN_ID);
     private static final String MERCHANT_TITLE = "%s new bu for edit".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE_EDITED = "%s edited bu".formatted(RUN_ID);
 
     @BeforeClass
     @Override
@@ -71,6 +74,42 @@ public class EditBusinessUnitDialogTest extends BaseTest {
     }
 
     @Test(priority = 1)
+    @TmsLink("794")
+    @Epic("System/Companies and business units")
+    @Feature("Edit Business unit")
+    @Description("Editing a business unit updates its name while preserving the same ID")
+    public void testEditBusinessUnit() {
+        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME);
+
+        String originalBusinessUnitId = companiesAndBusinessUnitsPage
+                .getTable().getCell(MERCHANT_TITLE, "Business unit ID").innerText();
+
+        companiesAndBusinessUnitsPage
+                .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE)
+                .fillBusinessUnitNameField(MERCHANT_TITLE_EDITED)
+                .clickSaveChangesButton();
+
+        Allure.step("Verify: the success alert is displayed with correct message");
+        assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
+                .hasText("SUCCESSBusiness unit was updated successfully");
+
+        String editedBusinessUnitId = companiesAndBusinessUnitsPage
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTable().getCell(MERCHANT_TITLE_EDITED, "Business unit ID")
+                .innerText();
+
+        Allure.step("Verify: the Business Unit ID remains the same after editing name");
+        assertEquals(originalBusinessUnitId, editedBusinessUnitId);
+
+        Allure.step("Verify: the old Business Unit name is no longer present in the table");
+        assertFalse(companiesAndBusinessUnitsPage.getTable()
+                .doesCellExist(MERCHANT_TITLE, "Business unit name"));
+    }
+
+    @Test(priority = 2)
     @TmsLink("722")
     @Epic("System/Companies and business units")
     @Feature("Delete business unit")
@@ -80,7 +119,7 @@ public class EditBusinessUnitDialogTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE)
+                .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE_EDITED)
                 .clickDeleteButton();
 
         Allure.step("Verify: the header contains the expected title text");
