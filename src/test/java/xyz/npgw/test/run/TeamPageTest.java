@@ -179,8 +179,11 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: a success alert appears after user creation");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
-//        teamPage
-//                .clickRefreshDataButton();
+        // TODO add a long wait until getAll user returns the recently created one
+        getPage().waitForTimeout(3000);
+
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(getCompanyName());
