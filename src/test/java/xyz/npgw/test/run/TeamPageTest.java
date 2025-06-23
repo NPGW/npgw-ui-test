@@ -602,7 +602,7 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton();
 
         // TODO replace with adequate wait for getAll users returning the recently created user
-        getPage().waitForTimeout(6000);
+        getPage().waitForTimeout(3000);
 
         AddUserDialog addUserDialog = teamPage
                 .clickAddUserButton()
