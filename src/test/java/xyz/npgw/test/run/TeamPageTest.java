@@ -456,9 +456,11 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
 
-//        teamPage
-//                .getAlert().waitUntilSuccessAlertIsGone()
-//                .clickRefreshDataButton();
+        // TODO add a long wait until getAll user returns the recently created one
+        getPage().waitForTimeout(3000);
+
+        teamPage
+                .clickRefreshDataButton();
 
         Allure.step("Verify: status of the user was changed");
         assertThat(teamPage.getTable().getCell(analystEmail, "User role")).hasText("USER");
