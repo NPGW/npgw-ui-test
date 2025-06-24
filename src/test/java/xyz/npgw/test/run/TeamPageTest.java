@@ -365,9 +365,13 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
                 .checkCompanyAdminRadiobutton()
-                .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
-//                .clickRefreshDataButton()
+                .clickCreateButton();
+
+        // TODO add a long wait until getAll user returns the recently created one
+        getPage().waitForTimeout(3000);
+
+        teamPage
+                .clickRefreshDataButton()
                 .getTable().clickDeactivateUserIcon(email)
                 .clickDeactivateButton();
 
