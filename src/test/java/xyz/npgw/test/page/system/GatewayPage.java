@@ -7,18 +7,21 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
+import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
+import xyz.npgw.test.page.dialog.acquirer.MerchantAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
-        SelectBusinessUnitTrait<GatewayPage> {
+        SelectBusinessUnitTrait<GatewayPage>, SelectAcquirerTrait<GatewayPage> {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
     private final Locator resetFilterButton = locator("[data-icon='xmark']");
+    private final Locator addMerchantAcquirer = locator("[data-icon='circle-plus']");
 
     public GatewayPage(Page page) {
         super(page);
@@ -43,6 +46,13 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     public GatewayPage clickResetFilterButton() {
         resetFilterButton.click();
 //        getPage().waitForTimeout(500);
+
+        return this;
+    }
+
+    @Step("Click 'Add Merchant Acquirer' button")
+    public GatewayPage clickAddMerchantAcquirer() {
+        addMerchantAcquirer.click();
 
         return this;
     }

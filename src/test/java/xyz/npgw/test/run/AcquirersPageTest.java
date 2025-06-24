@@ -7,6 +7,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import lombok.Getter;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -39,7 +40,7 @@ public class AcquirersPageTest extends BaseTest {
             "Status",
             "Actions");
 
-    private static final Acquirer ACQUIRER = new Acquirer(
+    protected static final Acquirer ACQUIRER = new Acquirer(
             "NGenius",
             "default",
             new SystemConfig(),

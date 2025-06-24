@@ -1,6 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -11,23 +12,33 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.SystemConfig;
+import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dialog.acquirer.MerchantAcquirerDialog;
+import xyz.npgw.test.page.system.AcquirersPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
 import java.util.List;
 import java.util.Random;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static xyz.npgw.test.run.AcquirersPageTest.ACQUIRER;
 
 public class GatewayPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
-    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"};
+    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"
+            , "MerchantAcquirer"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
     Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
     String merchantTitle = "second";
+
+    private static final String ACTIVE_ACQUIRER_NAME = "%s active acquirer".formatted(RUN_ID);
+    private static final String INACTIVE_ACQUIRER_NAME = "%s inactive acquirer".formatted(RUN_ID);
 
     @BeforeClass
     @Override
@@ -35,6 +46,7 @@ public class GatewayPageTest extends BaseTest {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
+        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
     }
 
     @Test
@@ -198,11 +210,32 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
+    @Test
+    @TmsLink("")
+    @Epic("System/Gateway")
+    @Feature("Currency")
+    @Description("Check possibility to select an appropriate acquirer to merchant")
+    public void testSelectAcquirer() {
+
+        new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
+                .clickAddMerchantAcquirer()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName());
+
+        MerchantAcquirerDialog dialog = new MerchantAcquirerDialog(getPage());
+
+        assertThat(dialog.getAcquirerNameField()).hasValue(ACQUIRER.acquirerName());
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.acquirerName());
         super.afterClass();
     }
 }
