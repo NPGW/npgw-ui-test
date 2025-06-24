@@ -4,6 +4,8 @@ import com.microsoft.playwright.APIRequestContext;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.Info;
+import xyz.npgw.test.common.entity.MerchantAcquirer;
 import xyz.npgw.test.common.entity.User;
 
 import java.net.URLEncoder;
@@ -29,6 +31,11 @@ public final class TestUtils {
         return zonedDateTime.isBefore(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
     }
 
+    public static ZonedDateTime lastBuildDate(APIRequestContext request) {
+        String lastBuildDate = Info.get(request).app().version().replaceAll("^.*\\.|-.*$", "");
+        return ZonedDateTime.parse(lastBuildDate, DateTimeFormatter.ofPattern("yyMMddHHmm").withZone(ZoneOffset.UTC));
+    }
+
     public static BusinessUnit createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
         return BusinessUnit.create(request, companyName, merchantTitle);
     }
@@ -49,7 +56,11 @@ public final class TestUtils {
             Arrays.stream(User.getAll(request, companyName))
                     .forEach(user -> User.delete(request, user.email()));
             Arrays.stream(BusinessUnit.getAll(request, companyName))
-                    .forEach(businessUnit -> BusinessUnit.delete(request, companyName, businessUnit));
+                    .forEach(businessUnit -> {
+                        while (BusinessUnit.delete(request, companyName, businessUnit) == 422) {
+                            MerchantAcquirer.delete(request, businessUnit.merchantId());
+                        }
+                    });
         }
     }
 
