@@ -31,8 +31,8 @@ import static xyz.npgw.test.run.AcquirersPageTest.ACQUIRER;
 public class GatewayPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
-    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"
-            , "MerchantAcquirer"};
+    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
+            "MerchantAcquirer"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
     Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
     String merchantTitle = "second";
