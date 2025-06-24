@@ -40,7 +40,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     protected abstract CurrentPageT getCurrentPage();
 
     public Locator getColumnHeader(String name) {
-        return columnHeader.getByText(name);
+        return columnHeader.getByText(name, new Locator.GetByTextOptions().setExact(true));
     }
 
     public List<String> getColumnValues(String name) {
@@ -52,6 +52,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public Locator getRow(String rowHeader) {
+        locator("tr[data-first='true']").waitFor();
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         do {
@@ -88,7 +89,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     @Step("Click sort icon in '{columnName}' column")
     public CurrentPageT clickSortIcon(String columnName) {
         getColumnHeader(columnName).locator("svg").click();
-        getPage().waitForTimeout(500);
+        getByLabelExact("transactions table").locator("tr[data-last='true']").waitFor();
 
         return getCurrentPage();
     }
@@ -255,10 +256,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return paginationItems.first().isHidden();
     }
 
-    public interface PageCallback {
-        void accept(String pageNumber);
-    }
-
     public <T> List<T> getColumnValuesFromAllPages(String columnName, Function<String, T> parser) {
         if (hasNoPagination()) {
             return Collections.emptyList();
@@ -277,5 +274,9 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         } while (goToNextPage());
 
         return allValues;
+    }
+
+    public interface PageCallback {
+        void accept(String pageNumber);
     }
 }

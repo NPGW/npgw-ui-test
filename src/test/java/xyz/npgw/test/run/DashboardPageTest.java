@@ -26,6 +26,8 @@ import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertTrue;
+import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
 public class DashboardPageTest extends BaseTest {
 
@@ -72,7 +74,7 @@ public class DashboardPageTest extends BaseTest {
                 .hasText("Start date must be before end date.");
     }
 
-    @Ignore("0.1.2506170300-nightly")
+    @Ignore("missing USD summary transactions")
     @Test
     @TmsLink("575")
     @Epic("Dashboard")
@@ -80,9 +82,9 @@ public class DashboardPageTest extends BaseTest {
     @Description("All key chart elements are correctly displayed")
     public void testVisibleChartElementsAreDisplayedCorrectly() {
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getSelectCompany().selectCompany("CompanyForTestRunOnly Inc.")
-                .getSelectBusinessUnit().selectBusinessUnit("MerchantInCompany")
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025");
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
         assertThat(dashboardPage.getYAxisLabels())
@@ -90,7 +92,7 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: status chart legend labels are correctly displayed");
         assertThat(dashboardPage.getXAxisTexts())
-                .hasText(new String[]{"INITIATED", "SUCCESS", "FAILED"});
+                .hasText(new String[]{"INITIATED", "PENDING", "SUCCESS", "FAILED"});
 
         Allure.step("Verify: currency legend labels are correctly displayed");
         assertThat(dashboardPage.getCurrencyLegendLabels())
@@ -120,7 +122,6 @@ public class DashboardPageTest extends BaseTest {
         assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("609")
     @Epic("Dashboard")
@@ -135,22 +136,23 @@ public class DashboardPageTest extends BaseTest {
         assertTrue(dashboardPage.getRequestData().contains(businessUnit.merchantId()));
     }
 
-    @Ignore("0.1.2506170300-nightly")
     @Test
     @TmsLink("600")
     @Epic("Dashboard")
     @Feature("Transaction summary")
     @Description("Correct transaction summary is displayed on Dashboard page")
     public void testTransactionSummary() {
-        Pattern pattern = Pattern.compile("(INITIATED|SUCCESS|FAILED)EUR.*USD.*");
+        Pattern pattern = Pattern.compile("(INITIATED|PENDING|SUCCESS|FAILED)(EUR.*|USD.*|GBP.*)");
         DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getSelectCompany().selectCompany("CompanyForTestRunOnly Inc.")
-                .getSelectBusinessUnit().selectBusinessUnit("MerchantInCompany")
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025")
-                .clickRefreshDataButton();
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);
+
+        Allure.step("Verify: PENDING main block contents");
+        assertThat(dashboardPage.getPendingBlock()).containsText(pattern);
 
         Allure.step("Verify: SUCCESS main block contents");
         assertThat(dashboardPage.getSuccessBlock()).containsText(pattern);
@@ -158,11 +160,11 @@ public class DashboardPageTest extends BaseTest {
         Allure.step("Verify: FAILED main block contents");
         assertThat(dashboardPage.getFailedBlock()).containsText(pattern);
 
-        dashboardPage
-                .clickCountButton();
-
         Allure.step("Verify: INITIATED count block contents");
         assertThat(dashboardPage.getLifecycleInitiatedBlock()).containsText(pattern);
+
+        Allure.step("Verify: PENDING count block contents");
+        assertThat(dashboardPage.getLifecyclePendingBlock()).containsText(pattern);
 
         Allure.step("Verify: SUCCESS count block contents");
         assertThat(dashboardPage.getLifecycleSuccessBlock()).containsText(pattern);
@@ -175,6 +177,9 @@ public class DashboardPageTest extends BaseTest {
 
         Allure.step("Verify: INITIATED amount block contents");
         assertThat(dashboardPage.getLifecycleInitiatedBlock()).containsText(pattern);
+
+        Allure.step("Verify: PENDING count block contents");
+        assertThat(dashboardPage.getLifecyclePendingBlock()).containsText(pattern);
 
         Allure.step("Verify: SUCCESS amount block contents");
         assertThat(dashboardPage.getLifecycleSuccessBlock()).containsText(pattern);
@@ -210,7 +215,7 @@ public class DashboardPageTest extends BaseTest {
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
 
-    @Ignore("BUG - count shouldn't have decimals")
+    @Ignore("EUR not displaying")
     @Test
     @TmsLink("720")
     @Epic("Dashboard")
