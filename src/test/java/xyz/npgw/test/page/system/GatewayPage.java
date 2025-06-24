@@ -10,7 +10,6 @@ import lombok.Getter;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
-import xyz.npgw.test.page.dialog.acquirer.MerchantAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,

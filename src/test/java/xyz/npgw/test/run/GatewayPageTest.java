@@ -1,7 +1,6 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -12,14 +11,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.common.entity.SystemConfig;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.dialog.acquirer.MerchantAcquirerDialog;
-import xyz.npgw.test.page.system.AcquirersPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
 import java.util.List;
@@ -36,9 +31,6 @@ public class GatewayPageTest extends BaseTest {
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
     Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
     String merchantTitle = "second";
-
-    private static final String ACTIVE_ACQUIRER_NAME = "%s active acquirer".formatted(RUN_ID);
-    private static final String INACTIVE_ACQUIRER_NAME = "%s inactive acquirer".formatted(RUN_ID);
 
     @BeforeClass
     @Override
