@@ -8,16 +8,16 @@ import xyz.npgw.test.page.system.AcquirersPage;
 
 public class EditAcquirerDialog extends AcquirerDialog<EditAcquirerDialog> {
 
-    private final Locator createButton = getByRole(AriaRole.BUTTON, "Save changes");
+    private final Locator saveChangesButton = getByRole(AriaRole.BUTTON, "Save changes");
 
     public EditAcquirerDialog(Page page) {
         super(page);
     }
 
-    @Step("Click on the 'Create' button")
+    @Step("Click on the 'Save changes' button")
     public AcquirersPage clickSaveChangesButton() {
-        getPage().waitForCondition(createButton::isEnabled);
-        createButton.click();
+        getPage().waitForCondition(saveChangesButton::isEnabled);
+        saveChangesButton.click();
 
         return new AcquirersPage(getPage());
     }
