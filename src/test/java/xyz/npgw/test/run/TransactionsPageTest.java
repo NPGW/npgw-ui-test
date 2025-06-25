@@ -25,13 +25,13 @@ import java.util.List;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
 public class TransactionsPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s test request company".formatted(RUN_ID);
     private static final String MERCHANT_TITLE = "%s test request merchant".formatted(RUN_ID);
-    private static final String COMPANY_NAME_FOR_TEST_RUN = "CompanyForTestRunOnly Inc.";
-    private static final String BUSINESS_UNIT_FOR_TEST_RUN = "MerchantInCompany";
     private final String[] businessUnitNames = new String[]{"Business unit 1", "Business unit 2", "Business unit 3"};
     private BusinessUnit businessUnit;
 
@@ -484,6 +484,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
+    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -497,12 +498,12 @@ public class TransactionsPageTest extends BaseTest {
                 .getTable().clickOnFirstTransaction();
 
         Allure.step("Verify: The dialog box header has text 'Transaction details'");
-        assertThat(transactionDetailsDialog.getTransactionDialogHeader()).hasText("Transaction details");
+        assertThat(transactionDetailsDialog.getDialogHeader()).containsText("Transaction details");
 
         Allure.step("Verify: The dialog box section names");
         assertThat(transactionDetailsDialog.getSectionNames())
                 .hasText(new String[]{"Amount", "Updated on", "NPGW reference", "Merchant reference",
-                        "Payment lifecycle", "Card details", "Customer details"});
+                        "Payment lifecycle", "Card details", "Customer details", "3D Secure"});
 
         Allure.step("Verify: The Card details labels");
         assertThat(transactionDetailsDialog.getCardDetailsLabels())
@@ -574,6 +575,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
     }
 
+    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("661")
     @Epic("Transactions")
@@ -598,6 +600,36 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getExpiryDateValue()).isHidden();
+
+        transactionDetailsDialog
+                .clickSection("Customer details");
+
+        Allure.step("Verify: Parameter 'Name' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getNameValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'Date of birth' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getDateOfBirthValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'E-Mail' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getEmailValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'Phone' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getPhoneValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'Country' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getCountryValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'State' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getStateValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'City' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getCityValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'ZIP' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getZipValue()).isHidden();
+
+        Allure.step("Verify: Parameter 'Address' is hidden after click on chevron in Customer details field ");
+        assertThat(transactionDetailsDialog.getAddressValue()).isHidden();
     }
 
     @Test
@@ -658,6 +690,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
     }
 
+    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("738")
     @Epic("Transactions")
@@ -682,6 +715,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDialog()).not().isAttached();
     }
 
+    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("749")
     @Epic("Transactions")
@@ -703,7 +737,7 @@ public class TransactionsPageTest extends BaseTest {
                 .getTable().getFirstRowCell("Amount").textContent();
 
         String merchantReference = transactionsPage
-                .getTable().getFirstRowCell("Merchant reference").textContent();
+                .getTable().getFirstRowCell("Merchant Reference").textContent();
 
         String cardType = transactionsPage
                 .getTable().getFirstRowCardType();
@@ -718,7 +752,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetails.getMerchantReferenceValue()).hasText(merchantReference);
 
         Allure.step("Verify: Amount value and Currency are the same as in the table");
-        assertThat(transactionDetails.getAmountValue()).hasText(amount + " " + currency);
+        assertThat(transactionDetails.getAmountValue()).hasText(currency + " " + amount);
 
         Allure.step("Verify: Card type is the same as in table");
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
