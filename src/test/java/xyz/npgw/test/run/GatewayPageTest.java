@@ -14,7 +14,7 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.dialog.acquirer.MerchantAcquirerDialog;
+import xyz.npgw.test.page.dialog.acquirer.AddMerchantAcquirerDialog;
 import xyz.npgw.test.page.system.GatewayPage;
 
 import java.util.List;
@@ -203,7 +203,7 @@ public class GatewayPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("806")
     @Epic("System/Gateway")
     @Feature("Currency")
     @Description("Check possibility to select an appropriate acquirer to merchant")
@@ -217,7 +217,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddMerchantAcquirer()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName());
 
-        MerchantAcquirerDialog dialog = new MerchantAcquirerDialog(getPage());
+        AddMerchantAcquirerDialog dialog = new AddMerchantAcquirerDialog(getPage());
 
         assertThat(dialog.getAcquirerNameField()).hasValue(ACQUIRER.acquirerName());
     }
