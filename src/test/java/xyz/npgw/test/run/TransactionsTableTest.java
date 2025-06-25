@@ -56,6 +56,7 @@ public class TransactionsTableTest extends BaseTest {
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
     }
 
+    @Ignore("enable after BR-227 being done")
     @Test
     @TmsLink("311")
     @Epic("Transactions")
@@ -386,7 +387,7 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Filter")
     @Description("Filter transactions by business unit")
     public void testFilterTransactionsByBusinessUnit() {
-        getPage().route("**/history*", route -> {
+        getPage().route("**/status*", route -> {
             if (route.request().postData().contains(businessUnit.merchantId())) {
                 List<Transaction> transactionList = new ArrayList<>();
                 transactionList.add(new Transaction("2025-06-02T04:18:09.047146423Z",
