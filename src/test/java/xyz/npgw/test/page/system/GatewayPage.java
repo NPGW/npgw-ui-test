@@ -51,7 +51,7 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     }
 
     @Step("Click 'Add merchant acquirer button'")
-    public AddMerchantAcquirerDialog clickAddMerchantAcquirerButton(){
+    public AddMerchantAcquirerDialog clickAddMerchantAcquirerButton() {
         addMerchantAcquirerButton.click();
 
         return new AddMerchantAcquirerDialog(getPage());

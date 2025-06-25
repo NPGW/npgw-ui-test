@@ -8,5 +8,4 @@ public interface GatewayTableTrait extends BaseTrait {
     default GatewayTableComponent getTable() {
         return new GatewayTableComponent(getPage());
     }
-
 }

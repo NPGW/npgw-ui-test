@@ -236,8 +236,8 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
-        List<String > actualNames = gatewayPage.getTable().getColumnValues("Business unit");
-        List<String > actualStatuses = gatewayPage.getTable().getColumnValues("Status");
+        List<String> actualNames = gatewayPage.getTable().getColumnValues("Business unit");
+        List<String> actualStatuses = gatewayPage.getTable().getColumnValues("Status");
 
         boolean foundActive = IntStream.range(0, actualNames.size())
                 .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
