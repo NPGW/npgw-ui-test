@@ -7,13 +7,15 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
+import xyz.npgw.test.page.common.trait.AlertTrait;
+import xyz.npgw.test.page.common.trait.GatewayTableTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.merchant.AddMerchantAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
-        SelectBusinessUnitTrait<GatewayPage> {
+        SelectBusinessUnitTrait<GatewayPage>, AlertTrait<GatewayPage>, GatewayTableTrait {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
     @Getter(AccessLevel.NONE)

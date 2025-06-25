@@ -8,24 +8,38 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import net.datafaker.Faker;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class GatewayPageTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
+    private static final Acquirer ACQUIRER = new Acquirer(
+            "display name",
+            "acquirer mid",
+            "NGenius",
+            "default",
+            new Currency[]{Currency.USD, Currency.EUR},
+            new SystemConfig(),
+            true,
+            "%s acquirer 11.002.01".formatted(RUN_ID),
+            "mcc");
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
     Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
@@ -37,6 +51,7 @@ public class GatewayPageTest extends BaseTest {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
+        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
     }
 
     @Test
@@ -201,36 +216,53 @@ public class GatewayPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("763")
     @Epic("System/Gateway")
     @Feature("Merchant acquirer")
-    @Description("Verify the merchant acquirer can be added")
-    public void testAddMerchantAcquirer() {
-//        TestUtils.createAcquirer(getApiRequestContext(), new Acquirer("acquirer_test122"));
-
+    @Description("Verify the active and inactive merchant acquirers can be added")
+    public void testAddActiveMerchantAcquirer() throws InterruptedException {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit("Merchant 1 for C112172")
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddMerchantAcquirerButton()
-                .selectAcquirerFromDropdown(COMPANY_NAME)
-                .clickCreateButton();
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .clickAddMerchantAcquirerButton()
+                .selectInactiveStatus()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
-//        TestUtils.deleteAcquirer(getApiRequestContext(), "acquirer_test122");
+        List<String > actualNames = gatewayPage.getTable().getColumnValues("Business unit");
+        List<String > actualStatuses = gatewayPage.getTable().getColumnValues("Status");
 
+        boolean foundActive = IntStream.range(0, actualNames.size())
+                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
+                        && actualStatuses.get(i).equals("Active"));
+
+        boolean foundInactive = IntStream.range(0, actualNames.size())
+                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
+                        && actualStatuses.get(i).equals("Inactive"));
+
+        Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
+        Assert.assertTrue(foundActive,
+                "New Merchant acquirer 'Merchant 1 for C112172' with status 'Active' was not found.");
+
+        Allure.step("Verify that new Merchant acquirer is displayed and has Inactive status");
+        Assert.assertTrue(foundInactive,
+                "New Merchant acquirer 'Merchant 1 for C112172' with status 'Inactive' was not found.");
     }
-
-
-
-
 
     @AfterClass
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.acquirerName());
         super.afterClass();
     }
 }
