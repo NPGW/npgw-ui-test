@@ -14,7 +14,6 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.dialog.acquirer.AddMerchantAcquirerDialog;
 import xyz.npgw.test.page.system.GatewayPage;
 
 import java.util.List;
@@ -208,18 +207,23 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Currency")
     @Description("Check possibility to select an appropriate acquirer to merchant")
     public void testSelectAcquirer() {
-
-        new DashboardPage(getPage())
+        GatewayPage page = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
                 .clickAddMerchantAcquirer()
-                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName());
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickOnCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
-        AddMerchantAcquirerDialog dialog = new AddMerchantAcquirerDialog(getPage());
-
-        assertThat(dialog.getAcquirerNameField()).hasValue(ACQUIRER.acquirerName());
+        Allure.step("Verify the result of adding Acquirer within Gateway page table");
+        assertThat(page.getMerchantValue()).hasText(expectedBusinessUnitsList[2]);
+        assertThat(page.getAcquirerValue()).hasText(ACQUIRER.acquirerCode());
+        assertThat(page.getAcquirerConfigValue()).hasText(ACQUIRER.acquirerConfig());
+        assertThat(page.getAcquirerStatusValue()).hasText("Active");
+        assertThat(page.getAcquirerCurrencyValue()).hasText("USD, EUR");
+        assertThat(page.getAcquirerPriorityValue()).hasText("0");
     }
 
     @AfterClass

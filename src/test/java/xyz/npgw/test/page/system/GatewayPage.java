@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
+import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
@@ -14,9 +15,15 @@ import xyz.npgw.test.page.dialog.acquirer.AddMerchantAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
-        SelectBusinessUnitTrait<GatewayPage>, SelectAcquirerTrait<GatewayPage> {
+        SelectBusinessUnitTrait<GatewayPage>, SelectAcquirerTrait<GatewayPage>, AlertTrait<GatewayPage> {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
+    private final Locator merchantValue = locator("[data-key='00merchantId']");
+    private final Locator acquirerValue = locator("[data-key='00acquirerCode']");
+    private final Locator acquirerConfigValue = locator("[data-key='00acquirerConfig']");
+    private final Locator acquirerStatusValue = locator("[data-key='00isActive']");
+    private final Locator acquirerPriorityValue = locator("[data-key='00priority']");
+    private final Locator acquirerCurrencyValue = locator("[data-key='00currencyList']");
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
