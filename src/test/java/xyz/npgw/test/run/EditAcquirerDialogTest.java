@@ -88,7 +88,7 @@ public class EditAcquirerDialogTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("239")
+    @TmsLink("")
     @Epic("System/Acquirers")
     @Feature("Edit acquirers")
     @Description("Edit Acquirer and Verify Updated Data in the Table")
