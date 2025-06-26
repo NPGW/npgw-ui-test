@@ -38,7 +38,7 @@ public class TransactionsTableTest extends BaseTest {
 
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final List<String> COLUMNS_HEADERS = List.of(
-            "Creation Date",
+            "Creation Date (GMT)",
             "Business unit ID",
             "NPGW Reference",
             "Merchant Reference",

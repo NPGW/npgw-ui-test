@@ -504,7 +504,7 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: The dialog box section names");
         assertThat(transactionDetailsDialog.getSectionNames())
-                .hasText(new String[]{"Amount", "Updated on", "NPGW reference", "Merchant reference",
+                .hasText(new String[]{"Amount", "Updated on (GMT)", "NPGW reference", "Merchant reference",
                         "Payment lifecycle", "Card details", "Customer details", "3D Secure"});
 
         Allure.step("Verify: The Card details labels");
