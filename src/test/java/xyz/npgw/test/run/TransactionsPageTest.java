@@ -359,9 +359,9 @@ public class TransactionsPageTest extends BaseTest {
     public void testRequestToServer() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields("01-05-2025", "07-05-2025")
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "07-05-2025")
                 .clickCurrencySelector()
                 .selectCurrency("USD")
                 .selectCardType("VISA")
