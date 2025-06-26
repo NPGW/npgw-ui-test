@@ -1,6 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.google.gson.Gson;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Route;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
@@ -30,6 +31,7 @@ import java.util.function.Function;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
@@ -403,5 +405,43 @@ public class TransactionsTableTest extends BaseTest {
 
         Allure.step("Verify mock transaction is displayed");
         assertThat(transactionsPage.getTable().getFirstRowCell("NPGW Reference")).hasText("12345");
+    }
+
+    @Test
+    public void testRefund() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        List<String> statuses = transactionsPage.getTable().getColumnValuesFromAllPages("Status", Function.identity());
+        List<Locator> actions = transactionsPage.getTable().getAllCellsFromAllPages("Actions");
+        System.out.println(statuses);
+        System.out.println(actions);
+
+
+        assertEquals(statuses.size(), actions.size(), "Mismatch between statuses and actions count");
+        for (int i = 0; i < statuses.size(); i++) {
+            String status = statuses.get(i).trim();
+            Locator cell = actions.get(i);
+            Locator refundButton = cell.locator("[data-testid='RefundTransactionButton']");
+            boolean refundPresent = refundButton.count() > 0;
+            boolean refundVisible = refundPresent && refundButton.first().isVisible();
+
+            System.out.println("Row #" + i);
+            System.out.println("Status         : " + status);
+            System.out.println("Refund present : " + refundPresent);
+            System.out.println("Refund visible : " + refundVisible);
+
+            if ("Success".equalsIgnoreCase(status)) {
+                System.out.println("→ Expecting Refund button to be visible");
+                assertTrue(refundVisible, "Refund button should be visible for 'Success' at row " + i);
+            } else {
+                System.out.println("→ Expecting NO Refund button");
+                assertFalse(refundVisible, "Refund button should NOT be visible for '" + status + "' at row " + i);
+            }
+
+            System.out.println("--------------------------------------------------");
+        }
     }
 }

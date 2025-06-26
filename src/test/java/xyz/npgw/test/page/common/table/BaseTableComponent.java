@@ -274,6 +274,22 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return allValues;
     }
 
+    public List<Locator> getAllCellsFromAllPages(String columnName) {
+        if (hasNoPagination()) {
+            return Collections.emptyList();
+        }
+
+        selectRowsPerPageOption("100");
+        goToFirstPageIfNeeded();
+
+        List<Locator> allCells = new ArrayList<>();
+        do {
+            allCells.addAll(getColumnCells(columnName));
+        } while (goToNextPage());
+
+        return allCells;
+    }
+
     public interface PageCallback {
         void accept(String pageNumber);
     }
