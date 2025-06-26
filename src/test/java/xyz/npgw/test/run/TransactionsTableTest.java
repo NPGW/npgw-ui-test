@@ -68,9 +68,9 @@ public class TransactionsTableTest extends BaseTest {
 
         List<String> amountValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .clickAmountButton()
                 .fillAmountFromField(String.valueOf(amountFrom))
                 .fillAmountToField(String.valueOf(amountTo))
@@ -130,9 +130,9 @@ public class TransactionsTableTest extends BaseTest {
     public void testFilterByStatus(String status) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
@@ -161,8 +161,10 @@ public class TransactionsTableTest extends BaseTest {
     public void testFilterTransactionsByCurrency(String currency) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .clickCurrencySelector()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: transaction page table has data");
@@ -187,9 +189,9 @@ public class TransactionsTableTest extends BaseTest {
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: Transactions are present in the table");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
