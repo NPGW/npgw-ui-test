@@ -38,7 +38,7 @@ public class TransactionsTableTest extends BaseTest {
 
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final List<String> COLUMNS_HEADERS = List.of(
-            "Creation Date",
+            "Creation Date (GMT)",
             "Business unit ID",
             "NPGW Reference",
             "Merchant Reference",
@@ -222,7 +222,7 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(actualDates, actualDates.stream().sorted().toList());
 
         transactionsPage
-                .getTable().clickSortIcon("Creation Date");
+                .getTable().clickSortIcon("Creation Date (GMT)");
 
         Allure.step(
                 "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
