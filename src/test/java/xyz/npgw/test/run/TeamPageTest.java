@@ -569,7 +569,6 @@ public class TeamPageTest extends BaseTest {
                 "Список пользователей не отсортирован по алфавиту в обратном порядке");
     }
 
-    @Ignore
     @Test
     @TmsLink("612")
     @Epic("System/Team")
