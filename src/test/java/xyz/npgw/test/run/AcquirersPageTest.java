@@ -53,7 +53,7 @@ public class AcquirersPageTest extends BaseTest {
             new SystemConfig(),
             true,
             "%s acquirer 11.002.01".formatted(RUN_ID),
-            "mcc");
+            "4321");
 
     private static final Acquirer CHANGE_STATE_ACQUIRER = new Acquirer(
             "display name",
@@ -64,7 +64,7 @@ public class AcquirersPageTest extends BaseTest {
             new SystemConfig(),
             true,
             "%s acquirer activate and deactivate".formatted(RUN_ID),
-            "mcc");
+            "1234");
 
     private static final String ACTIVE_ACQUIRER_NAME = "%s active acquirer".formatted(RUN_ID);
     private static final String INACTIVE_ACQUIRER_NAME = "%s inactive acquirer".formatted(RUN_ID);
