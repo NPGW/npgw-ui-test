@@ -95,7 +95,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: transaction page table has data");
-        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).not().isVisible();
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
         List<String> cardTypeList = transactionsPage.selectCardType(cardType)
                 .getTable().getColumnValuesFromAllPages("Card type", Function.identity());
@@ -135,7 +135,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: transaction page table has data");
-        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).not().isVisible();
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
         int statusesCount = transactionsPage
                 .getTable().countValues("Status", status);
@@ -166,7 +166,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: transaction page table has data");
-        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).not().isVisible();
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
         List<String> currencyValues = transactionsPage.clickCurrencySelector()
                 .selectCurrency(currency)

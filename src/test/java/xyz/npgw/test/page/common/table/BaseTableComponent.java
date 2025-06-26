@@ -34,7 +34,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     private final Locator paginationItems = getPage().getByLabel("pagination item");
     private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
     private final Locator previousPageButton = getByRole(AriaRole.BUTTON, "previous page button");
-    private final Locator noRowsToDisplayMessage = getPage().getByText("No rows to display.");
+    private final Locator noRowsToDisplayMessage = getByTextExact("No rows to display.");
 
     public BaseTableComponent(Page page) {
         super(page);
