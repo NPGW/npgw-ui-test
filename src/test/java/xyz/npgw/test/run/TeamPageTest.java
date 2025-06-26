@@ -233,7 +233,6 @@ public class TeamPageTest extends BaseTest {
                 .setAllowedBusinessUnit(MERCHANT_TITLE)
                 .clickCreateButton()
                 .waitForUser(getApiRequestContext(), email, getCompanyName())
-                .clickRefreshDataButton()
                 .clickEditUserButton(email);
 
         Allure.step("Verify: 'Edit user' header is displayed");

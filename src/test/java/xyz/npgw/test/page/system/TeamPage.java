@@ -68,7 +68,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements
         while (Arrays.stream(User.getAll(request, companyName)).noneMatch(user -> user.email().equals(email))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
-            if (timeout < 0) {
+            if (timeout <= 0) {
                 throw new TimeoutError("Timeout %dms exceeded waiting for user %s presence".formatted(timeout, email));
             }
         }
