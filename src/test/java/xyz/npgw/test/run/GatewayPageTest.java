@@ -28,8 +28,7 @@ public class GatewayPageTest extends BaseTest {
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
             "MerchantAcquirer"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
-    Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
-    String merchantTitle = "second";
+    private final Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
 
     @BeforeClass
     @Override
@@ -124,6 +123,8 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Currency")
     @Description("Verify that if company is selected all it's business units are presented in the list")
     public void testCompaniesBusinessUnitsPresence() {
+        String merchantTitle = "second";
+
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
