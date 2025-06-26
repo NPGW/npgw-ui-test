@@ -33,11 +33,11 @@ import static org.testng.Assert.assertTrue;
 public class AcquirersPageTest extends BaseTest {
 
     private static final List<String> COLUMNS_HEADERS = List.of(
-            "Acquirer name",
-            "Acquirer display name",
+            "Entity name",
+            "Display name",
             "Acquirer code",
-            "Acquirer MID",
-            "Acquirer MID MCC",
+            "MID",
+            "MCC",
             "Currencies",
             "Acquirer config",
             "System config",
@@ -116,9 +116,9 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab();
 
         Allure.step("Verify: Table column header is visible");
-        assertThat(acquirersPage.getTable().getColumnHeader("Acquirer name")).isVisible();
+        assertThat(acquirersPage.getTable().getColumnHeader("Entity name")).isVisible();
 
-        List<Locator> acquirersList = acquirersPage.getTable().getColumnCells("Acquirer name");
+        List<Locator> acquirersList = acquirersPage.getTable().getColumnCells("Entity name");
 
 //        TODO refactor this
         Allure.step("Verify: Acquirers list is visible and contains elements");

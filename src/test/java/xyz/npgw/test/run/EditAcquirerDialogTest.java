@@ -35,11 +35,11 @@ public class EditAcquirerDialogTest extends BaseTest {
     @Description("Verifies that all form field placeholders are set correctly")
     public void testVerifyPlaceholdersEditForm() {
         List<String> expectedPlaceholders = List.of(
-                "Enter acquirer name",
+                "Enter entity name",
                 "Enter acquirer code",
-                "Enter acquirer display name",
-                "Enter acquirer MID",
-                "Enter acquirer MID MCC",
+                "Enter display name",
+                "Enter MID",
+                "Enter MCC",
                 "Enter challenge URL",
                 "Enter fingerprint URL",
                 "Enter resource URL",
