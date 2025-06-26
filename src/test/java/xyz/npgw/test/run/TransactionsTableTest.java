@@ -89,9 +89,15 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Filter")
     @Description("Filtering transactions by Card type displays only matching entries in the table.")
     public void testFilterByCardType(String cardType) {
-        List<String> cardTypeList = new DashboardPage(getPage())
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .selectCardType(cardType)
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        Allure.step("Verify: transaction page table has data");
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).not().isVisible();
+
+        List<String> cardTypeList = transactionsPage.selectCardType(cardType)
                 .getTable().getColumnValuesFromAllPages("Card type", Function.identity());
 
         Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
@@ -128,6 +134,9 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
+        Allure.step("Verify: transaction page table has data");
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).not().isVisible();
+
         int statusesCount = transactionsPage
                 .getTable().countValues("Status", status);
 
@@ -150,14 +159,21 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Filter")
     @Description("Filtering transactions by Currency")
     public void testFilterTransactionsByCurrency(String currency) {
-        List<String> currencyValues = new DashboardPage(getPage())
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
-                .clickCurrencySelector()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
+
+        Allure.step("Verify: transaction page table has data");
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).not().isVisible();
+
+        List<String> currencyValues = transactionsPage.clickCurrencySelector()
                 .selectCurrency(currency)
                 .getTable().getColumnValuesFromAllPages("Currency", Function.identity());
+
+        Allure.step("Verify: Filter displays the selected currency");
+        assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
 
         Allure.step("Verify: All values in the Currency column match the selected currency");
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
@@ -188,7 +204,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("559")
     @Epic("Transactions")
@@ -215,7 +230,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("659")
     @Epic("Transactions")
@@ -243,7 +257,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("106")
     @Epic("Transactions")
@@ -259,7 +272,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("127")
     @Epic("Transactions")
@@ -276,7 +288,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("130")
     @Epic("Transactions")

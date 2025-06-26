@@ -60,22 +60,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getPage()).hasTitle(Constants.TRANSACTIONS_URL_TITLE);
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
-    @TmsLink("128")
-    @Epic("Transactions")
-    @Feature("Currency")
-    @Description("Displaying selected currency")
-    public void testFilterDisplaysSelectedCurrency(String currency) {
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
-                .clickTransactionsLink()
-                .clickCurrencySelector()
-                .selectCurrency(currency)
-                .clickRefreshDataButton();
-
-        Allure.step("Verify: Filter displays the selected currency");
-        assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
-    }
-
     @Test
     @TmsLink("181")
     @Epic("Transactions")
@@ -487,7 +471,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -578,7 +561,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("661")
     @Epic("Transactions")
@@ -587,8 +569,8 @@ public class TransactionsPageTest extends BaseTest {
     public void testCheckTheHidingOfParameters() {
         TransactionDetailsDialog transactionDetailsDialog = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectCompany().selectCompany("CompanyForTestRunOnly Inc.")
-                .getSelectBusinessUnit().selectBusinessUnit("MerchantInCompany")
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
                 .clickSection("Card details");
 
@@ -693,7 +675,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("738")
     @Epic("Transactions")
@@ -718,7 +699,6 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getDialog()).not().isAttached();
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("749")
     @Epic("Transactions")
