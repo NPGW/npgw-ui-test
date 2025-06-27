@@ -46,7 +46,6 @@ public class EditAcquirerDialogTest extends BaseTest {
         TestUtils.createAcquirer(getApiRequestContext(), new Acquirer(ACQUIRER_NAME));
     }
 
-    @Ignore
     @Test
     @TmsLink("239")
     @Epic("System/Acquirers")
