@@ -25,13 +25,16 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     private final Locator columnHeader = getByRole(AriaRole.COLUMNHEADER);
     private final Locator headersRow = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
-    private final Locator rows = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHasNot(columnHeader));
+    private final Locator rows = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions()
+            .setHasNot(columnHeader)
+            .setHasNotText("No rows to display."));
 
     private final Locator rowsPerPage = getByRole(AriaRole.BUTTON, "Rows Per Page");
     private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
     private final Locator paginationItems = getPage().getByLabel("pagination item");
     private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
     private final Locator previousPageButton = getByRole(AriaRole.BUTTON, "previous page button");
+    private final Locator noRowsToDisplayMessage = getByTextExact("No rows to display.");
 
     public BaseTableComponent(Page page) {
         super(page);
@@ -219,10 +222,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public String getLastPageNumber() {
         return paginationItems.last().innerText();
-    }
-
-    public boolean isTableEmpty() {
-        return rows.first().isVisible();
     }
 
     private boolean isNotCurrentPage(String number) {
