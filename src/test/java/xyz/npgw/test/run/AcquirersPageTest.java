@@ -272,7 +272,6 @@ public class AcquirersPageTest extends BaseTest {
                 "Total rows should be the same for all 'Rows Per Page' options");
     }
 
-    @Ignore
     @Test
     @TmsLink("432")
     @Epic("System/Acquirers")
