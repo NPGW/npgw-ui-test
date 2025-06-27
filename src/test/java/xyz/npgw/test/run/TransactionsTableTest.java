@@ -57,7 +57,7 @@ public class TransactionsTableTest extends BaseTest {
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("311")
     @Epic("Transactions")
     @Feature("Amount")
