@@ -355,7 +355,6 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getPaginationItems()).hasText("1");
     }
 
-    @Ignore
     @Test
     @TmsLink("487")
     @Epic("System/Acquirers")
