@@ -228,7 +228,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return !getActivePageButton().innerText().equals(number);
     }
 
-    private boolean goToNextPage() {
+    public boolean goToNextPage() {
         if (!hasNextPage()) {
             return false;
         }
@@ -273,22 +273,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         } while (goToNextPage());
 
         return allValues;
-    }
-
-    public List<Locator> getAllCellsFromAllPages(String columnName) {
-        if (hasNoPagination()) {
-            return Collections.emptyList();
-        }
-
-        selectRowsPerPageOption("100");
-        goToFirstPageIfNeeded();
-
-        List<Locator> allCells = new ArrayList<>();
-        do {
-            allCells.addAll(getColumnCells(columnName));
-        } while (goToNextPage());
-
-        return allCells;
     }
 
     public interface PageCallback {
