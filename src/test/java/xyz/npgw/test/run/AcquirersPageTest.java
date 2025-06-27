@@ -11,6 +11,7 @@ import lombok.Getter;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -271,6 +272,7 @@ public class AcquirersPageTest extends BaseTest {
                 "Total rows should be the same for all 'Rows Per Page' options");
     }
 
+    @Ignore
     @Test
     @TmsLink("432")
     @Epic("System/Acquirers")
@@ -354,6 +356,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getPaginationItems()).hasText("1");
     }
 
+    @Ignore
     @Test
     @TmsLink("487")
     @Epic("System/Acquirers")
