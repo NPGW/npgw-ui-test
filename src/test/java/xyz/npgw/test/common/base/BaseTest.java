@@ -5,10 +5,12 @@ import com.microsoft.playwright.APIRequest;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.options.Cookie;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Allure;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -140,8 +142,12 @@ public abstract class BaseTest {
 //        }, new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
 
         page.addLocatorHandler(page.getByText("Loading..."), locator -> {
-//            log.info("------ Loader triggered ------");
-        });
+                    page.getByText("Loading...").waitFor(
+                            new Locator.WaitForOptions()
+                                    .setState(WaitForSelectorState.HIDDEN)
+                                    .setTimeout(ProjectProperties.getDefaultTimeout() * 2));
+                },
+                new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
         openSite(args);
     }
 
@@ -216,8 +222,8 @@ public abstract class BaseTest {
         }
 
         if (testResult.getStatus() == ITestResult.FAILURE) {
-            ProjectProperties.setTracingMode(false);
-            ProjectProperties.setVideoMode(false);
+//            ProjectProperties.setTracingMode(false);
+//            ProjectProperties.setVideoMode(false);
 
             if (ProjectProperties.isFailFast()) {
                 ProjectProperties.setSkipMode(true);
