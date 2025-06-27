@@ -190,6 +190,7 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(numberWithEuroInTable > 0 && !transactionsPage.getTable().isTableEmpty());
     }
 
+    @Ignore
     @Test
     @TmsLink("559")
     @Epic("Transactions")

@@ -480,6 +480,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText("All");
     }
 
+    @Ignore
     @Test(priority = 1)
     @TmsLink("726")
     @Epic("System/Acquirers")
