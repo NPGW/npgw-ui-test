@@ -219,7 +219,7 @@ public class GatewayPageTest extends BaseTest {
     @Epic("System/Gateway")
     @Feature("Merchant acquirer")
     @Description("Verify the active and inactive merchant acquirers can be added")
-    public void testAddActiveMerchantAcquirer() {
+    public void testAddMerchantAcquirer() {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
