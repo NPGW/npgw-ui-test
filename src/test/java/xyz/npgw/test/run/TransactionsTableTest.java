@@ -9,7 +9,6 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
@@ -308,7 +307,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getActivePageButton()).hasText("2");
     }
 
-    @Ignore
     @Test
     @TmsLink("350")
     @Epic("Transactions")
@@ -348,7 +346,6 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(headersListAfterUncheckAllVisibleColumns.get(0), "Actions");
     }
 
-    @Ignore
     @Test
     @TmsLink("358")
     @Epic("Transactions")
