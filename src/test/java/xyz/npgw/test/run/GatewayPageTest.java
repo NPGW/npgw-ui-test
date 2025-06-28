@@ -12,10 +12,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
-import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -32,16 +29,6 @@ public class GatewayPageTest extends BaseTest {
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
             "MerchantAcquirer"};
-//    private static final Acquirer ACQUIRER = new Acquirer(
-//            "display name",
-//            "acquirer mid",
-//            "NGenius",
-//            "default",
-//            new Currency[]{Currency.USD, Currency.EUR},
-//            new SystemConfig(),
-//            true,
-//            "%s acquirer 11.002.01".formatted(RUN_ID),
-//            "mcc");
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
     private final Company company = new Company("%s company for 602".formatted(RUN_ID), "first");
 
