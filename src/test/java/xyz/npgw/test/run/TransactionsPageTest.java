@@ -761,8 +761,8 @@ public class TransactionsPageTest extends BaseTest {
                     .getTable().clickOnTransaction(i);
 
             Allure.step("Verify: the 'PENDING' occurs at most once");
-            assertTrue(transactionDetails.isUniqueOrAbsentInPaymentLifecycle("PENDING"),
-                    String.format("The 'PENDING' occurs several times in the transaction details (#%d on the page)", i + 1));
+            assertTrue(transactionDetails.isUniqueOrAbsentInPaymentLifecycle("PENDING"), String.format(
+                    "The 'PENDING' occurs several times in the transaction details (#%d on the page)", i + 1));
 
             transactionDetails.clickCloseIcon();
         }
