@@ -205,7 +205,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
     }
 
-    @Ignore
     @Test
     @TmsLink("559")
     @Epic("Transactions")
@@ -219,6 +218,7 @@ public class TransactionsTableTest extends BaseTest {
 
         List<LocalDateTime> actualDates = transactionsPage
                 .getTable().getAllCreationDates();
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>" + actualDates.size());
 
         Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
         assertEquals(actualDates, actualDates.stream().sorted().toList());
