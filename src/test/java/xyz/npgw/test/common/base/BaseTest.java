@@ -10,6 +10,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.options.Cookie;
+import com.microsoft.playwright.options.LoadState;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Allure;
 import lombok.AccessLevel;
@@ -136,10 +137,12 @@ public abstract class BaseTest {
 
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
-//        page.addLocatorHandler(page.locator("body"), locator -> {
-//            log.info("------ action check ------");
-////            page.evaluate("window.removeObstructionsForTestIfNeeded()");
-//        }, new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
+        page.addLocatorHandler(page.locator("body"), locator -> {
+            log.info("------ wait for NETWORKIDLE ------");
+            page.waitForLoadState(LoadState.NETWORKIDLE);
+            log.info("------ wait for NETWORKIDLE done ------");
+//            page.evaluate("window.removeObstructionsForTestIfNeeded()");
+        }, new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
 
         page.addLocatorHandler(page.getByText("Loading..."),
                 locator -> page.getByText("Loading...").waitFor(
