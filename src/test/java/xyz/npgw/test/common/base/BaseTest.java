@@ -9,6 +9,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
+import com.microsoft.playwright.assertions.PlaywrightAssertions;
 import com.microsoft.playwright.options.Cookie;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Allure;
@@ -136,6 +137,7 @@ public abstract class BaseTest {
 
         page = context.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout() * 6);
+        PlaywrightAssertions.setDefaultAssertionTimeout(ProjectProperties.getDefaultTimeout() * 6);
 
         page.addLocatorHandler(page.getByText("Loading..."),
                 locator -> page.getByText("Loading...").waitFor(
