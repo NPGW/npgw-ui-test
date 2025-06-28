@@ -741,6 +741,33 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
     }
 
+    @Test
+    @TmsLink("828")
+    @Epic("Transactions")
+    @Feature("Transaction details")
+    @Description("Check that the 'Pending' occurs at most once in the Payment lifecycle section")
+    public void testPendingOccursAtMostOnceInLifecycle() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getTable().selectRowsPerPageOption("50");
+
+        int numberOfTransactions = transactionsPage.getTable().getNumberOfTransactionOnCurrentPage();
+
+        for (int i = 0; i < numberOfTransactions; i++) {
+            TransactionDetailsDialog transactionDetails = transactionsPage
+                    .getTable().clickOnTransaction(i);
+
+            Allure.step("Verify: the 'PENDING' occurs at most once");
+            assertTrue(transactionDetails.isUniqueOrAbsentInPaymentLifecycle("PENDING"),
+                    String.format("The 'PENDING' occurs several times in the transaction details (#%d on the page)", i + 1));
+
+            transactionDetails.clickCloseIcon();
+        }
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {
