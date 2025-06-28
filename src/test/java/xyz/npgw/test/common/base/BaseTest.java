@@ -148,7 +148,7 @@ public abstract class BaseTest {
                 locator -> page.getByText("Loading...").waitFor(
                         new Locator.WaitForOptions()
                                 .setState(WaitForSelectorState.HIDDEN)
-                                .setTimeout(ProjectProperties.getDefaultTimeout() * 6)),
+                                .setTimeout(ProjectProperties.getDefaultTimeout() * 5)),
                 new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
         openSite(args);
     }
