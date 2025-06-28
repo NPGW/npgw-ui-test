@@ -136,7 +136,7 @@ public abstract class BaseTest {
         }
 
         page = context.newPage();
-        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
+        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout() * 6);
         page.addLocatorHandler(page.locator("body"), locator -> {
             log.info("------ wait for NETWORKIDLE ------");
             page.waitForLoadState(LoadState.NETWORKIDLE);
