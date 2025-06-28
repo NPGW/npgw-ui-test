@@ -46,7 +46,7 @@ public class AcquirersPageTest extends BaseTest {
             "Status",
             "Actions");
 
-    protected static final Acquirer ACQUIRER = new Acquirer(
+    private static final Acquirer ACQUIRER = new Acquirer(
             "display name",
             "acquirer mid",
             "NGenius",

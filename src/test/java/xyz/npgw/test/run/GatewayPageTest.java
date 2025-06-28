@@ -11,7 +11,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -20,10 +23,19 @@ import java.util.List;
 import java.util.Random;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static xyz.npgw.test.run.AcquirersPageTest.ACQUIRER;
 
 public class GatewayPageTest extends BaseTest {
 
+    private static final Acquirer ACQUIRER = new Acquirer(
+            "acquirer for gateway",
+            "acquirer mid",
+            "NGenius",
+            "default",
+            new Currency[]{Currency.USD, Currency.EUR},
+            new SystemConfig(),
+            true,
+            "%s acquirer for gateway".formatted(RUN_ID),
+            "4321");
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
             "MerchantAcquirer"};
