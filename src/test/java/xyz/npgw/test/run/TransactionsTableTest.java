@@ -206,7 +206,7 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
     }
 
-    @Ignore("Lists differ at element [105]: 2025-06-27T01:31:54 != 2025-06-27T22:26:24")
+    @Ignore("BUG - sort by date not working correctly 0.1.2506281212")
     @Test
     @TmsLink("559")
     @Epic("Transactions")
@@ -215,7 +215,6 @@ public class TransactionsTableTest extends BaseTest {
     public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-//                .getSelectDateRange().setDateRangeFields("27-06-2025", "27-06-2025")
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
