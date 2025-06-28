@@ -141,12 +141,12 @@ public abstract class BaseTest {
 ////            page.evaluate("window.removeObstructionsForTestIfNeeded()");
 //        }, new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
 
-        page.addLocatorHandler(page.getByText("Loading..."), locator -> {
-            page.getByText("Loading...").waitFor(
-                    new Locator.WaitForOptions()
-                            .setState(WaitForSelectorState.HIDDEN)
-                            .setTimeout(ProjectProperties.getDefaultTimeout() * 6));
-        }, new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
+        page.addLocatorHandler(page.getByText("Loading..."),
+                locator -> page.getByText("Loading...").waitFor(
+                        new Locator.WaitForOptions()
+                                .setState(WaitForSelectorState.HIDDEN)
+                                .setTimeout(ProjectProperties.getDefaultTimeout() * 6)),
+                new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
         openSite(args);
     }
 
