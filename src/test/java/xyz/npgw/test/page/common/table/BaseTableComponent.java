@@ -38,6 +38,8 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public BaseTableComponent(Page page) {
         super(page);
+        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                .or(locator("tr[data-first='true']")).waitFor();
     }
 
     protected abstract CurrentPageT getCurrentPage();
@@ -55,7 +57,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public Locator getRow(String rowHeader) {
-        locator("tr[data-first='true']").waitFor();
+//        locator("tr[data-first='true']").waitFor();
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         do {
