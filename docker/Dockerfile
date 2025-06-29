@@ -12,7 +12,7 @@ FROM mcr.microsoft.com/playwright/java:v1.51.0-noble
 #   docker run ui-test:latest
 #
 #
-# required in .env:
+# required in .properties:
 # local.baseURL=<>
 # local.email=<>
 # local.password=<>
@@ -22,6 +22,6 @@ USER root
 WORKDIR /
 
 COPY target/npgw-ui-test-*-jar-with-dependencies.jar /npgw-ui-test-jar-with-dependencies.jar
-COPY config/ config/
+COPY testng.xml .
 
 ENTRYPOINT ["java", "-jar", "npgw-ui-test-jar-with-dependencies.jar"]
