@@ -30,6 +30,7 @@ import java.util.function.Function;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
@@ -38,7 +39,7 @@ public class TransactionsTableTest extends BaseTest {
 
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final List<String> COLUMNS_HEADERS = List.of(
-            "Creation Date",
+            "Creation Date (GMT)",
             "Business unit ID",
             "NPGW Reference",
             "Merchant Reference",
@@ -62,35 +63,43 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Amount")
     @Description("Filtering transactions by Amount")
     public void testFilterTransactionsByAmount() {
-        int amountFrom = 10;
-        int amountTo = 500;
+        String amountFrom = "10.12";
+        String amountTo = "500.34";
 
         List<String> amountValues = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .clickAmountButton()
-                .fillAmountFromField(String.valueOf(amountFrom))
-                .fillAmountToField(String.valueOf(amountTo))
+                .fillAmountFromField(amountFrom)
+                .fillAmountToField(amountTo)
                 .clickAmountApplyButton()
                 .getTable().getColumnValues("Amount");
 
         Allure.step("Verify: Amount column has values within the specified amount range");
+        assertFalse(amountValues.isEmpty());
         assertTrue(amountValues.stream()
                 .map(Double::parseDouble)
-                .allMatch(value -> value >= amountFrom && value <= amountTo));
+                .allMatch(value -> value >= Double.parseDouble(amountFrom) && value <= Double.parseDouble(amountTo)));
     }
 
+    @Ignore("TODO refactor this - Function.identity() isn't the proper solution for card type retrieval")
     @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
     @TmsLink("673")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Filtering transactions by Card type displays only matching entries in the table.")
     public void testFilterByCardType(String cardType) {
-        List<String> cardTypeList = new DashboardPage(getPage())
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .selectCardType(cardType)
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        Allure.step("Verify: transaction page table has data");
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
+
+        List<String> cardTypeList = transactionsPage.selectCardType(cardType)
                 .getTable().getColumnValuesFromAllPages("Card type", Function.identity());
 
         Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
@@ -123,9 +132,12 @@ public class TransactionsTableTest extends BaseTest {
     public void testFilterByStatus(String status) {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        Allure.step("Verify: transaction page table has data");
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
         int statusesCount = transactionsPage
                 .getTable().countValues("Status", status);
@@ -149,48 +161,52 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Filter")
     @Description("Filtering transactions by Currency")
     public void testFilterTransactionsByCurrency(String currency) {
-        List<String> currencyValues = new DashboardPage(getPage())
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
-                .clickCurrencySelector()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        Allure.step("Verify: transaction page table has data");
+        assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
+
+        List<String> currencyValues = transactionsPage.clickCurrencySelector()
                 .selectCurrency(currency)
                 .getTable().getColumnValuesFromAllPages("Currency", Function.identity());
+
+        Allure.step("Verify: Filter displays the selected currency");
+        assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
 
         Allure.step("Verify: All values in the Currency column match the selected currency");
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
     }
 
-    // TODO bug - transactions isn't present in the table when a currency filter is applied on the last page
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("682")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Verify that transactions are present in the table when a currency filter is applied on the last page")
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
-        String euro = "EUR";
-
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
-        int numberWithEuroInTable = transactionsPage
-                .getTable().countValues("Currency", euro);
+        Allure.step("Verify: Transactions are present in the table");
+        assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
 
         transactionsPage
                 .getTable().goToLastPageIfNeeded();
 
         transactionsPage
-                .clickCurrencySelector().selectCurrency("USD");
+                .clickCurrencySelector().selectCurrency("EUR");
 
-        Allure.step("Verify: Transactions are present in the table");
-        assertTrue(numberWithEuroInTable > 0 && !transactionsPage.getTable().isTableEmpty());
+        Allure.step("Verify: Transactions are still present then filter is applied on the last page");
+        assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
     }
 
-    @Ignore("after 0.1.2506240525")
+    @Ignore("BUG - sort by date not working correctly 0.1.2506281212")
     @Test
     @TmsLink("559")
     @Epic("Transactions")
@@ -209,7 +225,7 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(actualDates, actualDates.stream().sorted().toList());
 
         transactionsPage
-                .getTable().clickSortIcon("Creation Date");
+                .getTable().clickSortIcon("Creation Date (GMT)");
 
         Allure.step(
                 "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
@@ -217,7 +233,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualDates.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("659")
     @Epic("Transactions")
@@ -245,7 +260,6 @@ public class TransactionsTableTest extends BaseTest {
                 actualAmount.stream().sorted(Comparator.reverseOrder()).toList());
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("106")
     @Epic("Transactions")
@@ -261,7 +275,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("127")
     @Epic("Transactions")
@@ -278,7 +291,6 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRowsPerPageOptions()).hasText(new String[]{"10", "25", "50", "100"});
     }
 
-    @Ignore("after 0.1.2506240525")
     @Test
     @TmsLink("130")
     @Epic("Transactions")
@@ -287,9 +299,10 @@ public class TransactionsTableTest extends BaseTest {
     public void testPaginationNextButton() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
+                .getTable().selectRowsPerPageOption("10")
                 .getTable().clickNextPageButton();
 
         Allure.step("Verify: button 2 is active");
@@ -386,7 +399,7 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Filter")
     @Description("Filter transactions by business unit")
     public void testFilterTransactionsByBusinessUnit() {
-        getPage().route("**/history*", route -> {
+        getPage().route("**/status*", route -> {
             if (route.request().postData().contains(businessUnit.merchantId())) {
                 List<Transaction> transactionList = new ArrayList<>();
                 transactionList.add(new Transaction("2025-06-02T04:18:09.047146423Z",

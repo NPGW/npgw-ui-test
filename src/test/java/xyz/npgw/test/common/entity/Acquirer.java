@@ -23,12 +23,15 @@ public record Acquirer(
 
     public Acquirer(String acquirerName) {
         this("", "mid", "NGenius", "config",
-                new Currency[]{Currency.USD}, new SystemConfig(), true, acquirerName, "mcc");
+                new Currency[]{Currency.USD}, new SystemConfig(), true, acquirerName, "1111");
     }
 
     public static void create(APIRequestContext request, Acquirer acquirer) {
         APIResponse response = request.post("portal-v1/acquirer", RequestOptions.create().setData(acquirer));
         log.info("create acquirer '{}' - {}", acquirer.acquirerName(), response.status());
+        if (response.status() >= 400) {
+            log.info("create acquirer - {}", response.text());
+        }
         if (response.status() >= 500) {
             throw new SkipException(response.text());
         }

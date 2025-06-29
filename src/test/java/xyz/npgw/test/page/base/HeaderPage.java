@@ -13,6 +13,8 @@ import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
+import java.time.LocalTime;
+
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {
@@ -39,8 +41,6 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
 
-//        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
-
         return new TransactionsPage(getPage());
     }
 
@@ -50,23 +50,16 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
 
-//        assertThat(reportsButton.locator("..")).hasAttribute("data-active", "true");
-//        ResponseUtils.clickAndWaitForText(getPage(), reportsButton, "Accounts");
-
         return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-//        ResponseUtils.clickAndWaitForResponse(getPage(), systemAdministrationButton, Constants.ASSETS_TEAM);
         systemAdministrationButton.click();
-//        assertThat(systemAdministrationButton.locator(".."))
-//                .hasAttribute("data-active", "true");
 
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         return new TeamPage(getPage());
     }
