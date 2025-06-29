@@ -9,8 +9,6 @@ import xyz.npgw.test.page.system.AcquirersPage;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 import xyz.npgw.test.page.system.GatewayPage;
 
-import java.time.LocalTime;
-
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class MenuComponent extends BaseComponent {
@@ -27,7 +25,6 @@ public class MenuComponent extends BaseComponent {
     public CompaniesAndBusinessUnitsPage clickCompaniesAndBusinessUnitsTab() {
         companiesAndBusinessUnitsTab.click();
         assertThat(companiesAndBusinessUnitsTab).hasAttribute("data-selected", "true");
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         return new CompaniesAndBusinessUnitsPage(getPage());
     }
@@ -36,8 +33,6 @@ public class MenuComponent extends BaseComponent {
     public AcquirersPage clickAcquirersTab() {
         acquirersTab.click();
         assertThat(acquirersTab).hasAttribute("data-selected", "true");
-//        ResponseUtils.clickAndWaitForText(getPage(),
-//                getByRole(AriaRole.TAB, "Acquirers"), "Acquirer name");
 
         return new AcquirersPage(getPage());
     }
@@ -46,8 +41,6 @@ public class MenuComponent extends BaseComponent {
     public GatewayPage clickGatewayTab() {
         gatewayTab.click();
         assertThat(gatewayTab).hasAttribute("data-selected", "true");
-//        ResponseUtils.clickAndWaitForText(getPage(),
-//                getByRole(AriaRole.TAB, "Gateway"), "Priority");
 
         return new GatewayPage(getPage());
     }
