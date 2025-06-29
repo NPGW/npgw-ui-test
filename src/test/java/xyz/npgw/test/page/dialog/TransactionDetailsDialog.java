@@ -80,9 +80,27 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
         return section.locator("//div[.='" + parameter + "']/following-sibling::div[1]");
     }
 
-    public boolean isUniqueOrAbsentInPaymentLifecycle(String text) {
+    public int countPaymentLifecycleType(String text) {
         paymentLifecycleType.last().waitFor();
 
-        return paymentLifecycleTable.getByText(text).count() <= 1;
+        return paymentLifecycleType.getByText(text).count();
+    }
+
+    public Locator getFirstPaymentLifecycleType() {
+        paymentLifecycleType.last().waitFor();
+
+        return paymentLifecycleType.first();
+    }
+
+    public Locator getLastPaymentLifecycleType() {
+        paymentLifecycleType.last().waitFor();
+
+        return paymentLifecycleType.last();
+    }
+
+    public Locator getPaymentLifecycleType(String name) {
+        paymentLifecycleType.last().waitFor();
+
+        return paymentLifecycleType.getByText(name);
     }
 }

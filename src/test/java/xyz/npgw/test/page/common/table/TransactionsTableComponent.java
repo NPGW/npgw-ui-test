@@ -32,6 +32,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
         return new TransactionDetailsDialog(getPage());
     }
 
+    @Step("Click on the transaction NPGW Reference")
     public TransactionDetailsDialog clickOnTransaction(int index) {
         npgwReference.nth(index).click();
 

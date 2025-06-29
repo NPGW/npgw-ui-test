@@ -760,8 +760,20 @@ public class TransactionsPageTest extends BaseTest {
             TransactionDetailsDialog transactionDetails = transactionsPage
                     .getTable().clickOnTransaction(i);
 
+            String statusInHeader = transactionDetails.getStatusValue().innerText();
+            String lastTypeInLifecycle = transactionDetails.getLastPaymentLifecycleType().innerText();
+
+            Allure.step("Verify: Statuses in the dialog header and lifecycle are the same");
+            assertEquals(statusInHeader, lastTypeInLifecycle, "Statuses should match!");
+
+            Allure.step("Verify: The Payment lifecycle begins with 'INITIATED'");
+            assertThat(transactionDetails.getFirstPaymentLifecycleType()).hasText("INITIATED");
+
+            Allure.step("Verify: The 'INITIATED' occurs exactly once in the lifecycle");
+            assertThat(transactionDetails.getPaymentLifecycleType("INITIATED")).hasCount(1);
+
             Allure.step("Verify: the 'PENDING' occurs at most once");
-            assertTrue(transactionDetails.isUniqueOrAbsentInPaymentLifecycle("PENDING"), String.format(
+            assertTrue(transactionDetails.countPaymentLifecycleType("PENDING") <= 1, String.format(
                     "The 'PENDING' occurs several times in the transaction details (#%d on the page)", i + 1));
 
             transactionDetails.clickCloseIcon();
