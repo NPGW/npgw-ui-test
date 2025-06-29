@@ -34,8 +34,8 @@ public class MenuComponent extends BaseComponent {
 
     @Step("Click 'Acquirers' tab")
     public AcquirersPage clickAcquirersTab() {
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-        getPage().waitForTimeout(3000);
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForTimeout(3000);
 
         acquirersTab.click();
         assertThat(acquirersTab).hasAttribute("data-selected", "true");
