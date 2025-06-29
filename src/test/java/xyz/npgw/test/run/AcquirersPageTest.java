@@ -500,7 +500,6 @@ public class AcquirersPageTest extends BaseTest {
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.acquirerName());
         TestUtils.deleteAcquirer(getApiRequestContext(), ACTIVE_ACQUIRER_NAME);
         TestUtils.deleteAcquirer(getApiRequestContext(), INACTIVE_ACQUIRER_NAME);
         TestUtils.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.acquirerName());
