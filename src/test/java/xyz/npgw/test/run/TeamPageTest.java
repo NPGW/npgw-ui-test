@@ -605,6 +605,7 @@ public class TeamPageTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
+                .getAlert().clickCloseButton()
                 .waitForUserPresence(getApiRequestContext(), companyAdmin, getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(companyAdmin)
