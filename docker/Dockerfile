@@ -12,11 +12,10 @@ FROM mcr.microsoft.com/playwright/java:v1.51.0-noble
 #   docker run ui-test:latest
 #
 #
-# required in .properties:
-# local.baseURL=<>
-# local.email=<>
-# local.password=<>
-# local.headlessMode=true
+# required env:
+# LOCAL_EMAIL =
+# LOCAL_PASSWORD =
+# LOCAL_BASE_URL =
 
 USER root
 WORKDIR /

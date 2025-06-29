@@ -63,10 +63,18 @@ public final class ProjectProperties {
                 throw new RuntimeException(e);
             }
         }
+        else if DOCKER_RUN = true
+        properties.setProperty(getValue(EMAIL), "");
+        properties.setProperty(getValue(PASSWORD), "");
+        properties.setProperty(getValue(BASE_URL), "");
     }
 
     private ProjectProperties() {
         throw new UnsupportedOperationException();
+    }
+
+    public static String getValue(String name) {
+        return System.getProperty(name, System.getenv(name.replace('.', '_').toUpperCase()));
     }
 
     public static String getBaseUrl() {
