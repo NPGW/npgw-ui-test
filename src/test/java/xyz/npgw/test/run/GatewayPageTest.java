@@ -230,7 +230,6 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddMerchantAcquirer()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
                 .clickCreateButton();
-//                .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
         assertThat(page.getMerchantValue()).hasText(expectedBusinessUnitsList[2]);
@@ -250,18 +249,15 @@ public class GatewayPageTest extends BaseTest {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
-//                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddMerchantAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
                 .clickCreateButton()
-//                .getAlert().waitUntilSuccessAlertIsGone()
                 .clickAddMerchantAcquirerButton()
                 .selectInactiveStatus()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
                 .clickCreateButton();
-//                .getAlert().waitUntilSuccessAlertIsGone();
 
         List<String> actualNames = gatewayPage.getTable().getColumnValues("Business unit");
         List<String> actualStatuses = gatewayPage.getTable().getColumnValues("Status");
