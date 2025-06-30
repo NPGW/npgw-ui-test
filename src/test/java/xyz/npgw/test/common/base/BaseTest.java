@@ -219,9 +219,6 @@ public abstract class BaseTest {
         }
 
         if (testResult.getStatus() == ITestResult.FAILURE) {
-//            ProjectProperties.setTracingMode(false);
-//            ProjectProperties.setVideoMode(false);
-
             if (ProjectProperties.isFailFast()) {
                 ProjectProperties.setSkipMode(true);
             }
