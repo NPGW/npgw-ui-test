@@ -265,7 +265,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         );
     }
 
-    protected  <T> List<T> collectAllPages(Supplier<List<T>> currentPageExtractor) {
+    protected <T> List<T> collectAllPages(Supplier<List<T>> currentPageExtractor) {
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         if (hasNoPagination()) {
             return Collections.emptyList();
@@ -275,12 +275,12 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         goToFirstPageIfNeeded();
 
-        List<T> all = new ArrayList<>();
+        List<T> allValues = new ArrayList<>();
         do {
-            all.addAll(currentPageExtractor.get());
+            allValues.addAll(currentPageExtractor.get());
         } while (goToNextPage());
 
-        return all;
+        return allValues;
     }
 
     public interface PageCallback {
