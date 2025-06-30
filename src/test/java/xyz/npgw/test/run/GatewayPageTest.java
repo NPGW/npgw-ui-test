@@ -1,7 +1,11 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
-import io.qameta.allure.*;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.TmsLink;
+import io.qameta.allure.Allure;
 import net.datafaker.Faker;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
