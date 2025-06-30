@@ -259,7 +259,9 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success alert appears after user update");
         assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_UPDATED);
 
-        teamPage.getAlert().clickCloseButton();
+        teamPage
+                .getAlert().clickCloseButton()
+                .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
 
         Allure.step("Verify: selected company is displayed in the 'Select company' field");
         assertThat(teamPage.getSelectCompany().getSelectCompanyField()).hasValue(getCompanyName());
