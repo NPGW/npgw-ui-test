@@ -58,7 +58,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public Locator getRow(String rowHeader) {
         locator("tr[data-first='true']").waitFor();
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         do {
             Locator header = getByRole(AriaRole.ROWHEADER, rowHeader);
