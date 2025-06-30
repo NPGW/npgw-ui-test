@@ -5,20 +5,18 @@ FROM mcr.microsoft.com/playwright/java:v1.51.0-noble
 # mvn clean package -DskipTests
 #
 # 2. build image:
-#   cd ../
-#   docker build -t ui-test:latest -f ./docker/Dockerfile .
+#   docker build -t ui-test:latest
 #
 # 3. run container:
 #   docker run ui-test:latest
-#
-#
-# required env:
-# LOCAL_EMAIL =
-# LOCAL_PASSWORD =
-# LOCAL_BASE_URL =
+#       -e LOCAL_EMAIL =
+#       -e LOCAL_PASSWORD =
+#       -e LOCAL_BASE_URL =
 
 USER root
 WORKDIR /
+
+ENV DOCKER_RUN=1
 
 COPY target/npgw-ui-test-*-jar-with-dependencies.jar /npgw-ui-test-jar-with-dependencies.jar
 COPY testng.xml .

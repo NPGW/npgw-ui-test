@@ -16,6 +16,7 @@ public final class ProjectProperties {
     private static final Properties properties;
 
     private static final String CI_RUN = "CI_RUN";
+    private static final String DOCKER_RUN = "DOCKER_RUN";
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
 
     private static final String PREFIX_PROP = "local.";
@@ -53,6 +54,10 @@ public final class ProjectProperties {
                     properties.setProperty(PREFIX_PROP + optionArr[0], optionArr[1]);
                 }
             }
+        } else if (System.getenv(DOCKER_RUN) != null) {
+            properties.setProperty(getValue(EMAIL), "");
+            properties.setProperty(getValue(PASSWORD), "");
+            properties.setProperty(getValue(BASE_URL), "");
         } else {
             String configPath = System.getProperty("configPath", ".properties");
             try (InputStream inputStream = Files.newInputStream(Paths.get(configPath))) {
@@ -63,10 +68,6 @@ public final class ProjectProperties {
                 throw new RuntimeException(e);
             }
         }
-        else if DOCKER_RUN = true
-        properties.setProperty(getValue(EMAIL), "");
-        properties.setProperty(getValue(PASSWORD), "");
-        properties.setProperty(getValue(BASE_URL), "");
     }
 
     private ProjectProperties() {
