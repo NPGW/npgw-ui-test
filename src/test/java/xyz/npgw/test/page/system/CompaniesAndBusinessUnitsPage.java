@@ -58,7 +58,7 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Add company' button")
     public AddCompanyDialog clickAddCompanyButton() {
-        addCompanyButton.waitFor();
+//        addCompanyButton.waitFor();
         addCompanyButton.click();
 
         return new AddCompanyDialog(getPage());
@@ -66,9 +66,9 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Add business unit' button (+)")
     public AddBusinessUnitDialog clickOnAddBusinessUnitButton() {
-        addBusinessUnitButton.waitFor(new Locator.WaitForOptions()
-                .setState(WaitForSelectorState.ATTACHED));
-        getPage().waitForCondition(addBusinessUnitButton::isEnabled);
+//        addBusinessUnitButton.waitFor(new Locator.WaitForOptions()
+//                .setState(WaitForSelectorState.ATTACHED));
+//        getPage().waitForCondition(addBusinessUnitButton::isEnabled);
 
         addBusinessUnitButton.click();
 
@@ -77,8 +77,6 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
 
     @Step("Click 'Edit company' button")
     public EditCompanyDialog clickEditCompanyButton() {
-//        getPage().getByText("Loading").waitFor();
-//        getPage().getByText("Loading").waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));
         editCompanyButton.click();
 
         return new EditCompanyDialog(getPage());
