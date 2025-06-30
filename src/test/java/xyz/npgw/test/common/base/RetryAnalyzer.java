@@ -3,7 +3,6 @@ package xyz.npgw.test.common.base;
 import lombok.extern.log4j.Log4j2;
 import org.testng.IRetryAnalyzer;
 import org.testng.ITestResult;
-import org.testng.SkipException;
 import xyz.npgw.test.common.ProjectProperties;
 
 @Log4j2
