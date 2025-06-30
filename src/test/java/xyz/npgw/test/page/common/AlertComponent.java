@@ -25,6 +25,12 @@ public class AlertComponent<CurrentPageT> extends BaseComponent {
         return currentPage;
     }
 
+    public CurrentPageT waitUntilAlertIsDetached() {
+        alertMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.DETACHED));
+
+        return currentPage;
+    }
+
     public CurrentPageT waitUntilSuccessAlertIsGone() {
         successMessage.waitFor();
         successMessage.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));

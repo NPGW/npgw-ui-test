@@ -435,7 +435,7 @@ public class AcquirersPageTest extends BaseTest {
 
         acquirersPage
                 .getAlert().clickCloseButton()
-                .getAlert().waitUntilAlertIsHidden();
+                .getAlert().waitUntilAlertIsDetached();
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirersPage.getTable().getCell(CHANGE_STATE_ACQUIRER.acquirerName(), "Status"))
