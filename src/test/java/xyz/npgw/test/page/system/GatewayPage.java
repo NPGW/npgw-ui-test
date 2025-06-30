@@ -26,12 +26,14 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     private final Locator acquirerStatusValue = locator("[data-key='00isActive']");
     private final Locator acquirerPriorityValue = locator("[data-key='00priority']");
     private final Locator acquirerCurrencyValue = locator("[data-key='00currencyList']");
+    private final Locator acquirerNameValue = locator("[data-key='00acquirerDisplayName']");
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
     private final Locator resetFilterButton = locator("[data-icon='xmark']");
     private final Locator addMerchantAcquirer = locator("[data-icon='circle-plus']");
     private final Locator addMerchantAcquirerButton = getByTestId("AddMerchantAcquirerButton");
+    private final Locator moveMerchantAcquirerDownButton = getByTestId("MoveMerchantAcquirerDownButton").first();
 
     public GatewayPage(Page page) {
         super(page);
@@ -71,5 +73,12 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
         addMerchantAcquirerButton.click();
 
         return new AddMerchantAcquirerDialog(getPage());
+    }
+
+    @Step("Click on MoveMerchantAcquirerDownButton to move them down with less priority")
+    public GatewayPage clickMoveMerchantAcquirerDownButton() {
+        moveMerchantAcquirerDownButton.click();
+
+        return this;
     }
 }

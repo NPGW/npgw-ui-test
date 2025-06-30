@@ -1,11 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
-import io.qameta.allure.Allure;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.TmsLink;
+import io.qameta.allure.*;
 import net.datafaker.Faker;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -38,6 +34,16 @@ public class GatewayPageTest extends BaseTest {
             true,
             "%s acquirer for gateway".formatted(RUN_ID),
             "4321");
+    private static final Acquirer ACQUIRER_MOVE = new Acquirer(
+            "acquirer for gateway Movable",
+            "acquirer mid",
+            "NGenius",
+            "default",
+            new Currency[]{Currency.USD, Currency.EUR},
+            new SystemConfig(),
+            true,
+            "%s acquirer for gateway Movable".formatted(RUN_ID),
+            "4321");
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
             "MerchantAcquirer"};
@@ -51,6 +57,7 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
+        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_MOVE);
     }
 
     @Test
@@ -219,7 +226,7 @@ public class GatewayPageTest extends BaseTest {
     @Test
     @TmsLink("806")
     @Epic("System/Gateway")
-    @Feature("Currency")
+    @Feature("Merchant acquirer")
     @Description("Check possibility to select an appropriate acquirer to merchant")
     public void testSelectAcquirer() {
         GatewayPage page = new DashboardPage(getPage())
@@ -239,6 +246,36 @@ public class GatewayPageTest extends BaseTest {
         assertThat(page.getAcquirerStatusValue()).hasText("Active");
         assertThat(page.getAcquirerCurrencyValue()).hasText("USD, EUR");
         assertThat(page.getAcquirerPriorityValue()).hasText("0");
+    }
+
+    @Test
+    @TmsLink("835")
+    @Epic("System/Gateway")
+    @Feature("Merchant acquirer")
+    @Description("Move merchant-acquirer down to reduce their priority")
+    public void testMoveMerchantAcquirerDownButton() {
+        GatewayPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
+                .clickAddMerchantAcquirer()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickCreateButton()
+                .clickAddMerchantAcquirer()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER_MOVE.acquirerName())
+                .clickCreateButton();
+
+        Allure.step("Check that the first created acquirer priority is 0");
+        assertThat(page.getAcquirerPriorityValue()).hasText("0");
+        assertThat(page.getAcquirerNameValue()).hasText(ACQUIRER.acquirerDisplayName());
+
+        page.clickMoveMerchantAcquirerDownButton();
+               // .getAlert().waitUntilSuccessAlertIsGone();
+
+        Allure.step("Check that the second created acquirer priority is 0 now");
+        assertThat(page.getAcquirerPriorityValue()).hasText("0");
+        assertThat(page.getAcquirerNameValue()).hasText(ACQUIRER_MOVE.acquirerDisplayName());
     }
 
     @Test
@@ -287,6 +324,7 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.acquirerName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_MOVE.acquirerName());
         super.afterClass();
     }
 }
