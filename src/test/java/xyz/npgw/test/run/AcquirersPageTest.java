@@ -434,8 +434,9 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("SUCCESSAcquirer was deactivated successfully");
 
         acquirersPage
-                .getAlert().clickCloseButton()
-                .getAlert().waitUntilAlertIsDetached();
+                .getAlert().waitUntilSuccessAlertIsGone();
+//                .getAlert().clickCloseButton()
+//                .getAlert().waitUntilAlertIsDetached();
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirersPage.getTable().getCell(CHANGE_STATE_ACQUIRER.acquirerName(), "Status"))
