@@ -12,6 +12,7 @@ FROM mcr.microsoft.com/playwright/java:v1.51.0-noble
 #       -e LOCAL_EMAIL =
 #       -e LOCAL_PASSWORD =
 #       -e LOCAL_BASE_URL =
+# other variables have default values in ProjectProperties.java
 
 USER root
 WORKDIR /
