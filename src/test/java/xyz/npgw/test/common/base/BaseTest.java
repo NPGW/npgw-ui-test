@@ -108,10 +108,6 @@ public abstract class BaseTest {
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
         log.info(">>> {}", testId);
 
-        if (ProjectProperties.isSkipMode() && ProjectProperties.isFailFast()) {
-            throw new SkipException("Test skipped due to failFast option being true");
-        }
-
         Browser.NewContextOptions options = new Browser
                 .NewContextOptions()
                 .setLocale("en-GB")
@@ -216,12 +212,6 @@ public abstract class BaseTest {
                 }
             }
             context.close();
-        }
-
-        if (testResult.getStatus() == ITestResult.FAILURE) {
-            if (ProjectProperties.isFailFast()) {
-                ProjectProperties.setSkipMode(true);
-            }
         }
     }
 

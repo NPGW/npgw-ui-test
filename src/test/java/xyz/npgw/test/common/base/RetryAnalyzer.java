@@ -14,9 +14,6 @@ public final class RetryAnalyzer implements IRetryAnalyzer {
 
     @Override
     public boolean retry(ITestResult testResult) {
-        if (ProjectProperties.isSkipMode()) {
-            throw new SkipException("Retry skipped due to failFast option being true");
-        }
         if (testResult.getStatus() == ITestResult.FAILURE && retryCount++ <= MAX_RETRY_COUNT) {
             log.info("Retry {} in debug mode for {} time.", testResult.getName(), retryCount);
             return true;
