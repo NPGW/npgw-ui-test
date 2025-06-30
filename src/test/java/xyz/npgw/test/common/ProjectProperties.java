@@ -58,6 +58,10 @@ public final class ProjectProperties {
             properties.setProperty(getValue(EMAIL), "");
             properties.setProperty(getValue(PASSWORD), "");
             properties.setProperty(getValue(BASE_URL), "");
+            System.out.println("here");
+            System.out.println(properties.getProperty(EMAIL));
+            System.out.println(properties.getProperty(PASSWORD));
+            System.out.println(properties.getProperty(BASE_URL));
         } else {
             String configPath = System.getProperty("configPath", ".properties");
             try (InputStream inputStream = Files.newInputStream(Paths.get(configPath))) {
@@ -75,7 +79,7 @@ public final class ProjectProperties {
     }
 
     public static String getValue(String name) {
-        return System.getProperty(name, System.getenv(name.replace('.', '_').toUpperCase()));
+        return System.getProperty(System.getenv(name.replace('.', '_').toUpperCase()));
     }
 
     public static String getBaseUrl() {
