@@ -1,5 +1,6 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -21,6 +22,7 @@ import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.TransactionDetailsDialog;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -797,6 +799,46 @@ public class TransactionsPageTest extends BaseTest {
 
         Allure.step("Verify: 'Merchant reference' is visible ");
         assertThat(transactionsPage.getMerchantReference()).isVisible();
+    }
+
+    @Test
+    @TmsLink("853")
+    @Epic("Transactions")
+    @Feature("Transactions Search")
+    @Description("Verify that 'NPGW reference' and 'Merchant reference' fields appear when clicking on 'Trx IDs'.")
+    public void testTransactionSearchByNpgwReference() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        List<Locator> npgwReference = transactionsPage.getTable().getColumnCells("NPGW Reference");
+
+        int index = new Random().nextInt(npgwReference.size());
+        String npgwReferenceText = npgwReference.get(index).innerText();
+
+        transactionsPage
+                .clickSearchTrxIdsButton();
+
+        getPage().waitForTimeout(2000);
+
+        transactionsPage
+                .enterNpgwReference(npgwReferenceText);
+
+        getPage().waitForTimeout(2000);
+
+        Allure.step("Verify: Table has only one row with the expected NPGW reference");
+        assertThat(transactionsPage.getTable().getRows()).hasCount(1);
+
+//        getPage().pause();
+//
+//        transactionsPage.clickSearchTrxIdsButton();
+//
+//        Allure.step("Verify: 'NPGW reference' is visible ");
+//        assertThat(transactionsPage.getNpgwReference()).isVisible();
+//
+//        Allure.step("Verify: 'Merchant reference' is visible ");
+//        assertThat(transactionsPage.getMerchantReference()).isVisible();
     }
 
     @AfterClass

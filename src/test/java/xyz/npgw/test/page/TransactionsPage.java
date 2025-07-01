@@ -313,6 +313,12 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
+    @Step("Enter '{value}' into 'NPGW reference' field")
+    public TransactionsPage enterNpgwReference(String value) {
+        npgwReference.fill(value);
+        return this;
+    }
+
     @Step("Select Card type '{value}' from dropdown menu")
     public TransactionsPage selectCardType(String value) {
         cardTypeSelector.click();
