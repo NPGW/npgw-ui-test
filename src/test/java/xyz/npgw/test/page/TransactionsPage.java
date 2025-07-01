@@ -35,7 +35,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
     private final Locator searchTrxIds = getByRole(AriaRole.BUTTON, "Trx IDs");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
-    private final Locator npgw_reference = getByLabelExact("NPGW reference");
+    private final Locator npgwReference = getByLabelExact("NPGW reference");
     private final Locator merchantReference = getByLabelExact("Merchant reference");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
