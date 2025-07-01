@@ -793,7 +793,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickSearchTrxIDsButton();
 
         Allure.step("Verify: 'NPGW reference' is visible ");
-        assertThat(transactionsPage.getNpgw_reference()).isVisible();
+        assertThat(transactionsPage.getNpgwReference()).isVisible();
 
         Allure.step("Verify: 'Merchant reference' is visible ");
         assertThat(transactionsPage.getMerchantReference()).isVisible();
