@@ -787,7 +787,7 @@ public class TransactionsPageTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Transactions Search")
     @Description("Verify that 'NPGW reference' and 'Merchant reference' fields appear when clicking on 'Trx IDs'.")
-    public void testSearchOptionsVisibleAfterClickingTrxId() {
+    public void testSearchOptionsVisibleAfterClickingTrxIds() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .clickSearchTrxIDsButton();
