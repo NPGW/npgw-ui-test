@@ -783,7 +783,7 @@ public class TransactionsPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("738")
+    @TmsLink("851")
     @Epic("Transactions")
     @Feature("Transactions Search")
     @Description("Verify that 'NPGW reference' and 'Merchant reference' fields appear when clicking on 'Trx IDs'.")
