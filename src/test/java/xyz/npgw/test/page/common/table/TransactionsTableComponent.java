@@ -12,10 +12,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
+
+    private final Locator refundTransactionButton = getByTestId("RefundTransactionButton");
 
     private final Locator npgwReference = getRows().getByRole(AriaRole.LINK);
 
@@ -60,6 +64,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDateTime dateTimeFrom = LocalDate.parse(dateFrom, formatter).atStartOfDay();
         LocalDateTime dateTimeTo = LocalDate.parse(dateTo, formatter).plusDays(1).atStartOfDay();
+
         return getAllCreationDates()
                 .stream()
                 .allMatch(date -> date.isAfter(dateTimeFrom) && date.isBefore(dateTimeTo));
@@ -67,8 +72,32 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     public String getFirstRowCardType() {
         getFirstRowCell("Card type").getByRole(AriaRole.IMG).hover();
+
         return locator("[data-slot='content']").textContent();
     }
+
+    public List<String> getAllTransactionsStatusList() {
+        getByRole(AriaRole.BUTTON, "next page button").waitFor();
+
+        return getColumnValuesFromAllPages("Status", Function.identity());
+    }
+
+    public List<Boolean> getRefundButtonVisibilityFromAllPages() {
+        selectRowsPerPageOption("100");
+        goToFirstPageIfNeeded();
+
+        List<Boolean> results = new ArrayList<>();
+        do {
+            List<Locator> cells = getColumnCells("Actions");
+            for (Locator cell : cells) {
+                boolean isVisible = cell.locator(refundTransactionButton).isVisible();
+                results.add(isVisible);
+            }
+        } while (goToNextPage());
+
+        return results;
+    }
+
 
     public List<String> getCardTypeColumnValues() {
         Locator imgs = getRows()
