@@ -3,11 +3,14 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.system.AcquirersPage;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 import xyz.npgw.test.page.system.GatewayPage;
+
+import java.time.LocalTime;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -31,6 +34,8 @@ public class MenuComponent extends BaseComponent {
 
     @Step("Click 'Acquirers' tab")
     public AcquirersPage clickAcquirersTab() {
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
+        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         acquirersTab.click();
         assertThat(acquirersTab).hasAttribute("data-selected", "true");
 
