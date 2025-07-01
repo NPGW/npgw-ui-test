@@ -307,7 +307,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     }
 
     @Step("Click Search 'Trx IDs' button")
-    public TransactionsPage clickSearchTrxIDsButton() {
+    public TransactionsPage clickSearchTrxIdsButton() {
         searchTrxIds.click();
 
         return this;
