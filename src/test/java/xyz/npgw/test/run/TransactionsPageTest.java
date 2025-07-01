@@ -87,7 +87,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Search 'Trx Ids'  is visible");
-        assertThat(transactionsPage.getSearchTrxIDs()).isVisible();
+        assertThat(transactionsPage.getSearchTrxIds()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
