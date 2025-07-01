@@ -609,7 +609,7 @@ public class TeamPageTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-//                .getAlert().clickCloseButton()
+                .getAlert().clickCloseButton()
                 .getAlert().waitUntilAlertIsHidden()
                 .waitForUserPresence(getApiRequestContext(), companyAdmin, getCompanyName())
                 .clickAddUserButton()
