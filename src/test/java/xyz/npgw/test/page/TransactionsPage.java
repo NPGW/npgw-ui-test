@@ -304,8 +304,6 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
-
-
     @Step("Select Card type '{value}' from dropdown menu")
     public TransactionsPage selectCardType(String value) {
         cardTypeSelector.click();
