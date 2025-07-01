@@ -33,6 +33,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator currencySelector = getByLabelExact("Currency");
     private final Locator cardTypeSelector = getByLabelExact("Card type");
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
+    private final Locator searchTrxIDs = getByRole(AriaRole.BUTTON, "Trx IDs");
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
@@ -302,6 +303,8 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
         return this;
     }
+
+
 
     @Step("Select Card type '{value}' from dropdown menu")
     public TransactionsPage selectCardType(String value) {
