@@ -244,12 +244,12 @@ public class GatewayPageTest extends BaseTest {
 //                .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
-        assertThat(page.getMerchantValue()).hasText(expectedBusinessUnitsList[2]);
-        assertThat(page.getAcquirerValue()).hasText(ACQUIRER.acquirerCode());
-        assertThat(page.getAcquirerConfigValue()).hasText(ACQUIRER.acquirerConfig());
-        assertThat(page.getAcquirerStatusValue()).hasText("Active");
-        assertThat(page.getAcquirerCurrencyValue()).hasText("USD, EUR");
-        assertThat(page.getAcquirerPriorityValue()).hasText("0");
+        assertThat(page.getMerchantFirstRowValue()).hasText(expectedBusinessUnitsList[2]);
+        assertThat(page.getAcquirerFirstRowValue()).hasText(ACQUIRER.acquirerCode());
+        assertThat(page.getAcquirerConfigFirstRowValue()).hasText(ACQUIRER.acquirerConfig());
+        assertThat(page.getAcquirerStatusFirstRowValue()).hasText("Active");
+        assertThat(page.getAcquirerCurrencyFirstRowValue()).hasText("USD, EUR");
+        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
     }
 
     @Test
@@ -271,15 +271,14 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Check that the first created acquirer priority is 0");
-        assertThat(page.getAcquirerPriorityValue()).hasText("0");
-        assertThat(page.getAcquirerNameValue()).hasText(ACQUIRER.acquirerDisplayName());
+        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
+        assertThat(page.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.acquirerDisplayName());
 
-        page.clickMoveMerchantAcquirerDownButton();
-               // .getAlert().waitUntilSuccessAlertIsGone();
+        page.clickMoveMerchantAcquirerDownButton(0);
 
         Allure.step("Check that the second created acquirer priority is 0 now");
-        assertThat(page.getAcquirerPriorityValue()).hasText("0");
-        assertThat(page.getAcquirerNameValue()).hasText(ACQUIRER_MOVE.acquirerDisplayName());
+        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
+        assertThat(page.getAcquirerNameFirstRowValue()).hasText(ACQUIRER_MOVE.acquirerDisplayName());
     }
 
     @Test
