@@ -790,7 +790,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testSearchOptionsVisibleAfterClickingTrxIds() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickSearchTrxIDsButton();
+                .clickSearchTrxIdsButton();
 
         Allure.step("Verify: 'NPGW reference' is visible ");
         assertThat(transactionsPage.getNpgwReference()).isVisible();
