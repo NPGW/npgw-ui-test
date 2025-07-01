@@ -782,6 +782,22 @@ public class TransactionsPageTest extends BaseTest {
         }
     }
 
+    @Test
+    @TmsLink("738")
+    @Epic("Transactions")
+    @Feature("Transactions Search")
+    @Description("Verify that NPGW reference and Merchant reference fields appear when clicking on Trx IDs.")
+    public void testSearchOptionsVisibleAfterClickingTrxId() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .clickSearchTrxIDsButton();
+
+        Allure.step("Verify: Transaction details dialog is closed ");
+        assertThat(transactionsPage.getDialog()).not().isAttached();
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {
