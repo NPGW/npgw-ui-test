@@ -39,7 +39,9 @@ build/
 access.properties
 browser.properties
 /.allure/
+/test-output/
 *.puml
-*/.env
+.env
+.properties
 *.dockerfile
 docker-compose*.yml
