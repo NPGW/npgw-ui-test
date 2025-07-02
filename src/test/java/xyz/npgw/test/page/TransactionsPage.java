@@ -323,7 +323,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
-    @Step("Type '{value}' into 'NPGW reference' field")
+    @Step("Fill '{value}' into 'NPGW reference' field")
     public TransactionsPage fillNpgwReference(String value) {
         npgwReferenceField.fill(value);
         return this;
