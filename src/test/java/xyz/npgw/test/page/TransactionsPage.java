@@ -343,7 +343,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
-    @Step("Click TrxId pencilIcon")
+    @Step("Click TrxId Pencil Icon")
     public TransactionsPage clickTrxIdPencilIcon() {
         trxIdPencil.click();
 
