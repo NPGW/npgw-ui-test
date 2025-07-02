@@ -39,9 +39,10 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator trxIdClear = getByRoleExact(AriaRole.BUTTON, "close chip");
     private final Locator trxIdPencil = locator("span:has-text('Trx Id')");
     private final Locator npgwReference = getByLabelExact("NPGW reference");
-    private final Locator npgwReferenceClear = npgwReference.locator("clear input");
+    private final Locator npgwReferenceClear = getByRole(AriaRole.BUTTON, "clear input").first();
 
     private final Locator merchantReference = getByLabelExact("Merchant reference");
+    private final Locator merchantReferenceClear = getByRole(AriaRole.BUTTON, "clear input").last();
 
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");

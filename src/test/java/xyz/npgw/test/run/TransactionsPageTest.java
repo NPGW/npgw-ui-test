@@ -834,9 +834,14 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(tableTransaction).hasCount(1);
         assertThat(tableTransaction).containsText(npgwReferenceText1);
 
+        getPage().waitForTimeout(3000);
+
         transactionsPage
-                .clickTrxIdPencil()
-//                .clickNpgwReferenceClear()
+                .clickTrxIdPencil();
+
+        getPage().waitForTimeout(3000);
+
+        transactionsPage.clickNpgwReferenceClear()
 //                .enterNpgwReference(npgwReferenceText2)
 //                .clickTrxIdButton()
                 ;
