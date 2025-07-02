@@ -32,6 +32,9 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     private final Locator resetFilterButton = locator("[data-icon='xmark']");
     private final Locator addMerchantAcquirer = locator("[data-icon='circle-plus']");
     private final Locator addMerchantAcquirerButton = getByTestId("AddMerchantAcquirerButton");
+    private final Locator dialog = getPage().locator("section[role='dialog']");
+    private final Locator submitButton = dialog.locator("button.bg-primary");
+
 
     public GatewayPage(Page page) {
         super(page);
@@ -71,5 +74,12 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
         addMerchantAcquirerButton.click();
 
         return new AddMerchantAcquirerDialog(getPage());
+    }
+
+    @Step("Click on submit deactivate button ")
+    public GatewayPage clickSubmitButton() {
+        submitButton.click();
+
+        return new GatewayPage(getPage());
     }
 }
