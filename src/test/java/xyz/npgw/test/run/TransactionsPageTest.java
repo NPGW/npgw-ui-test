@@ -795,10 +795,10 @@ public class TransactionsPageTest extends BaseTest {
                 .clickSearchTrxIdsField();
 
         Allure.step("Verify: 'NPGW reference' is visible ");
-        assertThat(transactionsPage.getNpgwReference()).isVisible();
+        assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
 
         Allure.step("Verify: 'Merchant reference' is visible ");
-        assertThat(transactionsPage.getMerchantReference()).isVisible();
+        assertThat(transactionsPage.getMerchantReferenceField()).isVisible();
     }
 
     @Test
