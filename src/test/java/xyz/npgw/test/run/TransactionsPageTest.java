@@ -86,6 +86,9 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Status selector is visible");
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
+        Allure.step("Verify: Search 'Trx Ids'  is visible");
+        assertThat(transactionsPage.getSearchTrxIds()).isVisible();
+
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
 
@@ -95,11 +98,11 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: Apply data button is visible");
         assertThat(transactionsPage.getRefreshDataButton()).isVisible();
 
-        Allure.step("Verify: Settings button is visible");
-        assertThat(transactionsPage.getSettingsButton()).isVisible();
-
         Allure.step("Verify: Download button is visible");
         assertThat(transactionsPage.getDownloadButton()).isVisible();
+
+        Allure.step("Verify: Settings button is visible");
+        assertThat(transactionsPage.getSettingsButton()).isVisible();
     }
 
     @Test
@@ -777,6 +780,23 @@ public class TransactionsPageTest extends BaseTest {
 
             transactionDetails.clickCloseIcon();
         }
+    }
+
+    @Test
+    @TmsLink("851")
+    @Epic("Transactions")
+    @Feature("Transactions Search")
+    @Description("Verify that 'NPGW reference' and 'Merchant reference' fields appear when clicking on 'Trx IDs'.")
+    public void testSearchOptionsVisibleAfterClickingTrxIds() {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .clickSearchTrxIdsButton();
+
+        Allure.step("Verify: 'NPGW reference' is visible ");
+        assertThat(transactionsPage.getNpgwReference()).isVisible();
+
+        Allure.step("Verify: 'Merchant reference' is visible ");
+        assertThat(transactionsPage.getMerchantReference()).isVisible();
     }
 
     @AfterClass
