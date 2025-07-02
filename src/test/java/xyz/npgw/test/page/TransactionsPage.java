@@ -328,7 +328,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
-    @Step("Click Button 'Trx Id' button")
+    @Step("Click 'Trx Id' button")
     public TransactionsPage clickTrxIdAppliedButton() {
         trxIdAppliedButton.click();
 
