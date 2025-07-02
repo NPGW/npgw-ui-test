@@ -11,8 +11,6 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
 
     public GatewayTableComponent(Page page) {
         super(page);
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
     }
 
     @Override
