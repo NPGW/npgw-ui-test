@@ -833,7 +833,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(filteredRows1).containsText(npgwReferenceText1);
 
         Locator filteredRows2 = transactionsPage
-                .clickTrxIdPencil()
+                .clickTrxIdPencilIcon()
                 .clickNpgwReferenceClearIcon()
                 .typeNpgwReference(npgwReferenceText2)
                 .clickTrxIdAppliedButton()
