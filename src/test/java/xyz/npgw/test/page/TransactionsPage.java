@@ -33,10 +33,17 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator currencySelector = getByLabelExact("Currency");
     private final Locator cardTypeSelector = getByLabelExact("Card type");
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
-    private final Locator searchTrxIds = getByRole(AriaRole.BUTTON, "Trx IDs");
-    private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
+
+    private final Locator searchTrxIdsField = getByRole(AriaRole.BUTTON, "Trx IDs");
+    private final Locator trxIdButton = locator("span:has-text('Trx Id')");
+    private final Locator trxIdClear = getByRoleExact(AriaRole.BUTTON, "close chip");
+    private final Locator trxIdPencil = locator("span:has-text('Trx Id')");
     private final Locator npgwReference = getByLabelExact("NPGW reference");
+    private final Locator npgwReferenceClear = npgwReference.locator("clear input");
+
     private final Locator merchantReference = getByLabelExact("Merchant reference");
+
+    private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
     private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage");
@@ -307,8 +314,8 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     }
 
     @Step("Click Search 'Trx IDs' button")
-    public TransactionsPage clickSearchTrxIdsButton() {
-        searchTrxIds.click();
+    public TransactionsPage clickSearchTrxIdsField() {
+        searchTrxIdsField.click();
 
         return this;
     }
@@ -316,6 +323,31 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     @Step("Enter '{value}' into 'NPGW reference' field")
     public TransactionsPage enterNpgwReference(String value) {
         npgwReference.fill(value);
+        return this;
+    }
+
+    @Step("Click Button 'Trx Id' button")
+    public TransactionsPage clickTrxIdButton() {
+        trxIdButton.click();
+
+        return this;
+    }
+
+    public TransactionsPage clickTrxIdClear() {
+        trxIdClear.click();
+
+        return this;
+    }
+
+    public TransactionsPage clickTrxIdPencil() {
+        trxIdPencil.click();
+
+        return this;
+    }
+
+    public TransactionsPage clickNpgwReferenceClear() {
+        npgwReferenceClear.click();
+
         return this;
     }
 

@@ -89,7 +89,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Search 'Trx Ids'  is visible");
-        assertThat(transactionsPage.getSearchTrxIds()).isVisible();
+        assertThat(transactionsPage.getSearchTrxIdsField()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -792,7 +792,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testSearchOptionsVisibleAfterClickingTrxIds() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickSearchTrxIdsButton();
+                .clickSearchTrxIdsField();
 
         Allure.step("Verify: 'NPGW reference' is visible ");
         assertThat(transactionsPage.getNpgwReference()).isVisible();
@@ -814,34 +814,46 @@ public class TransactionsPageTest extends BaseTest {
 
         List<Locator> npgwReference = transactionsPage.getTable().getColumnCells("NPGW Reference");
 
-        int index = new Random().nextInt(npgwReference.size());
-        String npgwReferenceText = npgwReference.get(index).innerText();
+        int index1 = new Random().nextInt(npgwReference.size());
+        int index2;
+        do {
+            index2 = new Random().nextInt(npgwReference.size());
+        } while (index2 == index1);
+
+        String npgwReferenceText1 = npgwReference.get(index1).innerText();
+        String npgwReferenceText2 = npgwReference.get(index2).innerText();
 
         transactionsPage
-                .clickSearchTrxIdsButton();
+                .clickSearchTrxIdsField()
+                .enterNpgwReference(npgwReferenceText1)
+                .clickTrxIdButton();
 
-        getPage().waitForTimeout(2000);
+        Locator tableTransaction = transactionsPage.getTable().getRows();
+
+        Allure.step("Verify: Table has only one row with the expected NPGW reference N1");
+        assertThat(tableTransaction).hasCount(1);
+        assertThat(tableTransaction).containsText(npgwReferenceText1);
 
         transactionsPage
-                .enterNpgwReference(npgwReferenceText);
-
-        getPage().waitForTimeout(2000);
-
-
-        Allure.step("Verify: Table has only one row with the expected NPGW reference");
-//        assertThat(transactionsPage.getTable().getRows()).hasCount(1);
-//        assertThat(transactionsPage.getTable().getColumnCells("NPGW Reference")).hasCount(1);
-System.out.print(transactionsPage.getTable().getColumnCells("NPGW Reference"));
-
-//        getPage().pause();
+                .clickTrxIdPencil()
+//                .clickNpgwReferenceClear()
+//                .enterNpgwReference(npgwReferenceText2)
+//                .clickTrxIdButton()
+                ;
 //
-//        transactionsPage.clickSearchTrxIdsButton();
+//        Allure.step("Verify: Table has only one row with the expected NPGW reference");
+//        assertThat(tableTransaction).hasCount(1);
+//        assertThat(tableTransaction).containsText(npgwReferenceText2);
 //
-//        Allure.step("Verify: 'NPGW reference' is visible ");
-//        assertThat(transactionsPage.getNpgwReference()).isVisible();
 //
-//        Allure.step("Verify: 'Merchant reference' is visible ");
-//        assertThat(transactionsPage.getMerchantReference()).isVisible();
+//        Locator tableTransactionNotFiltered = transactionsPage
+//                .clickTrxIdClear()
+//                .getTable().getRows();
+//
+//        Allure.step("Verify: Table has only one row with the expected NPGW reference");
+//        assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
+
+        getPage().waitForTimeout(6000);
     }
 
     @AfterClass
