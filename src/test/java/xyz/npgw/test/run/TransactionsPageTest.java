@@ -89,7 +89,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Search 'Trx Ids'  is visible");
-        assertThat(transactionsPage.getSearchTrxIdsField()).isVisible();
+        assertThat(transactionsPage.getSearchTrxIdsButton()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -792,7 +792,7 @@ public class TransactionsPageTest extends BaseTest {
     public void testSearchOptionsVisibleAfterClickingTrxIds() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .clickSearchTrxIdsField();
+                .clickSearchTrxIdsButton();
 
         Allure.step("Verify: 'NPGW reference' is visible ");
         assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
@@ -824,9 +824,9 @@ public class TransactionsPageTest extends BaseTest {
         String npgwReferenceText2 = npgwReference.get(index2).innerText();
 
         transactionsPage
-                .clickSearchTrxIdsField()
-                .enterNpgwReference(npgwReferenceText1)
-                .clickTrxIdButton();
+                .clickSearchTrxIdsButton()
+                .typeNpgwReference(npgwReferenceText1)
+                .clickTrxIdAppliedButton();
 
         Locator tableTransaction = transactionsPage.getTable().getRows();
 
@@ -836,16 +836,16 @@ public class TransactionsPageTest extends BaseTest {
 
         transactionsPage
                 .clickTrxIdPencil()
-                .clickNpgwReferenceClear()
-                .enterNpgwReference(npgwReferenceText2)
-                .clickTrxIdButton();
+                .clickNpgwReferenceClearIcon()
+                .typeNpgwReference(npgwReferenceText2)
+                .clickTrxIdAppliedButton();
 
         Allure.step("Verify: Table has only one row with the N2 NPGW reference");
         assertThat(tableTransaction).hasCount(1);
         assertThat(tableTransaction).containsText(npgwReferenceText2);
 
         Locator tableTransactionNotFiltered = transactionsPage
-                .clickTrxIdClear()
+                .clickTrxIdClearIcon()
                 .getTable().getRows();
 
         Allure.step("Verify: Table contains more than one row");
