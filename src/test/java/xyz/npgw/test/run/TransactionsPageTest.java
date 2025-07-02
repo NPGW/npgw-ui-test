@@ -823,26 +823,25 @@ public class TransactionsPageTest extends BaseTest {
         String npgwReferenceText1 = npgwReference.get(index1).innerText();
         String npgwReferenceText2 = npgwReference.get(index2).innerText();
 
-        transactionsPage
+        Locator filteredRows1 = transactionsPage
                 .clickSearchTrxIdsButton()
                 .typeNpgwReference(npgwReferenceText1)
-                .clickTrxIdAppliedButton();
-
-        Locator tableTransaction = transactionsPage.getTable().getRows();
+                .clickTrxIdAppliedButton().getTable().getRows();
 
         Allure.step("Verify: Table has only one row with the N1 NPGW reference");
-        assertThat(tableTransaction).hasCount(1);
-        assertThat(tableTransaction).containsText(npgwReferenceText1);
+        assertThat(filteredRows1).hasCount(1);
+        assertThat(filteredRows1).containsText(npgwReferenceText1);
 
-        transactionsPage
+        Locator filteredRows2 = transactionsPage
                 .clickTrxIdPencil()
                 .clickNpgwReferenceClearIcon()
                 .typeNpgwReference(npgwReferenceText2)
-                .clickTrxIdAppliedButton();
+                .clickTrxIdAppliedButton()
+                .getTable().getRows();
 
         Allure.step("Verify: Table has only one row with the N2 NPGW reference");
-        assertThat(tableTransaction).hasCount(1);
-        assertThat(tableTransaction).containsText(npgwReferenceText2);
+        assertThat(filteredRows2).hasCount(1);
+        assertThat(filteredRows2).containsText(npgwReferenceText2);
 
         Locator tableTransactionNotFiltered = transactionsPage
                 .clickTrxIdClearIcon()
