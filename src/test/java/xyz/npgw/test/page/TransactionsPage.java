@@ -324,7 +324,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     }
 
     @Step("Type '{value}' into 'NPGW reference' field")
-    public TransactionsPage typeNpgwReference(String value) {
+    public TransactionsPage fillNpgwReference(String value) {
         npgwReferenceField.fill(value);
         return this;
     }

@@ -825,7 +825,7 @@ public class TransactionsPageTest extends BaseTest {
 
         Locator filteredRows1 = transactionsPage
                 .clickSearchTrxIdsButton()
-                .typeNpgwReference(npgwReferenceText1)
+                .fillNpgwReference(npgwReferenceText1)
                 .clickTrxIdAppliedButton().getTable().getRows();
 
         Allure.step("Verify: Table has only one row with the N1 NPGW reference");
@@ -835,7 +835,7 @@ public class TransactionsPageTest extends BaseTest {
         Locator filteredRows2 = transactionsPage
                 .clickTrxIdPencilIcon()
                 .clickNpgwReferenceClearIcon()
-                .typeNpgwReference(npgwReferenceText2)
+                .fillNpgwReference(npgwReferenceText2)
                 .clickTrxIdAppliedButton()
                 .getTable().getRows();
 
