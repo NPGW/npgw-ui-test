@@ -20,18 +20,21 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
         GatewayTableTrait {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
-    private final Locator merchantValue = locator("[data-key='00merchantId']");
-    private final Locator acquirerValue = locator("[data-key='00acquirerCode']");
-    private final Locator acquirerConfigValue = locator("[data-key='00acquirerConfig']");
-    private final Locator acquirerStatusValue = locator("[data-key='00isActive']");
-    private final Locator acquirerPriorityValue = locator("[data-key='00priority']");
-    private final Locator acquirerCurrencyValue = locator("[data-key='00currencyList']");
+    private final Locator merchantFirstRowValue = locator("[data-key='00merchantId']");
+    private final Locator acquirerFirstRowValue = locator("[data-key='00acquirerCode']");
+    private final Locator acquirerConfigFirstRowValue = locator("[data-key='00acquirerConfig']");
+    private final Locator acquirerStatusFirstRowValue = locator("[data-key='00isActive']");
+    private final Locator acquirerPriorityFirstRowValue = locator("[data-key='00priority']");
+    private final Locator acquirerCurrencyFirstRowValue = locator("[data-key='00currencyList']");
+    private final Locator acquirerNameFirstRowValue = locator("[data-key='00acquirerDisplayName']");
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
     private final Locator resetFilterButton = locator("[data-icon='xmark']");
     private final Locator addMerchantAcquirer = locator("[data-icon='circle-plus']");
     private final Locator addMerchantAcquirerButton = getByTestId("AddMerchantAcquirerButton");
+    private final Locator moveMerchantAcquirerDownButton = getByTestId("MoveMerchantAcquirerDownButton");
+    private final Locator moveMerchantAcquirerUpButton = getByTestId("MoveMerchantAcquirerUpButton");
     private final Locator dialog = getPage().locator("section[role='dialog']");
     private final Locator submitButton = dialog.locator("button.bg-primary");
 
@@ -74,6 +77,20 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
         addMerchantAcquirerButton.click();
 
         return new AddMerchantAcquirerDialog(getPage());
+    }
+
+    @Step("Click on MoveMerchantAcquirerDownButton to move them down with less priority")
+    public GatewayPage clickMoveMerchantAcquirerDownButton(int row) {
+        moveMerchantAcquirerDownButton.nth(row).click();
+
+        return this;
+    }
+
+    @Step("Click on MoveMerchantAcquirerUpButton to move them up with more  priority")
+    public GatewayPage clickMoveMerchantAcquirerUpButton(int row) {
+        moveMerchantAcquirerUpButton.nth(row).click();
+
+        return this;
     }
 
     @Step("Click on submit deactivate button ")

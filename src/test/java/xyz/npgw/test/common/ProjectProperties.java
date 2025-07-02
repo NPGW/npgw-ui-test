@@ -16,6 +16,7 @@ public final class ProjectProperties {
     private static final Properties properties;
 
     private static final String CI_RUN = "CI_RUN";
+    private static final String DOCKER_RUN = "DOCKER_RUN";
     private static final String ENV_APP_OPTIONS = "APP_OPTIONS";
 
     private static final String PREFIX_PROP = "local.";
@@ -38,15 +39,13 @@ public final class ProjectProperties {
     private static final String CLOSE_BROWSER_IF_ERROR = PREFIX_PROP + "closeBrowserIfError";
     private static final String ARTEFACT_DIR = PREFIX_PROP + "artefactDir";
     private static final String DEFAULT_TIMEOUT = PREFIX_PROP + "defaultTimeout";
-    private static final String FAIL_FAST = PREFIX_PROP + "failFast";
-    private static final String SKIP_MODE = PREFIX_PROP + "skipMode";
     private static final String ADDITIONAL_RETRIES = PREFIX_PROP + "additionalRetries";
     private static final String COLOR_SCHEME = PREFIX_PROP + "colorScheme";
     private static final String DEBUG = PREFIX_PROP + "DEBUG";
 
     static {
         properties = new Properties();
-        if (System.getenv(CI_RUN) != null) {
+        if ((System.getenv(CI_RUN) != null) || (System.getenv(DOCKER_RUN) != null)) {
             if (System.getenv(ENV_APP_OPTIONS) != null) {
                 for (String option : System.getenv(ENV_APP_OPTIONS).split(";")) {
                     String[] optionArr = option.trim().split("=");
@@ -54,12 +53,12 @@ public final class ProjectProperties {
                 }
             }
         } else {
-            String configPath = System.getProperty("configPath", "./config/.env");
+            String configPath = System.getProperty("configPath", ".properties");
             try (InputStream inputStream = Files.newInputStream(Paths.get(configPath))) {
                 properties.load(inputStream);
             } catch (IOException e) {
-                log.error("The '.env' file not found in ./config/ directory.");
-                log.error("You need to create it from ./config/.env.TEMPLATE file.");
+                log.error("The '.properties' file not found in project directory.");
+                log.error("You need to create it from .properties.TEMPLATE file.");
                 throw new RuntimeException(e);
             }
         }
@@ -69,96 +68,98 @@ public final class ProjectProperties {
         throw new UnsupportedOperationException();
     }
 
+    private static String getValue(String propName) {
+        return System.getenv(propName.replace('.', '_').toUpperCase());
+    }
+
     public static String getBaseUrl() {
-        return properties.getProperty(BASE_URL, "");
+        return properties.getProperty(BASE_URL,
+                getValue(BASE_URL));
     }
 
     public static String getBrowserType() {
-        return properties.getProperty(BROWSER_TYPE.toUpperCase(), "CHROMIUM");
+        return properties.getProperty(BROWSER_TYPE,
+                getValue(BROWSER_TYPE));
     }
 
     public static boolean isHeadlessMode() {
-        return Boolean.parseBoolean(properties.getProperty(HEADLESS_MODE, "true"));
+        return Boolean.parseBoolean(properties.getProperty(HEADLESS_MODE,
+                getValue(HEADLESS_MODE)));
     }
 
     public static Double getSlowMoMode() {
-        return Double.valueOf(properties.getProperty(SLOW_MO_MODE, "0"));
+        return Double.valueOf(properties.getProperty(SLOW_MO_MODE,
+                getValue(SLOW_MO_MODE)));
     }
 
     public static int getViewportWidth() {
-        return Integer.parseInt(properties.getProperty(VIEWPORT_WIDTH, "1920"));
+        return Integer.parseInt(properties.getProperty(VIEWPORT_WIDTH,
+                getValue(VIEWPORT_WIDTH)));
     }
 
     public static int getViewportHeight() {
-        return Integer.parseInt(properties.getProperty(VIEWPORT_HEIGHT, "964"));
+        return Integer.parseInt(properties.getProperty(VIEWPORT_HEIGHT,
+                getValue(VIEWPORT_HEIGHT)));
     }
 
     public static boolean isTracingMode() {
-        return Boolean.parseBoolean(properties.getProperty(TRACING_MODE, "true"));
-    }
-
-    public static void setTracingMode(boolean mode) {
-        properties.setProperty(TRACING_MODE, String.valueOf(mode));
+        return Boolean.parseBoolean(properties.getProperty(TRACING_MODE,
+                getValue(TRACING_MODE)));
     }
 
     public static boolean isVideoMode() {
-        return Boolean.parseBoolean(properties.getProperty(VIDEO_MODE, "true"));
-    }
-
-    public static void setVideoMode(boolean mode) {
-        properties.setProperty(VIDEO_MODE, String.valueOf(mode));
+        return Boolean.parseBoolean(properties.getProperty(VIDEO_MODE,
+                getValue(VIDEO_MODE)));
     }
 
     public static int getVideoWidth() {
-        return Integer.parseInt(properties.getProperty(VIDEO_WIDTH, "1920"));
+        return Integer.parseInt(properties.getProperty(VIDEO_WIDTH,
+                getValue(VIDEO_WIDTH)));
     }
 
     public static int getVideoHeight() {
-        return Integer.parseInt(properties.getProperty(VIDEO_HEIGHT, "957"));
+        return Integer.parseInt(properties.getProperty(VIDEO_HEIGHT,
+                getValue(VIDEO_HEIGHT)));
     }
 
     public static boolean closeBrowserIfError() {
-        return Boolean.parseBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR, "true"));
+        return Boolean.parseBoolean(properties.getProperty(CLOSE_BROWSER_IF_ERROR,
+                getValue(CLOSE_BROWSER_IF_ERROR)));
     }
 
     public static String getArtefactDir() {
-        return properties.getProperty(ARTEFACT_DIR, "target/artefact");
+        return properties.getProperty(ARTEFACT_DIR,
+                getValue(ARTEFACT_DIR));
     }
 
     public static double getDefaultTimeout() {
-        return Double.parseDouble(properties.getProperty(DEFAULT_TIMEOUT, "5000"));
+        return Double.parseDouble(properties.getProperty(DEFAULT_TIMEOUT,
+                getValue(DEFAULT_TIMEOUT)));
     }
 
     public static String getEmail() {
-        return properties.getProperty(EMAIL, "");
+        return properties.getProperty(EMAIL,
+                getValue(EMAIL));
     }
 
     public static String getPassword() {
-        return properties.getProperty(PASSWORD, "");
-    }
-
-    public static boolean isFailFast() {
-        return Boolean.parseBoolean(properties.getProperty(FAIL_FAST, "false"));
-    }
-
-    public static boolean isSkipMode() {
-        return Boolean.parseBoolean(properties.getProperty(SKIP_MODE, "false"));
-    }
-
-    public static void setSkipMode(boolean mode) {
-        properties.setProperty(SKIP_MODE, String.valueOf(mode));
+        return properties.getProperty(PASSWORD,
+                getValue(PASSWORD));
     }
 
     public static int getAdditionalRetries() {
-        return Integer.parseInt(properties.getProperty(ADDITIONAL_RETRIES, "0"));
+        return Integer.parseInt(properties.getProperty(ADDITIONAL_RETRIES,
+                getValue(ADDITIONAL_RETRIES)));
     }
 
     public static ColorScheme getColorScheme() {
-        return ColorScheme.valueOf(properties.getProperty(COLOR_SCHEME, "DARK").toUpperCase());
+        return ColorScheme.valueOf(properties.getProperty(COLOR_SCHEME,
+                getValue(COLOR_SCHEME)).toUpperCase());
     }
 
     public static Map<String, String> getEnv() {
-        String debug = properties.getProperty(DEBUG, "");
+        String debug = properties.getProperty(DEBUG,
+                getValue(DEBUG));
         return debug.isEmpty() ? Map.of() : Map.of("DEBUG", debug);
     }
 }
