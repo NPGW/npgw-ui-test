@@ -830,35 +830,26 @@ public class TransactionsPageTest extends BaseTest {
 
         Locator tableTransaction = transactionsPage.getTable().getRows();
 
-        Allure.step("Verify: Table has only one row with the expected NPGW reference N1");
+        Allure.step("Verify: Table has only one row with the N1 NPGW reference");
         assertThat(tableTransaction).hasCount(1);
         assertThat(tableTransaction).containsText(npgwReferenceText1);
 
-        getPage().waitForTimeout(3000);
-
         transactionsPage
-                .clickTrxIdPencil();
+                .clickTrxIdPencil()
+                .clickNpgwReferenceClear()
+                .enterNpgwReference(npgwReferenceText2)
+                .clickTrxIdButton();
 
-        getPage().waitForTimeout(3000);
+        Allure.step("Verify: Table has only one row with the N2 NPGW reference");
+        assertThat(tableTransaction).hasCount(1);
+        assertThat(tableTransaction).containsText(npgwReferenceText2);
 
-        transactionsPage.clickNpgwReferenceClear()
-//                .enterNpgwReference(npgwReferenceText2)
-//                .clickTrxIdButton()
-                ;
-//
-//        Allure.step("Verify: Table has only one row with the expected NPGW reference");
-//        assertThat(tableTransaction).hasCount(1);
-//        assertThat(tableTransaction).containsText(npgwReferenceText2);
-//
-//
-//        Locator tableTransactionNotFiltered = transactionsPage
-//                .clickTrxIdClear()
-//                .getTable().getRows();
-//
-//        Allure.step("Verify: Table has only one row with the expected NPGW reference");
-//        assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
+        Locator tableTransactionNotFiltered = transactionsPage
+                .clickTrxIdClear()
+                .getTable().getRows();
 
-        getPage().waitForTimeout(6000);
+        Allure.step("Verify: Table has only one row with the expected NPGW reference");
+        assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
     }
 
     @AfterClass
