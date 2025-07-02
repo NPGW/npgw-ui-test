@@ -35,7 +35,8 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
 
     private final Locator searchTrxIdsButton = getByRole(AriaRole.BUTTON, "Trx IDs");
-    private final Locator trxIdAppliedButton = locator("button").filter(new Locator.FilterOptions().setHasText("Trx Id"));
+    private final Locator trxIdAppliedButton =
+            locator("button").filter(new Locator.FilterOptions().setHasText("Trx Id"));
     private final Locator trxIdPencil = getByRole(AriaRole.BUTTON, "Trx Id").locator("svg[data-icon='pencil']");
     private final Locator trxIdClearIcon = getByRoleExact(AriaRole.BUTTON, "close chip");
 
