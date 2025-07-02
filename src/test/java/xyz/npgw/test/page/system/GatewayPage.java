@@ -72,4 +72,11 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
 
         return new AddMerchantAcquirerDialog(getPage());
     }
+
+    @Step("Click 'Refresh data' button")
+    public GatewayPage clickRefreshDataButton() {
+        getByTestId("ApplyFilterButtonsMerchantsPage").click();
+
+        return this;
+    }
 }

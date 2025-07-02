@@ -210,8 +210,11 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success alert appears after deleting the company analyst");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deleted successfully");
 
-//        Allure.step("Verify: deleted company analyst is no longer present in the users table");
-//        assertFalse(teamPage.getTable().isUserPresentInTable(companyAnalystEmail));
+        teamPage
+                .getTable().waitUntilTableRowCountChanges();
+
+        Allure.step("Verify: deleted company analyst is no longer present in the users table");
+        assertFalse(teamPage.getTable().isUserPresentInTable(companyAnalystEmail));
     }
 
     @Test

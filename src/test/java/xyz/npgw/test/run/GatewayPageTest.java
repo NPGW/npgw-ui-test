@@ -38,7 +38,21 @@ public class GatewayPageTest extends BaseTest {
             true,
             "%s acquirer for gateway".formatted(RUN_ID),
             "4321");
+
+    private static final Acquirer ACQUIRER2 = new Acquirer(
+            "Acquirer2 display name",
+            "acquirer mid",
+            "NGenius",
+            "default",
+            new Currency[]{Currency.USD},
+            new SystemConfig(),
+            true,
+            "%s acquirer2 for gateway".formatted(RUN_ID),
+            "4321");
+
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
+    private static final String COMPANY_NAME_DELETION_TEST = "%s company 112173".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_NAME_DELETION_TEST = "BU-1";
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
             "MerchantAcquirer"};
     private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
@@ -51,6 +65,10 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
+        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER2);
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
+        TestUtils.createBusinessUnit(
+                getApiRequestContext(), COMPANY_NAME_DELETION_TEST, BUSINESS_UNIT_NAME_DELETION_TEST);
     }
 
     @Test
@@ -281,12 +299,48 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertTrue(foundInactive, "New Merchant acquirer with status 'Inactive' not found.");
     }
 
+    @Test
+    @TmsLink("763")
+    @Epic("System/Gateway")
+    @Feature("Merchant acquirer")
+    @Description("Merchant acquirer can be successfully deleted and no longer appears in the table")
+    public void testDeleteMerchantAcquirer() {
+        GatewayPage gatewayPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME_DELETION_TEST)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME_DELETION_TEST)
+                .clickAddMerchantAcquirerButton()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickCreateButton()
+                .clickAddMerchantAcquirerButton()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER2.acquirerName())
+                .clickCreateButton()
+                .getTable().clickDeleteMerchantAcquirer(ACQUIRER2.acquirerDisplayName())
+                .clickDeleteButton();
+
+        Allure.step("Verify: Success deletion alert message is shown");
+        assertThat(gatewayPage.getAlert().getMessage())
+                .hasText("SUCCESSMerchant acquirer was deleted successfully");
+
+        List<String> acquirerList = gatewayPage
+                .getTable().waitUntilTableRowCountChanges()
+                .getTable().getColumnValues("Acquirer");
+
+        Allure.step("Verify: Deleted acquirer is no longer shown in the table");
+        Assert.assertListNotContainsObject(acquirerList, ACQUIRER2.acquirerDisplayName(),
+                "Deleted acquirer should no longer be present in the list");
+    }
+
+
     @AfterClass
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.acquirerName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER2.acquirerName());
         super.afterClass();
     }
 }
