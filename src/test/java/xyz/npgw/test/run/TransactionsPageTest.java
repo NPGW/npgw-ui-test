@@ -848,7 +848,7 @@ public class TransactionsPageTest extends BaseTest {
                 .clickTrxIdClear()
                 .getTable().getRows();
 
-        Allure.step("Verify: Table has only one row with the expected NPGW reference");
+        Allure.step("Verify: Table contains more than one row");
         assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
     }
 
