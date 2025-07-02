@@ -285,17 +285,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return allValues;
     }
 
-    public CurrentPageT waitUntilTableRowCountChanges() {
-        int beforeCount = getRows().count();
-
-        getPage().waitForCondition(() -> {
-            int afterCount = getRows().count();
-            return afterCount != beforeCount;
-        });
-
-        return getCurrentPage();
-    }
-
     public Locator getRowByText(String text) {
         locator("tr[data-first='true']").waitFor();
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));

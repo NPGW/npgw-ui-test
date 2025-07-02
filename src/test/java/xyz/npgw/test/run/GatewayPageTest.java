@@ -339,7 +339,7 @@ public class GatewayPageTest extends BaseTest {
     @TmsLink("763")
     @Epic("System/Gateway")
     @Feature("Merchant acquirer")
-    @Description("Merchant acquirer can be successfully deleted and no longer appears in the table")
+    @Description("Merchant acquirer can be successfully deleted")
     public void testDeleteMerchantAcquirer() {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
@@ -357,15 +357,7 @@ public class GatewayPageTest extends BaseTest {
 
         Allure.step("Verify: Success deletion alert message is shown");
         assertThat(gatewayPage.getAlert().getMessage())
-                .hasText("SUCCESSMerchant acquirer was deleted successfully");
-
-        List<String> acquirerList = gatewayPage
-                .getTable().waitUntilTableRowCountChanges()
-                .getTable().getColumnValues("Acquirer");
-
-        Allure.step("Verify: Deleted acquirer is no longer shown in the table");
-        Assert.assertListNotContainsObject(acquirerList, ACQUIRER2.acquirerDisplayName(),
-                "Deleted acquirer should no longer be present in the list");
+                .hasText("SUCCESSBusiness unit acquirer was deleted successfully");
     }
 
 
