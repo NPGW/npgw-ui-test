@@ -826,7 +826,8 @@ public class TransactionsPageTest extends BaseTest {
         Locator filteredRows1 = transactionsPage
                 .clickSearchTrxIdsButton()
                 .fillNpgwReference(npgwReferenceText1)
-                .clickTrxIdAppliedButton().getTable().getRows();
+                .clickTrxIdAppliedButton()
+                .getTable().getRows();
 
         Allure.step("Verify: Table has only one row with the N1 NPGW reference");
         assertThat(filteredRows1).hasCount(1);
