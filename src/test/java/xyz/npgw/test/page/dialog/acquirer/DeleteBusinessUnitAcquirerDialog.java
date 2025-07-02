@@ -6,9 +6,9 @@ import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.GatewayPage;
 
-public class DeleteMerchantAcquirerDialog extends BaseDialog<GatewayPage, DeleteMerchantAcquirerDialog> {
+public class DeleteBusinessUnitAcquirerDialog extends BaseDialog<GatewayPage, DeleteBusinessUnitAcquirerDialog> {
 
-    public DeleteMerchantAcquirerDialog(Page page) {
+    public DeleteBusinessUnitAcquirerDialog(Page page) {
         super(page);
     }
 
