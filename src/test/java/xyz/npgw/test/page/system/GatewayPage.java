@@ -12,7 +12,7 @@ import xyz.npgw.test.page.common.trait.GatewayTableTrait;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
-import xyz.npgw.test.page.dialog.acquirer.AddMerchantAcquirerDialog;
+import xyz.npgw.test.page.dialog.gateway.AddMerchantAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
@@ -38,9 +38,6 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     private final Locator addMerchantAcquirerButton = getByTestId("AddMerchantAcquirerButton");
     private final Locator moveMerchantAcquirerDownButton = getByTestId("MoveMerchantAcquirerDownButton");
     private final Locator moveMerchantAcquirerUpButton = getByTestId("MoveMerchantAcquirerUpButton");
-    private final Locator dialog = getPage().locator("section[role='dialog']");
-    private final Locator submitButton = dialog.locator("button.bg-primary");
-
 
     public GatewayPage(Page page) {
         super(page);
@@ -94,12 +91,5 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
         getByTestId("ApplyFilterButtonsMerchantsPage").click();
 
         return this;
-    }
-
-    @Step("Click on submit deactivate button ")
-    public GatewayPage clickSubmitButton() {
-        submitButton.click();
-
-        return new GatewayPage(getPage());
     }
 }
