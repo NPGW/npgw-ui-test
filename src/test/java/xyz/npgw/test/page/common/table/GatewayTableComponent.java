@@ -2,6 +2,7 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -15,7 +16,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
     private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton");
 
     @Getter
-    private final Locator acquirerStatus = locator("td > div.rounded-full");
+    private final Locator acquirerStatus = locator("[data-key*='isActive']").getByRole(AriaRole.GRIDCELL);;
 
     @Override
     protected GatewayPage getCurrentPage() {

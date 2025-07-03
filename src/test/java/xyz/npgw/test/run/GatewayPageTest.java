@@ -348,12 +348,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickSubmitButton();
 
         assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Active");
-
-
-
-
     }
-
 
     @AfterClass
     @Override
