@@ -3,8 +3,8 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.dialog.acquirer.DeleteBusinessUnitAcquirerDialog;
 import lombok.Getter;
+import xyz.npgw.test.page.dialog.acquirer.DeleteBusinessUnitAcquirerDialog;
 import xyz.npgw.test.page.dialog.gateway.ChangeMerchantAcquirerActivityDialog;
 import xyz.npgw.test.page.system.GatewayPage;
 

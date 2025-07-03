@@ -15,6 +15,7 @@ public class ChangeMerchantAcquirerActivityDialog extends BaseDialog<GatewayPage
     public ChangeMerchantAcquirerActivityDialog(Page page) {
         super(page);
     }
+
     @Override
     protected GatewayPage getReturnPage() {
         return new GatewayPage(getPage());
