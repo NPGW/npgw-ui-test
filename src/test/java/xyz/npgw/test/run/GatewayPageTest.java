@@ -363,7 +363,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
-                .clickAddMerchantAcquirerButton()
+                .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
                 .clickCreateButton()
                 .getTable().clickChangeMerchantAcquirerActivityButton()
