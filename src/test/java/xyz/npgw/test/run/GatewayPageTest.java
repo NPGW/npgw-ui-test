@@ -26,31 +26,11 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class GatewayPageTest extends BaseTest {
 
-    //    private static final Acquirer ACQUIRER = new Acquirer(
-//            "acquirer for gateway",
-//            "acquirer mid",
-//            "NGenius",
-//            "default",
-//            new Currency[]{Currency.USD, Currency.EUR},
-//            new SystemConfig(),
-//            true,
-//            "%s acquirer for gateway".formatted(RUN_ID),
-//            "4321");
     private static final Acquirer ACQUIRER = Acquirer.builder()
             .acquirerDisplayName("acquirer for gateway")
             .acquirerName("%s acquirer for gateway".formatted(RUN_ID))
             .acquirerMidMcc("4321")
             .build();
-    //    private static final Acquirer ACQUIRER_MOVE = new Acquirer(
-//            "acquirer for gateway Movable",
-//            "acquirer mid",
-//            "NGenius",
-//            "default",
-//            new Currency[]{Currency.USD, Currency.EUR},
-//            new SystemConfig(),
-//            true,
-//            "%s acquirer for gateway Movable".formatted(RUN_ID),
-//            "4321");
     private static final Acquirer ACQUIRER_MOVE = Acquirer.builder()
             .acquirerDisplayName("acquirer for gateway Movable")
             .acquirerName("%s acquirer for gateway Movable".formatted(RUN_ID))
