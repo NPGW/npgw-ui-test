@@ -73,7 +73,7 @@ public class TransactionDetailsTest extends BaseTest {
         Allure.step("Verify: Parameter 'Card number' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getCardNumberValue()).isHidden();
 
-        Allure.step("Verify: Parameter 'Expiry dattestCheckTransactionDetailse' is hidden after click on chevron in Card details field ");
+        Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getExpiryDateValue()).isHidden();
 
         transactionDetailsDialog
@@ -183,8 +183,7 @@ public class TransactionDetailsTest extends BaseTest {
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getTable().selectRowsPerPageOption("50");
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         int numberOfTransactions = transactionsPage.getTable().getNumberOfTransactionOnCurrentPage();
 
