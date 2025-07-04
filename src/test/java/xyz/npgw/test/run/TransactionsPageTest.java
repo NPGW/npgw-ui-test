@@ -596,7 +596,7 @@ public class TransactionsPageTest extends BaseTest {
     @TmsLink("851")
     @Epic("Transactions")
     @Feature("Transactions Search")
-    @Description("Verify that 'NPGW reference' and 'Merchant reference' fields appear when clicking on 'Trx IDs'.")
+    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
     public void testSearchOptionsVisibleAfterClickingTrxIds() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
@@ -605,22 +605,22 @@ public class TransactionsPageTest extends BaseTest {
         Allure.step("Verify: 'NPGW reference' is visible ");
         assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
 
-        Allure.step("Verify: 'Merchant reference' is visible ");
-        assertThat(transactionsPage.getMerchantReferenceField()).isVisible();
+        Allure.step("Verify: 'Business unit reference' is visible ");
+        assertThat(transactionsPage.getBusinessUnitReference()).isVisible();
     }
 
     @Test
     @TmsLink("853")
     @Epic("Transactions")
     @Feature("Transactions Search")
-    @Description("Verify that 'NPGW reference' and 'Merchant reference' fields appear when clicking on 'Trx IDs'.")
+    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
     public void testTransactionSearchByNpgwReference() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
-        List<Locator> npgwReference = transactionsPage.getTable().getColumnCells("NPGW Reference");
+        List<Locator> npgwReference = transactionsPage.getTable().getColumnCells("NPGW reference");
 
         int index1 = new Random().nextInt(npgwReference.size());
         int index2;
