@@ -39,6 +39,7 @@ public class MenuComponent extends BaseComponent {
         getPage().waitForTimeout(1500);
         acquirersTab.click();
 //        assertThat(acquirersTab).hasAttribute("data-selected", "true");
+        getPage().waitForTimeout(3000);
 
         return new AcquirersPage(getPage());
     }
