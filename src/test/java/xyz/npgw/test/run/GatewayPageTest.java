@@ -352,6 +352,28 @@ public class GatewayPageTest extends BaseTest {
                 .hasText("SUCCESSBusiness unit acquirer was deleted successfully");
     }
 
+    @Test
+    @TmsLink("")
+    @Epic("System/Gateway")
+    @Feature("Merchant acquirer")
+    @Description("Verify that entries can be sorted by Priority")
+    public void testSortEntriesByPriority() throws InterruptedException {
+        GatewayPage gatewayPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
+                .clickAddBusinessUnitAcquirerButton()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickCreateButton()
+                .clickAddBusinessUnitAcquirerButton()
+                .selectInactiveStatus()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .clickCreateButton()
+                .getTable().clickAcquirerColumnHeader();
+        Thread.sleep(10000);
+        }
+
     @AfterClass
     @Override
     protected void afterClass() {
