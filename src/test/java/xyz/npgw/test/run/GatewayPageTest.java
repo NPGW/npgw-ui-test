@@ -14,8 +14,6 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -28,7 +26,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class GatewayPageTest extends BaseTest {
 
-//    private static final Acquirer ACQUIRER = new Acquirer(
+    //    private static final Acquirer ACQUIRER = new Acquirer(
 //            "acquirer for gateway",
 //            "acquirer mid",
 //            "NGenius",
@@ -43,7 +41,7 @@ public class GatewayPageTest extends BaseTest {
             .acquirerName("%s acquirer for gateway".formatted(RUN_ID))
             .acquirerMidMcc("4321")
             .build();
-//    private static final Acquirer ACQUIRER_MOVE = new Acquirer(
+    //    private static final Acquirer ACQUIRER_MOVE = new Acquirer(
 //            "acquirer for gateway Movable",
 //            "acquirer mid",
 //            "NGenius",
