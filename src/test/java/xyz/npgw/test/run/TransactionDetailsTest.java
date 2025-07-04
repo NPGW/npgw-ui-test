@@ -37,7 +37,7 @@ public class TransactionDetailsTest extends BaseTest {
 
         Allure.step("Verify: The dialog box section names");
         assertThat(transactionDetailsDialog.getSectionNames())
-                .hasText(new String[]{"Amount", "Updated on (GMT)", "NPGW reference", "Merchant reference",
+                .hasText(new String[]{"Amount", "Updated on (GMT)", "NPGW reference", "Business unit reference",
                         "Payment lifecycle", "Card details", "Customer details", "3D Secure"});
 
         Allure.step("Verify: The Card details labels");
@@ -73,7 +73,7 @@ public class TransactionDetailsTest extends BaseTest {
         Allure.step("Verify: Parameter 'Card number' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getCardNumberValue()).isHidden();
 
-        Allure.step("Verify: Parameter 'Expiry date' is hidden after click on chevron in Card details field ");
+        Allure.step("Verify: Parameter 'Expiry dattestCheckTransactionDetailse' is hidden after click on chevron in Card details field ");
         assertThat(transactionDetailsDialog.getExpiryDateValue()).isHidden();
 
         transactionDetailsDialog
@@ -151,8 +151,8 @@ public class TransactionDetailsTest extends BaseTest {
         String amount = transactionsPage
                 .getTable().getFirstRowCell("Amount").textContent();
 
-        String merchantReference = transactionsPage
-                .getTable().getFirstRowCell("Merchant Reference").textContent();
+        String businessUnitReference = transactionsPage
+                .getTable().getFirstRowCell("Business unit reference").textContent();
 
         String cardType = transactionsPage
                 .getTable().getFirstRowCardType();
@@ -163,13 +163,13 @@ public class TransactionDetailsTest extends BaseTest {
         Allure.step("Verify: 'Status' value is the same as in the table");
         assertThat(transactionDetails.getStatusValue()).hasText(status);
 
-        Allure.step("Verify: Merchant Reference  is the same as in the table");
-        assertThat(transactionDetails.getMerchantReferenceValue()).hasText(merchantReference);
+        Allure.step("Verify: Business unit reference is the same as in the table");
+        assertThat(transactionDetails.getBusinessUnitReferenceValue()).hasText(businessUnitReference);
 
-        Allure.step("Verify: Amount value and Currency are the same as in the table");
+        Allure.step("Verify: 'Amount' value and Currency are the same as in the table");
         assertThat(transactionDetails.getAmountValue()).hasText(currency + " " + amount);
 
-        Allure.step("Verify: Card type is the same as in table");
+        Allure.step("Verify: 'Card type' is the same as in table");
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
     }
 
