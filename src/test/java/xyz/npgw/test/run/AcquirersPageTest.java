@@ -383,13 +383,14 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .fillAcquirerNameField(acquirerName)
+                .fillAcquirerMidField("1234")
+                .fillAcquirerMidMccField("1234")
                 .fillChallengeUrlField(systemConfig.challengeUrl())
                 .fillFingerprintUrlField(systemConfig.fingerprintUrl())
                 .fillResourceUrlField(systemConfig.resourceUrl())
                 .clickStatusRadiobutton(status)
                 .clickCheckboxCurrency("USD")
-                .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .clickCreateButton();
 
         Allure.step("Verify: Acquirer status");
         assertThat(acquirersPage.getTable().getCell(acquirerName, "Status")).hasText(status);
