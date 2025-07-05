@@ -379,11 +379,11 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .selectInactiveStatus()
-                .getSelectAcquirer().selectAcquirer(ACQUIRER.acquirerName())
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
                 .getTable().clickStatusColumnHeader();
 
