@@ -7,7 +7,6 @@ import lombok.Getter;
 import xyz.npgw.test.page.dialog.acquirer.DeleteBusinessUnitAcquirerDialog;
 import xyz.npgw.test.page.dialog.gateway.ChangeMerchantAcquirerActivityDialog;
 import xyz.npgw.test.page.system.GatewayPage;
-import com.microsoft.playwright.options.AriaRole;
 
 public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
 

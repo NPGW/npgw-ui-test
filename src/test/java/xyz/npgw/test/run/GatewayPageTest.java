@@ -403,7 +403,7 @@ public class GatewayPageTest extends BaseTest {
 
         Allure.step("Verify that entries are sorted by Status in Asc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
-        }
+    }
 
     @AfterClass
     @Override
