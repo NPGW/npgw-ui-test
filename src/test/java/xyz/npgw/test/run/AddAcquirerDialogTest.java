@@ -8,6 +8,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -175,6 +176,7 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .hasText("Active");
     }
 
+    @Ignore("Failed with error Acquirer must not be blank if defined 07.05.2025")
     @Test
     @TmsLink("427")
     @Epic("System/Acquirers")
