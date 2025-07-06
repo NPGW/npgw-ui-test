@@ -370,7 +370,6 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Ignore("Failed with error Acquirer must not be blank if defined 07.05.2025")
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("557")
     @Epic("System/Acquirers")

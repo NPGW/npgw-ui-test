@@ -176,7 +176,6 @@ public class AddAcquirerDialogTest extends BaseTest {
                 .hasText("Active");
     }
 
-    @Ignore("Failed with error Acquirer must not be blank if defined 07.05.2025")
     @Test
     @TmsLink("427")
     @Epic("System/Acquirers")

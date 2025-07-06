@@ -39,7 +39,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
         return new DeleteBusinessUnitAcquirerDialog(getPage());
     }
 
-    @Step("Click 'Acquirer' column header")
+    @Step("Click 'Status' column header")
     public GatewayPage clickStatusColumnHeader() {
         statusColumnHeader.click();
 
