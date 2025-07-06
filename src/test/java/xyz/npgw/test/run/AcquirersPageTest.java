@@ -389,10 +389,11 @@ public class AcquirersPageTest extends BaseTest {
                 .fillResourceUrlField(systemConfig.resourceUrl())
                 .clickStatusRadiobutton(status)
                 .clickCheckboxCurrency("USD")
-                .clickCreateButton();
+                .clickCreateButton()
+                .getSelectAcquirer().selectAcquirer(acquirerName);
 
         Allure.step("Verify: Acquirer status");
-        assertThat(acquirersPage.getTable().getCell(acquirerName, "Status")).hasText(status);
+        assertThat(acquirersPage.getTable().getFirstRowCell("Status")).hasText(status);
 
         TestUtils.deleteAcquirer(getApiRequestContext(), acquirerName);
     }

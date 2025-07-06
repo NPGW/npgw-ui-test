@@ -141,7 +141,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public Locator getFirstRowCell(String columnHeader) {
-        return getColumnCells(columnHeader).get(0);
+        return firstRow.locator(columnSelector(columnHeader));
     }
 
     public int countAllRows() {
