@@ -5,8 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.TransactionsPage;
-import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
+import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
