@@ -3,7 +3,6 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -16,7 +15,7 @@ import java.util.NoSuchElementException;
 public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Getter
-    private final Locator selectAcquirerField = getByLabelExact("Select acquirer");
+    private final Locator selectAcquirerField = locator("input[aria-label='Select acquirer']");
     private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
     private final Locator selectAcquirerContainer = locator("div[data-slot='input-wrapper']");
     private final Locator selectAcquirerDropdownChevron = selectAcquirerContainer
@@ -69,11 +68,10 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
         String lastName = "";
 
-        selectAcquirerField.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         typeName(acquirerName);
 
         if (dropdownOptionList.all().isEmpty()) {
-            throw new NoSuchElementException("Acquirer '" + acquirerName + "' not found in dropdown.");
+            throw new NoSuchElementException("Acquirer dropdown list is empty.");
         }
 
         while (getAcquirerInDropdownOption(acquirerName).all().isEmpty()) {
