@@ -67,7 +67,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
-        selectAcquirerField.fill(acquirerName);
+        selectAcquirerField.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(50));
 
         if (dropdownOptionList.all().isEmpty()) {
             throw new NoSuchElementException("Acquirer '" + acquirerName + "' not found in dropdown.");
@@ -82,7 +82,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
             lastName = dropdownOptionList.last().innerText();
         }
 
-        getAcquirerInDropdownOption(acquirerName).click();
+        clickAcquirerInDropdown(acquirerName);
 
         return page;
     }
