@@ -9,9 +9,9 @@ import xyz.npgw.test.page.system.TransactionManagementPage;
 
 public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, AddAdjustmentDialog> {
 
-    private final Locator selectTheFirstTransaction = locator("[aria-label='transactions table'] tr[data-first]");
+    private final Locator transactionRow = locator("[aria-label='transactions table'] tr[data-first]");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
-    private final Locator closeButton = getByRole(AriaRole.BUTTON, "Close").first();
+    private final Locator closeButton = getByRole(AriaRole.BUTTON, "Close").last();
 
     public AddAdjustmentDialog(Page page) {
         super(page);
@@ -22,8 +22,8 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
         return new TransactionManagementPage(getPage());
     }
 
-    public AddAdjustmentDialog clickOnTheFirstAvailableTransaction() {
-        selectTheFirstTransaction.click();
+    public AddAdjustmentDialog clickOnTheTransaction() {
+        transactionRow.click();
 
         return this;
     }

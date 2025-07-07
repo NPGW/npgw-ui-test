@@ -24,7 +24,7 @@ public class TransactionManagementPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
-                .clickOnTheFirstAvailableTransaction()
+                .clickOnTheTransaction()
                 .clickOnCreateButton();
 
         assertThat(page.getDataTable()).hasText("id.transaction.");
@@ -40,7 +40,7 @@ public class TransactionManagementPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
-                .clickOnTheFirstAvailableTransaction()
+                .clickOnTheTransaction()
                 .clickOnCloseButton();
 
         assertThat(page.getDataTable()).hasText("No rows to display.");
