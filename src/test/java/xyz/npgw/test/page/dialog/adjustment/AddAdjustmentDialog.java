@@ -9,7 +9,7 @@ import xyz.npgw.test.page.system.TransactionManagementPage;
 
 public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, AddAdjustmentDialog> {
 
-    private final Locator selectTheFirstAvailableTransaction = locator("[aria-label='transactions table'] tr[data-first]");
+    private final Locator selectTheFirstTransaction = locator("[aria-label='transactions table'] tr[data-first]");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
     private final Locator closeButton = getByRole(AriaRole.BUTTON, "Close").first();
 
@@ -23,7 +23,7 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
     }
 
     public AddAdjustmentDialog clickOnTheFirstAvailableTransaction() {
-        selectTheFirstAvailableTransaction.click();
+        selectTheFirstTransaction.click();
 
         return this;
     }
