@@ -376,4 +376,11 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         }, refreshDataButton::click);
         return data.get();
     }
+
+    public TransactionsPage clickExportToCsv() {
+        getPage().getByTestId("ExportToFileuttonTransactionsPage").click();
+        getPage().getByText("CSV").click();
+
+        return this;
+    }
 }
