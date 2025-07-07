@@ -3,6 +3,7 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -39,7 +40,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Type '{acquirerName}' into 'Select acquirer' field")
     public CurrentPageT typeName(String acquirerName) {
-        selectAcquirerField.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(100));
+        selectAcquirerField.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(50));
 
         return page;
     }
@@ -67,6 +68,8 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
+
+        selectAcquirerField.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         typeName(acquirerName);
 
         if (dropdownOptionList.all().isEmpty()) {
