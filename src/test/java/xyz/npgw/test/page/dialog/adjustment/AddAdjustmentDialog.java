@@ -11,7 +11,8 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
 
     private final Locator transactionRow = locator("[aria-label='transactions table'] tr[data-first]");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
-    private final Locator closeButton = getByRole(AriaRole.BUTTON, "Close").last();
+    private final Locator closeButton = getByRole(AriaRole.BUTTON)
+            .filter(new Locator.FilterOptions().setHasText("Close"));
 
     public AddAdjustmentDialog(Page page) {
         super(page);

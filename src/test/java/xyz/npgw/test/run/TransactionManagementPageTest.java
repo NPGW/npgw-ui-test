@@ -27,7 +27,7 @@ public class TransactionManagementPageTest extends BaseTest {
                 .clickOnTheTransaction()
                 .clickOnCreateButton();
 
-        assertThat(page.getDataTable()).hasText("id.transaction.");
+        assertThat(page.getTransactionsTable()).containsText("id.transaction.");
     }
 
     @Test
@@ -43,6 +43,6 @@ public class TransactionManagementPageTest extends BaseTest {
                 .clickOnTheTransaction()
                 .clickOnCloseButton();
 
-        assertThat(page.getDataTable()).hasText("No rows to display.");
+        assertThat(page.getTransactionsTable()).containsText("No rows to display.");
     }
 }

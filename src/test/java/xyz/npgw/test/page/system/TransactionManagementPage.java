@@ -12,7 +12,7 @@ public class TransactionManagementPage extends BaseSystemPage<TransactionManagem
         implements AlertTrait<TransactionsPage> {
 
     private final Locator addAdjustmentButton = getByTestId("AddAdjustmentButtonTransactionManagementPage");
-    private final Locator dataTable = locator("tr[role='row'] td");
+    private final Locator transactionsTable = getByLabelExact("transactions table");
 
     public TransactionManagementPage(Page page) {
         super(page);
