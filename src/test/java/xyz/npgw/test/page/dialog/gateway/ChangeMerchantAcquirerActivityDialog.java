@@ -11,6 +11,8 @@ public class ChangeMerchantAcquirerActivityDialog extends BaseDialog<GatewayPage
         implements AlertTrait<ChangeMerchantAcquirerActivityDialog> {
 
     private final Locator submitButton = getDialog().locator("button.bg-primary");
+    private final Locator cancelButton = getDialog().getByText("Cancel");
+    private final Locator closeButton = getDialog().locator("button[role=button]");
 
     public ChangeMerchantAcquirerActivityDialog(Page page) {
         super(page);
@@ -24,6 +26,20 @@ public class ChangeMerchantAcquirerActivityDialog extends BaseDialog<GatewayPage
     @Step("Click on submit deactivate button ")
     public GatewayPage clickSubmitButton() {
         submitButton.click();
+
+        return new GatewayPage(getPage());
+    }
+
+    @Step("Click on submit Cancel button ")
+    public GatewayPage clickCancelButton() {
+        cancelButton.click();
+
+        return new GatewayPage(getPage());
+    }
+
+    @Step("Click on submit close button ")
+    public GatewayPage clickCloseButton() {
+        closeButton.click();
 
         return new GatewayPage(getPage());
     }
