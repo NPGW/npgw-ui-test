@@ -14,7 +14,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
         super(page);
     }
 
-    private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton");
+    private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton").nth(0);
     private final Locator statusColumnHeader = locator("//th[text()='Status']");
 
     @Getter
