@@ -3,7 +3,6 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import lombok.Getter;
 import xyz.npgw.test.page.dialog.acquirer.DeleteBusinessUnitAcquirerDialog;
 import xyz.npgw.test.page.dialog.gateway.ChangeMerchantAcquirerActivityDialog;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -14,11 +13,8 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
         super(page);
     }
 
-    private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton").nth(0);
+    private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton");
     private final Locator statusColumnHeader = locator("//th[text()='Status']");
-
-    @Getter
-    private final Locator acquirerStatus = locator("td > div.rounded-full").nth(0);
 
     @Override
     protected GatewayPage getCurrentPage() {

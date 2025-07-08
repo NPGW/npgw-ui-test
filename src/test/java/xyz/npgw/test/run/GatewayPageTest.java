@@ -359,14 +359,14 @@ public class GatewayPageTest extends BaseTest {
                 .clickSubmitButton();
 
         Allure.step("Verify that acquirer status is 'Inactive' ");
-        assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Inactive");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Inactive");
 
         gatewayPage
                 .getTable().clickChangeMerchantAcquirerActivityButton()
                 .clickSubmitButton();
 
         Allure.step("Verify that acquirer status is 'Active' ");
-        assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Active");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
     }
 
     @Test
@@ -425,7 +425,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickCancelButton();
 
         Allure.step("Verify that acquirer status is still 'Active' ");
-        assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Active");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
     }
 
     @Test
@@ -446,7 +446,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickCloseButton();
 
         Allure.step("Verify that acquirer status is still 'Active' ");
-        assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Active");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
     }
 
     @AfterClass
