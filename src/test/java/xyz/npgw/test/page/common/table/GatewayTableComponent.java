@@ -22,7 +22,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
     }
 
     @Step("Click on Change merchant acquirer activity button ")
-    public ChangeMerchantAcquirerActivityDialog clickChangeMerchantAcquirerActivityButton() {
+    public ChangeMerchantAcquirerActivityDialog clickFirstRowChangeActivityButton() {
         firstRowChangeActivityButton.click();
 
         return new ChangeMerchantAcquirerActivityDialog(getPage());

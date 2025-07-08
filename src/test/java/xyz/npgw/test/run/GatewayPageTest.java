@@ -355,14 +355,14 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickChangeMerchantAcquirerActivityButton()
+                .getTable().clickFirstRowChangeActivityButton()
                 .clickSubmitButton();
 
         Allure.step("Verify that acquirer status is 'Inactive' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Inactive");
 
         gatewayPage
-                .getTable().clickChangeMerchantAcquirerActivityButton()
+                .getTable().clickFirstRowChangeActivityButton()
                 .clickSubmitButton();
 
         Allure.step("Verify that acquirer status is 'Active' ");
@@ -421,7 +421,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickChangeMerchantAcquirerActivityButton()
+                .getTable().clickFirstRowChangeActivityButton()
                 .clickCancelButton();
 
         Allure.step("Verify that acquirer status is still 'Active' ");
@@ -442,7 +442,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickChangeMerchantAcquirerActivityButton()
+                .getTable().clickFirstRowChangeActivityButton()
                 .clickCloseButton();
 
         Allure.step("Verify that acquirer status is still 'Active' ");
