@@ -18,7 +18,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
     private final Locator statusColumnHeader = locator("//th[text()='Status']");
 
     @Getter
-    private final Locator acquirerStatus = locator("td > div.rounded-full");
+    private final Locator acquirerStatus = locator("td > div.rounded-full").nth(0);
 
     @Override
     protected GatewayPage getCurrentPage() {
