@@ -13,7 +13,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
         super(page);
     }
 
-    private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton");
+    private final Locator firstRowChangeActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton").nth(0);
     private final Locator statusColumnHeader = locator("//th[text()='Status']");
 
     @Override
@@ -23,7 +23,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
 
     @Step("Click on Change merchant acquirer activity button ")
     public ChangeMerchantAcquirerActivityDialog clickChangeMerchantAcquirerActivityButton() {
-        changeMerchantAcquirerActivityButton.click();
+        firstRowChangeActivityButton.click();
 
         return new ChangeMerchantAcquirerActivityDialog(getPage());
     }
