@@ -214,13 +214,11 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return true;
     }
 
-    public boolean goToLastPageIfNeeded() {
+    public boolean goToLastPage() {
         if (hasNoPagination()) {
             return false;
         }
-        if (isNotCurrentPage(getLastPageNumber())) {
-            clickPaginationPageButton(getLastPageNumber());
-        }
+        clickPaginationPageButton(getLastPageNumber());
 
         return true;
     }
