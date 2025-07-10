@@ -62,7 +62,7 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
     }
 
     public String getNpgwReferenceInputValue() {
-            return npgwReferenceInput.inputValue();
+        return npgwReferenceInput.inputValue();
     }
 
 }
