@@ -79,12 +79,13 @@ public class TransactionManagementPageTest extends BaseTest {
         String referenceFromClipboard = addAdjustmentDialog.getNpgwReferenceInputValue();
 
         Allure.step("Verify: The correct reference value is pasted from the clipboard.");
-        Assert.assertEquals(referenceFromClipboard, referenceFromTable);
+        Assert.assertEquals(referenceFromClipboard, referenceFromTable,
+                "Clipboard reference value must match the value from the transactions table.");
 
         String referenceFromAdjustment = addAdjustmentDialog.getTable().getFirstRowReference().innerText();
 
         Allure.step("Verify: The located reference matches the one entered in the search field.");
-        Assert.assertEquals(referenceFromAdjustment, referenceFromClipboard);
+        Assert.assertEquals(referenceFromAdjustment, referenceFromClipboard,
+                "Reference value from the 'Add adjustment' must match the value from the clipboard");
     }
-
 }

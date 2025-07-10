@@ -22,11 +22,10 @@ import java.util.stream.IntStream;
 public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
 
     private final Locator refundTransactionButton = getByTestId("RefundTransactionButton");
-    private final Locator referenceLink = getRows().getByRole(AriaRole.LINK);
+    private final Locator npgwReference = getRows().getByRole(AriaRole.LINK);
     private final Locator referenceCopyButton = getByTestId("CopyTrxIDToClipboardButton");
     @Getter
     private final Locator firstRowReference = getFirstRowCell("NPGW reference");
-    private final Locator firstRowReferenceLink = firstRowReference.locator(referenceLink);
     private final Locator firstRowReferenceCopyButton = firstRowReference.locator(referenceCopyButton);
 
     public TransactionsTableComponent(Page page) {
@@ -40,7 +39,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     @Step("Click on the first transaction from the table")
     public TransactionDetailsDialog clickOnFirstTransaction() {
-        firstRowReferenceLink.click();
+        firstRowReference.click();
 
         return new TransactionDetailsDialog(getPage());
     }
@@ -54,7 +53,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     @Step("Click on the transaction NPGW reference")
     public TransactionDetailsDialog clickOnTransaction(int index) {
-        referenceLink.nth(index).click();
+        npgwReference.nth(index).click();
 
         return new TransactionDetailsDialog(getPage());
     }
