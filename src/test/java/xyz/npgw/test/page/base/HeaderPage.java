@@ -61,7 +61,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     public TeamPage clickSystemAdministrationLink() {
         systemAdministrationButton.click();
 
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();

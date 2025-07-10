@@ -64,7 +64,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{acquirerName}' acquirer using filter")
     public CurrentPageT selectAcquirer(String acquirerName) {
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
 

@@ -60,7 +60,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public Locator getRow(String rowHeader) {
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         do {
             firstRow.waitFor();
@@ -268,13 +268,13 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     protected <T> List<T> collectAllPages(Supplier<List<T>> currentPageExtractor) {
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         if (hasNoPagination()) {
             return Collections.emptyList();
         }
 
         selectRowsPerPageOption("100");
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         goToFirstPageIfNeeded();
 
         List<T> allValues = new ArrayList<>();
@@ -287,7 +287,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     public Locator getRowByText(String text) {
         firstRow.waitFor();
-        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         do {
             Locator row = getRows().filter(new Locator.FilterOptions().setHasText(text));
