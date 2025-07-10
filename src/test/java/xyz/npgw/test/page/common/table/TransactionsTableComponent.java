@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
@@ -21,8 +22,12 @@ import java.util.stream.IntStream;
 public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
 
     private final Locator refundTransactionButton = getByTestId("RefundTransactionButton");
-
-    private final Locator npgwReference = getRows().getByRole(AriaRole.LINK);
+    private final Locator referenceLink = getRows().getByRole(AriaRole.LINK);
+    private final Locator referenceCopyButton = getByTestId("CopyTrxIDToClipboardButton");
+    @Getter
+    private final Locator firstRowReference = getFirstRowCell("NPGW reference");
+    private final Locator firstRowReferenceLink = firstRowReference.locator(referenceLink);
+    private final Locator firstRowReferenceCopyButton = firstRowReference.locator(referenceCopyButton);
 
     public TransactionsTableComponent(Page page) {
         super(page);
@@ -35,14 +40,21 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     @Step("Click on the first transaction from the table")
     public TransactionDetailsDialog clickOnFirstTransaction() {
-        getFirstRowCell("NPGW reference").click();
+        firstRowReferenceLink.click();
 
         return new TransactionDetailsDialog(getPage());
     }
 
+    @Step("Click on the first transaction 'Copy NPGW reference to clipboard' button")
+    public TransactionsPage clickOnFirstReferenceCopyButton() {
+        firstRowReferenceCopyButton.click();
+
+        return new TransactionsPage(getPage());
+    }
+
     @Step("Click on the transaction NPGW reference")
     public TransactionDetailsDialog clickOnTransaction(int index) {
-        npgwReference.nth(index).click();
+        referenceLink.nth(index).click();
 
         return new TransactionDetailsDialog(getPage());
     }
