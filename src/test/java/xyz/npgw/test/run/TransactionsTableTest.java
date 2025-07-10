@@ -24,17 +24,16 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -506,16 +505,18 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("880")
+    @Epic("Transactions")
+    @Feature("Export table data")
+    @Description("The transaction table data on the UI matches the exported CSV file data.")
     public void testTransactionTableMatchesDownloadedCsv() throws IOException {
-        // 1. Открываем страницу и применяем фильтры
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
-        // 2. Собираем данные с UI
-        List<List<String>> rowsFromUI = new ArrayList<>();
+        List<List<String>> uiRows = new ArrayList<>();
         do {
             List<Locator> rows = transactionsPage.getTable().getRows().all();
 
@@ -526,60 +527,43 @@ public class TransactionsTableTest extends BaseTest {
                 rowData.add(transactionsPage.getTable().getCell(row, "Business unit reference").innerText().trim());
                 rowData.add(transactionsPage.getTable().getCell(row, "Amount").innerText().trim());
                 rowData.add(transactionsPage.getTable().getCell(row, "Currency").innerText().trim());
-                // Добавь нужные столбцы
-                rowsFromUI.add(rowData);
+                rowData.add(transactionsPage.getTable().getCardTypeValue(row));
+                rowData.add(transactionsPage.getTable().getCell(row, "Status").innerText().trim());
+
+                uiRows.add(rowData);
             }
         } while (transactionsPage.getTable().goToNextPage());
 
-        transactionsPage.getTable().goToFirstPageIfNeeded();
+        Download download = getPage().waitForDownload(() -> transactionsPage
+                .clickExportTableDataToFileButton()
+                .selectCsv());
 
-        // 3. Скачиваем CSV
-        Download download = getPage().waitForDownload(() -> {
-            transactionsPage.clickExportToCsv(); // или: getPage().locator(...).click()
-        });
-
-        Path targetPath = Paths.get("downloads", download.suggestedFilename());
+        Path targetPath = Paths.get("downloads", "transactions-export.csv");
+        Files.createDirectories(targetPath.getParent());
         download.saveAs(targetPath);
 
-        // 4. Читаем CSV
-        List<List<String>> rowsFromCsv = readCsv(targetPath);
-        rowsFromCsv.remove(0); // Убираем заголовки, если есть
+        List<String> uiHeader = transactionsPage.getTable().getHeaderColumnNames();
+        List<List<String>> rowsFromCsv = transactionsPage
+                .readCsv(targetPath);
+        List<String> csvHeader = rowsFromCsv.remove(0);
 
-        // 5. Сравнение
-        assertEquals(rowsFromUI.size(), rowsFromCsv.size(), "Row count mismatch between UI and CSV");
+        Allure.step("Verify: CSV headers match the UI headers");
+        assertEquals(csvHeader, uiHeader.subList(0, csvHeader.size()));
 
-        for (int i = 0; i < rowsFromUI.size(); i++) {
-            List<String> uiRow = rowsFromUI.get(i);
+        Allure.step("Verify the row count between UI and CSV");
+        assertEquals(uiRows.size(), rowsFromCsv.size());
+
+        IntStream.range(0, uiRows.size()).forEach(i -> {
+            List<String> uiRow = uiRows.get(i);
             List<String> csvRow = rowsFromCsv.get(i);
 
-            for (int j = 0; j < uiRow.size(); j++) {
-                String fromUI = normalize(uiRow.get(j));
-                String fromCSV = normalize(csvRow.get(j));
-                assertEquals(fromUI, fromCSV, String.format("Mismatch at row %d, column %d", i + 1, j + 1));
-            }
-        }
-    }
+            IntStream.range(0, uiRow.size()).forEach(j -> {
+                String fromUi = uiRow.get(j);
+                String fromCsv = csvRow.get(j);
 
-    public List<List<String>> readCsv(Path csvFilePath) throws IOException {
-        List<List<String>> rows = new ArrayList<>();
-
-        try (BufferedReader reader = Files.newBufferedReader(csvFilePath)) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                List<String> cells = Arrays.stream(line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
-                        .map(s -> s.replaceAll("^\"|\"$", "").trim())
-                        .toList();
-                rows.add(cells);
-            }
-        }
-
-        return rows;
-    }
-
-    public String normalize(String value) {
-        if (value == null) return "";
-        value = value.trim();
-        if (value.matches("\\d+\\.00")) return value.replace(".00", "");
-        return value;
+                Allure.step("Verify: cell values match between UI and CSV", () ->
+                        assertEquals(fromUi, fromCsv, String.format("Mismatch at row %d, column %d", i + 1, j + 1)));
+            });
+        });
     }
 }

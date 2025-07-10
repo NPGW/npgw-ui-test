@@ -301,6 +301,13 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         throw new NoSuchElementException("Row with text '" + text + "' not found on any page.");
     }
 
+    public List<String> getHeaderColumnNames() {
+        return columnHeader.allInnerTexts()
+                .stream()
+                .map(String::trim)
+                .toList();
+    }
+
     public interface PageCallback {
         void accept(String pageNumber);
     }

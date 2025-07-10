@@ -21,7 +21,7 @@ import java.util.stream.IntStream;
 public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
 
     private final Locator refundTransactionButton = getByTestId("RefundTransactionButton");
-
+    private final Locator cardTypeImage = locator("img[alt='logo']");
     private final Locator npgwReference = getRows().getByRole(AriaRole.LINK);
 
     public TransactionsTableComponent(Page page) {
@@ -103,11 +103,17 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     public List<String> getCardTypeColumnValues() {
         Locator imgs = getRows()
                 .locator(columnSelector("Card type"))
-                .locator("img[alt='logo']");
+                .locator(cardTypeImage);
 
         return IntStream.range(0, imgs.count())
                 .mapToObj(i -> detectCardName(imgs.nth(i).getAttribute("src")))
                 .toList();
+    }
+
+    public String getCardTypeValue(Locator row) {
+        Locator img = getCell(row, "Card type").locator(cardTypeImage);
+
+        return detectCardName(img.getAttribute("src"));
     }
 
     private String detectCardName(String src) {
