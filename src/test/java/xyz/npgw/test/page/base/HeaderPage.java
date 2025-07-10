@@ -15,12 +15,15 @@ import xyz.npgw.test.page.system.TeamPage;
 
 import java.time.LocalTime;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {
 
     private final Locator logoImg = getPage().getByAltText("logo");
     private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(logoImg));
+    private final Locator dashboardButton = getByRole(AriaRole.LINK, "Dashboard");
     private final Locator transactionsButton = getByRole(AriaRole.LINK, "Transactions");
     private final Locator reportsButton = getByRole(AriaRole.LINK, "Reports");
     private final Locator systemAdministrationButton = getByRole(AriaRole.LINK, "System administration");
@@ -40,6 +43,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         transactionsButton.click();
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
 
         return new TransactionsPage(getPage());
     }
@@ -58,6 +62,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         systemAdministrationButton.click();
 
         getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+        assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
