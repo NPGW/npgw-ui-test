@@ -18,7 +18,6 @@ import xyz.npgw.test.page.common.trait.TransactionsTableTrait;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 

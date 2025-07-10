@@ -13,8 +13,6 @@ import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-import java.time.LocalTime;
-
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
