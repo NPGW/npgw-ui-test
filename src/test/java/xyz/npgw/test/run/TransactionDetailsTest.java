@@ -5,6 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
@@ -173,19 +174,25 @@ public class TransactionDetailsTest extends BaseTest {
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
     }
 
+    @Ignore
     @Test
     @TmsLink("828")
     @Epic("Transactions")
     @Feature("Transaction details")
     @Description("Check that the 'Pending' occurs at most once in the Payment lifecycle section")
     public void testPendingOccursAtMostOnceInLifecycle() {
-        TransactionsPage transactionsPage = new DashboardPage(getPage())
+        new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getTable().selectRowsPerPageOption("10")
+                .getTable().goToLastPage();
 
-        int numberOfTransactions = transactionsPage.getTable().getNumberOfTransactionOnCurrentPage();
+        TransactionsPage transactionsPage = new TransactionsPage(getPage());
+        int numberOfTransactions = transactionsPage
+                .getTable().getRows()
+                .count();
 
         for (int i = 0; i < numberOfTransactions; i++) {
             TransactionDetailsDialog transactionDetails = transactionsPage

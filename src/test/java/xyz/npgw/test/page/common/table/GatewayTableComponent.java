@@ -3,7 +3,6 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import lombok.Getter;
 import xyz.npgw.test.page.dialog.acquirer.DeleteBusinessUnitAcquirerDialog;
 import xyz.npgw.test.page.dialog.gateway.ChangeMerchantAcquirerActivityDialog;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -14,11 +13,11 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
         super(page);
     }
 
-    private final Locator changeMerchantAcquirerActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton");
+    private final Locator firstRowChangeActivityButton = getByTestId("ChangeMerchantAcquirerActivityButton").nth(0);
+    private final Locator acquirerColumnHeader = locator("//th[text()='Acquirer']");
+    private final Locator currenciesColumnHeader = locator("//th[text()='Currencies']");
+    private final Locator priorityColumnHeader = locator("//th[text()='Priority']");
     private final Locator statusColumnHeader = locator("//th[text()='Status']");
-
-    @Getter
-    private final Locator acquirerStatus = locator("td > div.rounded-full");
 
     @Override
     protected GatewayPage getCurrentPage() {
@@ -26,8 +25,8 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
     }
 
     @Step("Click on Change merchant acquirer activity button ")
-    public ChangeMerchantAcquirerActivityDialog clickChangeMerchantAcquirerActivityButton() {
-        changeMerchantAcquirerActivityButton.click();
+    public ChangeMerchantAcquirerActivityDialog clickFirstRowChangeActivityButton() {
+        firstRowChangeActivityButton.click();
 
         return new ChangeMerchantAcquirerActivityDialog(getPage());
     }
@@ -42,6 +41,27 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
     @Step("Click 'Status' column header")
     public GatewayPage clickStatusColumnHeader() {
         statusColumnHeader.click();
+
+        return new GatewayPage(getPage());
+    }
+
+    @Step("Click 'Priority' column header")
+    public GatewayPage clickPriorityColumnHeader() {
+        priorityColumnHeader.click();
+
+        return new GatewayPage(getPage());
+    }
+
+    @Step("Click 'Acquirer' column header")
+    public GatewayPage clickAcquirerColumnHeader() {
+        acquirerColumnHeader.click();
+
+        return new GatewayPage(getPage());
+    }
+
+    @Step("Click 'Currencies' column header")
+    public GatewayPage clickCurrenciesColumnHeader() {
+        currenciesColumnHeader.click();
 
         return new GatewayPage(getPage());
     }

@@ -203,7 +203,7 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
 
         transactionsPage
-                .getTable().goToLastPageIfNeeded();
+                .getTable().goToLastPage();
 
         transactionsPage
                 .clickCurrencySelector().selectCurrency("EUR");

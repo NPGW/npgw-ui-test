@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.GatewayPage;
@@ -38,6 +39,18 @@ public class GatewayPageTest extends BaseTest {
             .acquirerName("%s acquirer for gateway Movable".formatted(RUN_ID))
             .acquirerMidMcc("4321")
             .build();
+    private static final Acquirer ACQUIRER_EUR = Acquirer.builder()
+            .acquirerDisplayName("acquirer for gateway EUR")
+            .acquirerName("%s acquirer for gateway EUR".formatted(RUN_ID))
+            .currencyList(new Currency[]{Currency.EUR})
+            .acquirerMidMcc("4321")
+            .build();
+    private static final Acquirer ACQUIRER_GBP = Acquirer.builder()
+            .acquirerDisplayName("acquirer for gateway GBP")
+            .acquirerName("%s acquirer for gateway GBP".formatted(RUN_ID))
+            .currencyList(new Currency[]{Currency.GBP})
+            .acquirerMidMcc("4321")
+            .build();
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private static final String COMPANY_NAME_DELETION_TEST = "%s company 112173".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME_DELETION_TEST = "BU-1";
@@ -54,6 +67,8 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_MOVE);
+        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_EUR);
+        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_GBP);
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
         TestUtils.createBusinessUnit(
                 getApiRequestContext(), COMPANY_NAME_DELETION_TEST, BUSINESS_UNIT_NAME_DELETION_TEST);
@@ -355,24 +370,26 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickChangeMerchantAcquirerActivityButton()
+                .getTable().clickFirstRowChangeActivityButton()
                 .clickSubmitButton();
 
-        assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Inactive");
+        Allure.step("Verify that acquirer status is 'Inactive' ");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Inactive");
 
         gatewayPage
-                .getTable().clickChangeMerchantAcquirerActivityButton()
+                .getTable().clickFirstRowChangeActivityButton()
                 .clickSubmitButton();
 
-        assertThat(gatewayPage.getTable().getAcquirerStatus()).hasText("Active");
+        Allure.step("Verify that acquirer status is 'Active' ");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
     }
 
     @Test
     @TmsLink("864")
     @Epic("System/Gateway")
     @Feature("Merchant acquirer")
-    @Description("Verify that entries can be sorted by Status")
-    public void testSortEntriesByStatus() {
+    @Description("Verify that entries can be sorted by Priority, Status, Acquirer and Currencies in Asc and Desc order")
+    public void testSortEntries() {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
@@ -383,7 +400,10 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .selectInactiveStatus()
-                .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
+                .getSelectAcquirer().selectAcquirer(ACQUIRER_EUR.getAcquirerName())
+                .clickCreateButton()
+                .clickAddBusinessUnitAcquirerButton()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER_GBP.getAcquirerName())
                 .clickCreateButton()
                 .getTable().clickStatusColumnHeader();
 
@@ -396,13 +416,108 @@ public class GatewayPageTest extends BaseTest {
 
         gatewayPage
                 .getTable().clickStatusColumnHeader();
-
         actualStatusList = gatewayPage.getTable().getColumnValues("Status");
         List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
         Collections.sort(sortedStatusListAsc);
 
         Allure.step("Verify that entries are sorted by Status in Asc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
+
+        gatewayPage
+                .getTable().clickPriorityColumnHeader();
+        List<String> actualPriorityList = gatewayPage.getTable().getColumnValues("Priority");
+        List<String> sortedPriorityListAsc = new ArrayList<>(actualPriorityList);
+        Collections.sort(sortedPriorityListAsc);
+
+        Allure.step("Verify that entries are sorted by Priority in Asc order");
+        Assert.assertEquals(actualPriorityList, sortedPriorityListAsc);
+
+        gatewayPage
+                .getTable().clickPriorityColumnHeader();
+        actualPriorityList = gatewayPage.getTable().getColumnValues("Priority");
+        List<String> sortedPriorityListDesc = new ArrayList<>(actualPriorityList);
+        sortedPriorityListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Priority in Desc order");
+        Assert.assertEquals(actualPriorityList, sortedPriorityListDesc);
+
+        gatewayPage
+                .getTable().clickAcquirerColumnHeader();
+        List<String> actualAcquirerList = gatewayPage.getTable().getColumnValues("Acquirer");
+        List<String> sortedAcquirerListAsc = new ArrayList<>(actualAcquirerList);
+        Collections.sort(sortedPriorityListAsc);
+
+        Allure.step("Verify that entries are sorted by Acquirer in Asc order");
+        Assert.assertEquals(actualAcquirerList, sortedAcquirerListAsc);
+
+        gatewayPage
+                .getTable().clickAcquirerColumnHeader();
+        actualAcquirerList = gatewayPage.getTable().getColumnValues("Acquirer");
+        List<String> sortedAcquirerListDesc = new ArrayList<>(actualAcquirerList);
+        sortedAcquirerListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Acquirer in Desc order");
+        Assert.assertEquals(actualAcquirerList, sortedAcquirerListDesc);
+
+        gatewayPage
+                .getTable().clickCurrenciesColumnHeader();
+        List<String> actualCurrenciesList = gatewayPage.getTable().getColumnValues("Currencies");
+        List<String> sortedCurrenciesListAsc = new ArrayList<>(actualCurrenciesList);
+        Collections.sort(sortedCurrenciesListAsc);
+
+        Allure.step("Verify that entries are sorted by Currencies in Asc order");
+        Assert.assertEquals(actualCurrenciesList, sortedCurrenciesListAsc);
+
+        gatewayPage
+                .getTable().clickCurrenciesColumnHeader();
+        actualCurrenciesList = gatewayPage.getTable().getColumnValues("Currencies");
+        List<String> sortedCurrenciesListDesc = new ArrayList<>(actualCurrenciesList);
+        sortedCurrenciesListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Currencies in Desc order");
+        Assert.assertEquals(actualCurrenciesList, sortedCurrenciesListDesc);
+    }
+
+    @Test
+    @TmsLink("857")
+    @Epic("System/Gateway")
+    @Feature("Merchant acquirer")
+    @Description("Verify that click on Cancel button cancels the Merchant Acquirer status change")
+    public void testCancelButtonInChangeMerchantAcquirerActivityDialog() {
+        GatewayPage gatewayPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
+                .clickAddBusinessUnitAcquirerButton()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
+                .clickCreateButton()
+                .getTable().clickFirstRowChangeActivityButton()
+                .clickCancelButton();
+
+        Allure.step("Verify that acquirer status is still 'Active' ");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
+    }
+
+    @Test
+    @TmsLink("858")
+    @Epic("System/Gateway")
+    @Feature("Merchant acquirer")
+    @Description("Verify that click on Cancel button cancels the Merchant Acquirer status change")
+    public void testCloseButtonInChangeMerchantAcquirerActivityDialog() {
+        GatewayPage gatewayPage = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
+                .clickAddBusinessUnitAcquirerButton()
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
+                .clickCreateButton()
+                .getTable().clickFirstRowChangeActivityButton()
+                .clickCloseButton();
+
+        Allure.step("Verify that acquirer status is still 'Active' ");
+        assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
     }
 
     @AfterClass
@@ -413,6 +528,8 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.getAcquirerName());
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_MOVE.getAcquirerName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_EUR.getAcquirerName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_GBP.getAcquirerName());
         super.afterClass();
     }
 }
