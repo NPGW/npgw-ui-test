@@ -82,7 +82,7 @@ public class TransactionManagementPageTest extends BaseTest {
         Assert.assertEquals(referenceFromClipboard, referenceFromTable,
                 "Clipboard reference value must match the value from the transactions table.");
 
-        String referenceFromAdjustment = addAdjustmentDialog.getTable().getFirstRowReference().innerText();
+        String referenceFromAdjustment = addAdjustmentDialog.getReference().innerText();
 
         Allure.step("Verify: The located reference matches the one entered in the search field.");
         Assert.assertEquals(referenceFromAdjustment, referenceFromClipboard,

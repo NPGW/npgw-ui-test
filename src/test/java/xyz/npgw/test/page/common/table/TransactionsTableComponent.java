@@ -23,9 +23,9 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     private final Locator refundTransactionButton = getByTestId("RefundTransactionButton");
     private final Locator npgwReference = getRows().getByRole(AriaRole.LINK);
-    private final Locator referenceCopyButton = getByTestId("CopyTrxIDToClipboardButton");
     @Getter
     private final Locator firstRowReference = getFirstRowCell("NPGW reference");
+    private final Locator referenceCopyButton = getByTestId("CopyTrxIDToClipboardButton");
     private final Locator firstRowReferenceCopyButton = firstRowReference.locator(referenceCopyButton);
 
     public TransactionsTableComponent(Page page) {
