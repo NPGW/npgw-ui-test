@@ -9,13 +9,11 @@ import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TransactionManagementPage;
 
+@Getter
 public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, AddAdjustmentDialog> {
-    @Getter
     private final Locator npgwReferenceInput = locator("input[aria-label='NPGW reference']");
     private final Locator transactionRow = locator("[aria-label='transactions table'] tr[data-first]");
-    @Getter
     private final Locator reference = locator(".trxId");
-
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
     private final Locator closeButton = getByRole(AriaRole.BUTTON)
             .filter(new Locator.FilterOptions().setHasText("Close"));

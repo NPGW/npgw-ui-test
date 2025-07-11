@@ -55,6 +55,20 @@ public class TransactionManagementPageTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("884")
+    @Epic("System/Transaction Management")
+    @Feature("Add adjustment")
+    @Description("Create button is disabled if nothing is selected")
+    public void testCreateButtonIsDisabledByDefault() {
+        AddAdjustmentDialog page = new TransactionManagementPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickTransactionManagementTab()
+                .clickAddAdjustmentButton();
+
+        assertThat(page.getCreateButton()).hasAttribute("data-disabled", "true");
+    }
+
+    @Test
     @TmsLink("886")
     @Epic("System/Transaction Management")
     @Feature("Add adjustment")
