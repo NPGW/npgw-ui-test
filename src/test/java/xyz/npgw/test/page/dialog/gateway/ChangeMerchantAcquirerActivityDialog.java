@@ -14,7 +14,7 @@ public class ChangeMerchantAcquirerActivityDialog extends BaseDialog<GatewayPage
     private final Locator submitButton = getByRole(AriaRole.BUTTON, "Activate")
             .or(getByRole(AriaRole.BUTTON, "Deactivate"));
     private final Locator cancelButton = getByRole(AriaRole.BUTTON, "Cancel");
-//    private final Locator closeButton = getByRole(AriaRole.BUTTON, "Close");
+    private final Locator closeButton = getByRole(AriaRole.BUTTON, "Close");
 
     public ChangeMerchantAcquirerActivityDialog(Page page) {
         super(page);
@@ -32,17 +32,17 @@ public class ChangeMerchantAcquirerActivityDialog extends BaseDialog<GatewayPage
         return new GatewayPage(getPage());
     }
 
-    @Step("Click on submit Cancel button ")
+    @Step("Click on 'Cancel' button ")
     public GatewayPage clickCancelButton() {
         cancelButton.click();
 
         return new GatewayPage(getPage());
     }
 
-//    @Step("Click on submit close button ")
-//    public GatewayPage clickCloseButton() {
-//        closeButton.click();
-//
-//        return new GatewayPage(getPage());
-//    }
+    @Step("Click on 'Close' button ")
+    public GatewayPage clickCloseButton() {
+        closeButton.click();
+
+        return new GatewayPage(getPage());
+    }
 }
