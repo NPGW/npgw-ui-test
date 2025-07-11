@@ -67,7 +67,7 @@ public class TransactionManagementPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstReferenceCopyButton()
-                .getTable().getFirstRowReference().innerText();
+                .getTable().getFirstRowReference();
 
         AddAdjustmentDialog addAdjustmentDialog = new TransactionsPage(getPage())
                 .clickSystemAdministrationLink()

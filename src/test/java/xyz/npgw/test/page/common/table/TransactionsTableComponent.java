@@ -4,7 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import lombok.Getter;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
@@ -23,10 +22,6 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     private final Locator refundTransactionButton = getByTestId("RefundTransactionButton");
     private final Locator npgwReference = getRows().getByRole(AriaRole.LINK);
-    @Getter
-    private final Locator firstRowReference = getFirstRowCell("NPGW reference");
-    private final Locator referenceCopyButton = getByTestId("CopyTrxIDToClipboardButton");
-    private final Locator firstRowReferenceCopyButton = firstRowReference.locator(referenceCopyButton);
 
     public TransactionsTableComponent(Page page) {
         super(page);
@@ -39,14 +34,14 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
     @Step("Click on the first transaction from the table")
     public TransactionDetailsDialog clickOnFirstTransaction() {
-        firstRowReference.click();
+        getFirstRowCell("NPGW reference").click();
 
         return new TransactionDetailsDialog(getPage());
     }
 
     @Step("Click on the first transaction 'Copy NPGW reference to clipboard' button")
     public TransactionsPage clickOnFirstReferenceCopyButton() {
-        firstRowReferenceCopyButton.click();
+        getFirstRowCell("NPGW reference").locator(getByTestId("CopyTrxIDToClipboardButton")).click();
 
         return new TransactionsPage(getPage());
     }
@@ -56,6 +51,10 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
         npgwReference.nth(index).click();
 
         return new TransactionDetailsDialog(getPage());
+    }
+
+    public String getFirstRowReference() {
+        return getFirstRowCell("NPGW reference").innerText();
     }
 
     public List<LocalDateTime> getAllCreationDates() {
