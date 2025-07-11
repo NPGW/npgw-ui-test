@@ -107,9 +107,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     }
 
     public String getCardTypeValue(Locator row) {
-        Locator img = getCell(row, "Card type").locator(cardTypeImage);
-
-        return detectCardName(img.getAttribute("src"));
+        return detectCardName(row.locator(cardTypeImage).getAttribute("src"));
     }
 
     private String detectCardName(String src) {
@@ -129,6 +127,19 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
         row.locator(refundTransactionButton).click();
 
         return new RefundTransactionDialog(getPage());
+    }
+
+    public List<String> getRowData(Locator row) {
+        List<String> rowData = new ArrayList<>();
+        rowData.add(getCell(row, "Creation Date (GMT)").innerText().trim());
+        rowData.add(getCell(row, "NPGW reference").innerText().trim());
+        rowData.add(getCell(row, "Business unit reference").innerText().trim());
+        rowData.add(getCell(row, "Amount").innerText().trim());
+        rowData.add(getCell(row, "Currency").innerText().trim());
+        rowData.add(getCardTypeValue(row));
+        rowData.add(getCell(row, "Status").innerText().trim());
+
+        return rowData;
     }
 
     public Locator getRefundButton(Locator row) {

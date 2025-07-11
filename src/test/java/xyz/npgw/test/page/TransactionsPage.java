@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -384,14 +383,14 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Click 'Export table data to file' button")
     public TransactionsPage clickExportTableDataToFileButton() {
-        getPage().getByTestId("ExportToFileuttonTransactionsPage").click();
+        downloadButton.click();
 
         return this;
     }
 
     @Step("Select 'CSV' option")
     public TransactionsPage selectCsv() {
-        getPage().getByText("CSV").click();
+        downloadCsvOption.click();
 
         return this;
     }

@@ -519,18 +519,8 @@ public class TransactionsTableTest extends BaseTest {
         List<List<String>> uiRows = new ArrayList<>();
         do {
             List<Locator> rows = transactionsPage.getTable().getRows().all();
-
             for (Locator row : rows) {
-                List<String> rowData = new ArrayList<>();
-                rowData.add(transactionsPage.getTable().getCell(row, "Creation Date (GMT)").innerText().trim());
-                rowData.add(transactionsPage.getTable().getCell(row, "NPGW reference").innerText().trim());
-                rowData.add(transactionsPage.getTable().getCell(row, "Business unit reference").innerText().trim());
-                rowData.add(transactionsPage.getTable().getCell(row, "Amount").innerText().trim());
-                rowData.add(transactionsPage.getTable().getCell(row, "Currency").innerText().trim());
-                rowData.add(transactionsPage.getTable().getCardTypeValue(row));
-                rowData.add(transactionsPage.getTable().getCell(row, "Status").innerText().trim());
-
-                uiRows.add(rowData);
+                uiRows.add(transactionsPage.getTable().getRowData(row));
             }
         } while (transactionsPage.getTable().goToNextPage());
 
@@ -542,7 +532,7 @@ public class TransactionsTableTest extends BaseTest {
         Files.createDirectories(targetPath.getParent());
         download.saveAs(targetPath);
 
-        List<String> uiHeader = transactionsPage.getTable().getHeaderColumnNames();
+        List<String> uiHeader = transactionsPage.getTable().getColumnHeadersText();
         List<List<String>> rowsFromCsv = transactionsPage
                 .readCsv(targetPath);
         List<String> csvHeader = rowsFromCsv.remove(0);
@@ -558,11 +548,11 @@ public class TransactionsTableTest extends BaseTest {
             List<String> csvRow = rowsFromCsv.get(i);
 
             IntStream.range(0, uiRow.size()).forEach(j -> {
-                String fromUi = uiRow.get(j);
-                String fromCsv = csvRow.get(j);
+                String uiCell = uiRow.get(j);
+                String csvCell = csvRow.get(j);
 
                 Allure.step("Verify: cell values match between UI and CSV", () ->
-                        assertEquals(fromUi, fromCsv, String.format("Mismatch at row %d, column %d", i + 1, j + 1)));
+                        assertEquals(uiCell, csvCell, String.format("Mismatch at row %d, column %d", i + 1, j + 1)));
             });
         });
     }
