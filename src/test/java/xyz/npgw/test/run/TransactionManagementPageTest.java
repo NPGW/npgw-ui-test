@@ -79,7 +79,6 @@ public class TransactionManagementPageTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getTable().clickOnFirstReferenceCopyButton()
                 .getTable().getFirstRowReference();
 
         AddAdjustmentDialog addAdjustmentDialog = new TransactionsPage(getPage())

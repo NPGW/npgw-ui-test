@@ -40,13 +40,6 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
         return new TransactionDetailsDialog(getPage());
     }
 
-    @Step("Click on the first transaction 'Copy NPGW reference to clipboard' button")
-    public TransactionsPage clickOnFirstReferenceCopyButton() {
-        getFirstRowCell("NPGW reference").locator(getByTestId("CopyTrxIDToClipboardButton")).click();
-
-        return new TransactionsPage(getPage());
-    }
-
     @Step("Click on the transaction NPGW reference")
     public TransactionDetailsDialog clickOnTransaction(int index) {
         npgwReference.nth(index).click();
@@ -105,7 +98,6 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
 
         return results;
     }
-
 
     public List<String> getCardTypeColumnValues() {
         Locator imgs = getRows()
