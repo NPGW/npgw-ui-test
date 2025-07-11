@@ -12,6 +12,8 @@ import xyz.npgw.test.page.system.TransactionManagementPage;
 @Getter
 public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, AddAdjustmentDialog> {
     private final Locator npgwReferenceInput = locator("input[aria-label='NPGW reference']");
+    private final Locator npgwReferenceFieldLabel = locator("label[data-slot='label']").first();
+    private final Locator buReferenceFieldLabel = locator("label[data-slot='label']").last();
     private final Locator transactionRow = locator("[aria-label='transactions table'] tr[data-first]");
     private final Locator reference = locator(".trxId");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
@@ -25,13 +27,6 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
     @Override
     protected TransactionManagementPage getReturnPage() {
         return new TransactionManagementPage(getPage());
-    }
-
-    @Step("Click on the NPGW reference input field")
-    public AddAdjustmentDialog clickOnNpgwReferenceInput() {
-        npgwReferenceInput.click();
-
-        return this;
     }
 
     @Step("Fill NPGW reference input field")

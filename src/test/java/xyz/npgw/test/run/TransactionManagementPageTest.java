@@ -72,8 +72,8 @@ public class TransactionManagementPageTest extends BaseTest {
     @TmsLink("886")
     @Epic("System/Transaction Management")
     @Feature("Add adjustment")
-    @Description("Search by NPGW reference by paste from clipboard using Ctrl+V")
-    public void testSearchReferenceInTransactionAddAdjustment() {
+    @Description("Search by NPGW reference within Add adjustment dialog and check placeholders")
+    public void testPlaceholdersAndSearchNpgwInAddAdjustment() {
         String referenceFromTable = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
@@ -84,9 +84,15 @@ public class TransactionManagementPageTest extends BaseTest {
         AddAdjustmentDialog addAdjustmentDialog = new TransactionsPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickTransactionManagementTab()
-                .clickAddAdjustmentButton()
-                .clickOnNpgwReferenceInput()
-                .fillNpgwReferenceInput(referenceFromTable);
+                .clickAddAdjustmentButton();
+
+        Allure.step("Verify: check placeholder in the 'NPGW reference' search field.");
+        assertThat(addAdjustmentDialog.getNpgwReferenceFieldLabel()).hasText("NPGW reference");
+
+        Allure.step("Verify: check placeholder in the 'Business unit reference' search field.");
+        assertThat(addAdjustmentDialog.getBuReferenceFieldLabel()).hasText("Business unit reference");
+
+        addAdjustmentDialog.fillNpgwReferenceInput(referenceFromTable);
 
         Allure.step("Verify: The located reference matches the one entered in the search field.");
         assertThat(addAdjustmentDialog.getReference()).hasText(referenceFromTable);
