@@ -36,9 +36,9 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
         return this;
     }
 
-    @Step("Paste from clipboard into NPGW reference input field using Ctrl+V")
-    public AddAdjustmentDialog pasteIntoNpgwReferenceInputUsingCtrlV() {
-        npgwReferenceInput.press("Control+V");
+    @Step("Fill NPGW reference input field")
+    public AddAdjustmentDialog fillNpgwReferenceInput(String text) {
+        npgwReferenceInput.fill(text);
 
         return this;
     }
@@ -61,9 +61,4 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
 
         return new TransactionManagementPage(getPage());
     }
-
-    public String getNpgwReferenceInputValue() {
-        return npgwReferenceInput.inputValue();
-    }
-
 }

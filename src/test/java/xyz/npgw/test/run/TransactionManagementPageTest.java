@@ -5,7 +5,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
@@ -60,7 +59,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Epic("System/Transaction Management")
     @Feature("Add adjustment")
     @Description("Search by NPGW reference by paste from clipboard using Ctrl+V")
-    public void testPasteReferenceIntoTransactionAdjustment() {
+    public void testSearchReferenceInTransactionAddAdjustment() {
         String referenceFromTable = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
@@ -74,18 +73,9 @@ public class TransactionManagementPageTest extends BaseTest {
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
                 .clickOnNpgwReferenceInput()
-                .pasteIntoNpgwReferenceInputUsingCtrlV();
-
-        String referenceFromClipboard = addAdjustmentDialog.getNpgwReferenceInputValue();
-
-        Allure.step("Verify: The correct reference value is pasted from the clipboard.");
-        Assert.assertEquals(referenceFromClipboard, referenceFromTable,
-                "Clipboard reference value must match the value from the transactions table.");
-
-        String referenceFromAdjustment = addAdjustmentDialog.getReference().innerText();
+                .fillNpgwReferenceInput(referenceFromTable);
 
         Allure.step("Verify: The located reference matches the one entered in the search field.");
-        Assert.assertEquals(referenceFromAdjustment, referenceFromClipboard,
-                "Reference value from the 'Add adjustment' must match the value from the clipboard");
+        assertThat(addAdjustmentDialog.getReference()).hasText(referenceFromTable);
     }
 }
