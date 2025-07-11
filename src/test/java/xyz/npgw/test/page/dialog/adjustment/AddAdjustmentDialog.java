@@ -15,7 +15,7 @@ public class AddAdjustmentDialog extends BaseDialog<TransactionManagementPage, A
     private final Locator npgwReferenceFieldLabel = locator("label[data-slot='label']").first();
     private final Locator buReferenceFieldLabel = locator("label[data-slot='label']").last();
     private final Locator transactionRow = locator("[aria-label='transactions table'] tr[data-first]");
-    private final Locator reference = locator(".trxId");
+    private final Locator npgwReferenceFromTable = locator(".trxId");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
     private final Locator closeButton = getByRole(AriaRole.BUTTON)
             .filter(new Locator.FilterOptions().setHasText("Close"));

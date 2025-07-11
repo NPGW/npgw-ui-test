@@ -95,6 +95,6 @@ public class TransactionManagementPageTest extends BaseTest {
         addAdjustmentDialog.fillNpgwReferenceInput(referenceFromTable);
 
         Allure.step("Verify: The located reference matches the one entered in the search field.");
-        assertThat(addAdjustmentDialog.getReference()).hasText(referenceFromTable);
+        assertThat(addAdjustmentDialog.getNpgwReferenceFromTable()).hasText(referenceFromTable);
     }
 }
