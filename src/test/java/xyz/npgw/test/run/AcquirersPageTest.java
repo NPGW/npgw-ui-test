@@ -482,6 +482,13 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getAlert().getMessage())
                 .hasText("SUCCESSAcquirer was deleted successfully");
 
+        acquirersPage
+                .getAlert().clickCloseButton()
+                .waitForAcquirerAbsence(getApiRequestContext(), ACQUIRER.getAcquirerName());
+
+        Allure.step("Verify: the deleted acquirer is no longer present in the table");
+        assertThat(acquirersPage.getTable().getTableContent()).hasText("No rows to display.");
+
         Allure.step("Verify: the deleted acquirer is no longer present in the dropdown list");
         assertTrue(acquirersPage.getSelectAcquirer().isAcquirerAbsent(ACQUIRER.getAcquirerName()));
     }

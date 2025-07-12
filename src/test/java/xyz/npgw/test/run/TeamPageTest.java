@@ -175,7 +175,7 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(companyAnalystEmail)
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnit(MERCHANT_TITLE)
+                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .clickCreateButton();
 
         Allure.step("Verify: a success alert appears after user creation");
@@ -236,7 +236,7 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(email)
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnit(MERCHANT_TITLE)
+                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName())
                 .getTable().clickEditUserIcon(email);
@@ -252,7 +252,7 @@ public class TeamPageTest extends BaseTest {
 
         TeamPage teamPage = editUserDialog
                 .checkInactiveRadiobutton()
-                .unsetAllowedBusinessUnits(new String[]{MERCHANT_TITLE})
+                .uncheckAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .checkCompanyAdminRadiobutton()
                 .clickSaveChangesButton();
 
@@ -311,7 +311,7 @@ public class TeamPageTest extends BaseTest {
                 .fillEmailField(email)
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAnalystRadiobutton()
-                .setAllowedBusinessUnit(MERCHANT_TITLE)
+                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName())
                 .getTable().clickDeactivateUserIcon(email)
@@ -457,7 +457,7 @@ public class TeamPageTest extends BaseTest {
                 .clickAddUserButton()
                 .fillEmailField(analystEmail)
                 .fillPasswordField(analystPassword)
-                .setAllowedBusinessUnit(MERCHANT_TITLE)
+                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .clickCreateButton();
 
         Allure.step("Verify: success message is displayed");
