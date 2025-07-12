@@ -2,6 +2,7 @@ package xyz.npgw.test.page.dialog.gateway;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.Request;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import lombok.Getter;
@@ -18,11 +19,9 @@ public class AddMerchantAcquirerDialog extends BaseDialog<GatewayPage, AddMercha
     private final Locator acquirerNameField = getByPlaceholder("Enter acquirer name");
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
     private final Locator inactiveStatusRadioButton = locator("(//input[@value='INACTIVE'])[1]");
-    private final SelectAcquirerComponent<AddMerchantAcquirerDialog> selectAcquirerComponent;
 
     public AddMerchantAcquirerDialog(Page page) {
         super(page);
-        this.selectAcquirerComponent = new SelectAcquirerComponent<>(page, this);
     }
 
     @Override
