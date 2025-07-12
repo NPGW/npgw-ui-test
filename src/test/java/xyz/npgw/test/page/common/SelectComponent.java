@@ -11,11 +11,9 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
 
-//    private final Locator dropdownOptionList = getByLabelExact("Suggestions").getByRole(AriaRole.OPTION);
-    private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
-
-
     protected final CurrentPageT currentPage;
+    //    private final Locator dropdownOptionList = getByLabelExact("Suggestions").getByRole(AriaRole.OPTION);
+    private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
 
     public SelectComponent(Page page, CurrentPageT currentPage) {
         super(page);
@@ -32,6 +30,8 @@ public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
         Locator dropdownChevron = selectInputField.locator("..//button[last()]");
         dropdownChevron.click();
         assertThat(dropdownChevron).hasAttribute("data-open", "true");
+
+        assertThat(locator("div[data-slot='content']")).hasAttribute("data-open", "true");
 
         selectInputField.fill(name);
 
