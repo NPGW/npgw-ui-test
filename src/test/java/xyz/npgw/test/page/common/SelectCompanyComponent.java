@@ -42,6 +42,10 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
+
+        selectCompanyDropdownChevron.click();
+        companyDropdown.waitFor();
+
         selectCompanyField.fill(companyName);
 
         if (locator("div[data-slot='empty-content']").isVisible()) {
