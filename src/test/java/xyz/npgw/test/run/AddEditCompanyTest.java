@@ -56,35 +56,6 @@ public class AddEditCompanyTest extends BaseTest {
         TestUtils.createCompany(getApiRequestContext(), EXISTING_COMPANY_NAME);
     }
 
-    @Test
-    @TmsLink("189")
-    @Epic("System/Companies and business units")
-    @Feature("Add company")
-    @Description("Verify that the placeholder text for each field is correct.")
-    public void testVerifyPlaceholders() {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
-                .clickAddCompanyButton();
-
-        Allure.step("Verify: all placeholders are correct for each field");
-        assertEquals(addCompanyDialog.getAllPlaceholders(), List.of(
-                "Enter name",
-                "Enter type",
-                "Enter company description",
-                "Enter website",
-                "Enter primary contact",
-                "Enter email",
-                "Enter country",
-                "Enter state",
-                "Enter ZIP",
-                "Enter city",
-                "Enter phone",
-                "Enter mobile",
-                "Enter fax"
-        ));
-    }
-
     @Test(dataProvider = "getInvalidCompanyNameLengths", dataProviderClass = TestDataProvider.class)
     @TmsLink("191")
     @Epic("System/Companies and business units")
@@ -109,7 +80,7 @@ public class AddEditCompanyTest extends BaseTest {
     @Epic("System/Companies and business units")
     @Feature("Add company")
     @Description("Verify required field states, placeholders, and button state in empty 'Add Company' form.")
-    public void testCreateButtonDisabledWhenRequiredFieldsAreEmpty() {
+    public void testAddCompanyFormValidationWhenEmpty() {
         AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
