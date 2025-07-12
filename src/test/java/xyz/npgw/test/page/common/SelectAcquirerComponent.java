@@ -10,6 +10,8 @@ import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.NoSuchElementException;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 @Log4j2
 public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
@@ -66,6 +68,9 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
+
+        selectAcquirerDropdownChevron.click();
+        assertThat(selectAcquirerDropdownChevron).hasAttribute("data-open","true");
 
         typeName(acquirerName);
 

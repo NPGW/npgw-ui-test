@@ -10,6 +10,8 @@ import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.NoSuchElementException;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 @Log4j2
 public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
 
@@ -44,6 +46,8 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         String lastName = "";
 
         selectCompanyDropdownChevron.click();
+        assertThat(selectCompanyDropdownChevron).hasAttribute("data-open","true");
+
         companyDropdown.waitFor();
 
         selectCompanyField.fill(companyName);
