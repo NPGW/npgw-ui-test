@@ -69,8 +69,9 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
         String lastName = "";
 
-        selectAcquirerDropdownChevron.click();
-        assertThat(selectAcquirerDropdownChevron).hasAttribute("data-open","true");
+        Locator dropdownChevron = getByLabelExact("Select acquirer").locator("..//button[last()]");
+        dropdownChevron.click();
+        assertThat(dropdownChevron).hasAttribute("data-open","true");
 
         typeName(acquirerName);
 

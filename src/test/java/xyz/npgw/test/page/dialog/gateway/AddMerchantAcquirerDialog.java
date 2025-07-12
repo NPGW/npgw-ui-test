@@ -2,11 +2,9 @@ package xyz.npgw.test.page.dialog.gateway;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Request;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 import lombok.Getter;
-import xyz.npgw.test.page.common.SelectAcquirerComponent;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
 import xyz.npgw.test.page.dialog.BaseDialog;

@@ -6,14 +6,13 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.NoSuchElementException;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Log4j2
-public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
+public class SelectCompanyComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
     @Getter
     private final Locator selectCompanyField = getByLabelExact("Select company")
@@ -28,11 +27,11 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
     private final Locator selectCompanyClearIcon = selectCompanyContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
-    private final CurrentPageT page;
+//    private final CurrentPageT page;
 
     public SelectCompanyComponent(Page page, CurrentPageT currentPage) {
-        super(page);
-        this.page = currentPage;
+        super(page, currentPage);
+//        this.page = currentPage;
     }
 
     public Locator getCompanyInDropdown(String companyName) {
@@ -46,7 +45,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         String lastName = "";
 
         selectCompanyDropdownChevron.click();
-        assertThat(selectCompanyDropdownChevron).hasAttribute("data-open","true");
+        assertThat(selectCompanyDropdownChevron).hasAttribute("data-open", "true");
 
         companyDropdown.waitFor();
 
@@ -65,28 +64,28 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
         }
         getCompanyInDropdown(companyName).click();
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click select Company clear icon")
     public CurrentPageT clickSelectCompanyClearIcon() {
         selectCompanyClearIcon.dispatchEvent("click");
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click company dropdown toggle arrow '˅˄'")
     public CurrentPageT clickSelectCompanyDropdownChevron() {
         selectCompanyDropdownChevron.click();
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click 'Select company' field")
     public CurrentPageT clickSelectCompanyField() {
-        selectCompanyField.click();
+//        selectCompanyField.click();
 
-        return page;
+        return currentPage;
     }
 
     @Step("Select first company in dropdown")
@@ -97,7 +96,7 @@ public class SelectCompanyComponent<CurrentPageT> extends BaseComponent {
             dropdownOptionList.first().click();
         }
 
-        return page;
+        return currentPage;
     }
 
     public String firstCompanyName() {
