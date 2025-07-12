@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Log4j2
-public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
+public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
     @Getter
     private final Locator selectAcquirerField = locator("input[aria-label='Select acquirer']");
@@ -24,25 +24,25 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
     private final Locator selectAcquirerClearIcon = selectAcquirerContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
-    private final CurrentPageT page;
+//    private final CurrentPageT page;
 
     public SelectAcquirerComponent(Page page, CurrentPageT currentPage) {
-        super(page);
-        this.page = currentPage;
+        super(page, currentPage);
+//        this.page = currentPage;
     }
 
     @Step("Click 'Select acquirer' field")
     public CurrentPageT clickSelectAcquirerField() {
         selectAcquirerField.click();
 
-        return page;
+        return currentPage;
     }
 
     @Step("Type '{acquirerName}' into 'Select acquirer' field")
     public CurrentPageT typeName(String acquirerName) {
         selectAcquirerField.pressSequentially(acquirerName, new Locator.PressSequentiallyOptions().setDelay(1));
 
-        return page;
+        return currentPage;
     }
 
 
@@ -50,7 +50,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
     public CurrentPageT clickAcquirerInDropdown(String acquirerName) {
         dropdownOptionList.getByText(acquirerName, new Locator.GetByTextOptions().setExact(true)).click();
 
-        return page;
+        return currentPage;
     }
 
     public Locator getSelectAcquirersDropdownItems() {
@@ -65,13 +65,20 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{acquirerName}' acquirer using filter")
     public CurrentPageT selectAcquirer(String acquirerName) {
+        select(selectAcquirerField, acquirerName);
+
+        return currentPage;
+    }
+
+    @Step("Select '{acquirerName}' acquirer using filter")
+    public CurrentPageT oldselectAcquirer(String acquirerName) {
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
 
         Locator dropdownChevron = getByLabelExact("Select acquirer").locator("..//button[last()]");
         dropdownChevron.click();
-        assertThat(dropdownChevron).hasAttribute("data-open","true");
+        assertThat(dropdownChevron).hasAttribute("data-open", "true");
 
         typeName(acquirerName);
 
@@ -90,21 +97,21 @@ public class SelectAcquirerComponent<CurrentPageT> extends BaseComponent {
 
         clickAcquirerInDropdown(acquirerName);
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click acquirer dropdown toggle arrow '˅˄'")
     public CurrentPageT clickAcquirerDropdownChevron() {
         selectAcquirerDropdownChevron.click();
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click select Acquirer unit clear icon")
     public CurrentPageT clickSelectAcquirerClearIcon() {
         selectAcquirerClearIcon.dispatchEvent("click");
 
-        return page;
+        return currentPage;
     }
 
     public boolean isAcquirerAbsent(String acquirerName) {

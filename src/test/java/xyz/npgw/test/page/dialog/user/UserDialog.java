@@ -62,7 +62,7 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
         return (CurrentDialogT) this;
     }
 
-    @Step("Check '{businessUnit}' checkbox")
+    @Step("Check '{businessUnitName}' checkbox")
     public CurrentDialogT checkAllowedBusinessUnitCheckbox(String businessUnitName) {
 //        getByTextExact("Allowed business units").waitFor();
         getByRole(AriaRole.CHECKBOX, businessUnitName).setChecked(true);

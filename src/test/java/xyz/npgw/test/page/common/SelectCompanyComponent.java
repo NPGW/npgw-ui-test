@@ -40,6 +40,17 @@ public class SelectCompanyComponent<CurrentPageT> extends SelectComponent<Curren
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
+        select(selectCompanyField, companyName);
+
+        return currentPage;
+    }
+
+    @Step("Select '{companyName}' company using filter")
+    public CurrentPageT oldselectCompany(String companyName) {
+//        select(selectCompanyField, companyName);
+//
+//        return currentPage;
+//    }
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";

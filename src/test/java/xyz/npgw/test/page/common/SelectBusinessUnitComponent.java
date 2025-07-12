@@ -6,12 +6,11 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.NoSuchElementException;
 
 @Log4j2
-public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
+public class SelectBusinessUnitComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
     @Getter
     private final Locator selectBusinessUnitField = getByLabelExact("Business unit");
@@ -28,11 +27,11 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
     private final Locator selectBusinessUnitClearIcon = selectBusinessUnitContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
-    private final CurrentPageT page;
+//    private final CurrentPageT page;
 
     public SelectBusinessUnitComponent(Page page, CurrentPageT currentPage) {
-        super(page);
-        this.page = currentPage;
+        super(page, currentPage);
+//        this.page = currentPage;
     }
 
     public Locator getBusinessUnitInDropdownOption(String businessUnitName) {
@@ -41,6 +40,13 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
 
     @Step("Select '{businessUnitName}' business unit using filter")
     public CurrentPageT selectBusinessUnit(String businessUnitName) {
+        select(selectBusinessUnitField, businessUnitName);
+
+        return currentPage;
+    }
+
+    @Step("Select '{businessUnitName}' business unit using filter")
+    public CurrentPageT oldselectBusinessUnit(String businessUnitName) {
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
 
         String lastName = "";
@@ -62,27 +68,27 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends BaseComponent {
         getBusinessUnitInDropdownOption(businessUnitName).first().click();
 
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-        return page;
+        return currentPage;
     }
 
     @Step("Click select Business unit clear icon")
     public CurrentPageT clickSelectBusinessUnitClearIcon() {
         selectBusinessUnitClearIcon.dispatchEvent("click");
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click Business unit dropdown toggle arrow '˅˄'")
     public CurrentPageT clickSelectBusinessUnitDropdownChevron() {
         selectBusinessUnitDropdownChevron.click();
 
-        return page;
+        return currentPage;
     }
 
     @Step("Click 'Select Business unit' placeholder")
     public CurrentPageT clickSelectBusinessUnitPlaceholder() {
         selectBusinessUnitPlaceholder.click();
 
-        return page;
+        return currentPage;
     }
 }
