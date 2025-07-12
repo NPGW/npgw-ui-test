@@ -37,7 +37,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements
 
     @Step("Click 'Refresh data' button")
     public TeamPage clickRefreshDataButton() {
-        getByTestId("ApplyFilterButtonTeamPage").click();
+        getPage().waitForResponse("**/portal-v1/user/list/*", getByTestId("ApplyFilterButtonTeamPage")::click);
 
         return this;
     }
