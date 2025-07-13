@@ -231,7 +231,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     }
 
     public boolean goToNextPage() {
-        if (!hasNextPage()) {
+        if (nextPageButton.isDisabled()) {
             return false;
         }
         clickNextPageButton();
