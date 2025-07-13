@@ -18,7 +18,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class FraudControlTest extends BaseTest {
 
-    private final static FraudControl FRAUD_CONTROL = FraudControl.builder()
+    private static final FraudControl FRAUD_CONTROL = FraudControl.builder()
             .controlName("ControlEverything")
             .controlCode("8848")
             .controlDisplayName("ControlDisplay")
