@@ -29,7 +29,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     private final Locator rows = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions()
             .setHasNot(columnHeader)
             .setHasNotText("No rows to display."));
-    private final Locator firstRow = locator("tr[data-key]");
+    private final Locator firstRow = locator("tr[data-first='true']");
 
     private final Locator rowsPerPage = getByRole(AriaRole.BUTTON, "Rows Per Page");
     private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
