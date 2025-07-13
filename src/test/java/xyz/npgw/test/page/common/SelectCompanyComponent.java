@@ -115,12 +115,7 @@ public class SelectCompanyComponent<CurrentPageT> extends SelectComponent<Curren
         return dropdownOptionList.first().textContent();
     }
 
-    public boolean isCompanyAbsentInDropdown(String companyName) {
-        try {
-            selectCompany(companyName);
-            return false;
-        } catch (NoSuchElementException e) {
-            return true;
-        }
+    public boolean isCompanyPresent(String companyName) {
+        return getAllOptions(selectCompanyField, companyName).contains(companyName);
     }
 }

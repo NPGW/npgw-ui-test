@@ -26,6 +26,7 @@ public class ApiLogger {
                 try {
                     errorMessage = new Gson().fromJson(response.text(), ApiError.class).message();
                 } catch (JsonSyntaxException ignored) {
+                    // no handling
                 }
                 log.warn("{} {} - {}", message, response.status(), errorMessage);
                 break;

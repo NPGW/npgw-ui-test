@@ -14,6 +14,7 @@ import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertFalse;
 
 public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
@@ -70,8 +71,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("SUCCESSCompany was deleted successfully");
 
-//        Allure.step("Verify: the deleted company is no longer present in the dropdown list");
-//        assertTrue(companiesAndBusinessUnitsPage.getSelectCompany().isCompanyAbsentInDropdown(COMPANY_NAME));
+        Allure.step("Verify: the deleted company is no longer present in the dropdown list");
+        assertFalse(companiesAndBusinessUnitsPage.getSelectCompany().isCompanyPresent(COMPANY_NAME));
     }
 
     @Test

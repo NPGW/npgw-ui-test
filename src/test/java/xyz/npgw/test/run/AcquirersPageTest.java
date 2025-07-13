@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 public class AcquirersPageTest extends BaseTest {
@@ -489,7 +490,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getTableContent()).hasText("No rows to display.");
 
         Allure.step("Verify: the deleted acquirer is no longer present in the dropdown list");
-        assertTrue(acquirersPage.getSelectAcquirer().isAcquirerAbsent(ACQUIRER.getAcquirerName()));
+        assertFalse(acquirersPage.getSelectAcquirer().isAcquirerPresent(ACQUIRER.getAcquirerName()));
     }
 
     @AfterClass

@@ -113,7 +113,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<Curre
         return currentPage;
     }
 
-    public boolean isAcquirerAbsent(String acquirerName) {
-        return !getAllOptions(selectAcquirerField, acquirerName).contains(acquirerName);
+    public boolean isAcquirerPresent(String acquirerName) {
+        return getAllOptions(selectAcquirerField, acquirerName).contains(acquirerName);
     }
 }

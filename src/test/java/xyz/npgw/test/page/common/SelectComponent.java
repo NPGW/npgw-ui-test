@@ -14,17 +14,16 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
 
+    private final static String NO_RESULTS_FOUND = "No results found.";
+
     protected final CurrentPageT currentPage;
-    //    private final Locator dropdownOptionList = getByLabelExact("Suggestions").getByRole(AriaRole.OPTION);
-    private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
+
+    private final Locator dropdown = getByRoleExact(AriaRole.LISTBOX, "Suggestions");
+    private final Locator dropdownOptions = dropdown.getByRole(AriaRole.OPTION);
 
     public SelectComponent(Page page, CurrentPageT currentPage) {
         super(page);
         this.currentPage = currentPage;
-    }
-
-    private Locator getOptionInDropdown(String name) {
-        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(name)));
     }
 
     protected List<String> getAllOptions(Locator selectInputField, String name) {
@@ -33,17 +32,17 @@ public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
         selectInputField.clear();
         selectInputField.fill(name);
 
-        if (getByRoleExact(AriaRole.LISTBOX, "Suggestions").innerText().equals("No results found.")) {
+        if (dropdown.innerText().equals(NO_RESULTS_FOUND)) {
             return Collections.emptyList();
         }
 
         HashSet<String> allOptions = new HashSet<>();
         do {
-            allOptions.addAll(dropdownOptionList.allInnerTexts());
+            allOptions.addAll(dropdownOptions.allInnerTexts());
 
-            lastName = dropdownOptionList.last().innerText();
-            dropdownOptionList.last().scrollIntoViewIfNeeded();
-        } while (!dropdownOptionList.last().innerText().equals(lastName));
+            lastName = dropdownOptions.last().innerText();
+            dropdownOptions.last().scrollIntoViewIfNeeded();
+        } while (!dropdownOptions.last().innerText().equals(lastName));
 
         return allOptions.stream().toList();
     }
@@ -51,25 +50,18 @@ public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
     protected CurrentPageT select(Locator selectInputField, String name) {
         String lastName = "";
 
-//        Locator dropdownChevron = selectInputField.locator("..//button[last()]");
-//        dropdownChevron.click();
-//        assertThat(dropdownChevron).hasAttribute("data-open", "true");
-//
-//        assertThat(locator("div[data-slot='content']")).hasAttribute("data-open", "true");
-
         selectInputField.fill(name);
 
-        assertThat(getByRoleExact(AriaRole.LISTBOX, "Suggestions")).not().hasText("No results found.");
+        assertThat(dropdown).not().hasText(NO_RESULTS_FOUND);
 
-        while (getOptionInDropdown(name).all().isEmpty()) {
-            if (dropdownOptionList.last().innerText().equals(lastName)) {
+        while (dropdownOptions.filter(new Locator.FilterOptions().setHas(getByTextExact(name))).all().isEmpty()) {
+            if (dropdownOptions.last().innerText().equals(lastName)) {
                 throw new NoSuchElementException("Option '%s' not found in dropdown list.".formatted(name));
             }
-            dropdownOptionList.last().scrollIntoViewIfNeeded();
-            lastName = dropdownOptionList.last().innerText();
+            dropdownOptions.last().scrollIntoViewIfNeeded();
+            lastName = dropdownOptions.last().innerText();
         }
-        dropdownOptionList.getByText(name, new Locator.GetByTextOptions().setExact(true)).click();
-//        getCompanyInDropdown(name).click();
+        dropdownOptions.getByText(name, new Locator.GetByTextOptions().setExact(true)).click();
 
         return currentPage;
     }
