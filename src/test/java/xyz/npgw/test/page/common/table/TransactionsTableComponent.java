@@ -80,7 +80,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     public List<String> getAllTransactionsStatusList() {
         getByRole(AriaRole.BUTTON, "next page button").waitFor();
 
-        return getColumnValuesFromAllPages("Status", Function.identity());
+        return getColumnValuesFromAllPages("Status");
     }
 
     public List<Boolean> getRefundButtonVisibilityFromAllPages() {

@@ -61,10 +61,4 @@ public class UserTableComponent extends BaseTableComponent<TeamPage> {
 
         return new DeleteUserDialog(getPage());
     }
-
-    public boolean isUserPresentInTable(String email) {
-        List<String> userEmails = getColumnValuesFromAllPages("Username", Function.identity());
-
-        return userEmails.contains(email);
-    }
 }

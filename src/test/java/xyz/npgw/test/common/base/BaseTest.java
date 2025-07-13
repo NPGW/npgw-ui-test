@@ -140,6 +140,8 @@ public abstract class BaseTest {
                                 .setState(WaitForSelectorState.HIDDEN)
                                 .setTimeout(ProjectProperties.getDefaultTimeout() * 5)),
                 new Page.AddLocatorHandlerOptions().setNoWaitAfter(true));
+
+        initApiRequestContext();
         openSite(args);
     }
 
@@ -232,9 +234,10 @@ public abstract class BaseTest {
 
     private void initApiRequestContext() {
         if (LocalTime.now().isBefore(bestBefore)) {
+            log.info(">>>>>>>>> no need for token update - good to {}", bestBefore);
             return;
         }
-
+        log.info(">>>>>>>>> time to update token - good to {}", bestBefore);
         APIRequestContext request = playwright.request()
                 .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseUrl()));
         Credentials credentials = new Credentials(ProjectProperties.getEmail(), ProjectProperties.getPassword());
@@ -247,6 +250,7 @@ public abstract class BaseTest {
                             .setBaseURL(ProjectProperties.getBaseUrl())
                             .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
             bestBefore = LocalTime.now().plusSeconds(token.expiresIn()).minusMinutes(3);
+            log.info(">>>>>>>>> token updated to {}", bestBefore);
         }
     }
 

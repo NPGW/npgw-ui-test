@@ -102,7 +102,7 @@ public class TeamPageTest extends BaseTest {
                 .waitForUserAbsence(getApiRequestContext(), systemAdminEmail, "super");
 
         Allure.step("Verify: deleted system admin is no longer present in the users table");
-        assertFalse(teamPage.getTable().isUserPresentInTable(systemAdminEmail));
+        assertFalse(teamPage.getTable().getColumnValuesFromAllPages("Username").contains(systemAdminEmail));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class TeamPageTest extends BaseTest {
                 .waitForUserAbsence(getApiRequestContext(), companyAdminEmail, getCompanyName());
 
         Allure.step("Verify: deleted company admin is no longer present in the users table");
-        assertFalse(teamPage.getTable().isUserPresentInTable(companyAdminEmail));
+        assertFalse(teamPage.getTable().getColumnValuesFromAllPages("Username").contains(companyAdminEmail));
     }
 
     @Test
@@ -218,7 +218,7 @@ public class TeamPageTest extends BaseTest {
                 .waitForUserAbsence(getApiRequestContext(), companyAnalystEmail, getCompanyName());
 
         Allure.step("Verify: deleted company analyst is no longer present in the users table");
-        assertFalse(teamPage.getTable().isUserPresentInTable(companyAnalystEmail));
+        assertFalse(teamPage.getTable().getColumnValuesFromAllPages("Username").contains(companyAnalystEmail));
     }
 
     @Test

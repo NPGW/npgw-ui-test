@@ -178,7 +178,7 @@ public class TransactionsTableTest extends BaseTest {
 
         List<String> currencyValues = transactionsPage.clickCurrencySelector()
                 .selectCurrency(currency)
-                .getTable().getColumnValuesFromAllPages("Currency", Function.identity());
+                .getTable().getColumnValuesFromAllPages("Currency");
 
         Allure.step("Verify: Filter displays the selected currency");
         assertThat(transactionsPage.getCurrencySelector()).containsText(currency);

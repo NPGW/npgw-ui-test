@@ -109,7 +109,7 @@ public class TeamPage extends BaseSystemPage<TeamPage> implements
                 throw new TimeoutError("Waiting for user '%s' deactivation".formatted(email));
             }
         }
-        log.info("Used deactivation wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
+        log.info("User deactivation wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
         clickRefreshDataButton();
 
         return this;

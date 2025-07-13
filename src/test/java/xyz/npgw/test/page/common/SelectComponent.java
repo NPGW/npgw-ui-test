@@ -5,6 +5,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import xyz.npgw.test.page.base.BaseComponent;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -27,17 +30,15 @@ public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
     protected CurrentPageT select(Locator selectInputField, String name) {
         String lastName = "";
 
-        Locator dropdownChevron = selectInputField.locator("..//button[last()]");
-        dropdownChevron.click();
-        assertThat(dropdownChevron).hasAttribute("data-open", "true");
-
-        assertThat(locator("div[data-slot='content']")).hasAttribute("data-open", "true");
+//        Locator dropdownChevron = selectInputField.locator("..//button[last()]");
+//        dropdownChevron.click();
+//        assertThat(dropdownChevron).hasAttribute("data-open", "true");
+//
+//        assertThat(locator("div[data-slot='content']")).hasAttribute("data-open", "true");
 
         selectInputField.fill(name);
 
-        if (locator("div[data-slot='empty-content']").isVisible()) {
-            throw new NoSuchElementException("Option '%s' not found. Dropdown list is empty.".formatted(name));
-        }
+        assertThat(getByRoleExact(AriaRole.LISTBOX, "Suggestions")).not().hasText("No results found.");
 
         while (getOptionInDropdown(name).all().isEmpty()) {
             if (dropdownOptionList.last().innerText().equals(lastName)) {
