@@ -9,8 +9,6 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.NoSuchElementException;
 
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-
 @Log4j2
 public class SelectCompanyComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
@@ -27,53 +25,13 @@ public class SelectCompanyComponent<CurrentPageT> extends SelectComponent<Curren
     private final Locator selectCompanyClearIcon = selectCompanyContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
-//    private final CurrentPageT page;
-
     public SelectCompanyComponent(Page page, CurrentPageT currentPage) {
         super(page, currentPage);
-//        this.page = currentPage;
-    }
-
-    public Locator getCompanyInDropdown(String companyName) {
-        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(companyName)));
     }
 
     @Step("Select '{companyName}' company using filter")
     public CurrentPageT selectCompany(String companyName) {
         select(selectCompanyField, companyName);
-
-        return currentPage;
-    }
-
-    @Step("Select '{companyName}' company using filter")
-    public CurrentPageT oldselectCompany(String companyName) {
-//        select(selectCompanyField, companyName);
-//
-//        return currentPage;
-//    }
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-
-        String lastName = "";
-
-        selectCompanyDropdownChevron.click();
-        assertThat(selectCompanyDropdownChevron).hasAttribute("data-open", "true");
-
-        companyDropdown.waitFor();
-
-        selectCompanyField.fill(companyName);
-
-        if (locator("div[data-slot='empty-content']").isVisible()) {
-            throw new NoSuchElementException("Company '" + companyName + "' not found. Dropdown list is empty.");
-        }
-
-        while (getCompanyInDropdown(companyName).all().isEmpty()) {
-            if (dropdownOptionList.last().innerText().equals(lastName)) {
-                throw new NoSuchElementException("Company '" + companyName + "' not found in dropdown list.");
-            }
-            dropdownOptionList.last().scrollIntoViewIfNeeded();
-            lastName = dropdownOptionList.last().innerText();
-        }
-        getCompanyInDropdown(companyName).click();
 
         return currentPage;
     }
@@ -88,13 +46,6 @@ public class SelectCompanyComponent<CurrentPageT> extends SelectComponent<Curren
     @Step("Click company dropdown toggle arrow '˅˄'")
     public CurrentPageT clickSelectCompanyDropdownChevron() {
         selectCompanyDropdownChevron.click();
-
-        return currentPage;
-    }
-
-    @Step("Click 'Select company' field")
-    public CurrentPageT clickSelectCompanyField() {
-//        selectCompanyField.click();
 
         return currentPage;
     }

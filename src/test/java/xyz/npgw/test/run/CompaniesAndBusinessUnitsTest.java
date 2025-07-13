@@ -53,7 +53,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getCompanyInfoBlock()).isVisible();
     }
 
-    // TODO unstable - company not found sometimes
     @Test(priority = 1)
     @TmsLink("723")
     @Epic("System/Companies and business units")
@@ -70,6 +69,14 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         Allure.step("Verify: the success alert appears after deleting the company");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("SUCCESSCompany was deleted successfully");
+
+        companiesAndBusinessUnitsPage
+                .getAlert().clickCloseButton()
+                .waitForCompanyAbsence(getApiRequestContext(), COMPANY_NAME);
+
+        Allure.step("Verify: the deleted company is no longer present on the page");
+        assertThat(companiesAndBusinessUnitsPage.getPageContent())
+                .hasText("Select company name to view merchants");
 
         Allure.step("Verify: the deleted company is no longer present in the dropdown list");
         assertFalse(companiesAndBusinessUnitsPage.getSelectCompany().isCompanyPresent(COMPANY_NAME));

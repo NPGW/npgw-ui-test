@@ -129,7 +129,6 @@ public class GatewayPageTest extends BaseTest {
         GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(COMPANY_NAME);
 
         Locator selectCompanyField = gatewayPage
@@ -178,7 +177,6 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
@@ -211,7 +209,6 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getSystemMenu().clickGatewayTab()
-                .getSelectCompany().clickSelectCompanyField()
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
                 .clickCurrencyValue()

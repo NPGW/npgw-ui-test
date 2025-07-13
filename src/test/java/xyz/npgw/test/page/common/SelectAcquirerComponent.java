@@ -7,10 +7,6 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.util.NoSuchElementException;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-
 @Log4j2
 public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
@@ -23,11 +19,8 @@ public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<Curre
     private final Locator selectAcquirerClearIcon = selectAcquirerContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
-//    private final CurrentPageT page;
-
     public SelectAcquirerComponent(Page page, CurrentPageT currentPage) {
         super(page, currentPage);
-//        this.page = currentPage;
     }
 
     @Step("Click 'Select acquirer' field")
@@ -58,43 +51,9 @@ public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<Curre
         return dropdownOptionList;
     }
 
-    public Locator getAcquirerInDropdownOption(String acquirerName) {
-        return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(acquirerName)));
-    }
-
     @Step("Select '{acquirerName}' acquirer using filter")
     public CurrentPageT selectAcquirer(String acquirerName) {
         select(selectAcquirerField, acquirerName);
-
-        return currentPage;
-    }
-
-    @Step("Select '{acquirerName}' acquirer using filter")
-    public CurrentPageT oldselectAcquirer(String acquirerName) {
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-
-        String lastName = "";
-
-        Locator dropdownChevron = getByLabelExact("Select acquirer").locator("..//button[last()]");
-        dropdownChevron.click();
-        assertThat(dropdownChevron).hasAttribute("data-open", "true");
-
-        typeName(acquirerName);
-
-        if (dropdownOptionList.all().isEmpty()) {
-            throw new NoSuchElementException("Acquirer dropdown list is empty.");
-        }
-
-        while (getAcquirerInDropdownOption(acquirerName).all().isEmpty()) {
-            if (dropdownOptionList.last().innerText().equals(lastName)) {
-                throw new NoSuchElementException("Acquirer '" + acquirerName + "' not found in dropdown.");
-            }
-            dropdownOptionList.last().scrollIntoViewIfNeeded();
-
-            lastName = dropdownOptionList.last().innerText();
-        }
-
-        clickAcquirerInDropdown(acquirerName);
 
         return currentPage;
     }

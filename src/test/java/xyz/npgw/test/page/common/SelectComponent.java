@@ -14,7 +14,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
 
-    private final static String NO_RESULTS_FOUND = "No results found.";
+    private static final String NO_RESULTS_FOUND = "No results found.";
 
     protected final CurrentPageT currentPage;
 
