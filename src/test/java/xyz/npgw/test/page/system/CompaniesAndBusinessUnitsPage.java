@@ -141,7 +141,6 @@ public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBu
             }
         }
         log.info("Company absence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
-        refreshDataButton.click();
 
         return this;
     }
