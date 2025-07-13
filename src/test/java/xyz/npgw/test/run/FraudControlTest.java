@@ -1,11 +1,11 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import io.qameta.allure.Allure;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
@@ -35,10 +35,11 @@ public class FraudControlTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillControlNameField(fraudControl.getControlName())
-                .fillControlCodeField(fraudControl.getControlCode())
-                .fillControlDisplayNameField(fraudControl.getControlDisplayName())
-                .fillConfigField(fraudControl.getControlConfig())
+                .fillFraudControlNameField(fraudControl.getControlName())
+                .fillFraudControlCodeField(fraudControl.getControlCode())
+                .fillFraudControlConfigField(fraudControl.getControlConfig())
+                .fillFraudControlDisplayNameField(fraudControl.getControlDisplayName())
+                .checkActiveRadiobutton()
                 .clickCreateButton();
 
         Locator row = page.getTable().getRow(fraudControl.getControlName()).first();

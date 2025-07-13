@@ -11,10 +11,6 @@ public class AddFraudControlDialog extends FraudControlDialog<AddFraudControlDia
         AlertTrait<AddFraudControlDialog> {
 
     private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
-    private final Locator controlNameField = getByPlaceholder("Enter control name");
-    private final Locator controlCodeField = getByPlaceholder("Enter control code");
-    private final Locator controlDisplayNameField = getByPlaceholder("Enter display name");
-    private final Locator controlConfigField = getByPlaceholder("Enter control config");
 
     public AddFraudControlDialog(Page page) {
         super(page);
@@ -32,34 +28,5 @@ public class AddFraudControlDialog extends FraudControlDialog<AddFraudControlDia
         createButton.click();
 
         return getReturnPage();
-    }
-
-    @Step("Fill in 'Control name' field")
-    public AddFraudControlDialog fillControlNameField(String name) {
-        getDialogHeader().waitFor();
-        controlNameField.fill(name);
-
-        return this;
-    }
-
-    @Step("Fill in 'Control code' field")
-    public AddFraudControlDialog fillControlCodeField(String code) {
-        controlCodeField.fill(code);
-
-        return this;
-    }
-
-    @Step("Fill in 'Display name' field")
-    public AddFraudControlDialog fillControlDisplayNameField(String display) {
-        controlDisplayNameField.fill(display);
-
-        return this;
-    }
-
-    @Step("Fill in 'Display name' field")
-    public AddFraudControlDialog fillConfigField(String config) {
-        controlConfigField.fill(config);
-
-        return this;
     }
 }
