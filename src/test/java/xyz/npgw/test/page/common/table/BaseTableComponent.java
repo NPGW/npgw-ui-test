@@ -70,7 +70,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
                 return row;
             } catch (PlaywrightException ignored) {
                 if (hasNoPagination()) {
-                    throw new NoSuchElementException("Row with data-key '" + rowHeader + "' isn't found! Table is empty");
+                    throw new NoSuchElementException("No rows with data-key '" + rowHeader + "! Table is empty");
                 } else {
                     log.info("Row not found on this page, trying next page.");
                 }
