@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.PlaywrightException;
-import lombok.SneakyThrows;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import xyz.npgw.test.common.entity.ApiError;

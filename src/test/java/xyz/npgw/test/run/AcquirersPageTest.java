@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertTrue;

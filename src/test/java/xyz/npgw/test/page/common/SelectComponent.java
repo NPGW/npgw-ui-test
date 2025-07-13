@@ -5,9 +5,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import xyz.npgw.test.page.base.BaseComponent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;

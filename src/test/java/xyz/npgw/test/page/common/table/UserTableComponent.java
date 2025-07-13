@@ -9,9 +9,6 @@ import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.dialog.user.ResetUserPasswordDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-import java.util.List;
-import java.util.function.Function;
-
 public class UserTableComponent extends BaseTableComponent<TeamPage> {
 
     public UserTableComponent(Page page) {

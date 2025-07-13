@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
