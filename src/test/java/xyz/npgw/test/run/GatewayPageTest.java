@@ -309,7 +309,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
                 .clickAddBusinessUnitAcquirerButton()
-                .selectInactiveStatus()
+                .checkInactiveRadiobutton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton();
 
@@ -397,7 +397,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
                 .clickAddBusinessUnitAcquirerButton()
-                .selectInactiveStatus()
+                .checkInactiveRadiobutton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER_EUR.getAcquirerName())
                 .clickCreateButton()
                 .clickAddBusinessUnitAcquirerButton()
