@@ -18,7 +18,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class FraudControlTest extends BaseTest {
 
-    private final FraudControl fraudControl = FraudControl.builder()
+    private final static FraudControl FRAUD_CONTROL = FraudControl.builder()
             .controlName("ControlEverything")
             .controlCode("8848")
             .controlDisplayName("ControlDisplay")
@@ -35,27 +35,27 @@ public class FraudControlTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillFraudControlNameField(fraudControl.getControlName())
-                .fillFraudControlCodeField(fraudControl.getControlCode())
-                .fillFraudControlConfigField(fraudControl.getControlConfig())
-                .fillFraudControlDisplayNameField(fraudControl.getControlDisplayName())
+                .fillFraudControlNameField(FRAUD_CONTROL.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode())
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName())
                 .checkActiveRadiobutton()
                 .clickCreateButton();
 
-        Locator row = page.getTable().getRow(fraudControl.getControlName()).first();
+        Locator row = page.getTable().getRow(FRAUD_CONTROL.getControlName()).first();
 
         Allure.step("Verify that all the data are presented in the row");
-        assertThat(row).containsText(fraudControl.getControlCode());
-        assertThat(row).containsText(fraudControl.getControlName());
-        assertThat(row).containsText(fraudControl.getControlConfig());
-        assertThat(row).containsText(fraudControl.getControlDisplayName());
+        assertThat(row).containsText(FRAUD_CONTROL.getControlCode());
+        assertThat(row).containsText(FRAUD_CONTROL.getControlName());
+        assertThat(row).containsText(FRAUD_CONTROL.getControlConfig());
+        assertThat(row).containsText(FRAUD_CONTROL.getControlDisplayName());
         assertThat(row).containsText("Active");
     }
 
     @AfterClass
     @Override
     protected void afterClass() {
-        TestUtils.deleteFraudControl(getApiRequestContext(), fraudControl.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL.getControlName());
         super.afterClass();
     }
 }
