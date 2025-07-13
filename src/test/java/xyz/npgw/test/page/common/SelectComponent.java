@@ -5,6 +5,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import xyz.npgw.test.page.base.BaseComponent;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -22,6 +25,27 @@ public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
 
     private Locator getOptionInDropdown(String name) {
         return dropdownOptionList.filter(new Locator.FilterOptions().setHas(getByTextExact(name)));
+    }
+
+    protected List<String> getAllOptions(Locator selectInputField, String name) {
+        String lastName;
+
+        selectInputField.clear();
+        selectInputField.fill(name);
+
+        if (getByRoleExact(AriaRole.LISTBOX, "Suggestions").innerText().equals("No results found.")) {
+            return Collections.emptyList();
+        }
+
+        HashSet<String> allOptions = new HashSet<>();
+        do {
+            allOptions.addAll(dropdownOptionList.allInnerTexts());
+
+            lastName = dropdownOptionList.last().innerText();
+            dropdownOptionList.last().scrollIntoViewIfNeeded();
+        } while (!dropdownOptionList.last().innerText().equals(lastName));
+
+        return allOptions.stream().toList();
     }
 
     protected CurrentPageT select(Locator selectInputField, String name) {

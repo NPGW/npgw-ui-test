@@ -6,7 +6,6 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.page.base.BaseComponent;
 
 import java.util.NoSuchElementException;
 
@@ -115,12 +114,6 @@ public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<Curre
     }
 
     public boolean isAcquirerAbsent(String acquirerName) {
-//        getPage().waitForCondition(() -> selectAcquirerField.inputValue().isEmpty());
-        try {
-            selectAcquirer(acquirerName);
-            return false;
-        } catch (NoSuchElementException e) {
-            return true;
-        }
+        return !getAllOptions(selectAcquirerField, acquirerName).contains(acquirerName);
     }
 }
