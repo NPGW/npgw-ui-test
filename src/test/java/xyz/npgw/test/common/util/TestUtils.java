@@ -3,9 +3,9 @@ package xyz.npgw.test.common.util;
 import com.microsoft.playwright.APIRequestContext;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.common.entity.Info;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.FraudControl;
+import xyz.npgw.test.common.entity.Info;
 import xyz.npgw.test.common.entity.MerchantAcquirer;
 import xyz.npgw.test.common.entity.User;
 

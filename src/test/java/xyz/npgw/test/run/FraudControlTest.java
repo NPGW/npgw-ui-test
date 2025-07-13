@@ -1,10 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.TmsLink;
+import io.qameta.allure.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
@@ -25,7 +22,7 @@ public class FraudControlTest extends BaseTest {
             .build();
 
     @Test
-    @TmsLink("")
+    @TmsLink("891")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Add Active Fraud Control")
@@ -42,6 +39,7 @@ public class FraudControlTest extends BaseTest {
 
         Locator row = page.getTable().getRow(fraudControl.getControlName()).first();
 
+        Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(fraudControl.getControlCode());
         assertThat(row).containsText(fraudControl.getControlName());
         assertThat(row).containsText(fraudControl.getControlConfig());
