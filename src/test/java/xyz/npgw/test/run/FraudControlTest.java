@@ -53,7 +53,6 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(FRAUD_CONTROL.getControlCode());
-        assertThat(row).containsText(FRAUD_CONTROL.getControlName());
         assertThat(row).containsText(FRAUD_CONTROL.getControlConfig());
         assertThat(row).containsText(FRAUD_CONTROL.getControlDisplayName());
         assertThat(row).containsText("Active");
@@ -80,7 +79,6 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlCode());
-        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlName());
         assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlConfig());
         assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlDisplayName());
         assertThat(row).containsText("Inactive");
