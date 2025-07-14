@@ -32,7 +32,7 @@ public class FraudControlPageTest extends BaseTest {
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
 
         assertThat(fraudControlPage.getAlert().getMessage())
-                .hasText("ERROREntity with name {"+fraudControlName+"} already exists.");
+                .hasText("ERROREntity with name {" + fraudControlName + "} already exists.");
     }
 
     @AfterClass
