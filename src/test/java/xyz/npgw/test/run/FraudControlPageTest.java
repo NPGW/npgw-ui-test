@@ -17,7 +17,7 @@ public class FraudControlPageTest extends BaseTest {
     @TmsLink("895")
     @Epic("System/Fraud control")
     @Feature("Fraud control")
-    @Description("Verify the error message when attempting to create a Fraud Control with the same name")
+    @Description("Verify the error message when attempting to create a Fraud Control with the existing name")
     public void testErrorMessageForExistedName () {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
