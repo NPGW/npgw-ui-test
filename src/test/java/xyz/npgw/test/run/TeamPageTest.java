@@ -213,6 +213,7 @@ public class TeamPageTest extends BaseTest {
                 .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE)
                 .clickDeleteButton();
 
+        Allure.step("Verify: business unit deletion fails with expected error message");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("ERRORMerchant could not be deleted: there are still users associated with it.");
     }
