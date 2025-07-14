@@ -29,5 +29,4 @@ public class AddFraudControlDialog extends FraudControlDialog<AddFraudControlDia
 
         return getReturnPage();
     }
-
 }

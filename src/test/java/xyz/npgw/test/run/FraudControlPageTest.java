@@ -18,7 +18,7 @@ public class FraudControlPageTest extends BaseTest {
     @Epic("System/Fraud control")
     @Feature("Fraud control")
     @Description("Verify the error message when attempting to create a Fraud Control with the existing name")
-    public void testErrorMessageForExistedName () {
+    public void testErrorMessageForExistedName() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
@@ -32,7 +32,7 @@ public class FraudControlPageTest extends BaseTest {
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
 
         assertThat(fraudControlPage.getAlert().getMessage())
-                .hasText("ERROREntity with name {" +fraudControlName+ "} already exists.");
+                .hasText("ERROREntity with name {"+fraudControlName+"} already exists.");
     }
 
     @AfterClass
