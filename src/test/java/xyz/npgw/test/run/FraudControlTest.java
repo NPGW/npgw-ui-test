@@ -24,6 +24,12 @@ public class FraudControlTest extends BaseTest {
             .controlDisplayName("ControlDisplay")
             .controlConfig("default")
             .build();
+    private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
+            .controlName("ControlNothing")
+            .controlCode("9905")
+            .controlDisplayName("DisplayNotAvailable")
+            .controlConfig("suspicious")
+            .build();
     private final String fraudControlName = "Test fraudControl name";
 
     @Test
@@ -54,6 +60,33 @@ public class FraudControlTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("904")
+    @Epic("System/Fraud Control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Add Inactive Fraud Control")
+    public void testAddInactiveFraudControl() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .clickAddFraudControl()
+                .fillFraudControlNameField(FRAUD_CONTROL_INACTIVE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_INACTIVE.getControlCode())
+                .fillFraudControlConfigField(FRAUD_CONTROL_INACTIVE.getControlConfig())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_INACTIVE.getControlDisplayName())
+                .checkInactiveRadiobutton()
+                .clickCreateButton();
+
+        Locator row = page.getTable().getRow(FRAUD_CONTROL_INACTIVE.getControlName()).first();
+
+        Allure.step("Verify that all the data are presented in the row");
+        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlCode());
+        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlName());
+        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlConfig());
+        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlDisplayName());
+        assertThat(row).containsText("Inactive");
+    }
+
+    @Test
     @TmsLink("895")
     @Epic("System/Fraud control")
     @Feature("Fraud control")
@@ -79,6 +112,7 @@ public class FraudControlTest extends BaseTest {
     @Override
     protected void afterClass() {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), fraudControlName);
         super.afterClass();
     }
