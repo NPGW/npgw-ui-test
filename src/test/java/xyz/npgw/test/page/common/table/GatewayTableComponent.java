@@ -33,7 +33,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
 
     @Step("Click 'Delete business unit acquirer' for merchant acquirer with name: {acquirerDisplayName}")
     public DeleteBusinessUnitAcquirerDialog clickDeleteBusinessUnitAcquirer(String acquirerDisplayName) {
-        getRowByText(acquirerDisplayName).locator(getByTestId("DeleteMerchantAcquirerButton")).click();
+        getRow(acquirerDisplayName).locator(getByTestId("DeleteMerchantAcquirerButton")).click();
 
         return new DeleteBusinessUnitAcquirerDialog(getPage());
     }

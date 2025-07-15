@@ -60,24 +60,22 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return columnHeader.allInnerTexts();
     }
 
-    public Locator getRow(String rowHeader) {
+    public Locator getRow(String content) {
         do {
             try {
-                Locator row = locator("tr[data-key]").filter(new Locator.FilterOptions()
-                        .setHasText(rowHeader));
+                Locator row = locator("tr[data-key]").filter(new Locator.FilterOptions().setHasText(content));
                 row.waitFor(new Locator.WaitForOptions().setTimeout(3000).setState(WaitForSelectorState.ATTACHED));
-                log.info(row.allInnerTexts());
                 return row;
             } catch (PlaywrightException ignored) {
                 if (hasNoPagination()) {
-                    throw new NoSuchElementException("No rows with data-key '" + rowHeader + "! Table is empty");
+                    throw new NoSuchElementException("No rows with '" + content + "'! Table is empty");
                 } else {
                     log.info("Row not found on this page, trying next page.");
                 }
             }
         } while (goToNextPage());
 
-        throw new NoSuchElementException("Row with data-key '" + rowHeader + "' not found on any page.");
+        throw new NoSuchElementException("Row with '" + content + "' not found on any page.");
     }
 
     public Locator getRow(String rowHeader, int tableNumber) {
@@ -305,20 +303,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         } while (goToNextPage());
 
         return allValues;
-    }
-
-    public Locator getRowByText(String text) {
-        firstRow.waitFor();
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-
-        do {
-            Locator row = getRows().filter(new Locator.FilterOptions().setHasText(text));
-            if (row.count() > 0) {
-                return row;
-            }
-        } while (goToNextPage());
-
-        throw new NoSuchElementException("Row with text '" + text + "' not found on any page.");
     }
 
     public interface PageCallback {
