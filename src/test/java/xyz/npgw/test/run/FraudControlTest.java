@@ -111,7 +111,7 @@ public class FraudControlTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("910")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Add Fraud Control to Business Unit (No Fraud Control)"
