@@ -31,11 +31,4 @@ public class ConnectFraudControlToBusinessUnitDialog extends BaseDialog<FraudCon
 
         return getReturnPage();
     }
-
-    @Step("Click 'Close' button")
-    public FraudControlPage clickCloseButton() {
-        getByRole(AriaRole.BUTTON, "Close").click();
-
-        return getReturnPage();
-    }
 }

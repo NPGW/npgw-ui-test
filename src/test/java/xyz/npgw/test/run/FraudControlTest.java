@@ -23,7 +23,7 @@ public class FraudControlTest extends BaseTest {
             .controlName("ControlEverything")
             .controlCode("8848")
             .controlDisplayName("ControlDisplay")
-            .controlConfig("default")
+            .controlConfig("notDefault")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
             .controlName("ControlNothing")
@@ -35,13 +35,13 @@ public class FraudControlTest extends BaseTest {
             .controlName("ControlOne")
             .controlCode("0001")
             .controlDisplayName("ControlDisplayFirst")
-            .controlConfig("default")
+            .controlConfig("firstQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_TWO = FraudControl.builder()
             .controlName("ControlTwo")
             .controlCode("0002")
             .controlDisplayName("ControlDisplaySecond")
-            .controlConfig("defaultSpare")
+            .controlConfig("secondQueue")
             .build();
     private final String fraudControlName = "Test fraudControl name";
 
@@ -75,7 +75,7 @@ public class FraudControlTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .clickCreateButton();
 
-        Locator row = page.getTable().getRow(FRAUD_CONTROL.getControlName()).first();
+        Locator row = page.getTable().getRow(FRAUD_CONTROL.getControlName(), 0);
 
         Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(FRAUD_CONTROL.getControlCode());
@@ -101,7 +101,7 @@ public class FraudControlTest extends BaseTest {
                 .checkInactiveRadiobutton()
                 .clickCreateButton();
 
-        Locator row = page.getTable().getRow(FRAUD_CONTROL_INACTIVE.getControlName()).first();
+        Locator row = page.getTable().getRow(FRAUD_CONTROL_INACTIVE.getControlName(), 0);
 
         Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlCode());
