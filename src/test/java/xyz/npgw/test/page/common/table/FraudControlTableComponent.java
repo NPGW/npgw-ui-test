@@ -4,9 +4,9 @@ import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.control.ActivateControlActivityDialog;
 import xyz.npgw.test.page.dialog.control.DeactivateControlActivityDialog;
-import xyz.npgw.test.page.dialog.control.EditFraudControlDialog;
-import xyz.npgw.test.page.dialog.control.DeleteControlDialog;
 import xyz.npgw.test.page.dialog.control.ConnectFraudControlToBusinessUnitDialog;
+import xyz.npgw.test.page.dialog.control.DeleteControlDialog;
+import xyz.npgw.test.page.dialog.control.EditFraudControlDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
 public class FraudControlTableComponent extends BaseTableComponent<FraudControlPage> {
