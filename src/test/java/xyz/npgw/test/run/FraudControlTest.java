@@ -49,7 +49,7 @@ public class FraudControlTest extends BaseTest {
 
     @BeforeClass
     @Override
-    protected void beforeClass() {`
+    protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
