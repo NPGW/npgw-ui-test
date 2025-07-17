@@ -43,14 +43,13 @@ public class FraudControlTest extends BaseTest {
             .controlDisplayName("ControlDisplaySecond")
             .controlConfig("secondQueue")
             .build();
-    private final String fraudControlName = "Test fraudControl name";
-
+    private static final String FRAUD_CONTROL_NAME = "Test fraudControl name";
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
 
     @BeforeClass
     @Override
-    protected void beforeClass() {
+    protected void beforeClass() {`
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
@@ -147,20 +146,22 @@ public class FraudControlTest extends BaseTest {
     @Feature("Fraud control")
     @Description("Verify the error message when attempting to create a Fraud Control with the existing name")
     public void testErrorMessageForExistedName() {
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_NAME);
+
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillFraudControlNameField(fraudControlName)
+                .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickCreateButton()
                 .clickAddFraudControl()
-                .fillFraudControlNameField(fraudControlName)
+                .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickCreateButton();
 
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
 
         assertThat(fraudControlPage.getAlert().getMessage())
-                .hasText("ERROREntity with name {" + fraudControlName + "} already exists.");
+                .hasText("ERROREntity with name {" + FRAUD_CONTROL_NAME + "} already exists.");
     }
 
     @AfterClass
@@ -168,7 +169,7 @@ public class FraudControlTest extends BaseTest {
     protected void afterClass() {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), fraudControlName);
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_NAME);
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
