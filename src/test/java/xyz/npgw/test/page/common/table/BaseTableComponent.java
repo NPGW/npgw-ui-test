@@ -27,7 +27,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     private final Locator root;
 
     private final Locator columnHeader;
-    private final Locator headersRow;
+    private final Locator headerRow;
     private final Locator rows;
     private final Locator firstRow;
 
@@ -44,7 +44,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         this.root = root;
 
         this.columnHeader = root.getByRole(AriaRole.COLUMNHEADER);
-        this.headersRow = root.getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
+        this.headerRow = root.locator("[role='row']:has([role='columnheader']):not(:has([role='cell']))");
         this.rows = root.locator("tr[data-key]");
         this.firstRow = root.locator("tr[data-first='true']");
 

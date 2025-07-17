@@ -27,7 +27,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
         super(page, page.locator("body"));
 
         this.refundTransactionButtonSelector = "[data-testid='RefundTransactionButton']";
-        this.cardTypeImage = getRoot().locator("img[alt='logo']");
+        this.cardTypeImage = locator("img[alt='logo']");
         this.npgwReference = getRows().getByRole(AriaRole.LINK);
     }
 
