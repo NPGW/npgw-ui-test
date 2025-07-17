@@ -10,7 +10,7 @@ import xyz.npgw.test.page.system.FraudControlPage;
 public class BusinessUnitControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
     public BusinessUnitControlsTableComponent(Page page) {
-        super(page, page.locator( "div.flex.flex-col.gap-2.flex-1").last());
+        super(page, page.locator("div.flex.flex-col.gap-2.flex-1").last());
     }
 
     @Override

@@ -12,7 +12,7 @@ import xyz.npgw.test.page.system.FraudControlPage;
 public class FraudControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
     public FraudControlsTableComponent(Page page) {
-        super(page, page.locator( "div.flex.flex-col.gap-2.flex-1").first());
+        super(page, page.locator("div.flex.flex-col.gap-2.flex-1").first());
     }
 
     @Override
