@@ -8,12 +8,17 @@ import xyz.npgw.test.page.ReportsPage;
 
 public class ReportsTableComponent extends BaseTableComponent<ReportsPage> {
 
-    public ReportsTableComponent(Page page) {
-        super(page);
-    }
+    private final Locator filenameColumnHeader;
+    private final Locator sizeColumnHeader;
 
-    private final Locator filenameColumnHeader = getByRole(AriaRole.COLUMNHEADER, "Filename");
-    private final Locator sizeColumnHeader = getByRole(AriaRole.COLUMNHEADER, "Size");
+    public ReportsTableComponent(Page page) {
+        super(page, page.locator("body"));
+
+        this.filenameColumnHeader = getRoot().getByRole(AriaRole.COLUMNHEADER,
+                new Locator.GetByRoleOptions().setName("Filename"));
+        this.sizeColumnHeader = getRoot().getByRole(AriaRole.COLUMNHEADER,
+                new Locator.GetByRoleOptions().setName("Size"));
+    }
 
     @Override
     protected ReportsPage getCurrentPage() {

@@ -24,22 +24,40 @@ import java.util.regex.Pattern;
 @Getter
 public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> extends BaseComponent {
 
-    private final Locator columnHeader = getByRole(AriaRole.COLUMNHEADER);
-    private final Locator headersRow = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
-    private final Locator rows = getByRole(AriaRole.ROW).filter(new Locator.FilterOptions()
-            .setHasNot(columnHeader)
-            .setHasNotText("No rows to display."));
-    private final Locator firstRow = locator("tr[data-first='true']");
+    private final Locator root;
 
-    private final Locator rowsPerPage = getByRole(AriaRole.BUTTON, "Rows Per Page");
-    private final Locator rowsPerPageDropdown = locator("div[data-slot='listbox']");
-    private final Locator paginationItems = getPage().getByLabel("pagination item");
-    private final Locator nextPageButton = getByRole(AriaRole.BUTTON, "next page button");
-    private final Locator previousPageButton = getByRole(AriaRole.BUTTON, "previous page button");
-    private final Locator noRowsToDisplayMessage = getByTextExact("No rows to display.");
+    private final Locator columnHeader;
+    private final Locator headersRow;
+    private final Locator rows;
+    private final Locator firstRow;
 
-    public BaseTableComponent(Page page) {
+    private final Locator rowsPerPage;
+    private final Locator rowsPerPageDropdown;
+    private final Locator paginationItems;
+    private final Locator nextPageButton;
+    private final Locator previousPageButton;
+
+    private final Locator noRowsToDisplayMessage;
+
+    public BaseTableComponent(Page page, Locator root) {
         super(page);
+        this.root = root;
+
+        this.columnHeader = root.getByRole(AriaRole.COLUMNHEADER);
+        this.headersRow = root.getByRole(AriaRole.ROW).filter(new Locator.FilterOptions().setHas(columnHeader));
+        this.rows = root.locator("tr[data-key]");
+        this.firstRow = root.locator("tr[data-first='true']");
+
+        this.rowsPerPage = root.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions().setName("Rows Per Page"));
+        this.rowsPerPageDropdown = locator("div[data-slot='listbox']");
+        this.paginationItems = root.getByLabel("pagination item");
+        this.nextPageButton = root.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions()
+                .setName("next page button"));
+        this.previousPageButton = root.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions()
+                .setName("previous page button"));
+        this.noRowsToDisplayMessage = root.getByText("No rows to display.",
+                new Locator.GetByTextOptions().setExact(true));
+
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(firstRow)
                 .first()
@@ -56,19 +74,20 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rows.locator(columnSelector(name)).allInnerTexts();
     }
 
-    public List<String> getColumnHeadersText() {
+    public List<String> getColumnHeaderTexts() {
         return columnHeader.allInnerTexts();
     }
 
     public Locator getRow(String content) {
         do {
             try {
-                Locator row = locator("tr[data-key]").filter(new Locator.FilterOptions().setHasText(content));
+                Locator row = rows.filter(new Locator.FilterOptions().setHasText(content));
                 row.waitFor(new Locator.WaitForOptions().setTimeout(3000).setState(WaitForSelectorState.ATTACHED));
+
                 return row;
             } catch (PlaywrightException ignored) {
                 if (hasNoPagination()) {
-                    throw new NoSuchElementException("No rows with '" + content + "'! Table is empty");
+                    throw new NoSuchElementException("No rows with '" + content + "'! Table is empty.");
                 } else {
                     log.info("Row not found on this page, trying next page.");
                 }
@@ -78,25 +97,6 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         throw new NoSuchElementException("Row with '" + content + "' not found on any page.");
     }
 
-    public Locator getRow(String rowHeader, int tableNumber) {
-        do {
-            try {
-                Locator row = locator("tr[data-key]").filter(new Locator.FilterOptions()
-                        .setHasText(rowHeader)).nth(tableNumber);
-                row.waitFor(new Locator.WaitForOptions().setTimeout(3000).setState(WaitForSelectorState.ATTACHED));
-                log.info(row.allInnerTexts());
-                return row;
-            } catch (PlaywrightException ignored) {
-                if (hasNoPagination()) {
-                    throw new NoSuchElementException("No rows with data-key '" + rowHeader + "! Table is empty");
-                } else {
-                    log.info("Row not found on this page, trying next page.");
-                }
-            }
-        } while (goToNextPage());
-
-        throw new NoSuchElementException("Row with data-key '" + rowHeader + "' not found on any page.");
-    }
 
     public Locator getCell(String rowHeader, String columnHeader) {
         return getCell(getRow(rowHeader), columnHeader);
@@ -113,7 +113,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
     @Step("Click sort icon in '{columnName}' column")
     public CurrentPageT clickSortIcon(String columnName) {
         getColumnHeader(columnName).locator("svg").click();
-        getByLabelExact("transactions table").locator("tr[data-last='true']").waitFor();
+        root.locator("tr[data-last='true']").waitFor();
 
         return getCurrentPage();
     }
@@ -140,13 +140,13 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     @Step("Click pagination page button '{pageNumber}'")
     public CurrentPageT clickPaginationPageButton(String pageNumber) {
-        getByLabelExact("pagination item " + pageNumber).click();
+        root.getByLabel("pagination item " + pageNumber, new Locator.GetByLabelOptions().setExact(true)).click();
 
         return getCurrentPage();
     }
 
     public Locator getActivePageButton() {
-        return getPage().getByLabel(Pattern.compile("pagination item.*active.*", Pattern.CASE_INSENSITIVE));
+        return root.getByLabel(Pattern.compile("pagination item.*active.*", Pattern.CASE_INSENSITIVE));
     }
 
     @Step("Click next page button")
@@ -234,13 +234,9 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         if (hasNoPagination()) {
             return false;
         }
-        clickPaginationPageButton(getLastPageNumber());
+        clickPaginationPageButton(paginationItems.last().innerText());
 
         return true;
-    }
-
-    public String getLastPageNumber() {
-        return paginationItems.last().innerText();
     }
 
     private boolean isNotCurrentPage(String number) {
@@ -256,18 +252,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return true;
     }
 
-    private int getColumnHeaderIndex(String name) {
-        columnHeader.last().waitFor();
-
-        return ((Number) getColumnHeader(name).evaluate("el => el.cellIndex")).intValue();
-    }
-
     protected String columnSelector(String columnHeader) {
-        return "td:nth-child(" + (getColumnHeaderIndex(columnHeader) + 1) + ")";
-    }
+        int index = ((Number) getColumnHeader(columnHeader).evaluate("el => el.cellIndex")).intValue() + 1;
 
-    private boolean hasNextPage() {
-        return nextPageButton.isEnabled();
+        return "td:nth-child(" + index + ")";
     }
 
     public boolean hasNoPagination() {

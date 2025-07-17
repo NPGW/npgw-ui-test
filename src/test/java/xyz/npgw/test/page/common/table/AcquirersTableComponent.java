@@ -14,7 +14,7 @@ public class AcquirersTableComponent extends BaseTableComponent<AcquirersPage> {
     private final Locator tableContent = getByLabelExact("merchants table").locator("tbody");
 
     public AcquirersTableComponent(Page page) {
-        super(page);
+        super(page, page.locator("body"));
     }
 
     @Override

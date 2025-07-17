@@ -261,7 +261,7 @@ public class AcquirersPageTest extends BaseTest {
         List<String> acquirerTableHeaders = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getTable().getColumnHeadersText();
+                .getTable().getColumnHeaderTexts();
 
         Allure.step("Verify: The Acquirer table contains correct column headers");
         Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");

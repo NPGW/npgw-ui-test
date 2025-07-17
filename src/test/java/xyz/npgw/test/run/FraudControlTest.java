@@ -75,7 +75,7 @@ public class FraudControlTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .clickCreateButton();
 
-        Locator row = page.getTable().getRow(FRAUD_CONTROL.getControlName(), 0);
+        Locator row = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
 
         Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(FRAUD_CONTROL.getControlCode());
@@ -101,7 +101,7 @@ public class FraudControlTest extends BaseTest {
                 .checkInactiveRadiobutton()
                 .clickCreateButton();
 
-        Locator row = page.getTable().getRow(FRAUD_CONTROL_INACTIVE.getControlName(), 0);
+        Locator row = page.getTableControls().getRow(FRAUD_CONTROL_INACTIVE.getControlName());
 
         Allure.step("Verify that all the data are presented in the row");
         assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlCode());
@@ -122,15 +122,15 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTable().clickConnectControlIcon(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickConnectControlIcon(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
-                .getTable().clickConnectControlIcon(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .getTableControls().clickConnectControlIcon(FRAUD_CONTROL_ADD_TWO.getControlName())
                 .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
-        Locator rowFraudOne = page.getTable().getRow(FRAUD_CONTROL_ADD_ONE.getControlDisplayName(), 1);
-        Locator rowFraudTwo = page.getTable().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName(), 1);
+        Locator rowFraudOne = page.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+        Locator rowFraudTwo = page.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
 
         Allure.step("Verify that all the Fraud Controls are presented in Business Unit table");
         assertThat(rowFraudOne).containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
