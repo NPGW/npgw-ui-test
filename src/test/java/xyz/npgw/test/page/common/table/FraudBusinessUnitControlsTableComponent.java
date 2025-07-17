@@ -7,9 +7,9 @@ import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlActivityDi
 import xyz.npgw.test.page.dialog.control.DeleteBusinessUnitControlDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
-public class BusinessUnitControlsTableComponent extends BaseTableComponent<FraudControlPage> {
+public class FraudBusinessUnitControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
-    public BusinessUnitControlsTableComponent(Page page) {
+    public FraudBusinessUnitControlsTableComponent(Page page) {
         super(page, page.locator("div.flex.flex-col.gap-2.flex-1").last());
     }
 
