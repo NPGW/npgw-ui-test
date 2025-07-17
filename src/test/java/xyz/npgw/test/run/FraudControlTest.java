@@ -146,14 +146,13 @@ public class FraudControlTest extends BaseTest {
     @Feature("Fraud control")
     @Description("Verify the error message when attempting to create a Fraud Control with the existing name")
     public void testErrorMessageForExistedName() {
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_NAME);
-
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickCreateButton();
