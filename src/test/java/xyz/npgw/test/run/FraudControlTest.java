@@ -96,25 +96,25 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTable().clickConnectControlIcon(FRAUD_CONTROL.getControlName())
+                .getTableControls().clickConnectControlIcon(FRAUD_CONTROL.getControlName())
                 .clickCancelButton();
 
         Allure.step("Verify that due to click Cancel button Fraud Control hasn't been added");
-        Locator attemptOne = page.getTable().getNoRowsToDisplayMessage();
+        Locator attemptOne = page.getTableControls().getNoRowsToDisplayMessage();
         assertThat(attemptOne).hasText("No rows to display.");
 
-        page.getTable().clickConnectControlIcon(FRAUD_CONTROL.getControlName())
+        page.getTableControls().clickConnectControlIcon(FRAUD_CONTROL.getControlName())
                 .clickCloseIcon();
 
         Allure.step("Verify that due to click Cross icon Fraud Control hasn't been added");
-        Locator attemptTwo = page.getTable().getNoRowsToDisplayMessage();
+        Locator attemptTwo = page.getTableControls().getNoRowsToDisplayMessage();
         assertThat(attemptTwo).hasText("No rows to display.");
 
-        page.getTable().clickConnectControlIcon(FRAUD_CONTROL.getControlName())
+        page.getTableControls().clickConnectControlIcon(FRAUD_CONTROL.getControlName())
                 .pressEscapeToCancel();
 
         Allure.step("Verify that due to press ESC keyboard button Fraud Control hasn't been added");
-        Locator attemptThree = page.getTable().getNoRowsToDisplayMessage();
+        Locator attemptThree = page.getTableControls().getNoRowsToDisplayMessage();
         assertThat(attemptThree).hasText("No rows to display.");
     }
 
