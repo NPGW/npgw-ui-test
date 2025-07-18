@@ -15,6 +15,8 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.system.FraudControlPage;
 
+import java.util.List;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class FraudControlTest extends BaseTest {
@@ -162,6 +164,37 @@ public class FraudControlTest extends BaseTest {
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("ERROREntity with name {" + fraudControlName + "} already exists.");
     }
+
+    @Test
+    @TmsLink("")
+    @Epic("System/Fraud control")
+    @Feature("Remove fraud control")
+    @Description("Remove Fraud control from Business unit")
+    public void testRemoveFraudControlFromBusinessUnit() {
+        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTable().clickConnectControlIcon(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickConnectButton()
+                .getTable().clickDeleteBusinessUnitControlIcon(FRAUD_CONTROL_ADD_ONE.getControlDisplayName())
+                .clickDeleteButton();
+
+        Locator rowFraudTwo = fraudControlPage.getTable().getRow(FRAUD_CONTROL_ADD_ONE.getControlDisplayName(), 2);
+
+        Allure.step("Verify that the success message ‘SUCCESSBusiness unit control was deleted successfully");
+        assertThat(fraudControlPage.getAlert().getMessage())
+                .hasText("SUCCESSBusiness unit control was deleted successfully");
+
+        Allure.step("Verify that the business unit control table doesn't include the control that was" +
+                " added earlier.");
+        assertThat(rowFraudTwo).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+
+
+
+    }
+
 
     @AfterClass
     @Override

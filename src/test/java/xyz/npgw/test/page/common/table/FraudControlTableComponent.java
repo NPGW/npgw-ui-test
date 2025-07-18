@@ -48,6 +48,13 @@ public class FraudControlTableComponent extends BaseTableComponent<FraudControlP
         return new DeleteControlDialog(getPage());
     }
 
+    @Step("Click 'Delete business unit control' icon")
+    public DeleteControlDialog clickDeleteBusinessUnitControlIcon(String controlName) {
+        getRow(controlName).getByTestId("DeleteBusinessUnitControlButton").click();
+
+        return new DeleteControlDialog(getPage());
+    }
+
     @Step("Click 'Connect control' icon")
     public ConnectFraudControlToBusinessUnitDialog clickConnectControlIcon(String controlName) {
         getRow(controlName).getByTestId("ConnectControlButton").click();
