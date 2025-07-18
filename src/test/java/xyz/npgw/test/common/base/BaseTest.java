@@ -157,7 +157,7 @@ public abstract class BaseTest {
                     requestMap.put(route.request().url(),
                             new Response(apiResponse.status(), apiResponse.headers(), apiResponse.body()));
                 } else {
-                    log.info("fulfill request with stored data - {}", route.request().url());
+//                    log.info("fulfill request with stored data - {}", route.request().url());
                 }
                 Response r = requestMap.get(route.request().url());
                 route.fulfill(new Route.FulfillOptions()
