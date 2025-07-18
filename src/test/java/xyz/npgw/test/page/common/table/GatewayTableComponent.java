@@ -16,7 +16,7 @@ public class GatewayTableComponent extends BaseTableComponent<GatewayPage> {
     private final Locator statusColumnHeader;
 
     public GatewayTableComponent(Page page) {
-        super(page, page.locator("body"));
+        super(page);
 
         this.firstRowChangeActivityButton = getRoot().getByTestId("ChangeMerchantAcquirerActivityButton").nth(0);
         this.acquirerColumnHeader = getRoot().locator("//th[text()='Acquirer']");

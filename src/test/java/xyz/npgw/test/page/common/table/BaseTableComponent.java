@@ -39,6 +39,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
 
     private final Locator noRowsToDisplayMessage;
 
+    public BaseTableComponent(Page page) {
+        this(page, page.locator("body"));
+    }
+
     public BaseTableComponent(Page page, Locator root) {
         super(page);
         this.root = root;

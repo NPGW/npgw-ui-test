@@ -24,7 +24,7 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     private final Locator npgwReference;
 
     public TransactionsTableComponent(Page page) {
-        super(page, page.locator("body"));
+        super(page);
 
         this.refundTransactionButtonSelector = "[data-testid='RefundTransactionButton']";
         this.cardTypeImage = locator("img[alt='logo']");

@@ -12,7 +12,7 @@ import xyz.npgw.test.page.system.TeamPage;
 public class UserTableComponent extends BaseTableComponent<TeamPage> {
 
     public UserTableComponent(Page page) {
-        super(page, page.locator("body"));
+        super(page);
     }
 
     @Override

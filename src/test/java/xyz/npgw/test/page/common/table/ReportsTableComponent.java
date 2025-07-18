@@ -12,7 +12,7 @@ public class ReportsTableComponent extends BaseTableComponent<ReportsPage> {
     private final Locator sizeColumnHeader;
 
     public ReportsTableComponent(Page page) {
-        super(page, page.locator("body"));
+        super(page);
 
         this.filenameColumnHeader = getRoot().getByRole(AriaRole.COLUMNHEADER,
                 new Locator.GetByRoleOptions().setName("Filename"));
