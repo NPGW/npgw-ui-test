@@ -66,7 +66,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
                 Locator row = locator("tr[data-key]").filter(new Locator.FilterOptions()
                         .setHasText(rowHeader));
                 row.waitFor(new Locator.WaitForOptions().setTimeout(3000).setState(WaitForSelectorState.ATTACHED));
-                log.info(row.allInnerTexts());
+//                log.info(row.allInnerTexts());
                 return row;
             } catch (PlaywrightException ignored) {
                 if (hasNoPagination()) {
@@ -86,7 +86,7 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
                 Locator row = locator("tr[data-key]").filter(new Locator.FilterOptions()
                         .setHasText(rowHeader)).nth(tableNumber);
                 row.waitFor(new Locator.WaitForOptions().setTimeout(3000).setState(WaitForSelectorState.ATTACHED));
-                log.info(row.allInnerTexts());
+//                log.info(row.allInnerTexts());
                 return row;
             } catch (PlaywrightException ignored) {
                 if (hasNoPagination()) {
