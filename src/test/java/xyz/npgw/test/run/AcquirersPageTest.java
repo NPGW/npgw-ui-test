@@ -324,10 +324,12 @@ public class AcquirersPageTest extends BaseTest {
         }
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(acquirersPage.getTable().getEditAcquirerButton(row)).isVisible();
+        assertThat(acquirersPage.getTable().getEditAcquirerButton(ACQUIRER.getAcquirerName())).isVisible();
 
-        Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getTable().getChangeActivityButton(row)).isVisible();
+        Allure.step("Verify: 'Activate acquirer' icon is visible for the acquirer");
+        Locator activityIcon = acquirersPage.getTable().getAcquirerActivityIcon(ACQUIRER.getAcquirerName());
+        assertThat(activityIcon).isVisible();
+        assertThat(activityIcon).hasAttribute("data-icon", "ban");
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
@@ -405,13 +407,8 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeName(CHANGE_STATE_ACQUIRER.getAcquirerName())
-                .getSelectAcquirer().clickAcquirerInDropdown(CHANGE_STATE_ACQUIRER.getAcquirerName());
-
-        Locator row = acquirersPage.getTable().getRows();
-
-        acquirersPage
-                .getTable().clickChangeActivityButton(row)
+                .getSelectAcquirer().selectAcquirer(CHANGE_STATE_ACQUIRER.getAcquirerName())
+                .getTable().clickDeactivateButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
@@ -420,15 +417,13 @@ public class AcquirersPageTest extends BaseTest {
 
         acquirersPage
                 .getAlert().waitUntilSuccessAlertIsGone();
-//                .getAlert().clickCloseButton()
-//                .getAlert().waitUntilAlertIsDetached();
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirersPage.getTable().getCell(CHANGE_STATE_ACQUIRER.getAcquirerName(), "Status"))
                 .hasText("Inactive");
 
         acquirersPage
-                .getTable().clickChangeActivityButton(row)
+                .getTable().clickActivateButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
                 .clickActivateButton();
 
         Allure.step("Verify: Successful message");

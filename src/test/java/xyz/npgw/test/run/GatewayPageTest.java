@@ -368,15 +368,15 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickFirstRowChangeActivityButton()
-                .clickSubmitButton();
+                .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
+                .clickDeactivateButton();
 
         Allure.step("Verify that acquirer status is 'Inactive' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Inactive");
 
         gatewayPage
-                .getTable().clickFirstRowChangeActivityButton()
-                .clickSubmitButton();
+                .getTable().clickActivateBusinessUnitAcquirerButton("0")
+                .clickActivateButton();
 
         Allure.step("Verify that acquirer status is 'Active' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
@@ -403,7 +403,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER_GBP.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickStatusColumnHeader();
+                .getTable().clickColumnHeader("Status");
 
         List<String> actualStatusList = gatewayPage.getTable().getColumnValues("Status");
         List<String> sortedStatusListDesc = new ArrayList<>(actualStatusList);
@@ -413,7 +413,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualStatusList, sortedStatusListDesc);
 
         gatewayPage
-                .getTable().clickStatusColumnHeader();
+                .getTable().clickColumnHeader("Status");
         actualStatusList = gatewayPage.getTable().getColumnValues("Status");
         List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
         Collections.sort(sortedStatusListAsc);
@@ -422,7 +422,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
 
         gatewayPage
-                .getTable().clickPriorityColumnHeader();
+                .getTable().clickColumnHeader("Priority");
         List<String> actualPriorityList = gatewayPage.getTable().getColumnValues("Priority");
         List<String> sortedPriorityListAsc = new ArrayList<>(actualPriorityList);
         Collections.sort(sortedPriorityListAsc);
@@ -431,7 +431,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualPriorityList, sortedPriorityListAsc);
 
         gatewayPage
-                .getTable().clickPriorityColumnHeader();
+                .getTable().clickColumnHeader("Priority");
         actualPriorityList = gatewayPage.getTable().getColumnValues("Priority");
         List<String> sortedPriorityListDesc = new ArrayList<>(actualPriorityList);
         sortedPriorityListDesc.sort(Collections.reverseOrder());
@@ -440,7 +440,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualPriorityList, sortedPriorityListDesc);
 
         gatewayPage
-                .getTable().clickAcquirerColumnHeader();
+                .getTable().clickColumnHeader("Acquirer");
         List<String> actualAcquirerList = gatewayPage.getTable().getColumnValues("Acquirer");
         List<String> sortedAcquirerListAsc = new ArrayList<>(actualAcquirerList);
         Collections.sort(sortedPriorityListAsc);
@@ -449,7 +449,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualAcquirerList, sortedAcquirerListAsc);
 
         gatewayPage
-                .getTable().clickAcquirerColumnHeader();
+                .getTable().clickColumnHeader("Acquirer");
         actualAcquirerList = gatewayPage.getTable().getColumnValues("Acquirer");
         List<String> sortedAcquirerListDesc = new ArrayList<>(actualAcquirerList);
         sortedAcquirerListDesc.sort(Collections.reverseOrder());
@@ -458,7 +458,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualAcquirerList, sortedAcquirerListDesc);
 
         gatewayPage
-                .getTable().clickCurrenciesColumnHeader();
+                .getTable().clickColumnHeader("Currencies");
         List<String> actualCurrenciesList = gatewayPage.getTable().getColumnValues("Currencies");
         List<String> sortedCurrenciesListAsc = new ArrayList<>(actualCurrenciesList);
         Collections.sort(sortedCurrenciesListAsc);
@@ -467,7 +467,7 @@ public class GatewayPageTest extends BaseTest {
         Assert.assertEquals(actualCurrenciesList, sortedCurrenciesListAsc);
 
         gatewayPage
-                .getTable().clickCurrenciesColumnHeader();
+                .getTable().clickColumnHeader("Currencies");
         actualCurrenciesList = gatewayPage.getTable().getColumnValues("Currencies");
         List<String> sortedCurrenciesListDesc = new ArrayList<>(actualCurrenciesList);
         sortedCurrenciesListDesc.sort(Collections.reverseOrder());
@@ -490,10 +490,10 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickFirstRowChangeActivityButton()
+                .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickCancelButton();
 
-        Allure.step("Verify that acquirer status is still 'Active' ");
+        Allure.step("Verify that acquirer status is still 'Active'");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
     }
 
@@ -511,8 +511,8 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
-                .getTable().clickFirstRowChangeActivityButton()
-                .clickCloseButton();
+                .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
+                .clickCloseIcon();
 
         Allure.step("Verify that acquirer status is still 'Active' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");

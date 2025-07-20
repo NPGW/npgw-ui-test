@@ -8,16 +8,16 @@ import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.common.trait.AlertTrait;
-import xyz.npgw.test.page.common.trait.GatewayTableTrait;
+import xyz.npgw.test.page.common.trait.BusinessUnitAcquirersTableTrait;
 import xyz.npgw.test.page.common.trait.SelectAcquirerTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
-import xyz.npgw.test.page.dialog.gateway.AddMerchantAcquirerDialog;
+import xyz.npgw.test.page.dialog.gateway.AddBusinessUnitAcquirerDialog;
 
 @Getter
 public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
         SelectBusinessUnitTrait<GatewayPage>, SelectAcquirerTrait<GatewayPage>, AlertTrait<GatewayPage>,
-        GatewayTableTrait {
+        BusinessUnitAcquirersTableTrait {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
     private final Locator merchantFirstRowValue = locator("[data-key='00merchantId']");
@@ -66,10 +66,10 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     }
 
     @Step("Click 'Add merchant acquirer button'")
-    public AddMerchantAcquirerDialog clickAddBusinessUnitAcquirerButton() {
+    public AddBusinessUnitAcquirerDialog clickAddBusinessUnitAcquirerButton() {
         addBusinessUnitAcquirerButton.click();
 
-        return new AddMerchantAcquirerDialog(getPage());
+        return new AddBusinessUnitAcquirerDialog(getPage());
     }
 
     @Step("Click on MoveMerchantAcquirerDownButton to move them down with less priority")

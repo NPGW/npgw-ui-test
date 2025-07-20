@@ -114,6 +114,14 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         return rows.locator(columnSelector(columnHeader)).all();
     }
 
+    @Step("Click '{columnHeaderName}' column header")
+    public CurrentPageT clickColumnHeader(String columnHeaderName) {
+        getRoot().locator("//th[text()='" + columnHeaderName + "']").click();
+//        getRoot().getByRole(AriaRole.COLUMNHEADER, new Locator.GetByRoleOptions().setName(columnHeaderName)).click();
+
+        return getCurrentPage();
+    }
+
     @Step("Click sort icon in '{columnName}' column")
     public CurrentPageT clickSortIcon(String columnName) {
         getColumnHeader(columnName).locator("svg").click();
