@@ -207,7 +207,7 @@ public class FraudControlTest extends BaseTest {
         FraudControlPage page = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
-                .getTableControls().clickDeleteControlIcon(FRAUD_CONTROL.getControlName())
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in the table");
@@ -230,7 +230,7 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableBusinessUnitControls()                .clickDeleteBusinessUnitControlButton(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in both tables");

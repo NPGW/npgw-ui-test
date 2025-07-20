@@ -12,7 +12,6 @@ import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.entity.Info;
 import xyz.npgw.test.common.entity.MerchantAcquirer;
 import xyz.npgw.test.common.entity.User;
-import xyz.npgw.test.page.system.TeamPage;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
