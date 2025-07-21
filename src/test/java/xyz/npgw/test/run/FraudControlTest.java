@@ -293,12 +293,12 @@ public class FraudControlTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
                 .clickConnectButton()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButtonByName
-                        (FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButtonByName(
+                        FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
                 .clickDeleteButton();
 
-        Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'" +
-                " is displayed");
+        Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'"
+                + " is displayed");
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit control was deleted successfully");
 
@@ -306,8 +306,7 @@ public class FraudControlTest extends BaseTest {
         List<String> actualFraudControlBusinessUnitList = fraudControlPage
                 .getTableBusinessUnitControls().getColumnValues("Display name");
 
-        Allure.step("Verify that the business unit control table doesn't include the control that was" +
-                " added earlier.");
+        Allure.step("Verify that the business unit control table doesn't include the deleted control");
         Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE
                 .getControlDisplayName()));
     }

@@ -55,8 +55,8 @@ public class BusinessUnitControlsTableComponent extends BaseTableComponent<Fraud
     }
 
     @Step("Click 'Delete business unit control' button")
-    public DeleteBusinessUnitControlDialog clickDeleteBusinessUnitControlButtonByName(String DisplayName) {
-        getRow(DisplayName).getByTestId("DeleteBusinessUnitControlButton").click();
+    public DeleteBusinessUnitControlDialog clickDeleteBusinessUnitControlButtonByName(String displayName) {
+        getRow(displayName).getByTestId("DeleteBusinessUnitControlButton").click();
 
         return new DeleteBusinessUnitControlDialog(getPage());
     }
