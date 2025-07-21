@@ -154,7 +154,7 @@ public class FraudControlTest extends BaseTest {
         FraudControlPage page = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
-                .getTableControls().clickActivateControlIcon(FRAUD_CONTROL_INACTIVE.getControlName())
+                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_INACTIVE.getControlName())
                 .clickActivateButton();
 
         Locator row = page.getTableControls().getRow(FRAUD_CONTROL_INACTIVE.getControlName());
@@ -163,7 +163,7 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that Fraud Control state now is Active");
         assertThat(cell).hasText("Active");
 
-        page.getTableControls().clickDeactivateControlIcon(FRAUD_CONTROL_INACTIVE.getControlName())
+        page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_INACTIVE.getControlName())
                 .clickDeactivateButton();
 
         Allure.step("Verify that Fraud Control state now is Inactive");
