@@ -347,7 +347,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone() //TODO remove alert closing BUG workaround
-                .getTable().clickDeleteBusinessUnitAcquirer(ACQUIRER.getAcquirerDisplayName())
+                .getTable().clickDeleteBusinessUnitAcquirer("0")
                 .clickDeleteButton();
 
         Allure.step("Verify: Success deletion alert message is shown");

@@ -47,8 +47,8 @@ public class BusinessUnitAcquirersTableComponent extends BaseTableComponent<Gate
     }
 
     @Step("Click 'Delete business unit acquirer' for merchant acquirer with name: {acquirerDisplayName}")
-    public DeleteBusinessUnitAcquirerDialog clickDeleteBusinessUnitAcquirer(String acquirerDisplayName) {
-        getRow(acquirerDisplayName).locator(getByTestId("DeleteMerchantAcquirerButton")).click();
+    public DeleteBusinessUnitAcquirerDialog clickDeleteBusinessUnitAcquirer(String priority) {
+        getRowByDataKey(priority).locator(getByTestId("DeleteMerchantAcquirerButton")).click();
 
         return new DeleteBusinessUnitAcquirerDialog(getPage());
     }
