@@ -303,7 +303,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[1])
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton()
@@ -312,24 +312,11 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton();
 
-//        List<String> actualNames = gatewayPage.getTable().getColumnValues("Business unit");
-//        List<String> actualStatuses = gatewayPage.getTable().getColumnValues("Status");
-//
-//        boolean foundActive = IntStream.range(0, actualNames.size())
-//                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
-//                        && actualStatuses.get(i).equals("Active"));
-//
-//        boolean foundInactive = IntStream.range(0, actualNames.size())
-//                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
-//                        && actualStatuses.get(i).equals("Inactive"));
-
         Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
         assertThat(gatewayPage.getTable().getCell(0, "Status")).hasText("Active");
-//        Assert.assertTrue(foundActive, "New Merchant acquirer with status 'Active' not found.");
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Inactive status");
         assertThat(gatewayPage.getTable().getCell(1, "Status")).hasText("Inactive");
-//        Assert.assertTrue(foundInactive, "New Merchant acquirer with status 'Inactive' not found.");
     }
 
     @Test
