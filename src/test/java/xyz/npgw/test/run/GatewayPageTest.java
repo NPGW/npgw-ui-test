@@ -249,7 +249,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
-        assertThat(page.getTable().getCell(0, "business unit")).hasText(expectedBusinessUnitsList[2]);
+        assertThat(page.getTable().getCell(0, "Business unit")).hasText(expectedBusinessUnitsList[2]);
         assertThat(page.getTable().getCell(0, "Acquirer code")).hasText(ACQUIRER.getAcquirerCode());
         assertThat(page.getTable().getCell(0, "Acquirer config")).hasText(ACQUIRER.getAcquirerConfig());
         assertThat(page.getTable().getCell(0, "Status")).hasText("Active");
