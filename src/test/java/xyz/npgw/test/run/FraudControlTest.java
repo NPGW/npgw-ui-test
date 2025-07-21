@@ -43,7 +43,7 @@ public class FraudControlTest extends BaseTest {
             .controlDisplayName("ControlDisplaySecond")
             .controlConfig("secondQueue")
             .build();
-    private static final String FRAUD_CONTROL_NAME = "Test fraudControl name";
+    private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
 
