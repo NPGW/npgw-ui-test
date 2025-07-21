@@ -6,6 +6,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -45,6 +46,13 @@ public class FraudControlTest extends BaseTest {
             .controlDisplayName("ControlDisplaySecond")
             .controlConfig("secondQueue")
             .build();
+    private static final FraudControl FRAUD_CONTROL_ADD_INACTIVE = FraudControl.builder()
+            .controlName("Inactive control")
+            .controlCode("0003")
+            .controlDisplayName("Inactive control")
+            .isActive(false)
+            .controlConfig("firstQueue")
+            .build();
     private static final String FRAUD_CONTROL_NAME = "Test fraudControl name";
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
@@ -57,6 +65,7 @@ public class FraudControlTest extends BaseTest {
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
     }
 
     @Test
@@ -272,37 +281,35 @@ public class FraudControlTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("")
+    @TmsLink("927")
     @Epic("System/Fraud control")
     @Feature("Remove fraud control")
-    @Description("Remove Fraud control from Business unit")
-    public void testRemoveFraudControlFromBusinessUnit() {
+    @Description("Remove inactive Fraud control added to Business unit")
+    public void testDeleteInactiveFraudControlAddedToBusinessUnit() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTable().clickConnectControlIcon(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickConnectControlIcon(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
                 .clickConnectButton()
-                .getTable().clickDeleteBusinessUnitControlIcon(FRAUD_CONTROL_ADD_ONE.getControlDisplayName())
-                .clickDeleteButton();
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlIcon(FRAUD_CONTROL_ADD_INACTIVE
+                        .getControlDisplayName())
+                .clickDeleteButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
-//        Locator rowFraudTwo = fraudControlPage.getTable().getRow("Display name", 2);
+        List<String> actualFraudControlBusinessUnitList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Display name");
 
-        List<String> actualFraudControlBusinessUnitList = fraudControlPage.getTable().getColumnValues("Display name");
-
-
-        Allure.step("Verify that the success message ‘SUCCESSBusiness unit control was deleted successfully");
+        Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'" +
+                " is displayed");
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit control was deleted successfully");
 
         Allure.step("Verify that the business unit control table doesn't include the control that was" +
                 " added earlier.");
-        assertThat(actualFraudControlBusinessUnitList)
-                .doesNotContain(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
-
-
-
+        Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE
+                .getControlDisplayName()));
     }
 
 
@@ -314,6 +321,7 @@ public class FraudControlTest extends BaseTest {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_NAME);
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
