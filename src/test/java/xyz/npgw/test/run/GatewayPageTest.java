@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -313,22 +312,24 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
                 .clickCreateButton();
 
-        List<String> actualNames = gatewayPage.getTable().getColumnValues("Business unit");
-        List<String> actualStatuses = gatewayPage.getTable().getColumnValues("Status");
-
-        boolean foundActive = IntStream.range(0, actualNames.size())
-                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
-                        && actualStatuses.get(i).equals("Active"));
-
-        boolean foundInactive = IntStream.range(0, actualNames.size())
-                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
-                        && actualStatuses.get(i).equals("Inactive"));
+//        List<String> actualNames = gatewayPage.getTable().getColumnValues("Business unit");
+//        List<String> actualStatuses = gatewayPage.getTable().getColumnValues("Status");
+//
+//        boolean foundActive = IntStream.range(0, actualNames.size())
+//                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
+//                        && actualStatuses.get(i).equals("Active"));
+//
+//        boolean foundInactive = IntStream.range(0, actualNames.size())
+//                .anyMatch(i -> actualNames.get(i).equals("Merchant 1 for C112172")
+//                        && actualStatuses.get(i).equals("Inactive"));
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
-        Assert.assertTrue(foundActive, "New Merchant acquirer with status 'Active' not found.");
+        assertThat(gatewayPage.getTable().getCell(0, "Status")).hasText("Active");
+//        Assert.assertTrue(foundActive, "New Merchant acquirer with status 'Active' not found.");
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Inactive status");
-        Assert.assertTrue(foundInactive, "New Merchant acquirer with status 'Inactive' not found.");
+        assertThat(gatewayPage.getTable().getCell(1, "Status")).hasText("Inactive");
+//        Assert.assertTrue(foundInactive, "New Merchant acquirer with status 'Inactive' not found.");
     }
 
     @Test

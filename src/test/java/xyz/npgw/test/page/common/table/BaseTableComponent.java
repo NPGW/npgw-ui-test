@@ -109,6 +109,10 @@ public abstract class BaseTableComponent<CurrentPageT extends HeaderPage<?>> ext
         throw new NoSuchElementException("Row with data-key '" + rowDataKey + "' not found on any page.");
     }
 
+    public Locator getCell(int priority, String columnHeader) {
+        return getCell(getRowByDataKey(String.valueOf(priority)), columnHeader);
+    }
+
     public Locator getCell(String rowHeader, String columnHeader) {
         return getCell(getRow(rowHeader), columnHeader);
     }
