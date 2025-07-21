@@ -249,12 +249,12 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
-        assertThat(page.getMerchantFirstRowValue()).hasText(expectedBusinessUnitsList[2]);
-        assertThat(page.getAcquirerFirstRowValue()).hasText(ACQUIRER.getAcquirerCode());
-        assertThat(page.getAcquirerConfigFirstRowValue()).hasText(ACQUIRER.getAcquirerConfig());
-        assertThat(page.getAcquirerStatusFirstRowValue()).hasText("Active");
-        assertThat(page.getAcquirerCurrencyFirstRowValue()).hasText("USD, EUR");
-        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
+        assertThat(page.getTable().getCell(0, "business unit")).hasText(expectedBusinessUnitsList[2]);
+        assertThat(page.getTable().getCell(0, "Acquirer code")).hasText(ACQUIRER.getAcquirerCode());
+        assertThat(page.getTable().getCell(0, "Acquirer config")).hasText(ACQUIRER.getAcquirerConfig());
+        assertThat(page.getTable().getCell(0, "Status")).hasText("Active");
+        assertThat(page.getTable().getCell(0, "Currencies")).hasText("USD, EUR");
+        assertThat(page.getTable().getCell(0, "Priority")).hasText("0");
     }
 
     @Test
@@ -277,20 +277,20 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Check that the first created acquirer priority is 0");
-        assertThat(gatewayPage.getAcquirerPriorityFirstRowValue()).hasText("0");
-        assertThat(gatewayPage.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.getAcquirerDisplayName());
+        assertThat(gatewayPage.getTable().getCell(0, "Acquirer")).hasText(ACQUIRER.getAcquirerDisplayName());
+        assertThat(gatewayPage.getTable().getCell(1, "Acquirer")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
 
         gatewayPage.getTable().clickMoveBusinessUnitAcquirerDownButton("0");
 
         Allure.step("Check that the second created acquirer priority is 0 now");
-        assertThat(gatewayPage.getAcquirerPriorityFirstRowValue()).hasText("0");
-        assertThat(gatewayPage.getAcquirerNameFirstRowValue()).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
+        assertThat(gatewayPage.getTable().getCell(0, "Acquirer")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
+        assertThat(gatewayPage.getTable().getCell(1, "Acquirer")).hasText(ACQUIRER.getAcquirerDisplayName());
 
         gatewayPage.getTable().clickMoveBusinessUnitAcquirerUpButton("1");
 
         Allure.step("Check that the first created acquirer priority is 0 again");
-        assertThat(gatewayPage.getAcquirerPriorityFirstRowValue()).hasText("0");
-        assertThat(gatewayPage.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.getAcquirerDisplayName());
+        assertThat(gatewayPage.getTable().getCell(0, "Acquirer")).hasText(ACQUIRER.getAcquirerDisplayName());
+        assertThat(gatewayPage.getTable().getCell(1, "Acquirer")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
     }
 
     @Test

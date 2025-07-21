@@ -20,13 +20,6 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
         BusinessUnitAcquirersTableTrait {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
-    private final Locator merchantFirstRowValue = locator("[data-key='00merchantId']");
-    private final Locator acquirerFirstRowValue = locator("[data-key='00acquirerCode']");
-    private final Locator acquirerConfigFirstRowValue = locator("[data-key='00acquirerConfig']");
-    private final Locator acquirerStatusFirstRowValue = locator("[data-key='00isActive']");
-    private final Locator acquirerPriorityFirstRowValue = locator("[data-key='00priority']");
-    private final Locator acquirerCurrencyFirstRowValue = locator("[data-key='00currencyList']");
-    private final Locator acquirerNameFirstRowValue = locator("[data-key='00acquirerDisplayName']");
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
