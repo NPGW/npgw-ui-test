@@ -195,7 +195,6 @@ public class FraudControlTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
-
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("ERROREntity with name {" + fraudControlName + "} already exists.");
     }
@@ -216,7 +215,10 @@ public class FraudControlTest extends BaseTest {
                 .getTable().clickDeleteBusinessUnitControlIcon(FRAUD_CONTROL_ADD_ONE.getControlDisplayName())
                 .clickDeleteButton();
 
-        Locator rowFraudTwo = fraudControlPage.getTable().getRow(FRAUD_CONTROL_ADD_ONE.getControlDisplayName(), 2);
+//        Locator rowFraudTwo = fraudControlPage.getTable().getRow("Display name", 2);
+
+        List<String> actualFraudControlBusinessUnitList = fraudControlPage.getTable().getColumnValues("Display name");
+
 
         Allure.step("Verify that the success message ‘SUCCESSBusiness unit control was deleted successfully");
         assertThat(fraudControlPage.getAlert().getMessage())
@@ -224,7 +226,8 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that the business unit control table doesn't include the control that was" +
                 " added earlier.");
-        assertThat(rowFraudTwo).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+        assertThat(actualFraudControlBusinessUnitList)
+                .doesNotContain(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
 
 
 
