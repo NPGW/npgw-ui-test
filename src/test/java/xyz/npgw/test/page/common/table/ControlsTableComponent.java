@@ -1,8 +1,6 @@
 package xyz.npgw.test.page.common.table;
 
-import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
-import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.control.ActivateControlDialog;
 import xyz.npgw.test.page.dialog.control.ConnectControlToBusinessUnitDialog;
@@ -14,10 +12,7 @@ import xyz.npgw.test.page.system.FraudControlPage;
 public class ControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
     public ControlsTableComponent(Page page) {
-//        super(page, page.locator("div.flex.flex-col.gap-2.flex-1").first());
-        super(page, page.getByLabel("transactions table")
-                .or(page.getByRole(AriaRole.GROUP)
-                        .filter(new Locator.FilterOptions().setHasText("Rows Per Page"))).first());
+        super(page, page.getByText("Controls", new Page.GetByTextOptions().setExact(true)).locator("../.."));
     }
 
     @Override

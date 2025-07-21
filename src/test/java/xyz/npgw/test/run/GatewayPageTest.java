@@ -265,7 +265,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Move merchant-acquirer down to reduce their priority,"
             + " Move merchant-acquirer up to increase their priority")
     public void testMoveMerchantAcquirerDownAndUpButtons() {
-        GatewayPage page = new DashboardPage(getPage())
+        GatewayPage gatewayPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
@@ -278,20 +278,20 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton();
 
         Allure.step("Check that the first created acquirer priority is 0");
-        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
-        assertThat(page.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.getAcquirerDisplayName());
+        assertThat(gatewayPage.getAcquirerPriorityFirstRowValue()).hasText("0");
+        assertThat(gatewayPage.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.getAcquirerDisplayName());
 
-        page.clickMoveBusinessUnitAcquirerDownButton(0);
+        gatewayPage.getTable().clickMoveBusinessUnitAcquirerDownButton("0");
 
         Allure.step("Check that the second created acquirer priority is 0 now");
-        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
-        assertThat(page.getAcquirerNameFirstRowValue()).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
+        assertThat(gatewayPage.getAcquirerPriorityFirstRowValue()).hasText("0");
+        assertThat(gatewayPage.getAcquirerNameFirstRowValue()).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
 
-        page.clickMoveBusinessUnitAcquirerUpButton(1);
+        gatewayPage.getTable().clickMoveBusinessUnitAcquirerUpButton("1");
 
         Allure.step("Check that the first created acquirer priority is 0 again");
-        assertThat(page.getAcquirerPriorityFirstRowValue()).hasText("0");
-        assertThat(page.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.getAcquirerDisplayName());
+        assertThat(gatewayPage.getAcquirerPriorityFirstRowValue()).hasText("0");
+        assertThat(gatewayPage.getAcquirerNameFirstRowValue()).hasText(ACQUIRER.getAcquirerDisplayName());
     }
 
     @Test

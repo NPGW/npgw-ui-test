@@ -16,6 +16,11 @@ public class UsersTableComponent extends BaseTableComponent<TeamPage> {
         super(page);
     }
 
+    @Override
+    protected TeamPage getCurrentPage() {
+        return new TeamPage(getPage());
+    }
+
     public Locator getUserActivityIcon(String userEmail) {
         return getRow(userEmail).getByTestId("ChangeUserActivityButton").locator("svg");
     }
@@ -53,10 +58,5 @@ public class UsersTableComponent extends BaseTableComponent<TeamPage> {
         getRow(userEmail).getByTestId("DeleteUserButton").click();
 
         return new DeleteUserDialog(getPage());
-    }
-
-    @Override
-    protected TeamPage getCurrentPage() {
-        return new TeamPage(getPage());
     }
 }

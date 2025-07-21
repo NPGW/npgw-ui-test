@@ -19,14 +19,14 @@ public class BusinessUnitAcquirersTableComponent extends BaseTableComponent<Gate
     }
 
     @Step("Click 'Move business unit acquirer down' button")
-    public GatewayPage clickMoveBusinessUnitControlDownButton(String priority) {
+    public GatewayPage clickMoveBusinessUnitAcquirerDownButton(String priority) {
         getRow(priority).getByTestId("MoveMerchantAcquirerDownButton").click();
 
         return getCurrentPage();
     }
 
     @Step("Click 'Move business unit acquirer up' button")
-    public GatewayPage clickMoveBusinessUnitControlUpButton(String priority) {
+    public GatewayPage clickMoveBusinessUnitAcquirerUpButton(String priority) {
         getRow(priority).getByTestId("MoveMerchantAcquirerUpButton").click();
 
         return getCurrentPage();

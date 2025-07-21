@@ -30,17 +30,16 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
     @Getter(AccessLevel.NONE)
     private final Locator currencyDropdown = locator("div[data-slot='listbox']");
     private final Locator currencyOptions = currencyDropdown.getByRole(AriaRole.OPTION);
-    private final Locator resetFilterButton = locator("[data-icon='xmark']");
-    private final Locator addBusinessUnitAcquirerButton = getByTestId("AddMerchantAcquirerButton");
-    private final Locator moveBusinessUnitAcquirerDownButton = getByTestId("MoveMerchantAcquirerDownButton");
-    private final Locator moveBusinessUnitAcquirerUpButton = getByTestId("MoveMerchantAcquirerUpButton");
-    private final Locator addMerchantAcquirer = locator("[data-icon='circle-plus']");
-    private final Locator addMerchantAcquirerButton = getByTestId("AddMerchantAcquirerButton");
-    private final Locator moveMerchantAcquirerDownButton = getByTestId("MoveMerchantAcquirerDownButton");
-    private final Locator moveMerchantAcquirerUpButton = getByTestId("MoveMerchantAcquirerUpButton");
 
     public GatewayPage(Page page) {
         super(page);
+    }
+
+    @Step("Click 'Add merchant acquirer button'")
+    public AddBusinessUnitAcquirerDialog clickAddBusinessUnitAcquirerButton() {
+        getByTestId("AddMerchantAcquirerButton").click();
+
+        return new AddBusinessUnitAcquirerDialog(getPage());
     }
 
     @Step("Click Currency value")
@@ -60,28 +59,7 @@ public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCo
 
     @Step("Click 'Reset filter' button")
     public GatewayPage clickResetFilterButton() {
-        resetFilterButton.click();
-
-        return this;
-    }
-
-    @Step("Click 'Add merchant acquirer button'")
-    public AddBusinessUnitAcquirerDialog clickAddBusinessUnitAcquirerButton() {
-        addBusinessUnitAcquirerButton.click();
-
-        return new AddBusinessUnitAcquirerDialog(getPage());
-    }
-
-    @Step("Click on MoveMerchantAcquirerDownButton to move them down with less priority")
-    public GatewayPage clickMoveBusinessUnitAcquirerDownButton(int row) {
-        moveBusinessUnitAcquirerDownButton.nth(row).click();
-
-        return this;
-    }
-
-    @Step("Click on MoveMerchantAcquirerUpButton to move them up with more  priority")
-    public GatewayPage clickMoveBusinessUnitAcquirerUpButton(int row) {
-        moveBusinessUnitAcquirerUpButton.nth(row).click();
+        getByTestId("ResetButtonTeamPage").click();
 
         return this;
     }
