@@ -283,7 +283,7 @@ public class FraudControlTest extends BaseTest {
     @Test
     @TmsLink("927")
     @Epic("System/Fraud control")
-    @Feature("Remove fraud control")
+    @Feature("Add/Edit/Delete Fraud Control")
     @Description("Remove inactive Fraud control added to Business unit")
     public void testDeleteInactiveFraudControlAddedToBusinessUnit() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
@@ -291,20 +291,20 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickConnectControlIcon(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
                 .clickConnectButton()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlIcon(FRAUD_CONTROL_ADD_INACTIVE
-                        .getControlDisplayName())
-                .clickDeleteButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
-
-        List<String> actualFraudControlBusinessUnitList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Display name");
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButtonByName
+                        (FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
+                .clickDeleteButton();
 
         Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'" +
                 " is displayed");
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit control was deleted successfully");
+
+        fraudControlPage.getAlert().waitUntilSuccessAlertIsGone();
+        List<String> actualFraudControlBusinessUnitList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Display name");
 
         Allure.step("Verify that the business unit control table doesn't include the control that was" +
                 " added earlier.");
