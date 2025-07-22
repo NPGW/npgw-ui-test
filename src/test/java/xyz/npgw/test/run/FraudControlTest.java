@@ -293,8 +293,8 @@ public class FraudControlTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
                 .clickConnectButton()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButtonByName(
-                        FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton
+                        ("0")
                 .clickDeleteButton();
 
         Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'"
