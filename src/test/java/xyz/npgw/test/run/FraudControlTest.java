@@ -8,6 +8,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.FraudControl;
@@ -199,6 +200,44 @@ public class FraudControlTest extends BaseTest {
         assertThat(rowFraudTwo).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
         assertThat(rowFraudTwo).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
         assertThat(rowFraudTwo).containsText("Active");
+    }
+
+    @Ignore("https://github.com/NPGW/npgw-ui-test/issues/913")
+    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @TmsLink("967")
+    @Epic("System/Fraud Control")
+    @Feature("Control table")
+    @Description("Activate Fraud Control added to Business Unit"
+            + "Deactivate Fraud Control added to Business Unit")
+    public void testChangeControlActivityForFraudControlAddedToBusinessUnit() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .clickDeactivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
+
+        Locator rowControl = page.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlName());
+        Locator cellControl = page.getTableControls().getCell(rowControl, "Status");
+        Locator rowBusinessControl = page.getTableBusinessUnitControls().getRowByDataKey("0");
+        Locator cellBusinessControl = page.getTableBusinessUnitControls()
+                .getCell(rowBusinessControl, "Status");
+
+        Allure.step("Verify that Fraud Control state hasn't been changed in Control Table");
+        assertThat(cellControl).hasText("Active");
+
+        Allure.step("Verify that Fraud Control state is Inactive now in Business Unit Control Table");
+        assertThat(cellBusinessControl).hasText("Inactive");
+
+        page.getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("0")
+                .clickActivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
+
+        Allure.step("Verify that Fraud Control state is Active in Business Unit Control Table again");
+        assertThat(cellControl).hasText("Active");
+        assertThat(cellBusinessControl).hasText("Active");
     }
 
     @Test
