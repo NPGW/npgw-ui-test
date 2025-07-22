@@ -313,7 +313,7 @@ public class FraudControlTest extends BaseTest {
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Remove inactive Fraud control added to Business unit")
-    public void testDeleteInactiveFraudControlAddedToBusinessUnit() throws InterruptedException {
+    public void testDeleteInactiveFraudControlAddedToBusinessUnit() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
