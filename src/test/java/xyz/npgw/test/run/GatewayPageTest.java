@@ -310,7 +310,8 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .checkInactiveRadiobutton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())
-                .clickCreateButton();
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
         assertThat(gatewayPage.getTable().getCell(0, "Status")).hasText("Active");
