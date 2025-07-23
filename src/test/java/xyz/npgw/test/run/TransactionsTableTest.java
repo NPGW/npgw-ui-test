@@ -603,4 +603,37 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: cell values match between UI and PDF");
         Assert.assertEquals(uiFormattedRows, pdfRows);
     }
+
+    @Test
+    @TmsLink("978")
+    @Epic("Transactions")
+    @Feature("Settings")
+    @Description("Verify that changing the order of visible columns in Settings affects the table.")
+    public void testMoveVisibleColumns() {
+        final String CREATION_DATE = SETTINGS_COLUMNS[0];
+        final String AMOUNT = SETTINGS_COLUMNS[4];
+        final String CURRENCY = SETTINGS_COLUMNS[5];
+        final String STATUS = SETTINGS_COLUMNS[7];
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .clickSettingsButton()
+                .uncheckAllCheckboxInSettings()
+                .checkVisibleColumn(CREATION_DATE)
+                .checkVisibleColumn(AMOUNT)
+                .checkVisibleColumn(CURRENCY)
+                .checkVisibleColumn(STATUS)
+                .dragArrowsToFirstPosition(STATUS)  // STATUS...
+                .dragArrowsToFirstPosition(CURRENCY) // CURRENCY STATUS...
+                .dragArrowsToFirstPosition(AMOUNT) // AMOUNT CURRENCY STATUS...
+                .dragArrowsToFirstPosition(CREATION_DATE) // CREATION_DATE AMOUNT CURRENCY STATUS...
+                .dragArrowsToLastPosition(CURRENCY) // CREATION_DATE AMOUNT STATUS CURRENCY...
+                .dragArrows(CREATION_DATE, STATUS) // AMOUNT STATUS CREATION_DATE CURRENCY...
+                .dragArrows(AMOUNT, CREATION_DATE) // STATUS CREATION_DATE AMOUNT CURRENCY...
+                .clickRefreshDataButton();
+
+        Allure.step("Verify: Selected column headers are displayed in the correct order in the transactions table.");
+        assertThat(transactionsPage.getTable().getColumnHeaders()).hasText(
+                new String[] {STATUS, CREATION_DATE, AMOUNT, CURRENCY, "Actions"});
+    }
 }
