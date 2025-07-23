@@ -303,7 +303,7 @@ public class FraudControlTest extends BaseTest {
                 .hasText("ERROREntity with name {" + FRAUD_CONTROL_NAME + "} already exists.");
     }
 
-    @Test(dependsOnMethods = "testCancelAddingFraudControlToBusinessUnit")
+    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
