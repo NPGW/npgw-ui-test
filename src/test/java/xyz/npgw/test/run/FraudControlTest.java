@@ -212,8 +212,8 @@ public class FraudControlTest extends BaseTest {
         assertThat(cell).hasText("Inactive");
     }
 
-    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit"
-            , "testDeleteInactiveFraudControlAddedToBusinessUnit"})
+    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit",
+            "testDeleteInactiveFraudControlAddedToBusinessUnit"})
     @TmsLink("910")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
