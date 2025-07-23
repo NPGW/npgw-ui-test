@@ -219,11 +219,9 @@ public class FraudControlTest extends BaseTest {
                 .clickDeactivateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
-        Locator controlCell = page.getTableControls()
-                .getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
+        Locator controlCell = page.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
         Locator businessControlRow = page.getTableBusinessUnitControls().getRowByDataKey("0");
-        Locator businessControlCell = page.getTableBusinessUnitControls()
-                .getCell(businessControlRow, "Status");
+        Locator businessControlCell = page.getTableBusinessUnitControls().getCell(businessControlRow, "Status");
 
         Allure.step("Verify that Fraud Control state hasn't been changed in Control Table");
         assertThat(controlCell).hasText("Active");
