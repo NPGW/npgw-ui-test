@@ -219,25 +219,25 @@ public class FraudControlTest extends BaseTest {
                 .clickDeactivateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
-        Locator rowControl = page.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlName());
-        Locator cellControl = page.getTableControls().getCell(rowControl, "Status");
-        Locator rowBusinessControl = page.getTableBusinessUnitControls().getRowByDataKey("0");
-        Locator cellBusinessControl = page.getTableBusinessUnitControls()
-                .getCell(rowBusinessControl, "Status");
+        Locator controlCell = page.getTableControls()
+                .getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
+        Locator businessControlRow = page.getTableBusinessUnitControls().getRowByDataKey("0");
+        Locator businessControlCell = page.getTableBusinessUnitControls()
+                .getCell(businessControlRow, "Status");
 
         Allure.step("Verify that Fraud Control state hasn't been changed in Control Table");
-        assertThat(cellControl).hasText("Active");
+        assertThat(controlCell).hasText("Active");
 
         Allure.step("Verify that Fraud Control state is Inactive now in Business Unit Control Table");
-        assertThat(cellBusinessControl).hasText("Inactive");
+        assertThat(businessControlCell).hasText("Inactive");
 
         page.getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("0")
                 .clickActivateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify that Fraud Control state is Active in Business Unit Control Table again");
-        assertThat(cellControl).hasText("Active");
-        assertThat(cellBusinessControl).hasText("Active");
+        assertThat(controlCell).hasText("Active");
+        assertThat(businessControlCell).hasText("Active");
     }
 
     @Test
