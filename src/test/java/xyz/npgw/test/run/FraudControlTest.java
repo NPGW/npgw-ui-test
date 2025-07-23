@@ -123,7 +123,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(attemptTwo).isAttached();
 
         page.getTableControls().clickConnectControlButton(FRAUD_CONTROL.getControlName())
-                .pressEscapeToCancel();
+                .pressEscapeKey();
 
         Allure.step("Verify that due to press ESC keyboard button Fraud Control hasn't been added");
         Locator attemptThree = page.getTableBusinessUnitControls().getNoRowsToDisplayMessage();
@@ -154,7 +154,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(page.getTableControls().getRow(FRAUD_CONTROL.getControlName())).isAttached();
 
         page.getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
-                .pressEscapeToCancel();
+                .pressEscapeKey();
 
         Allure.step("Verify that due to press ESC keyboard button Fraud Control hasn't been deleted");
         assertThat(page.getTableControls().getRow(FRAUD_CONTROL.getControlName())).isAttached();
