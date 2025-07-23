@@ -274,7 +274,8 @@ public class GatewayPageTest extends BaseTest {
                 .clickCreateButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER_MOVE.getAcquirerName())
-                .clickCreateButton();
+                .clickCreateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Check that the first created acquirer priority is 0");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer")).hasText(ACQUIRER.getAcquirerDisplayName());
