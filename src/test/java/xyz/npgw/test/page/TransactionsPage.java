@@ -75,7 +75,6 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator amountAppliedClearButton = getByLabelExact("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
     private final Locator cardTypeOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
-    private final Locator settingsDropdown = getByLabelExact("Settings Dropdown");
     private final Locator settingsVisibleColumnCheckbox = getByRole(AriaRole.CHECKBOX);
     private final Locator settingsArrowsUpDown = locator("svg[data-icon='arrows-up-down']");
     private final Locator amountEditButton = locator("svg[data-icon='pencil']");
@@ -531,29 +530,29 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return transactions;
     }
 
-    public TransactionsPage dragArrows(String from, String to){
+    public TransactionsPage dragArrows(String from, String to) {
         dragAndDrop(getArrowsUpDown(from), getArrowsUpDown(to));
 
         return this;
     }
 
-    public TransactionsPage dragArrowsToFirstPosition(String from){
+    public TransactionsPage dragArrowsToFirstPosition(String from) {
         dragAndDrop(getArrowsUpDown(from), settingsArrowsUpDown.first());
 
         return this;
     }
 
-    public TransactionsPage dragArrowsToLastPosition(String from){
+    public TransactionsPage dragArrowsToLastPosition(String from) {
         dragAndDrop(getArrowsUpDown(from), settingsArrowsUpDown.last());
 
         return this;
     }
 
-    private void dragAndDrop(Locator source, Locator target){
+    private void dragAndDrop(Locator source, Locator target) {
         source.dragTo(target);
     }
 
-    private Locator getArrowsUpDown(String name){
+    private Locator getArrowsUpDown(String name) {
         return getByRole(AriaRole.BUTTON, name).locator(settingsArrowsUpDown);
     }
 }
