@@ -20,6 +20,7 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
     private final Locator dialog = getByRole(AriaRole.DIALOG);
     private final Locator dialogHeader = locator("section header");
     private final Locator closeButton = dialog.getByText("Close");
+    private final Locator cancelButton = dialog.getByText("Cancel");
     private final Locator closeIcon = dialog.getByLabel("Close");
     private final Locator inputFields = dialog.getByRole(AriaRole.TEXTBOX);
     private final Locator allPlaceholdersWithoutSearch = dialog.locator(
@@ -50,6 +51,13 @@ public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT ex
     @Step("Click on the 'Close' button to close form")
     public ReturnPageT clickCloseButton() {
         closeButton.click();
+
+        return getReturnPage();
+    }
+
+    @Step("Click on the 'Cancel' button to close form")
+    public ReturnPageT clickCancelButton() {
+        cancelButton.click();
 
         return getReturnPage();
     }
