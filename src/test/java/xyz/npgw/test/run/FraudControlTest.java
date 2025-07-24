@@ -160,6 +160,39 @@ public class FraudControlTest extends BaseTest {
         assertThat(page.getTableControls().getRow(FRAUD_CONTROL.getControlName())).isAttached();
     }
 
+    @Test(dependsOnMethods = "testAddActiveFraudControl")
+    @TmsLink("987")
+    @Epic("System/Fraud Control")
+    @Feature("Control table")
+    @Description("Deactivate Fraud Control with Cancel button"
+            + "Deactivate Fraud Control with 'Cross'"
+            + "Deactivate Fraud Control with ESC")
+    public void testCancelDeactivationFraudControl() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
+                .clickCancelButton();
+
+        Locator row = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
+        Locator cell = page.getTableControls().getCell(row, "Status");
+
+        Allure.step("Verify that due to click Cancel button Fraud Control is still active");
+        assertThat(cell).hasText("Active");
+
+        page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
+                .clickCloseIcon();
+
+        Allure.step("Verify that due to click Cross icon Fraud Control is still active");
+        assertThat(cell).hasText("Active");
+
+        page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
+                .pressEscapeKey();
+
+        Allure.step("Verify that due to press ESC keyboard button Fraud Control is still active");
+        assertThat(cell).hasText("Active");
+    }
+
     @Test
     @TmsLink("904")
     @Epic("System/Fraud Control")
