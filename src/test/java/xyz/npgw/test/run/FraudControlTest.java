@@ -174,23 +174,24 @@ public class FraudControlTest extends BaseTest {
                 .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
                 .clickCancelButton();
 
-        Locator row = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
-        Locator cell = page.getTableControls().getCell(row, "Status");
+        Locator statusCell = page.getTableControls().getCell(
+                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
+                "Status");
 
         Allure.step("Verify that due to click Cancel button Fraud Control is still active");
-        assertThat(cell).hasText("Active");
+        assertThat(statusCell).hasText("Active");
 
         page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
                 .clickCloseIcon();
 
         Allure.step("Verify that due to click Cross icon Fraud Control is still active");
-        assertThat(cell).hasText("Active");
+        assertThat(statusCell).hasText("Active");
 
         page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
                 .pressEscapeKey();
 
         Allure.step("Verify that due to press ESC keyboard button Fraud Control is still active");
-        assertThat(cell).hasText("Active");
+        assertThat(statusCell).hasText("Active");
     }
 
     @Test
