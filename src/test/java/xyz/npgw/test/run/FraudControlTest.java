@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static xyz.npgw.test.common.util.TestUtils.sortStringsAscEmptyLast;
 
 public class FraudControlTest extends BaseTest {
 
@@ -467,7 +466,7 @@ public class FraudControlTest extends BaseTest {
         fraudControlPage.getTableControls().clickColumnHeader("Name");
         actualNameList = fraudControlPage.getTableControls().getColumnValues("Name");
         List<String> sortedNameListAsc = new ArrayList<>(actualNameList);
-        sortStringsAscEmptyLast(sortedNameListAsc);
+        Collections.sort(sortedNameListAsc);
 
         Allure.step("Verify that entries are sorted by Name in Asc order ");
         Assert.assertEquals(actualNameList, sortedNameListAsc);
@@ -475,7 +474,7 @@ public class FraudControlTest extends BaseTest {
         fraudControlPage.getTableControls().clickColumnHeader("Display name");
         List<String>actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
         List<String> sortedDisplayNameListAsc = new ArrayList<>(actualDisplayNameList);
-        sortStringsAscEmptyLast(sortedDisplayNameListAsc);
+        Collections.sort(sortedDisplayNameListAsc);
 
         Allure.step("Verify that entries are sorted by Display name in Asc order ");
         Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc);
@@ -491,7 +490,7 @@ public class FraudControlTest extends BaseTest {
         fraudControlPage.getTableControls().clickColumnHeader("Code");
         List <String> actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
         List<String> sortedCodeListAsc = new ArrayList<>(actualCodeList);
-        sortStringsAscEmptyLast(sortedCodeListAsc);
+        Collections.sort(sortedCodeListAsc);
 
         Allure.step("Verify that entries are sorted by Code in Asc order ");
         Assert.assertEquals(actualCodeList, sortedCodeListAsc);
@@ -507,7 +506,7 @@ public class FraudControlTest extends BaseTest {
         fraudControlPage.getTableControls().clickColumnHeader("Config");
         List <String> actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
         List<String> sortedConfigListAsc = new ArrayList<>(actualConfigList);
-        sortStringsAscEmptyLast(sortedConfigListAsc);
+        Collections.sort(sortedConfigListAsc);
 
         Allure.step("Verify that entries are sorted by Config in Asc order ");
         Assert.assertEquals(actualConfigList, sortedConfigListAsc);
@@ -531,7 +530,7 @@ public class FraudControlTest extends BaseTest {
         fraudControlPage.getTableControls().clickColumnHeader("Status");
         actualStatusList = fraudControlPage.getTableControls().getColumnValues("Status");
         List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
-        sortStringsAscEmptyLast(sortedStatusListAsc);
+        Collections.sort(sortedStatusListAsc);
 
         Allure.step("Verify that entries are sorted by Status in Asc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
