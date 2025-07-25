@@ -150,7 +150,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(selectCompanyField).isEmpty();
     }
 
-    @Test(invocationCount = 3)
+    @Test
     @TmsLink("602")
     @Epic("System/Gateway")
     @Feature("Currency")
