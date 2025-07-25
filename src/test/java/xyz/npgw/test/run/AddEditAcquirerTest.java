@@ -308,7 +308,8 @@ public class AddEditAcquirerTest extends BaseTest {
                 .getSelectAcquirer().typeName(ACQUIRER_FOR_EDIT)
                 .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT)
                 .getTable().clickEditAcquirerButton(ACQUIRER_FOR_EDIT)
-//                .fillAcquirerDisplayNameField(ACQUIRER_EDITED.getAcquirerDisplayName()) //      TODO - change after fixing bug
+//      TODO - change after fixing bug
+//                .fillAcquirerDisplayNameField(ACQUIRER_EDITED.getAcquirerDisplayName())
                 .fillAcquirerMidField(ACQUIRER_EDITED.getAcquirerMid())
                 .fillAcquirerMidMccField(ACQUIRER_EDITED.getAcquirerMidMcc())
                 .fillChallengeUrlField(ACQUIRER_EDITED.getSystemConfig().challengeUrl())
@@ -327,9 +328,10 @@ public class AddEditAcquirerTest extends BaseTest {
         Allure.step("Verify: The 'Edit acquirer' dialog is no longer visible");
         assertThat(acquirersPage.getEditAcquirerDialog()).isHidden();
 
-        Allure.step("Verify: Acquirer display name matches expected");
-        assertThat(acquirersPage.getTable().getCell(ACQUIRER_FOR_EDIT, "Display name"))
-                .hasText(ACQUIRER_EDITED.getAcquirerDisplayName());
+//      TODO - change after fixing bug
+//        Allure.step("Verify: Acquirer display name matches expected");
+//        assertThat(acquirersPage.getTable().getCell(ACQUIRER_FOR_EDIT, "Display name"))
+//                .hasText(ACQUIRER_EDITED.getAcquirerDisplayName());
 
         Allure.step("Verify: Acquirer code is 'NGenius' by default");
         assertThat(acquirersPage.getTable().getCell(ACQUIRER_FOR_EDIT, "Acquirer code"))

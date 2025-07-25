@@ -210,11 +210,9 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: Transactions are present in the table");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
 
-        transactionsPage
-                .getTable().goToLastPage();
+        transactionsPage.getTable().goToLastPage();
 
-        transactionsPage
-                .clickCurrencySelector().selectCurrency("EUR");
+        transactionsPage.clickCurrencySelector().selectCurrency("EUR");
 
         Allure.step("Verify: Transactions are still present then filter is applied on the last page");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
@@ -234,12 +232,10 @@ public class TransactionsTableTest extends BaseTest {
         List<LocalDateTime> actualDates = transactionsPage
                 .getTable().getAllCreationDates();
 
-        Allure.step(
-                "Verify: transactions are sorted by creation date in descending order by default");
+        Allure.step("Verify: transactions are sorted by creation date in descending order by default");
         assertEquals(actualDates, actualDates.stream().sorted(Comparator.reverseOrder()).toList());
 
-        transactionsPage
-                .getTable().clickSortIcon("Creation Date (GMT)");
+        transactionsPage.getTable().clickSortIcon("Creation Date (GMT)");
 
         Allure.step("Verify: transactions are sorted by creation date in ascending after clicking the sort icon");
         assertEquals(transactionsPage.getTable().getAllCreationDates(), actualDates.stream().sorted().toList());
@@ -264,8 +260,7 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transactions are sorted by amount in ascending order after first click");
         assertEquals(actualAmount, actualAmount.stream().sorted().toList());
 
-        transactionsPage
-                .getTable().clickSortIcon("Amount");
+        transactionsPage.getTable().clickSortIcon("Amount");
 
         Allure.step("Verify: transactions are sorted by amount in descending order after second click");
         assertEquals(transactionsPage.getTable().getAllAmounts(),
