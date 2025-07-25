@@ -234,16 +234,15 @@ public class TransactionsTableTest extends BaseTest {
         List<LocalDateTime> actualDates = transactionsPage
                 .getTable().getAllCreationDates();
 
-        Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
-        assertEquals(actualDates, actualDates.stream().sorted().toList());
+        Allure.step(
+                "Verify: transactions are sorted by creation date in descending order by default");
+        assertEquals(actualDates, actualDates.stream().sorted(Comparator.reverseOrder()).toList());
 
         transactionsPage
                 .getTable().clickSortIcon("Creation Date (GMT)");
 
-        Allure.step(
-                "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
-        assertEquals(transactionsPage.getTable().getAllCreationDates(),
-                actualDates.stream().sorted(Comparator.reverseOrder()).toList());
+        Allure.step("Verify: transactions are sorted by creation date in ascending after clicking the sort icon");
+        assertEquals(transactionsPage.getTable().getAllCreationDates(), actualDates.stream().sorted().toList());
     }
 
     @Test
