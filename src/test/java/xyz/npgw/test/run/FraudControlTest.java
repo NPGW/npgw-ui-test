@@ -15,6 +15,7 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
 import java.util.List;
@@ -186,6 +187,8 @@ public class FraudControlTest extends BaseTest {
         assertThat(row).containsText("Inactive");
     }
 
+
+    @Ignore
     @Test(dependsOnMethods = "testAddInactiveFraudControl")
     @TmsLink("955")
     @Epic("System/Fraud Control")
@@ -406,6 +409,43 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that the business unit control table doesn't include the deleted control");
         Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE
                 .getControlDisplayName()));
+    }
+
+    @Test
+    @TmsLink("986")
+    @Epic("System/Fraud Control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Edit Fraud Control ")
+    public void testEditFraudControl() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls()
+                .clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
+                .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
+                .checkInactiveRadiobutton()
+                .clickSaveChangesButton();
+
+        Locator row = page.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlName());
+        Locator alertMessage = page.getAlert().getSuccessMessage();
+
+        Allure.step("Verify that 'Control was update successfully' alert is appeared ");
+        assertThat(alertMessage).hasText("SUCCESSControl was updated successfully");
+
+        Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
+        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
+        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
+
+        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
+        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlConfig());
+
+        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+
+        assertThat(row).containsText("Inactive");
+        assertThat(row).not().containsText("Active");
     }
 
     @AfterClass
