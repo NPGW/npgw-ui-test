@@ -186,7 +186,7 @@ public class GatewayPageTest extends BaseTest {
         TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
-    @Test
+    @Test(invocationCount = 3)
     @TmsLink("693")
     @Epic("System/Gateway")
     @Feature("Currency")
@@ -204,7 +204,8 @@ public class GatewayPageTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
-                .getSelectCompany().selectCompany(company.companyName())
+                //Behaviour is changed now
+//                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
                 .clickCreateButton()
