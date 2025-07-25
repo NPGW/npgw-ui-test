@@ -150,7 +150,7 @@ public class GatewayPageTest extends BaseTest {
         assertThat(selectCompanyField).isEmpty();
     }
 
-    @Test
+    @Test(invocationCount = 3)
     @TmsLink("602")
     @Epic("System/Gateway")
     @Feature("Currency")
@@ -182,6 +182,8 @@ public class GatewayPageTest extends BaseTest {
         Allure.step("Verify that all the Business units are presented in the list");
         assertThat(gatewayPage.getSelectBusinessUnit().getDropdownOptionList())
                 .hasText(new String[]{"first", "second"});
+
+        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
     }
 
     @Test

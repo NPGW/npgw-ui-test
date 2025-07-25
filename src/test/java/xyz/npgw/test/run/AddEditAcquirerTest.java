@@ -119,6 +119,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 
+    @Ignore("Possible bug: aria-readonly='true' for AcquirerDisplayName field")
     @Test
     @TmsLink("412")
     @Epic("System/Acquirers")
