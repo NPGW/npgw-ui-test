@@ -443,7 +443,7 @@ public class FraudControlTest extends BaseTest {
                 .getControlDisplayName()));
     }
 
-    @Test
+    @Test(dependsOnMethods = "testDeleteActiveFraudControlAddedToBusinessUnit")
     @TmsLink("986")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -452,8 +452,7 @@ public class FraudControlTest extends BaseTest {
         FraudControlPage page = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
-                .getTableControls()
-                .clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
                 .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
