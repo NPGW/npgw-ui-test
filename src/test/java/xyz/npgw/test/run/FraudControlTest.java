@@ -472,7 +472,7 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(actualNameList, sortedNameListAsc);
 
         fraudControlPage.getTableControls().clickColumnHeader("Display name");
-        List<String>actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
+        List<String> actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
         List<String> sortedDisplayNameListAsc = new ArrayList<>(actualDisplayNameList);
         Collections.sort(sortedDisplayNameListAsc);
 
@@ -488,7 +488,7 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc);
 
         fraudControlPage.getTableControls().clickColumnHeader("Code");
-        List <String> actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
+        List<String> actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
         List<String> sortedCodeListAsc = new ArrayList<>(actualCodeList);
         Collections.sort(sortedCodeListAsc);
 
@@ -504,7 +504,7 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(actualCodeList, sortedCodeListDesc);
 
         fraudControlPage.getTableControls().clickColumnHeader("Config");
-        List <String> actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
+        List<String> actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
         List<String> sortedConfigListAsc = new ArrayList<>(actualConfigList);
         Collections.sort(sortedConfigListAsc);
 
