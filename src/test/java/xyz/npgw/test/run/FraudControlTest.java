@@ -247,7 +247,6 @@ public class FraudControlTest extends BaseTest {
         assertThat(cell).hasText("Inactive");
     }
 
-    @Ignore
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit",
             "testDeleteInactiveFraudControlAddedToBusinessUnit"})
     @TmsLink("910")
