@@ -19,6 +19,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
@@ -94,6 +95,14 @@ public final class TestUtils {
         final String monthYear = "/" + dataNow[1] + "/" + dataNow[0];
 
         return "Date range01" + monthYear + "-" + lastDay + monthYear;
+    }
+
+    public static void sortStringsAscEmptyLast(List<String> list) {
+        list.sort((s1, s2) -> {
+            if (s1.isEmpty() && !s2.isEmpty()) return 1;
+            if (!s1.isEmpty() && s2.isEmpty()) return -1;
+            return s1.compareTo(s2);
+        });
     }
 
     @SneakyThrows
