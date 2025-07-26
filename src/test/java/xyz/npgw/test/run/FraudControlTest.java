@@ -216,9 +216,9 @@ public class FraudControlTest extends BaseTest {
         Locator controlRow = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
 
         Locator displayNameCell = page.getTableControls().getCell(controlRow, "Display name");
-        Locator codeCell = page.getTableControls().getCell(controlRow,"Code");
-        Locator configCell = page.getTableControls().getCell(controlRow,"Config");
-        Locator statusCell = page.getTableControls().getCell(controlRow,"Status");
+        Locator codeCell = page.getTableControls().getCell(controlRow, "Code");
+        Locator configCell = page.getTableControls().getCell(controlRow, "Config");
+        Locator statusCell = page.getTableControls().getCell(controlRow, "Status");
 
         Allure.step("Verify that due to click Close button Fraud Control hasn't been changed");
         assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
