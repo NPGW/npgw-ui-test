@@ -448,7 +448,7 @@ public class FraudControlTest extends BaseTest {
     @TmsLink("986")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
-    @Description("Edit Fraud Control ")
+    @Description("Edit Fraud Control")
     public void testEditFraudControl() {
         FraudControlPage page = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
