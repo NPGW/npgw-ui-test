@@ -492,7 +492,7 @@ public class FraudControlTest extends BaseTest {
                 .getTableControls()
                 .clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName());
 
-        Allure.step("Verify that 'Control Name input field is immutable");
+        Allure.step("Verify that 'Control Name' input field is immutable");
         assertThat(editControlDialog.getControlNameInput()).not().isEditable();
     }
 
