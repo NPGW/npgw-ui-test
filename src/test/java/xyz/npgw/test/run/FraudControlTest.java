@@ -269,7 +269,8 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that all bunch of hovers are presented on Control table");
         assertThat(page.getTableControls().getEditIconHover(FRAUD_CONTROL.getControlName())).isVisible();
-        assertThat(page.getTableControls().getActivateControlHover(FRAUD_CONTROL_INACTIVE.getControlName())).isVisible();
+        assertThat(page.getTableControls().getActivateControlHover(FRAUD_CONTROL_INACTIVE.getControlName()))
+                .isVisible();
         assertThat(page.getTableControls().getDeactivateControlHover(FRAUD_CONTROL.getControlName())).isVisible();
         assertThat(page.getTableControls().getDeleteHover(FRAUD_CONTROL.getControlName())).isVisible();
         assertThat(page.getTableControls().getConnectControlHover(FRAUD_CONTROL.getControlName())).isVisible();
