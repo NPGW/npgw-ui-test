@@ -195,6 +195,70 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Test(dependsOnMethods = "testAddActiveFraudControl")
+    @TmsLink("999")
+    @Epic("System/Fraud Control")
+    @Feature("Control table")
+    @Description("Edit Fraud Control with Cancel button"
+            + "Edit Fraud Control with 'Cross'"
+            + "Edit Fraud Control with ESC")
+    public void testCancelEditingFraudControl() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
+                .checkInactiveRadiobutton()
+                .clickCloseButton();
+
+        Locator displayNameCell = page.getTableControls().getCell(
+                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
+                "Display name");
+        Locator codeCell = page.getTableControls().getCell(
+                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
+                "Code");
+        Locator configCell = page.getTableControls().getCell(
+                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
+                "Config");
+        Locator statusCell = page.getTableControls().getCell(
+                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
+                "Status");
+
+        Allure.step("Verify that due to click Close button Fraud Control hasn't been changed");
+        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
+        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
+        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
+        assertThat(statusCell).hasText("Active");
+
+        page.getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
+                .checkInactiveRadiobutton()
+                .clickCloseIcon();
+
+        Allure.step("Verify that due to click Cross icon Fraud Control hasn't been changed");
+        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
+        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
+        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
+        assertThat(statusCell).hasText("Active");
+
+        page.getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
+                .checkInactiveRadiobutton()
+                .pressEscapeKey();
+
+        Allure.step("Verify that due to press ESC keyboard button Fraud Control hasn't been changed");
+        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
+        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
+        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
+        assertThat(statusCell).hasText("Active");
+    }
+
     @Test
     @TmsLink("904")
     @Epic("System/Fraud Control")
