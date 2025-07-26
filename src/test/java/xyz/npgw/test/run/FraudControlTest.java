@@ -255,8 +255,28 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
+    @TmsLink("1001")
+    @Epic("System/Fraud Control")
+    @Feature("Control table")
+    @Description("Hovers for available actions check")
+    public void testHoversForActionsControlTable() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+
+        Allure.step("Verify that all bunch of hovers are presented on Control table");
+        assertThat(page.getTableControls().getEditIconHover(FRAUD_CONTROL.getControlName())).isVisible();
+        assertThat(page.getTableControls().getActivateControlHover(FRAUD_CONTROL_INACTIVE.getControlName())).isVisible();
+        assertThat(page.getTableControls().getDeactivateControlHover(FRAUD_CONTROL.getControlName())).isVisible();
+        assertThat(page.getTableControls().getDeleteHover(FRAUD_CONTROL.getControlName())).isVisible();
+        assertThat(page.getTableControls().getConnectControlHover(FRAUD_CONTROL.getControlName())).isVisible();
+    }
+
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
-            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl"})
+            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl", "testHoversForActionsControlTable"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
