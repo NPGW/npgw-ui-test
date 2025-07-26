@@ -13,7 +13,6 @@ import io.qameta.allure.TmsLink;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
@@ -43,7 +42,9 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
@@ -134,7 +135,7 @@ public class TransactionsTableTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: Transactions can be filtered by date range");
-        Assert.assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
+        assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
     }
 
     @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
@@ -593,7 +594,7 @@ public class TransactionsTableTest extends BaseTest {
                 .toList();
 
         Allure.step("Verify: cell values match between UI and PDF");
-        Assert.assertEquals(uiFormattedRows, pdfRows);
+        assertEquals(uiFormattedRows, pdfRows);
     }
 
     @Test
