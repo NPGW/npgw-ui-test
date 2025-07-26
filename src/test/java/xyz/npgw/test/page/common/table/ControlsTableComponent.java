@@ -1,5 +1,6 @@
 package xyz.npgw.test.page.common.table;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.control.ActivateControlDialog;
@@ -11,6 +12,12 @@ import xyz.npgw.test.page.system.FraudControlPage;
 
 public class ControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
+    private final Locator editIconHover = getByTextExact("Edit control");
+    private final Locator deactivateControlHover = getByTextExact("Deactivate control");
+    private final Locator deleteHover = getByTextExact("Delete control");
+    private final Locator connectControlHover = getByTextExact("Connect control to business unit");
+    private final Locator activateControlHover = getByTextExact("Аctivate control");
+
     public ControlsTableComponent(Page page) {
         super(page, page.getByText("Controls", new Page.GetByTextOptions().setExact(true)).locator("../.."));
     }
@@ -18,6 +25,56 @@ public class ControlsTableComponent extends BaseTableComponent<FraudControlPage>
     @Override
     protected FraudControlPage getCurrentPage() {
         return new FraudControlPage(getPage());
+    }
+
+    @Step("Get Edit Control icon hover")
+    public Locator getEditIconHover(String controlName) {
+        getRow(controlName).hover();
+        getRow(controlName).getByTestId("EditControlButton").hover();
+
+        editIconHover.waitFor();
+
+        return editIconHover;
+    }
+
+    @Step("Get Deactivate Control icon hover")
+    public Locator getDeactivateControlHover(String controlName) {
+        getRow(controlName).hover();
+        getRow(controlName).locator("//*[@data-icon='ban']/..").hover();
+
+        deactivateControlHover.waitFor();
+
+        return deactivateControlHover;
+    }
+
+    @Step("Get Activate Control icon hover")
+    public Locator getActivateControlHover(String controlName) {
+        getRow(controlName).hover();
+        getRow(controlName).locator("//*[@data-icon='check']/..").hover();
+
+        activateControlHover.waitFor();
+
+        return activateControlHover;
+    }
+
+    @Step("Get Activate Control icon hover")
+    public Locator getDeleteHover(String controlName) {
+        getRow(controlName).hover();
+        getRow(controlName).getByTestId("DeleteControlButton").hover();
+
+        deleteHover.waitFor();
+
+        return deleteHover;
+    }
+
+    @Step("Get Activate Control icon hover")
+    public Locator getConnectControlHover(String controlName) {
+        getRow(controlName).hover();
+        getRow(controlName).getByTestId("ConnectControlButton").hover();
+
+        connectControlHover.waitFor();
+
+        return connectControlHover;
     }
 
     @Step("Click 'Edit control' button")
