@@ -15,8 +15,11 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -194,6 +197,81 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Test(dependsOnMethods = "testAddActiveFraudControl")
+    @TmsLink("999")
+    @Epic("System/Fraud Control")
+    @Feature("Control table")
+    @Description("Edit Fraud Control with Cancel button"
+            + "Edit Fraud Control with 'Cross'"
+            + "Edit Fraud Control with ESC")
+    public void testCancelEditingFraudControl() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
+                .checkInactiveRadiobutton()
+                .clickCloseButton();
+
+        Locator controlRow = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
+
+        Locator displayNameCell = page.getTableControls().getCell(controlRow, "Display name");
+        Locator codeCell = page.getTableControls().getCell(controlRow, "Code");
+        Locator configCell = page.getTableControls().getCell(controlRow, "Config");
+        Locator statusCell = page.getTableControls().getCell(controlRow, "Status");
+
+        Allure.step("Verify that due to click Close button Fraud Control hasn't been changed");
+        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
+        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
+        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
+        assertThat(statusCell).hasText("Active");
+
+        page.getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
+                .checkInactiveRadiobutton()
+                .clickCloseIcon();
+
+        Allure.step("Verify that due to click Cross icon Fraud Control hasn't been changed");
+        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
+        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
+        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
+        assertThat(statusCell).hasText("Active");
+
+        page.getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
+                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
+                .checkInactiveRadiobutton()
+                .pressEscapeKey();
+
+        Allure.step("Verify that due to press ESC keyboard button Fraud Control hasn't been changed");
+        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
+        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
+        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
+        assertThat(statusCell).hasText("Active");
+    }
+
+    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
+            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl"})
+    @TmsLink("949")
+    @Epic("System/Fraud Control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Delete Active Fraud Control not added to Business Unit")
+    public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
+                .clickDeleteButton();
+
+        Allure.step("Check if just deleted Fraud Control still presented in the table");
+        assertThat(page.getTableControls().getRow(FRAUD_CONTROL.getControlName())).not().isAttached();
+    }
+
     @Test
     @TmsLink("904")
     @Epic("System/Fraud Control")
@@ -338,27 +416,6 @@ public class FraudControlTest extends BaseTest {
                 .hasText("ERROREntity with name {" + FRAUD_CONTROL_NAME + "} already exists.");
     }
 
-    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl"})
-    @TmsLink("949")
-    @Epic("System/Fraud Control")
-    @Feature("Add/Edit/Delete Fraud Control")
-    @Description("Delete Active Fraud Control not added to Business Unit")
-    public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
-                .getSystemMenu().clickFraudControlTab()
-                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
-                .clickDeleteButton();
-
-        Allure.step("Check if just deleted Fraud Control still presented in the table");
-        try {
-            page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
-        } catch (RuntimeException e) {
-            throw new RuntimeException("There no rows with name "
-                    + FRAUD_CONTROL.getControlName() + " in the table");
-        }
-    }
-
     @Test(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority"})
     @TmsLink("950")
     @Epic("System/Fraud Control")
@@ -441,6 +498,149 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that the business unit control table doesn't include the deleted control");
         Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE
                 .getControlDisplayName()));
+    }
+
+    @Test(dependsOnMethods = "testDeleteActiveFraudControlAddedToBusinessUnit")
+    @TmsLink("986")
+    @Epic("System/Fraud Control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Edit Fraud Control")
+    public void testEditFraudControl() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
+                .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
+                .checkInactiveRadiobutton()
+                .clickSaveChangesButton();
+
+        Locator row = page.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlName());
+        Locator alertMessage = page.getAlert().getSuccessMessage();
+
+        Allure.step("Verify that 'Control was update successfully' alert is appeared ");
+        assertThat(alertMessage).hasText("SUCCESSControl was updated successfully");
+
+        Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
+        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
+        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
+
+        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
+        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlConfig());
+
+        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+
+        assertThat(row).containsText("Inactive");
+        assertThat(row).not().containsText("Active");
+    }
+
+    @Test(dependsOnMethods = "testDeleteActiveFraudControlAddedToBusinessUnit")
+    @TmsLink("993")
+    @Epic("System/Fraud Control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Verify,Control name is immutable")
+    public void testNotEditControlName() {
+        EditControlDialog editControlDialog = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls()
+                .clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName());
+
+        Allure.step("Verify that 'Control Name' input field is immutable");
+        assertThat(editControlDialog.getControlNameInput()).not().isEditable();
+    }
+
+    @Test
+    @TmsLink("969")
+    @Epic("System/Fraud control")
+    @Feature("Control table entries sorting")
+    @Description("Verify that entries can be sorted by Name, DisplayName, Code, Config, Status  in Asc and Desc order")
+    public void testControlTableEntriesSorting() {
+        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickColumnHeader("Name");
+
+        List<String> actualNameList = fraudControlPage.getTableControls().getColumnValues("Name");
+        List<String> sortedNameListDesc = new ArrayList<>(actualNameList);
+        sortedNameListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Name in Desc order ");
+        Assert.assertEquals(actualNameList, sortedNameListDesc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Name");
+        actualNameList = fraudControlPage.getTableControls().getColumnValues("Name");
+        List<String> sortedNameListAsc = new ArrayList<>(actualNameList);
+        Collections.sort(sortedNameListAsc);
+
+        Allure.step("Verify that entries are sorted by Name in Asc order ");
+        Assert.assertEquals(actualNameList, sortedNameListAsc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Display name");
+        List<String> actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
+        List<String> sortedDisplayNameListAsc = new ArrayList<>(actualDisplayNameList);
+        Collections.sort(sortedDisplayNameListAsc);
+
+        Allure.step("Verify that entries are sorted by Display name in Asc order ");
+        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Display name");
+        actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
+        List<String> sortedDisplayNameListDesc = new ArrayList<>(actualDisplayNameList);
+        sortedDisplayNameListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Display name in Desc order ");
+        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Code");
+        List<String> actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
+        List<String> sortedCodeListAsc = new ArrayList<>(actualCodeList);
+        Collections.sort(sortedCodeListAsc);
+
+        Allure.step("Verify that entries are sorted by Code in Asc order ");
+        Assert.assertEquals(actualCodeList, sortedCodeListAsc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Code");
+        actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
+        List<String> sortedCodeListDesc = new ArrayList<>(actualCodeList);
+        sortedCodeListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Code in Desc order ");
+        Assert.assertEquals(actualCodeList, sortedCodeListDesc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Config");
+        List<String> actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
+        List<String> sortedConfigListAsc = new ArrayList<>(actualConfigList);
+        Collections.sort(sortedConfigListAsc);
+
+        Allure.step("Verify that entries are sorted by Config in Asc order ");
+        Assert.assertEquals(actualConfigList, sortedConfigListAsc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Config");
+        actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
+        List<String> sortedConfigListDesc = new ArrayList<>(actualConfigList);
+        sortedConfigListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Config in Desc order ");
+        Assert.assertEquals(actualConfigList, sortedConfigListDesc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Status");
+        List<String> actualStatusList = fraudControlPage.getTableControls().getColumnValues("Status");
+        List<String> sortedStatusListDesc = new ArrayList<>(actualStatusList);
+        sortedStatusListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Status in Desc order ");
+        Assert.assertEquals(actualStatusList, sortedStatusListDesc);
+
+        fraudControlPage.getTableControls().clickColumnHeader("Status");
+        actualStatusList = fraudControlPage.getTableControls().getColumnValues("Status");
+        List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
+        Collections.sort(sortedStatusListAsc);
+
+        Allure.step("Verify that entries are sorted by Status in Asc order ");
+        Assert.assertEquals(actualStatusList, sortedStatusListAsc);
     }
 
     @AfterClass
