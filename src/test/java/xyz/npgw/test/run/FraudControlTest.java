@@ -213,18 +213,12 @@ public class FraudControlTest extends BaseTest {
                 .checkInactiveRadiobutton()
                 .clickCloseButton();
 
-        Locator displayNameCell = page.getTableControls().getCell(
-                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
-                "Display name");
-        Locator codeCell = page.getTableControls().getCell(
-                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
-                "Code");
-        Locator configCell = page.getTableControls().getCell(
-                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
-                "Config");
-        Locator statusCell = page.getTableControls().getCell(
-                page.getTableControls().getRow(FRAUD_CONTROL.getControlName()),
-                "Status");
+        Locator controlRow = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
+
+        Locator displayNameCell = page.getTableControls().getCell(controlRow, "Display name");
+        Locator codeCell = page.getTableControls().getCell(controlRow,"Code");
+        Locator configCell = page.getTableControls().getCell(controlRow,"Config");
+        Locator statusCell = page.getTableControls().getCell(controlRow,"Status");
 
         Allure.step("Verify that due to click Close button Fraud Control hasn't been changed");
         assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
@@ -273,12 +267,7 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in the table");
-        try {
-            page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
-        } catch (RuntimeException e) {
-            throw new RuntimeException("There no rows with name "
-                    + FRAUD_CONTROL.getControlName() + " in the table");
-        }
+        assertThat(page.getTableControls().getRow(FRAUD_CONTROL.getControlName())).not().isAttached();
     }
 
     @Test
