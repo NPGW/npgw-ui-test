@@ -219,13 +219,11 @@ public class TransactionsTableTest extends BaseTest {
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
     }
 
-    @Ignore("After the last changes "
-            + "ava.lang.AssertionError: Lists differ at element [0]: 2025-07-07T19:36:51 != 2025-07-25T04:00:51")
     @Test
     @TmsLink("559")
     @Epic("Transactions")
     @Feature("Table sorting")
-    @Description("'Creation Date' column sorts ascending by default and descending on click.")
+    @Description("'Creation Date' column sorts descending by default and ascending on click.")
     public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()

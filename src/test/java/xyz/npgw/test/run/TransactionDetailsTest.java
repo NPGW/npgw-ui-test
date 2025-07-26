@@ -174,7 +174,6 @@ public class TransactionDetailsTest extends BaseTest {
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
     }
 
-    @Ignore("After last changes Expected:INITIATED - Actual:FAILED")
     @Test
     @TmsLink("828")
     @Epic("Transactions")
