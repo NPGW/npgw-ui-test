@@ -259,6 +259,28 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
+            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl"})
+    @TmsLink("949")
+    @Epic("System/Fraud Control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Delete Active Fraud Control not added to Business Unit")
+    public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
+                .clickDeleteButton();
+
+        Allure.step("Check if just deleted Fraud Control still presented in the table");
+        try {
+            page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
+        } catch (RuntimeException e) {
+            throw new RuntimeException("There no rows with name "
+                    + FRAUD_CONTROL.getControlName() + " in the table");
+        }
+    }
+
     @Test
     @TmsLink("904")
     @Epic("System/Fraud Control")
@@ -401,27 +423,6 @@ public class FraudControlTest extends BaseTest {
 
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("ERROREntity with name {" + FRAUD_CONTROL_NAME + "} already exists.");
-    }
-
-    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl"})
-    @TmsLink("949")
-    @Epic("System/Fraud Control")
-    @Feature("Add/Edit/Delete Fraud Control")
-    @Description("Delete Active Fraud Control not added to Business Unit")
-    public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
-                .getSystemMenu().clickFraudControlTab()
-                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
-                .clickDeleteButton();
-
-        Allure.step("Check if just deleted Fraud Control still presented in the table");
-        try {
-            page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
-        } catch (RuntimeException e) {
-            throw new RuntimeException("There no rows with name "
-                    + FRAUD_CONTROL.getControlName() + " in the table");
-        }
     }
 
     @Test(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority"})
