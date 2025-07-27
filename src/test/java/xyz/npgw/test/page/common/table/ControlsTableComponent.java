@@ -12,11 +12,11 @@ import xyz.npgw.test.page.system.FraudControlPage;
 
 public class ControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
-    private final Locator editIconHover = getByTextExact("Edit control");
-    private final Locator deactivateControlHover = getByTextExact("Deactivate control");
-    private final Locator deleteHover = getByTextExact("Delete control");
-    private final Locator connectControlHover = getByTextExact("Connect control to business unit");
-    private final Locator activateControlHover = getByTextExact("Аctivate control");
+    private final Locator editIconTooltip = getByTextExact("Edit control");
+    private final Locator deactivateControlTooltip = getByTextExact("Deactivate control");
+    private final Locator deleteTooltip = getByTextExact("Delete control");
+    private final Locator connectControlTooltip = getByTextExact("Connect control to business unit");
+    private final Locator activateControlTooltip = getByTextExact("Аctivate control");
 
     public ControlsTableComponent(Page page) {
         super(page, page.getByText("Controls", new Page.GetByTextOptions().setExact(true)).locator("../.."));
@@ -27,54 +27,54 @@ public class ControlsTableComponent extends BaseTableComponent<FraudControlPage>
         return new FraudControlPage(getPage());
     }
 
-    @Step("Get Edit Control icon hover")
-    public Locator getEditIconHover(String controlName) {
+    @Step("Get Edit Control icon Tooltip")
+    public Locator hoverOverEditIcon(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).getByTestId("EditControlButton").hover();
 
-        editIconHover.waitFor();
+        editIconTooltip.waitFor();
 
-        return editIconHover;
+        return editIconTooltip;
     }
 
-    @Step("Get Deactivate Control icon hover")
-    public Locator getDeactivateControlHover(String controlName) {
+    @Step("Get Deactivate Control icon Tooltip")
+    public Locator hoverOverDeactivateControl(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).locator("//*[@data-icon='ban']/..").hover();
 
-        deactivateControlHover.waitFor();
+        deactivateControlTooltip.waitFor();
 
-        return deactivateControlHover;
+        return deactivateControlTooltip;
     }
 
-    @Step("Get Activate Control icon hover")
-    public Locator getActivateControlHover(String controlName) {
+    @Step("Get Activate Control icon Tooltip")
+    public Locator hoverOverActivateControl(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).locator("//*[@data-icon='check']/..").hover();
 
-        activateControlHover.waitFor();
+        activateControlTooltip.waitFor();
 
-        return activateControlHover;
+        return activateControlTooltip;
     }
 
-    @Step("Get Activate Control icon hover")
-    public Locator getDeleteHover(String controlName) {
+    @Step("Get Activate Control icon Tooltip")
+    public Locator hoverOverDelete(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).getByTestId("DeleteControlButton").hover();
 
-        deleteHover.waitFor();
+        deleteTooltip.waitFor();
 
-        return deleteHover;
+        return deleteTooltip;
     }
 
-    @Step("Get Activate Control icon hover")
-    public Locator getConnectControlHover(String controlName) {
+    @Step("Get Activate Control icon Tooltip")
+    public Locator hoverOverConnectControl(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).getByTestId("ConnectControlButton").hover();
 
-        connectControlHover.waitFor();
+        connectControlTooltip.waitFor();
 
-        return connectControlHover;
+        return connectControlTooltip;
     }
 
     @Step("Click 'Edit control' button")
