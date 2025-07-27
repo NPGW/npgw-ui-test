@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
 public class FraudControlTest extends BaseTest {
 
@@ -641,6 +643,26 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that entries are sorted by Status in Asc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
+    }
+
+    @Test
+    @TmsLink("1005")
+    @Epic("System/Fraud control")
+    @Feature("Reset filter")
+    @Description("'Reset filter' clears selected options")
+    public void testResetFilter() {
+        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .clickResetFilterButton();
+
+        Allure.step("Verify: the selected company field is empty after reset");
+        assertThat(fraudControlPage.getSelectCompany().getSelectCompanyField()).isEmpty();
+
+        Allure.step("Verify: the selected business unit field is empty after reset");
+        assertThat(fraudControlPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
     }
 
     @AfterClass
