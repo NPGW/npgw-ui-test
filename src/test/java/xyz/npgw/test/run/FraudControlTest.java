@@ -272,12 +272,14 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that Edit icon Tooltip is presented on Control table");
         assertThat(editIconTooltip).isVisible();
 
-        Locator activateIconTooltip = page.getTableControls().hoverOverActivateControl(FRAUD_CONTROL_INACTIVE.getControlName());
+        Locator activateIconTooltip = page.getTableControls()
+                .hoverOverActivateControl(FRAUD_CONTROL_INACTIVE.getControlName());
 
         Allure.step("Verify that Activate icon Tooltip is presented on Control table");
         assertThat(activateIconTooltip).isVisible();
 
-        Locator deactivateIconTooltip = page.getTableControls().hoverOverDeactivateControl(FRAUD_CONTROL.getControlName());
+        Locator deactivateIconTooltip = page.getTableControls()
+                .hoverOverDeactivateControl(FRAUD_CONTROL.getControlName());
 
         Allure.step("Verify that Deactivate icon Tooltip is presented on Control table");
         assertThat(deactivateIconTooltip).isVisible();
@@ -287,14 +289,16 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that Delete icon Tooltip is presented on Control table");
         assertThat(deleteIconTooltip).isVisible();
 
-        Locator connectControlIconTooltip = page.getTableControls().hoverOverConnectControl(FRAUD_CONTROL.getControlName());
+        Locator connectControlIconTooltip = page.getTableControls()
+                .hoverOverConnectControl(FRAUD_CONTROL.getControlName());
 
         Allure.step("Verify that Connect control icon Tooltip is presented on Control table");
         assertThat(connectControlIconTooltip).isVisible();
     }
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
-            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl", "testTooltipsForActionsControlTable"})
+            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
+            "testTooltipsForActionsControlTable"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
