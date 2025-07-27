@@ -3,9 +3,9 @@ package xyz.npgw.test.page.common.trait;
 import xyz.npgw.test.page.base.BaseTrait;
 import xyz.npgw.test.page.common.table.BusinessUnitControlsTableComponent;
 
-public interface BusinessUnitControlsTrait extends BaseTrait {
+public interface BusinessUnitControlsTableTrait extends BaseTrait {
 
-    default BusinessUnitControlsTableComponent getBusinessUnitControlsTable() {
+    default BusinessUnitControlsTableComponent getTableBusinessUnitControls() {
         return new BusinessUnitControlsTableComponent(getPage());
     }
 }

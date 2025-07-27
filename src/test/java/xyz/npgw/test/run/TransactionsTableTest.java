@@ -3,15 +3,19 @@ package xyz.npgw.test.run;
 import com.google.gson.Gson;
 import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Route;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.Assert;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
@@ -30,9 +34,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -44,7 +51,7 @@ import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 public class TransactionsTableTest extends BaseTest {
 
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
-    private static final List<String> COLUMNS_HEADERS = List.of(
+    private static final String[] COLUMNS_HEADERS = {
             "Creation Date (GMT)",
             "Business unit ID",
             "NPGW reference",
@@ -52,7 +59,9 @@ public class TransactionsTableTest extends BaseTest {
             "Amount",
             "Currency",
             "Card type",
-            "Status");
+            "Status",
+            "Actions"};
+    private static final String[] SETTINGS_COLUMNS = Arrays.copyOf(COLUMNS_HEADERS, COLUMNS_HEADERS.length - 1);
 
     private BusinessUnit businessUnit;
 
@@ -126,7 +135,7 @@ public class TransactionsTableTest extends BaseTest {
                 .clickRefreshDataButton();
 
         Allure.step("Verify: Transactions can be filtered by date range");
-        Assert.assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
+        assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
     }
 
     @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
@@ -200,11 +209,9 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: Transactions are present in the table");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
 
-        transactionsPage
-                .getTable().goToLastPage();
+        transactionsPage.getTable().goToLastPage();
 
-        transactionsPage
-                .clickCurrencySelector().selectCurrency("EUR");
+        transactionsPage.clickCurrencySelector().selectCurrency("EUR");
 
         Allure.step("Verify: Transactions are still present then filter is applied on the last page");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
@@ -214,7 +221,7 @@ public class TransactionsTableTest extends BaseTest {
     @TmsLink("559")
     @Epic("Transactions")
     @Feature("Table sorting")
-    @Description("'Creation Date' column sorts ascending by default and descending on click.")
+    @Description("'Creation Date' column sorts descending by default and ascending on click.")
     public void testSortByCreationDate() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
@@ -224,16 +231,13 @@ public class TransactionsTableTest extends BaseTest {
         List<LocalDateTime> actualDates = transactionsPage
                 .getTable().getAllCreationDates();
 
-        Allure.step("Verify: transactions are sorted by creation date in ascending order by default");
-        assertEquals(actualDates, actualDates.stream().sorted().toList());
+        Allure.step("Verify: transactions are sorted by creation date in descending order by default");
+        assertEquals(actualDates, actualDates.stream().sorted(Comparator.reverseOrder()).toList());
 
-        transactionsPage
-                .getTable().clickSortIcon("Creation Date (GMT)");
+        transactionsPage.getTable().clickSortIcon("Creation Date (GMT)");
 
-        Allure.step(
-                "Verify: transactions are sorted by creation date in descending order after clicking the sort icon");
-        assertEquals(transactionsPage.getTable().getAllCreationDates(),
-                actualDates.stream().sorted(Comparator.reverseOrder()).toList());
+        Allure.step("Verify: transactions are sorted by creation date in ascending after clicking the sort icon");
+        assertEquals(transactionsPage.getTable().getAllCreationDates(), actualDates.stream().sorted().toList());
     }
 
     @Test
@@ -255,8 +259,7 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transactions are sorted by amount in ascending order after first click");
         assertEquals(actualAmount, actualAmount.stream().sorted().toList());
 
-        transactionsPage
-                .getTable().clickSortIcon("Amount");
+        transactionsPage.getTable().clickSortIcon("Amount");
 
         Allure.step("Verify: transactions are sorted by amount in descending order after second click");
         assertEquals(transactionsPage.getTable().getAllAmounts(),
@@ -321,34 +324,22 @@ public class TransactionsTableTest extends BaseTest {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
                 .clickSettingsButton()
-                .checkAllCheckboxInSettings();
+                .checkAllCheckboxInSettings()
+                .clickRefreshDataButton();
 
-        List<String> visibleColumnsLabels = transactionsPage
-                .getVisibleColumnsLabels();
-
-        List<String> headersList = transactionsPage
-                .clickRefreshDataButton()
-                .getTable().getColumnHeadersText();
-
-        List<String> headersListAfterUncheckAllVisibleColumns = transactionsPage
-                .clickSettingsButton()
-                .uncheckAllCheckboxInSettings()
-                .clickRefreshDataButton()
-                .getTable().getColumnHeadersText();
-
-        Allure.step("Verify: All column headers are displayed in the Settings");
-        assertEquals(visibleColumnsLabels, COLUMNS_HEADERS);
+        Allure.step("Verify: All column headers except 'Actions' are displayed in the Settings");
+        assertThat(transactionsPage.getColumns()).hasText(SETTINGS_COLUMNS);
 
         Allure.step("Verify: All column headers are displayed in the transactions table");
-        assertTrue(headersList.containsAll(COLUMNS_HEADERS));
+        assertThat(transactionsPage.getTable().getColumnHeaders()).hasText(COLUMNS_HEADERS);
 
-        Allure.step("Verify: Column headers are not displayed in the transactions table "
-                + "after it's unchecking in the Settings");
-        assertEquals(headersListAfterUncheckAllVisibleColumns.size(), 1);
+        transactionsPage
+                .clickSettingsButton()
+                .uncheckAllCheckboxInSettings()
+                .clickRefreshDataButton();
 
-        Allure.step("Verify: Only 'Actions' is displayed in the transactions table "
-                + "after it's unchecking in the Settings");
-        assertEquals(headersListAfterUncheckAllVisibleColumns.get(0), "Actions");
+        Allure.step("Verify: Only 'Actions' column is displayed in the transactions table header");
+        assertThat(transactionsPage.getTable().getColumnHeaders()).hasText("Actions");
     }
 
     @Test
@@ -362,38 +353,35 @@ public class TransactionsTableTest extends BaseTest {
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings();
 
-        COLUMNS_HEADERS.forEach(item -> {
-            List<String> headersListAfterUncheckOne = transactionsPage
+        for (String item : SETTINGS_COLUMNS) {
+            transactionsPage
                     .uncheckVisibleColumn(item)
-                    .clickRefreshDataButton()
-                    .getTable().getColumnHeadersText();
+                    .clickRefreshDataButton();
 
-            Allure.step("Verify: Only one column header is NOT displayed in the Transactions. And it's - '{item}'");
-            assertTrue((headersListAfterUncheckOne.size() == COLUMNS_HEADERS.size())
-                    && !headersListAfterUncheckOne.contains(item));
+            Allure.step("Verify: Only one column header is NOT displayed in the Transactions");
+            assertThat(transactionsPage.getTable().getColumnHeaders())
+                    .hasText(Arrays.stream(COLUMNS_HEADERS).filter(s -> !s.equals(item)).toArray(String[]::new));
 
             transactionsPage
                     .clickSettingsButton()
                     .checkVisibleColumn(item);
-        });
+        }
 
         transactionsPage
                 .uncheckAllCheckboxInSettings();
 
-        COLUMNS_HEADERS.forEach(item -> {
-            List<String> headersListAfterCheckOnlyOne = transactionsPage
+        for (String item : SETTINGS_COLUMNS) {
+            transactionsPage
                     .checkVisibleColumn(item)
-                    .clickRefreshDataButton()
-                    .getTable().getColumnHeadersText();
+                    .clickRefreshDataButton();
 
-            Allure.step("Verify: Only two column headers are displayed in the transactions table -"
-                    + " '{item}' column header and 'Actions'");
-            assertTrue((headersListAfterCheckOnlyOne.size() == 2) && headersListAfterCheckOnlyOne.contains(item));
+            Allure.step("Verify: Only two column headers are displayed in the transactions table");
+            assertThat(transactionsPage.getTable().getColumnHeaders()).hasText(new String[]{item, "Actions"});
 
             transactionsPage
                     .clickSettingsButton()
                     .uncheckVisibleColumn(item);
-        });
+        }
     }
 
     @Test
@@ -407,7 +395,7 @@ public class TransactionsTableTest extends BaseTest {
                 List<Transaction> transactionList = new ArrayList<>();
                 transactionList.add(new Transaction("2025-06-02T04:18:09.047146423Z",
                         "12345", "", 100,
-                        CardType.VISA, Currency.USD, Status.FAILED));
+                        Currency.USD, CardType.VISA, Status.FAILED));
                 route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(transactionList)));
                 return;
             }
@@ -522,21 +510,21 @@ public class TransactionsTableTest extends BaseTest {
             }
         } while (transactionsPage.getTable().goToNextPage());
 
-        Download download = getPage().waitForDownload(() -> transactionsPage
-                .clickExportTableDataToFileButton()
-                .selectCsv());
+        Download download = getPage().waitForDownload(
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
+                () -> transactionsPage.clickExportTableDataToFileButton().selectCsv());
 
         Path targetPath = Paths.get("downloads", "transactions-export.csv");
         Files.createDirectories(targetPath.getParent());
         download.saveAs(targetPath);
 
-        List<String> uiHeader = transactionsPage.getTable().getColumnHeadersText();
         List<List<String>> rowsFromCsv = transactionsPage
                 .readCsv(targetPath);
         List<String> csvHeader = rowsFromCsv.remove(0);
 
         Allure.step("Verify: CSV headers match the UI headers");
-        assertEquals(csvHeader, uiHeader.subList(0, csvHeader.size()));
+        assertThat(transactionsPage.getTable().getColumnHeaders())
+                .hasText(Stream.concat(csvHeader.stream(), Stream.of("Actions")).toArray(String[]::new));
 
         Allure.step("Verify the row count between UI and CSV");
         assertEquals(uiRows.size(), rowsFromCsv.size());
@@ -553,5 +541,92 @@ public class TransactionsTableTest extends BaseTest {
                         assertEquals(uiCell, csvCell, String.format("Mismatch at row %d, column %d", i + 1, j + 1)));
             });
         });
+    }
+
+    @Test
+    @TmsLink("957")
+    @Epic("Transactions")
+    @Feature("Export table data")
+    @Description("The transaction table data on the UI matches the exported PDF file data.")
+    public void testTransactionTableMatchesDownloadedPdf() throws IOException {
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        List<List<String>> uiRows = new ArrayList<>();
+        do {
+            List<Locator> rows = transactionsPage.getTable().getRows().all();
+            for (Locator row : rows) {
+                uiRows.add(transactionsPage.getTable().getRowData(row));
+            }
+        } while (transactionsPage.getTable().goToNextPage());
+
+        Download download = getPage().waitForDownload(
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
+                () -> transactionsPage.clickExportTableDataToFileButton().selectPdf());
+
+        Path targetPath = Paths.get("downloads", "transactions-export.pdf");
+        Files.createDirectories(targetPath.getParent());
+        download.saveAs(targetPath);
+
+        String pdfText;
+        try (PDDocument document = Loader.loadPDF(targetPath.toFile())) {
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            pdfText = pdfStripper.getText(document);
+        }
+
+        List<String> pdfRows = transactionsPage.readPdf(pdfText).stream()
+                .map(t -> String.join(" | ",
+                        t.createdOn(),
+                        t.transactionId(),
+                        t.externalTransactionId(),
+                        String.format("%.2f", t.amount()),
+                        t.currency().toString(),
+                        t.paymentDetails().cardType().toString(),
+                        t.status().toString()
+                ))
+                .collect(Collectors.toList());
+
+        List<String> uiFormattedRows = uiRows.stream()
+                .map(row -> String.join(" | ", row))
+                .toList();
+
+        Allure.step("Verify: cell values match between UI and PDF");
+        assertEquals(uiFormattedRows, pdfRows);
+    }
+
+    @Test
+    @TmsLink("978")
+    @Epic("Transactions")
+    @Feature("Settings")
+    @Description("Verify that changing the order of visible columns in Settings affects the table.")
+    public void testMoveVisibleColumns() {
+        final String creationDate = SETTINGS_COLUMNS[0];
+        final String amount = SETTINGS_COLUMNS[4];
+        final String currency = SETTINGS_COLUMNS[5];
+        final String status = SETTINGS_COLUMNS[7];
+
+        TransactionsPage transactionsPage = new DashboardPage(getPage())
+                .clickTransactionsLink()
+                .clickSettingsButton()
+                .uncheckAllCheckboxInSettings()
+                .checkVisibleColumn(creationDate)
+                .checkVisibleColumn(amount)
+                .checkVisibleColumn(currency)
+                .checkVisibleColumn(status)
+                .dragArrowsToFirstPosition(status)  // status...
+                .dragArrowsToFirstPosition(currency) // currency status...
+                .dragArrowsToFirstPosition(amount) // amount currency status...
+                .dragArrowsToFirstPosition(creationDate) // creationDate amount currency status...
+                .dragArrowsToLastPosition(currency) // creationDate amount status currency...
+                .dragArrows(creationDate, status) // amount status creationDate currency...
+                .dragArrows(amount, creationDate) // status creationDate amount currency...
+                .clickRefreshDataButton();
+
+        Allure.step("Verify: Selected column headers are displayed in the correct order in the transactions table.");
+        assertThat(transactionsPage.getTable().getColumnHeaders())
+                .hasText(new String[]{status, creationDate, amount, currency, "Actions"});
     }
 }

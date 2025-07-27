@@ -2,15 +2,16 @@ package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlActivityDialog;
-import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlActivityDialog;
+import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.DeleteBusinessUnitControlDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
 public class BusinessUnitControlsTableComponent extends BaseTableComponent<FraudControlPage> {
 
     public BusinessUnitControlsTableComponent(Page page) {
-        super(page);
+        super(page, page.getByText("Business unit controls", new Page.GetByTextOptions().setExact(true))
+                .locator("../.."));
     }
 
     @Override
@@ -18,37 +19,44 @@ public class BusinessUnitControlsTableComponent extends BaseTableComponent<Fraud
         return new FraudControlPage(getPage());
     }
 
-    @Step("Click 'Move business unit control down' icon")
-    public FraudControlPage clickMoveBusinessUnitAcquirerDownButton(String priority) {
-        getRow(priority).locator("//*[@data-icon='circle-arrow-down']").click();
+    @Step("Click 'Move business unit control down' button")
+    public FraudControlPage clickMoveBusinessUnitControlDownButton(String priority) {
+        getRowByDataKey(priority).getByTestId("MoveMerchantControlDownButton").click();
 
         return getCurrentPage();
     }
 
-    @Step("Click 'Move business unit control up' icon")
-    public FraudControlPage clickMoveBusinessUnitAcquirerUpButton(String priority) {
-        getRow(priority).locator("//*[@data-icon='circle-arrow-up']").click();
+    @Step("Click 'Move business unit control up' button")
+    public FraudControlPage clickMoveBusinessUnitControlUpButton(String priority) {
+        getRowByDataKey(priority).getByTestId("MoveMerchantControlUpButton").click();
 
         return getCurrentPage();
     }
 
-    @Step("Click 'Deactivate business unit control' icon")
-    public DeactivateBusinessUnitControlActivityDialog clickDeactivateBusinessUnitControlIcon(String priority) {
-        getRow(priority).locator("//*[@data-icon='ban']/..").click();
+    @Step("Click 'Activate business unit control' button")
+    public ActivateBusinessUnitControlDialog clickActivateBusinessUnitControlButton(String priority) {
+        getRowByDataKey(priority).locator("//*[@data-icon='check']/..").click();
 
-        return new DeactivateBusinessUnitControlActivityDialog(getPage());
+        return new ActivateBusinessUnitControlDialog(getPage());
     }
 
-    @Step("Click 'Activate business unit control' icon")
-    public ActivateBusinessUnitControlActivityDialog clickActivateBusinessUnitControlIcon(String priority) {
-        getRow(priority).locator("//*[@data-icon='check']/..").click();
+    @Step("Click 'Deactivate business unit control' button")
+    public DeactivateBusinessUnitControlDialog clickDeactivateBusinessUnitControlButton(String priority) {
+        getRowByDataKey(priority).locator("//*[@data-icon='ban']/..").click();
 
-        return new ActivateBusinessUnitControlActivityDialog(getPage());
+        return new DeactivateBusinessUnitControlDialog(getPage());
     }
 
-    @Step("Click 'Delete business unit control' icon")
-    public DeleteBusinessUnitControlDialog clickDeleteBusinessUnitControlIcon(String priority) {
-        getRow(priority).getByTestId("DeleteControlButton").click();
+    @Step("Click 'Delete business unit control' button")
+    public DeleteBusinessUnitControlDialog clickDeleteBusinessUnitControlButton(String priority) {
+        getRowByDataKey(priority).getByTestId("DeleteBusinessUnitControlButton").click();
+
+        return new DeleteBusinessUnitControlDialog(getPage());
+    }
+
+    @Step("Click 'Delete business unit control' button")
+    public DeleteBusinessUnitControlDialog clickDeleteBusinessUnitControlButtonByName(String displayName) {
+        getRow(displayName).getByTestId("DeleteBusinessUnitControlButton").click();
 
         return new DeleteBusinessUnitControlDialog(getPage());
     }

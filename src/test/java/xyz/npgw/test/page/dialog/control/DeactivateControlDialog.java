@@ -7,11 +7,11 @@ import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
-public class DeleteControlDialog extends BaseDialog<FraudControlPage, DeleteControlDialog> {
+public class DeactivateControlDialog extends BaseDialog<FraudControlPage, DeactivateControlDialog> {
 
     private final Locator cancelButton = getDialog().getByText("Cancel");
 
-    public DeleteControlDialog(Page page) {
+    public DeactivateControlDialog(Page page) {
         super(page);
     }
 
@@ -20,9 +20,9 @@ public class DeleteControlDialog extends BaseDialog<FraudControlPage, DeleteCont
         return new FraudControlPage(getPage());
     }
 
-    @Step("Click 'Delete' button")
-    public FraudControlPage clickDeleteButton() {
-        getByRole(AriaRole.BUTTON, "Delete").click();
+    @Step("Click 'Deactivate' button")
+    public FraudControlPage clickDeactivateButton() {
+        getByRole(AriaRole.BUTTON, "Deactivate").click();
 
         return getReturnPage();
     }

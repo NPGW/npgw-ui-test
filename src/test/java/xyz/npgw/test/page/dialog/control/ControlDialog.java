@@ -1,16 +1,21 @@
 package xyz.npgw.test.page.dialog.control;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
+import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.FraudControlPage;
 
+@Getter
 @SuppressWarnings("unchecked")
-public abstract class FraudControlDialog<CurrentDialogT extends FraudControlDialog<CurrentDialogT>>
+public abstract class ControlDialog<CurrentDialogT extends ControlDialog<CurrentDialogT>>
         extends BaseDialog<FraudControlPage, CurrentDialogT> {
 
-    public FraudControlDialog(Page page) {
+    private final Locator controlNameInput = getByPlaceholder("Enter control name");
+
+    public ControlDialog(Page page) {
         super(page);
     }
 
@@ -22,12 +27,12 @@ public abstract class FraudControlDialog<CurrentDialogT extends FraudControlDial
 
     @Step("Fill in fraud control name: {controlName}")
     public CurrentDialogT fillFraudControlNameField(String controlName) {
-        getByPlaceholder("Enter control name").fill(controlName);
+        controlNameInput.fill(controlName);
 
         return (CurrentDialogT) this;
     }
 
-    @Step("Fill in fraud control name: {controlCode}")
+    @Step("Fill in fraud control code: {controlCode}")
     public CurrentDialogT fillFraudControlCodeField(String controlCode) {
         getByPlaceholder("Enter control code").fill(controlCode);
 

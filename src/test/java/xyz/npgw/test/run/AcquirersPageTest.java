@@ -17,13 +17,11 @@ import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.common.table.AcquirersTableComponent;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertFalse;
@@ -31,7 +29,9 @@ import static org.testng.Assert.assertTrue;
 
 public class AcquirersPageTest extends BaseTest {
 
-    private static final List<String> COLUMNS_HEADERS = List.of(
+    private static final String[] STATUS_OPTIONS = {"All", "Active", "Inactive"};
+    private static final String[] ROWS_PER_PAGE_OPTIONS = {"10", "25", "50", "100"};
+    private static final String[] COLUMNS_HEADERS = {
             "Entity name",
             "Display name",
             "Acquirer code",
@@ -41,7 +41,8 @@ public class AcquirersPageTest extends BaseTest {
             "Acquirer config",
             "System config",
             "Status",
-            "Actions");
+            "Actions"};
+
     private static final Acquirer ACQUIRER = Acquirer.builder()
             .acquirerName("%s acquirer 11.002.01".formatted(RUN_ID))
             .acquirerMidMcc("4321")
@@ -50,8 +51,6 @@ public class AcquirersPageTest extends BaseTest {
             .acquirerName("%s acquirer activate and deactivate".formatted(RUN_ID))
             .acquirerMidMcc("4321")
             .build();
-
-    String[] rowsPerPageOptions = new String[]{"10", "25", "50", "100"};
 
     @BeforeClass
     @Override
@@ -65,19 +64,19 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("134")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
-    @Description("The visibility of elements in the 'Acquirers List' control panel")
+    @Description("The visibility of elements in the filter")
     public void testVisibilityAcquirersListControlTab() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        Allure.step("Verify: Add Acquirer Button is visible");
+        Allure.step("Verify: Add acquirer button is visible");
         assertThat(acquirersPage.getAddAcquirerButton()).isVisible();
 
-        Allure.step("Verify: Select Acquirer label is visible");
+        Allure.step("Verify: Acquirer selector is visible");
         assertThat(acquirersPage.getSelectAcquirer().getSelectAcquirerField()).isVisible();
 
-        Allure.step("Verify: Status label is visible");
+        Allure.step("Verify: Status selector is visible");
         assertThat(acquirersPage.getSelectStatus().getStatusSelector()).isVisible();
 
         Allure.step("Verify: Reset Filter Button is visible");
@@ -91,37 +90,32 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("157")
     @Epic("System/Acquirers")
     @Feature("Acquirers list")
-    @Description("The visibility of the 'Acquirers List' header, which contains a list of Acquirers.")
+    @Description("The visibility of the acquirers table header and table contents")
     public void testVisibilityHeaderAndAcquirersList() {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        Allure.step("Verify: Table column header is visible");
-        assertThat(acquirersPage.getTable().getColumnHeader("Entity name")).isVisible();
+        Allure.step("Verify: Table column headers");
+        assertThat(acquirersPage.getTable().getColumnHeaders()).hasText(COLUMNS_HEADERS);
 
-        List<Locator> acquirersList = acquirersPage.getTable().getColumnCells("Entity name");
-
-//        TODO refactor this
-        Allure.step("Verify: Acquirers list is visible and contains elements");
-        assertThat(acquirersList.get(0)).isVisible();
-        assertThat(acquirersList.get(acquirersList.size() - 1)).isVisible();
+        Allure.step("Verify: Acquirers table content is visible and contains acquirers");
+        assertThat(acquirersPage.getTable().getRows()).not().hasCount(0);
     }
 
     @Test
     @TmsLink("168")
     @Epic("System/Acquirers")
     @Feature("Select acquirer")
-    @Description("Selecting the 'Select acquirer' field opens a dropdown with Acquirers list.")
+    @Description("Click on 'Select acquirer' field opens a dropdown populated with acquirers")
     public void testSelectAcquirerDropdownFunctionality() {
-        Locator dropdownAcquirerList = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().clickSelectAcquirerField()
-                .getSelectAcquirer().getSelectAcquirersDropdownItems();
+                .getSelectAcquirer().clickSelectAcquirerField();
 
         Allure.step("Verify: Dropdown list is not empty");
-        assertThat(dropdownAcquirerList).not().hasCount(0);
+        assertThat(acquirersPage.getSelectAcquirer().getDropdownOptionList()).not().hasCount(0);
     }
 
     @Test
@@ -130,14 +124,13 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Status")
     @Description("The 'Status' dropdown toggles and contains options All, Active, Inactive.")
     public void testOpenStatusDropdown() {
-        Locator actualOptions = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectStatus().clickSelector()
-                .getSelectStatus().getStatusOptions();
+                .getSelectStatus().clickSelector();
 
         Allure.step("Verify: The 'Status' dropdown toggles and contains options");
-        assertThat(actualOptions).hasText(new String[]{"All", "Active", "Inactive"});
+        assertThat(acquirersPage.getSelectStatus().getStatusOptions()).hasText(STATUS_OPTIONS);
     }
 
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
@@ -162,24 +155,22 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Status")
     @Description("Verify that re-selecting an already selected status keeps the selection unchanged.")
     public void testRetainStatusWhenReSelectingSameOption() {
-        List<String> expectedOptions = List.of("All", "Active", "Inactive");
-
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        Locator actualStatus = acquirersPage.getSelectStatus().getStatusValue();
-
-        for (String status : expectedOptions) {
-            acquirersPage.getSelectStatus().select(status);
+        for (String status : STATUS_OPTIONS) {
+            acquirersPage
+                    .getSelectStatus().select(status);
 
             Allure.step("Verify placeholder matches expected value: " + status);
-            assertThat(actualStatus).hasText(status);
+            assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText(status);
 
-            acquirersPage.getSelectStatus().select(status);
+            acquirersPage
+                    .getSelectStatus().select(status);
 
             Allure.step("Verify again placeholder matches expected value: " + status);
-            assertThat(actualStatus).hasText(status);
+            assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText(status);
         }
     }
 
@@ -201,8 +192,8 @@ public class AcquirersPageTest extends BaseTest {
         Allure.step("Verify: Dropdown is visible");
         assertThat(acquirersPage.getTable().getRowsPerPageDropdown()).isVisible();
 
-        Allure.step("Verify: The dropdown contains all four options: 10, 25, 50, 100");
-        assertThat(acquirersPage.getTable().getRowsPerPageOptions()).hasText(rowsPerPageOptions);
+        Allure.step("Verify: The dropdown contains options");
+        assertThat(acquirersPage.getTable().getRowsPerPageOptions()).hasText(ROWS_PER_PAGE_OPTIONS);
     }
 
     @Test
@@ -215,7 +206,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        for (String option : rowsPerPageOptions) {
+        for (String option : ROWS_PER_PAGE_OPTIONS) {
             acquirersPage.getTable().selectRowsPerPageOption(option);
 
             Allure.step(String.format("Verify: The Rows Per Page' value is set to '%s'", option));
@@ -235,7 +226,7 @@ public class AcquirersPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        for (String option : rowsPerPageOptions) {
+        for (String option : ROWS_PER_PAGE_OPTIONS) {
             acquirersPage.getTable().selectRowsPerPageOption(option);
 
             List<Integer> rowsCountPerPage = acquirersPage.getTable().getRowCountsPerPage();
@@ -258,13 +249,12 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Verify Acquirers table contains correct column headers")
     public void testDisplayCorrectColumnHeadersInAcquirersTable() {
-        List<String> acquirerTableHeaders = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
-                .getSystemMenu().clickAcquirersTab()
-                .getTable().getColumnHeadersText();
+                .getSystemMenu().clickAcquirersTab();
 
         Allure.step("Verify: The Acquirer table contains correct column headers");
-        Assert.assertEquals(acquirerTableHeaders, COLUMNS_HEADERS, "Mismatch in Acquirer table columns");
+        assertThat(acquirersPage.getTable().getColumnHeaders()).hasText(COLUMNS_HEADERS);
     }
 
     @Test
@@ -275,60 +265,53 @@ public class AcquirersPageTest extends BaseTest {
             "Verifies that the Acquirers table displays correct data for the selected acquirer and shows relevant "
                     + "action buttons.")
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
-        Map<String, String> expectedColumnValues = Map.of(
-                COLUMNS_HEADERS.get(0), ACQUIRER.getAcquirerName(),
-                COLUMNS_HEADERS.get(1), ACQUIRER.getAcquirerDisplayName(),
-                COLUMNS_HEADERS.get(2), ACQUIRER.getAcquirerCode(),
-                COLUMNS_HEADERS.get(3), ACQUIRER.getAcquirerMid(),
-                COLUMNS_HEADERS.get(4), ACQUIRER.getAcquirerMidMcc(),
-
-                COLUMNS_HEADERS.get(5), String.join(", ", Arrays.stream(ACQUIRER.getCurrencyList())
-                        .map(Enum::name)
-                        .toList()),
-                COLUMNS_HEADERS.get(6), ACQUIRER.getAcquirerConfig(),
-                COLUMNS_HEADERS.get(7), String.join("\n",
-                        "Challenge URL\n" + ACQUIRER.getSystemConfig().challengeUrl(),
-                        "Fingerprint URL\n" + ACQUIRER.getSystemConfig().fingerprintUrl(),
-                        "Resource URL\n" + ACQUIRER.getSystemConfig().resourceUrl(),
-                        "Notification queue\n" + ACQUIRER.getSystemConfig().notificationQueue()),
-                COLUMNS_HEADERS.get(8), ACQUIRER.isActive() ? "Active" : "Inactive"
-        );
-
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeName(ACQUIRER.getAcquirerName())
-                .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER.getAcquirerName());
-
-        Locator row = acquirersPage.getTable().getRows();
+                .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName());
 
         Allure.step("Verify: List of acquirers has only 1 row in the table");
-        assertThat(row).hasCount(1);
+        assertThat(acquirersPage.getTable().getRows()).hasCount(1);
 
-//        assertThat(acquirersPage.getTable().getFirstRowCell("Acquirer name"))
-//                .hasText(ACQUIRER.acquirerName());
-//
-//        assertThat(acquirersPage.getTable().getFirstRowCell("Acquirer display name"))
-//                .hasText(ACQUIRER.acquirerDisplayName());
+        Allure.step("Verify: Entity name");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "Entity name"))
+                .hasText(ACQUIRER.getAcquirerName());
 
-        for (int i = 0; i < COLUMNS_HEADERS.size() - 1; i++) {
-            String header = COLUMNS_HEADERS.get(i);
-            String expected = expectedColumnValues.get(header);
-            String actual = acquirersPage.getTable().getColumnValues(header).get(0);
+        Allure.step("Verify: Display name");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "Display name"))
+                .hasText(ACQUIRER.getAcquirerDisplayName());
 
-            Allure.step(String.format("Verify that displayed '%s' is: %s", header, expected));
-            Assert.assertEquals(
-                    actual,
-                    expected,
-                    String.format("%s in the table does not match the expected value", header)
-            );
-        }
+        Allure.step("Verify: Acquirer code");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "Acquirer code"))
+                .hasText(ACQUIRER.getAcquirerCode());
+
+        Allure.step("Verify: MID");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "MID"))
+                .hasText(ACQUIRER.getAcquirerMid());
+
+        Allure.step("Verify: MCC");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "MCC"))
+                .hasText(ACQUIRER.getAcquirerMidMcc());
+
+        Allure.step("Verify: Currencies");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "Currencies"))
+                .hasText(String.join(", ", Arrays.stream(ACQUIRER.getCurrencyList()).map(Enum::name).toList()));
+
+        Allure.step("Verify: System config");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "System config"))
+                .hasText(ACQUIRER.getSystemConfig().toString());
+
+        Allure.step("Verify: Status");
+        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "Status"))
+                .hasText(ACQUIRER.getStatus());
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(acquirersPage.getTable().getEditAcquirerButton(row)).isVisible();
+        assertThat(acquirersPage.getTable().getEditAcquirerButton(ACQUIRER.getAcquirerName())).isVisible();
 
-        Allure.step("Verify: Activate/Deactivate acquirer button is visible");
-        assertThat(acquirersPage.getTable().getChangeActivityButton(row)).isVisible();
+        Allure.step("Verify: 'Activate acquirer' icon is visible for the acquirer");
+        Locator activityIcon = acquirersPage.getTable().getAcquirerActivityIcon(ACQUIRER.getAcquirerName());
+        assertThat(activityIcon).isVisible();
+        assertThat(activityIcon).hasAttribute("data-icon", "ban");
 
         Allure.step("Verify: Pagination shows only one page labeled '1'");
         assertThat(acquirersPage.getTable().getPaginationItems()).isVisible();
@@ -346,16 +329,14 @@ public class AcquirersPageTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
-        AcquirersTableComponent table = acquirersPage.getTable();
         double pageWidth = getPage().viewportSize().width;
 
-        for (String option : rowsPerPageOptions) {
-            table.forEachPage(option, activePage -> {
-                BoundingBox box = table.getHeadersRow().boundingBox();
+        for (String option : ROWS_PER_PAGE_OPTIONS) {
+            acquirersPage.getTable().forEachPage(option, activePage -> {
+                BoundingBox box = acquirersPage.getTable().getHeaderRow().boundingBox();
 
                 Allure.step(String.format("Verify headers on page '%s' with '%s' pagination", activePage, option));
-                Assert.assertEquals(table.getColumnHeader().allTextContents(), COLUMNS_HEADERS,
-                        String.format("Headers mismatch on page %s with '%s' rows per page", activePage, option));
+                assertThat(acquirersPage.getTable().getColumnHeaders()).hasText(COLUMNS_HEADERS);
 
                 assertTrue(box.x >= 0, String.format(
                         "Headers x-position must be within viewport on page '%s' with '%s'/page", activePage, option));
@@ -407,13 +388,8 @@ public class AcquirersPageTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirer().typeName(CHANGE_STATE_ACQUIRER.getAcquirerName())
-                .getSelectAcquirer().clickAcquirerInDropdown(CHANGE_STATE_ACQUIRER.getAcquirerName());
-
-        Locator row = acquirersPage.getTable().getRows();
-
-        acquirersPage
-                .getTable().clickChangeActivityButton(row)
+                .getSelectAcquirer().selectAcquirer(CHANGE_STATE_ACQUIRER.getAcquirerName())
+                .getTable().clickDeactivateButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
@@ -422,15 +398,13 @@ public class AcquirersPageTest extends BaseTest {
 
         acquirersPage
                 .getAlert().waitUntilSuccessAlertIsGone();
-//                .getAlert().clickCloseButton()
-//                .getAlert().waitUntilAlertIsDetached();
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirersPage.getTable().getCell(CHANGE_STATE_ACQUIRER.getAcquirerName(), "Status"))
                 .hasText("Inactive");
 
         acquirersPage
-                .getTable().clickChangeActivityButton(row)
+                .getTable().clickActivateButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
                 .clickActivateButton();
 
         Allure.step("Verify: Successful message");

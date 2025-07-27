@@ -9,6 +9,10 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import org.testng.Assert;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.entity.CardType;
+import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.Status;
+import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
@@ -25,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Pattern;
 
 @Getter
 public class TransactionsPage extends HeaderPage<TransactionsPage> implements TransactionsTableTrait,
@@ -70,7 +75,8 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     private final Locator amountAppliedClearButton = getByLabelExact("close chip");
     private final Locator amountErrorMessage = locator("[data-slot='error-message']");
     private final Locator cardTypeOptions = locator("ul[data-slot='listbox']").getByRole(AriaRole.OPTION);
-    private final Locator settingsVisibleColumns = getPage().getByRole(AriaRole.CHECKBOX);
+    private final Locator settingsVisibleColumnCheckbox = getByRole(AriaRole.CHECKBOX);
+    private final Locator settingsArrowsUpDown = locator("svg[data-icon='arrows-up-down']");
     private final Locator amountEditButton = locator("svg[data-icon='pencil']");
     private final Locator downloadCsvOption = getByRole(AriaRole.MENUITEM, "CSV");
     private final Locator downloadExcelOption = getByRole(AriaRole.MENUITEM, "EXCEL");
@@ -221,13 +227,9 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
-    public List<String> getVisibleColumnsLabels() {
 
-        return settingsVisibleColumns
-                .all()
-                .stream()
-                .map(l -> l.getAttribute("aria-label"))
-                .toList();
+    public Locator getColumns() {
+        return getByRole(AriaRole.MENUITEM).getByRole(AriaRole.BUTTON);
     }
 
     private void uncheckIfSelected(Locator checkbox) {
@@ -244,7 +246,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Uncheck all 'Visible columns' in Settings")
     public TransactionsPage uncheckAllCheckboxInSettings() {
-        settingsVisibleColumns
+        settingsVisibleColumnCheckbox
                 .all()
                 .forEach(this::uncheckIfSelected);
 
@@ -253,7 +255,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Uncheck Visible column '{name}' in Settings")
     public TransactionsPage uncheckVisibleColumn(String name) {
-        settingsVisibleColumns
+        settingsVisibleColumnCheckbox
                 .all()
                 .stream()
                 .filter(l -> name.equals(l.getAttribute("aria-label")))
@@ -265,7 +267,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Check all 'Visible columns' in Settings")
     public TransactionsPage checkAllCheckboxInSettings() {
-        settingsVisibleColumns
+        settingsVisibleColumnCheckbox
                 .all()
                 .forEach(this::checkIfNotSelected);
 
@@ -274,7 +276,7 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
 
     @Step("Check visible column '{name}' in Settings")
     public TransactionsPage checkVisibleColumn(String name) {
-        settingsVisibleColumns
+        settingsVisibleColumnCheckbox
                 .all()
                 .stream()
                 .filter(l -> name.equals(l.getAttribute("aria-label")))
@@ -395,6 +397,13 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         return this;
     }
 
+    @Step("Select 'PDF' option")
+    public TransactionsPage selectPdf() {
+        downloadPdfOption.click();
+
+        return this;
+    }
+
     @Step("Read and parse CSV from path: {csvFilePath}")
     public List<List<String>> readCsv(Path csvFilePath) throws IOException {
         List<List<String>> rows = new ArrayList<>();
@@ -410,5 +419,144 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
         }
 
         return rows;
+    }
+
+    @Step("Read and parse transactions from PDF text")
+    public List<Transaction> readPdf(String text) {
+        List<Transaction> transactions = new ArrayList<>();
+
+        String[] lines = text.split("\\R");
+        int i = 0;
+
+        Pattern datePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}");
+        Pattern amountLinePattern = Pattern.compile(
+                ".*\\d+\\.\\d{2} (EUR|USD|GBT) (MASTERCARD|VISA) "
+                        + "(INITIATED|PENDING|SUCCESS|FAILED|CANCELLED|EXPIRED|PARTIAL_REFUND|REFUNDED)");
+
+        while (i < lines.length && (lines[i].trim().isEmpty() || lines[i].contains("Creation Date (GMT)"))) {
+            i++;
+        }
+
+        while (i < lines.length) {
+            String creationDate = lines[i].trim();
+            if (!datePattern.matcher(creationDate).matches()) {
+                i++;
+                continue;
+            }
+            i++;
+
+            StringBuilder npgwReferenceBuilder = new StringBuilder();
+            while (i < lines.length) {
+                String line = lines[i].trim();
+                if (line.isEmpty()) {
+                    break;
+                }
+                npgwReferenceBuilder.append(line);
+                i++;
+                if (npgwReferenceBuilder.length() >= 101) {
+                    break;
+                }
+            }
+            String npgwReference = npgwReferenceBuilder.toString().trim();
+
+            StringBuilder businessUnitReferenceBuilder = new StringBuilder();
+            String amountLine = null;
+
+            while (i < lines.length) {
+                String line = lines[i].trim();
+                if (line.isEmpty() || datePattern.matcher(line).matches()) {
+                    break;
+                }
+
+                if (amountLinePattern.matcher(line).matches()) {
+                    String[] parts = line.split("\\s+", 2);
+                    businessUnitReferenceBuilder.append(parts[0]);
+                    amountLine = parts.length > 1 ? parts[1].trim() : "";
+                    i++;
+                    break;
+                } else {
+                    businessUnitReferenceBuilder.append(line);
+                    i++;
+                    if (businessUnitReferenceBuilder.length() >= 50) {
+                        break;
+                    }
+                }
+            }
+
+            String businessUnitReference = businessUnitReferenceBuilder.toString().trim();
+
+            if (amountLine == null && i < lines.length) {
+                amountLine = lines[i].trim();
+                i++;
+            }
+
+            if (amountLine == null || !amountLinePattern.matcher(amountLine).matches()) {
+                continue;
+            }
+
+            String[] tokens = amountLine.split("\\s+");
+            if (tokens.length < 4) {
+                continue;
+            }
+
+            double amount;
+            try {
+                amount = Double.parseDouble(tokens[0]);
+            } catch (NumberFormatException e) {
+                continue;
+            }
+
+            try {
+                Currency currency = Currency.valueOf(tokens[1]);
+                CardType cardType = CardType.valueOf(tokens[2]);
+                Status status = Status.valueOf(tokens[3]);
+
+                Transaction transaction = new Transaction(
+                        creationDate,
+                        npgwReference,
+                        businessUnitReference,
+                        amount,
+                        currency,
+                        cardType,
+                        status
+                );
+
+                transactions.add(transaction);
+            } catch (IllegalArgumentException e) {
+                // intentionally ignored - invalid enum value
+            }
+        }
+
+        return transactions;
+    }
+
+    public TransactionsPage dragArrows(String from, String to) {
+        dragAndDrop(getArrowsUpDown(from), getSettingsVisibleColumnCheckbox(to));
+
+        return this;
+    }
+
+    public TransactionsPage dragArrowsToFirstPosition(String from) {
+        dragAndDrop(getArrowsUpDown(from), settingsVisibleColumnCheckbox.first());
+
+        return this;
+    }
+
+    public TransactionsPage dragArrowsToLastPosition(String from) {
+        dragAndDrop(getArrowsUpDown(from), settingsVisibleColumnCheckbox.last());
+
+        return this;
+    }
+
+    private void dragAndDrop(Locator source, Locator target) {
+        source.dragTo(target);
+    }
+
+    private Locator getArrowsUpDown(String name) {
+        return getByRole(AriaRole.BUTTON, name).locator(settingsArrowsUpDown);
+    }
+
+    private Locator getSettingsVisibleColumnCheckbox(String name) {
+        return getByRole(AriaRole.BUTTON, name).locator(settingsVisibleColumnCheckbox);
     }
 }
