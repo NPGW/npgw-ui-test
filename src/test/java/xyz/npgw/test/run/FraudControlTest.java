@@ -399,7 +399,6 @@ public class FraudControlTest extends BaseTest {
         assertThat(rowFraudTwo).containsText("Active");
     }
 
-    @Ignore("https://github.com/NPGW/npgw-ui-test/issues/913")
     @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
     @TmsLink("967")
     @Epic("System/Fraud Control")
