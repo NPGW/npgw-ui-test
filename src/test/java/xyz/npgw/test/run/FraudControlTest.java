@@ -271,29 +271,34 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that Edit icon Tooltip is presented on Control table");
         assertThat(editIconTooltip).isVisible();
+        assertThat(editIconTooltip).hasText("Edit control");
 
         Locator activateIconTooltip = page.getTableControls()
-                .hoverOverActivateControl(FRAUD_CONTROL_INACTIVE.getControlName());
+                .hoverOverActivateControlIcon(FRAUD_CONTROL_INACTIVE.getControlName());
 
         Allure.step("Verify that Activate icon Tooltip is presented on Control table");
         assertThat(activateIconTooltip).isVisible();
+        assertThat(activateIconTooltip).hasText("Аctivate control");
 
         Locator deactivateIconTooltip = page.getTableControls()
-                .hoverOverDeactivateControl(FRAUD_CONTROL.getControlName());
+                .hoverOverDeactivateControlIcon(FRAUD_CONTROL.getControlName());
 
         Allure.step("Verify that Deactivate icon Tooltip is presented on Control table");
         assertThat(deactivateIconTooltip).isVisible();
+        assertThat(deactivateIconTooltip).hasText("Deactivate control");
 
-        Locator deleteIconTooltip = page.getTableControls().hoverOverDelete(FRAUD_CONTROL.getControlName());
+        Locator deleteIconTooltip = page.getTableControls().hoverOverDeleteIcon(FRAUD_CONTROL.getControlName());
 
         Allure.step("Verify that Delete icon Tooltip is presented on Control table");
         assertThat(deleteIconTooltip).isVisible();
+        assertThat(deleteIconTooltip).hasText("Delete control");
 
         Locator connectControlIconTooltip = page.getTableControls()
-                .hoverOverConnectControl(FRAUD_CONTROL.getControlName());
+                .hoverOverConnectControlIcon(FRAUD_CONTROL.getControlName());
 
         Allure.step("Verify that Connect control icon Tooltip is presented on Control table");
         assertThat(connectControlIconTooltip).isVisible();
+        assertThat(connectControlIconTooltip).hasText("Connect control to business unit");
     }
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
