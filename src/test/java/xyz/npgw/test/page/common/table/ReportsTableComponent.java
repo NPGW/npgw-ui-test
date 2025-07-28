@@ -1,7 +1,6 @@
 package xyz.npgw.test.page.common.table;
 
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.ReportsPage;
 
 public class ReportsTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
 

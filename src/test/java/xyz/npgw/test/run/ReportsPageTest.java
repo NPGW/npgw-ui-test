@@ -13,8 +13,6 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.SuperDashboardPage;
 import xyz.npgw.test.page.SuperReportsPage;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;

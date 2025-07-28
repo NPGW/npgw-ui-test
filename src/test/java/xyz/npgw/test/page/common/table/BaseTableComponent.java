@@ -9,7 +9,6 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.page.base.BaseComponent;
-import xyz.npgw.test.page.base.BaseModel;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,7 +1,6 @@
 package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Page;
-import xyz.npgw.test.page.common.AdminHeaderComponent;
 import xyz.npgw.test.page.common.trait.AdminHeaderTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;

@@ -4,7 +4,6 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
-import xyz.npgw.test.page.system.TeamPage;
 
 public final class ActivateUserDialog<ReturnPageT>
         extends BaseDialog<ReturnPageT, ActivateUserDialog<ReturnPageT>> {

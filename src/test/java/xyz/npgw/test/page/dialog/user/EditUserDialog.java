@@ -3,8 +3,6 @@ package xyz.npgw.test.page.dialog.user;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.BasePage;
-import xyz.npgw.test.page.system.TeamPage;
 
 public final class EditUserDialog<ReturnPageT>
         extends UserDialog<ReturnPageT, EditUserDialog<ReturnPageT>> {

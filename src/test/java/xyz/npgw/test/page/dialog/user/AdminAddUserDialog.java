@@ -3,11 +3,7 @@ package xyz.npgw.test.page.dialog.user;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import io.qameta.allure.Param;
-import io.qameta.allure.Step;
 import xyz.npgw.test.page.system.TeamPage;
-
-import static io.qameta.allure.model.Parameter.Mode.MASKED;
 
 public final class AdminAddUserDialog<ReturnPageT extends TeamPage<ReturnPageT>>
         extends UserDialog<ReturnPageT, AdminAddUserDialog<ReturnPageT>> {

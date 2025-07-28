@@ -17,9 +17,7 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.TransactionSummary;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.AdminDashboardPage;
 import xyz.npgw.test.page.SuperDashboardPage;
-import xyz.npgw.test.page.SuperTransactionsPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -221,7 +219,7 @@ public class DashboardPageTest extends BaseTest {
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
 
-//    TODO - replace with correct expected values, actual ones are wrong
+    //    TODO - replace with correct expected values, actual ones are wrong
     @Test
     @TmsLink("720")
     @Epic("Dashboard")

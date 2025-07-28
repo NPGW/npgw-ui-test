@@ -26,7 +26,6 @@ import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.SuperDashboardPage;
 import xyz.npgw.test.page.SuperTransactionsPage;
-import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
 
 import java.io.IOException;
