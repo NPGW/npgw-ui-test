@@ -7,18 +7,21 @@ import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.BaseDialog;
 
 @Getter
-public class RefundTransactionDialog extends BaseDialog<TransactionsPage, RefundTransactionDialog> {
+public final class RefundTransactionDialog<CurrentPageT>
+        extends BaseDialog<CurrentPageT, RefundTransactionDialog<CurrentPageT>> {
 
     private final Locator amountToRefundInput = locator("[aria-roledescription='Number field']");
     private final Locator increaseAmountToRefundButton = getByLabelExact("Increase Amount to refund");
+    private final CurrentPageT currentPageT;
 
-    public RefundTransactionDialog(Page page) {
+    public RefundTransactionDialog(Page page, CurrentPageT currentPageT) {
         super(page);
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected TransactionsPage getReturnPage() {
-        return new TransactionsPage(getPage());
+    protected CurrentPageT getReturnPage() {
+        return currentPageT;
     }
 
     public Locator getRefundMessage(String expectedText) {

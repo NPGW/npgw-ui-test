@@ -3,17 +3,13 @@ package xyz.npgw.test.page.common;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
-import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
-import xyz.npgw.test.page.base.HeaderPage;
-
-import java.time.LocalTime;
 
 @Getter
-public class SelectStatusComponent<CurrentPageT extends HeaderPage<?>> extends BaseComponent {
+public class SelectStatusComponent<CurrentPageT> extends BaseComponent {
 
     @Getter(AccessLevel.NONE)
     private final CurrentPageT currentPage;

@@ -15,7 +15,7 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.acquirer.AddAcquirerDialog;
 import xyz.npgw.test.page.system.AcquirersPage;
 
@@ -67,8 +67,8 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify 'Add Acquirer' form opens with the correct header and input fields, and closes correctly.")
     public void testAddAcquirerFormOpensWithCorrectHeaderAndFieldsAndClosesCorrectly() {
-        AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddAcquirerDialog addAcquirerDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer();
 
@@ -108,8 +108,8 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verifies that the status radio buttons ('Active' and 'Inactive') toggle correctly.")
     public void testToggleStatusRadioButtonsCorrectly(String status) {
-        Locator statusRadiobutton = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        Locator statusRadiobutton = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickStatusRadiobutton(status)
@@ -125,8 +125,8 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("New Acquirer can be successfully created and its details appear correctly in the acquirers table")
     public void testAddAcquirer() {
-        AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddAcquirerDialog addAcquirerDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer();
 
@@ -204,8 +204,8 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify error appears when creating an Acquirer with a duplicate name.")
     public void testCreateAcquirerWithDuplicateNameShowsError() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
         AddAcquirerDialog acquirerDialog = acquirersPage
@@ -235,8 +235,8 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Add acquirer")
     @Description("Verify default state of the 'Add Acquirer' dialog")
     public void testDefaultStateOfAddAcquirerDialog() {
-        AddAcquirerDialog addAcquirerDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddAcquirerDialog addAcquirerDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer();
 
@@ -284,8 +284,8 @@ public class AddEditAcquirerTest extends BaseTest {
                 "Enter acquirer config"
         );
 
-        List<String> actualPlaceholders = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        List<String> actualPlaceholders = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().typeName(ACQUIRER_FOR_EDIT)
                 .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT)
@@ -302,8 +302,8 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Edit acquirers")
     @Description("Edit Acquirer and Verify Updated Data in the Table")
     public void testEditAcquirerVerifyUpdatedData() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().typeName(ACQUIRER_FOR_EDIT)
                 .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT)

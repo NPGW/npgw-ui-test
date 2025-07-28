@@ -3,9 +3,10 @@ package xyz.npgw.test.page.common.trait;
 import xyz.npgw.test.page.base.BaseTrait;
 import xyz.npgw.test.page.common.table.ReportsTableComponent;
 
-public interface ReportsTableTrait extends BaseTrait {
+@SuppressWarnings("unchecked")
+public interface ReportsTableTrait<CurrentPageT> extends BaseTrait {
 
-    default ReportsTableComponent getTable() {
-        return new ReportsTableComponent(getPage());
+    default ReportsTableComponent<CurrentPageT> getTable() {
+        return new ReportsTableComponent<>(getPage(), (CurrentPageT) this);
     }
 }

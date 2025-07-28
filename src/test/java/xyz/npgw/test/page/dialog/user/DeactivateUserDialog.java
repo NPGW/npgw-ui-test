@@ -6,19 +6,23 @@ import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-public class DeactivateUserDialog extends BaseDialog<TeamPage, DeactivateUserDialog> {
+public final class DeactivateUserDialog<ReturnPageT>
+        extends BaseDialog<ReturnPageT, DeactivateUserDialog<ReturnPageT>> {
 
-    public DeactivateUserDialog(Page page) {
+    private final ReturnPageT returnPageT;
+
+    public DeactivateUserDialog(Page page, ReturnPageT returnPageT) {
         super(page);
+        this.returnPageT = returnPageT;
     }
 
     @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
+    protected ReturnPageT getReturnPage() {
+        return returnPageT;
     }
 
     @Step("Click 'Deactivate' button")
-    public TeamPage clickDeactivateButton() {
+    public ReturnPageT clickDeactivateButton() {
         getByRole(AriaRole.BUTTON, "Deactivate").click();
 
         return getReturnPage();

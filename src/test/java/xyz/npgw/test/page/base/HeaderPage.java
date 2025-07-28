@@ -6,14 +6,8 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.DashboardPage;
 import xyz.npgw.test.page.LoginPage;
-import xyz.npgw.test.page.ReportsPage;
-import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
-import xyz.npgw.test.page.system.TeamPage;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
 @SuppressWarnings("unchecked")
@@ -36,38 +30,38 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         super(page);
     }
 
-    @Step("Click on 'Transactions' menu in Header")
-    public TransactionsPage clickTransactionsLink() {
-        transactionsButton.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
+//    @Step("Click on 'Transactions' menu in Header")
+//    public TransactionsPage clickTransactionsLink() {
+//        transactionsButton.click();
+//        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+//                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+//        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
+//
+//        return new TransactionsPage(getPage());
+//    }
 
-        return new TransactionsPage(getPage());
-    }
+//    @Step("Click on 'Reports' menu in Header")
+//    public ReportsPage clickReportsLink() {
+//        reportsButton.click();
+//        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+//                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+//
+//        return new ReportsPage(getPage());
+//    }
 
-    @Step("Click on 'Reports' menu in Header")
-    public ReportsPage clickReportsLink() {
-        reportsButton.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+//    @Step("Click on 'System administration' menu in Header")
+//    public TeamPage clickSystemAdministrationLink() {
+//        systemAdministrationButton.click();
+//
 
-        return new ReportsPage(getPage());
-    }
-
-    @Step("Click on 'System administration' menu in Header")
-    public TeamPage clickSystemAdministrationLink() {
-        systemAdministrationButton.click();
-
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-        assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
-
-        return new TeamPage(getPage());
-    }
-
+    /// /        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+//        assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
+//        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+//                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+//        getPage().waitForLoadState(LoadState.NETWORKIDLE);
+//
+//        return new TeamPage(getPage());
+//    }
     @Step("Click 'Log out' button")
     public LoginPage clickLogOutButton() {
         logOutButton.click();
@@ -75,12 +69,12 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         return new LoginPage(getPage());
     }
 
-    @Step("Click 'Logo' button")
-    public DashboardPage clickLogoButton() {
-        logo.click();
-
-        return new DashboardPage(getPage());
-    }
+//    @Step("Click 'Logo' button")
+//    public SuperDashboardPage clickLogoButton() {
+//        logo.click();
+//
+//        return new SuperDashboardPage(getPage());
+//    }
 
     @Step("Click 'User menu' button")
     public CurrentPageT clickUserMenuButton() {

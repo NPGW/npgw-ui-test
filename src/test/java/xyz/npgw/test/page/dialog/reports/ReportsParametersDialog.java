@@ -5,15 +5,18 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.ReportsPage;
+import xyz.npgw.test.page.SuperReportsPage;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;
 import xyz.npgw.test.page.dialog.BaseDialog;
 
 import java.util.List;
 
-public class ReportsParametersDialog extends BaseDialog<ReportsPage, ReportsParametersDialog>
-        implements SelectDateRangeTrait<ReportsParametersDialog>, SelectBusinessUnitTrait<ReportsParametersDialog> {
+//TODO - ReportsParametersDialog add type to return correct role page
+public final class ReportsParametersDialog
+        extends BaseDialog<SuperReportsPage, ReportsParametersDialog> implements
+        SelectDateRangeTrait<ReportsParametersDialog>,
+        SelectBusinessUnitTrait<ReportsParametersDialog> {
 
     @Getter
     private final Locator generateButton = getByRole(AriaRole.BUTTON, "Generate");
@@ -27,9 +30,9 @@ public class ReportsParametersDialog extends BaseDialog<ReportsPage, ReportsPara
     }
 
     @Override
-    protected ReportsPage getReturnPage() {
+    protected SuperReportsPage getReturnPage() {
 
-        return new ReportsPage(getPage());
+        return new SuperReportsPage(getPage());
     }
 
     public List<String> getReportColumns() {

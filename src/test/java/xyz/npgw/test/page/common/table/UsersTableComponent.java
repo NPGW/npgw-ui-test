@@ -8,17 +8,19 @@ import xyz.npgw.test.page.dialog.user.DeactivateUserDialog;
 import xyz.npgw.test.page.dialog.user.DeleteUserDialog;
 import xyz.npgw.test.page.dialog.user.EditUserDialog;
 import xyz.npgw.test.page.dialog.user.ResetUserPasswordDialog;
-import xyz.npgw.test.page.system.TeamPage;
 
-public class UsersTableComponent extends BaseTableComponent<TeamPage> {
+public class UsersTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
 
-    public UsersTableComponent(Page page) {
+    private final CurrentPageT currentPageT;
+
+    public UsersTableComponent(Page page, CurrentPageT currentPageT) {
         super(page);
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected TeamPage getCurrentPage() {
-        return new TeamPage(getPage());
+    protected CurrentPageT getCurrentPage() {
+        return currentPageT;
     }
 
     public Locator getUserActivityIcon(String userEmail) {
@@ -26,37 +28,37 @@ public class UsersTableComponent extends BaseTableComponent<TeamPage> {
     }
 
     @Step("Click 'Edit user' button")
-    public EditUserDialog clickEditUserButton(String userEmail) {
+    public EditUserDialog<CurrentPageT> clickEditUserButton(String userEmail) {
         getRow(userEmail).getByTestId("EditUserButton").click();
 
-        return new EditUserDialog(getPage());
+        return new EditUserDialog<>(getPage(), currentPageT);
     }
 
     @Step("Click 'Activate user' button")
-    public ActivateUserDialog clickActivateUserButton(String userEmail) {
+    public ActivateUserDialog<CurrentPageT> clickActivateUserButton(String userEmail) {
         getRow(userEmail).locator("//*[@data-icon='check']/..").click();
 
-        return new ActivateUserDialog(getPage());
+        return new ActivateUserDialog<>(getPage(), currentPageT);
     }
 
     @Step("Click 'Deactivate user' button")
-    public DeactivateUserDialog clickDeactivateUserButton(String userEmail) {
+    public DeactivateUserDialog<CurrentPageT> clickDeactivateUserButton(String userEmail) {
         getRow(userEmail).locator("//*[@data-icon='ban']/..").click();
 
-        return new DeactivateUserDialog(getPage());
+        return new DeactivateUserDialog<>(getPage(), currentPageT);
     }
 
     @Step("Click 'Reset user password' button")
-    public ResetUserPasswordDialog clickResetUserPasswordIcon(String email) {
+    public ResetUserPasswordDialog<CurrentPageT> clickResetUserPasswordIcon(String email) {
         getRow(email).getByTestId("ResetUserPasswordButton").click();
 
-        return new ResetUserPasswordDialog(getPage());
+        return new ResetUserPasswordDialog<>(getPage(), currentPageT);
     }
 
     @Step("Click 'Delete user' button")
-    public DeleteUserDialog clickDeleteUserIcon(String userEmail) {
+    public DeleteUserDialog<CurrentPageT> clickDeleteUserIcon(String userEmail) {
         getRow(userEmail).getByTestId("DeleteUserButton").click();
 
-        return new DeleteUserDialog(getPage());
+        return new DeleteUserDialog<>(getPage(), currentPageT);
     }
 }

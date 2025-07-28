@@ -6,23 +6,22 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
-import xyz.npgw.test.page.system.TeamPage;
 
 @SuppressWarnings("unchecked")
-public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialogT>>
-        extends BaseDialog<TeamPage, CurrentDialogT> {
+public abstract class UserDialog<ReturnPageT, CurrentDialogT> extends BaseDialog<ReturnPageT, CurrentDialogT> {
 
     @Getter
     private final Locator companyNameField = getByTextExact("Company name");
+    private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
 
     public UserDialog(Page page) {
         super(page);
     }
 
-    @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
-    }
+//    @Override
+//    protected TeamPage getReturnPage() {
+//        return new TeamPage(getPage());
+//    }
 
     @Step("Check 'Active' status radiobutton")
     public CurrentDialogT checkActiveRadiobutton() {
@@ -76,4 +75,11 @@ public abstract class UserDialog<CurrentDialogT extends UserDialog<CurrentDialog
 
         return (CurrentDialogT) this;
     }
+//
+//    @Step("Click 'Create' button")
+//    public TeamPage<ReturnPageT> clickCreateButton() {
+//        createButton.click();
+//
+//        return getReturnPage();
+//    }
 }

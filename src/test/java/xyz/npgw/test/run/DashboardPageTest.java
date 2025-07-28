@@ -9,7 +9,6 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -18,7 +17,9 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.TransactionSummary;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.AdminDashboardPage;
+import xyz.npgw.test.page.SuperDashboardPage;
+import xyz.npgw.test.page.SuperTransactionsPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'Dashboard page' after login")
     public void testNavigateToDashboardAfterLogin() {
-        DashboardPage dashboardPage = new DashboardPage(getPage());
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage());
 
         Allure.step("Verify: Dashboard Page URL");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
@@ -64,7 +65,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Data range")
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectDateRange()
                 .setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
@@ -80,7 +81,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Chart Display")
     @Description("All key chart elements are correctly displayed")
     public void testVisibleChartElementsAreDisplayedCorrectly() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
@@ -101,7 +102,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
                 .clickCurrencySelector()
@@ -124,7 +125,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Refresh data")
     @Description("Correct merchant ID is sent to the server")
     public void testCheckMerchantId() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
@@ -139,7 +140,7 @@ public class DashboardPageTest extends BaseTest {
     @Description("Correct transaction summary is displayed on Dashboard page")
     public void testTransactionSummary() {
         Pattern pattern = Pattern.compile("(INITIATED|PENDING|SUCCESS|FAILED)(EUR.*|USD.*|GBP.*)");
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
@@ -229,7 +230,7 @@ public class DashboardPageTest extends BaseTest {
     public void testTransactionSummaryMock() {
         getPage().route("**/summary", this::summaryHandler);
 
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025")
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);

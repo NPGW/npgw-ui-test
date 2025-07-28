@@ -3,14 +3,17 @@ package xyz.npgw.test.page.common.table;
 import com.microsoft.playwright.Page;
 import xyz.npgw.test.page.ReportsPage;
 
-public class ReportsTableComponent extends BaseTableComponent<ReportsPage> {
+public class ReportsTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
 
-    public ReportsTableComponent(Page page) {
+    private final CurrentPageT currentPageT;
+
+    public ReportsTableComponent(Page page, CurrentPageT currentPageT) {
         super(page);
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected ReportsPage getCurrentPage() {
-        return new ReportsPage(getPage());
+    protected CurrentPageT getCurrentPage() {
+        return currentPageT;
     }
 }

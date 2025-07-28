@@ -2,14 +2,17 @@ package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
+import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.BusinessUnitControlsTableTrait;
 import xyz.npgw.test.page.common.trait.ControlsTableTrait;
+import xyz.npgw.test.page.common.trait.MenuTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
 
-public class FraudControlPage extends BaseSystemPage<FraudControlPage> implements
+public final class FraudControlPage extends HeaderPage<FraudControlPage> implements
+        MenuTrait,
         SelectCompanyTrait<FraudControlPage>,
         SelectBusinessUnitTrait<FraudControlPage>,
         ControlsTableTrait,

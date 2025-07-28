@@ -9,7 +9,7 @@ import xyz.npgw.test.page.system.AcquirersPage;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
 import xyz.npgw.test.page.system.FraudControlPage;
 import xyz.npgw.test.page.system.GatewayPage;
-import xyz.npgw.test.page.system.TeamPage;
+import xyz.npgw.test.page.system.SuperTeamPage;
 import xyz.npgw.test.page.system.TransactionManagementPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -28,11 +28,11 @@ public class MenuComponent extends BaseComponent {
     }
 
     @Step("Click 'Team' tab")
-    public TeamPage clickTeamTab() {
+    public SuperTeamPage clickTeamTab() {
         teamTab.click();
         assertThat(teamTab).hasAttribute("data-selected", "true");
 
-        return new TeamPage(getPage());
+        return new SuperTeamPage(getPage());
     }
 
     @Step("Click 'Companies and business units' tab")

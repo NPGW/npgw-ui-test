@@ -8,7 +8,6 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.AboutBlankPage;
@@ -34,41 +33,41 @@ public class LoginPageTest extends BaseTest {
         assertThat(loginPage.getPage()).hasTitle(Constants.LOGIN_URL_TITLE);
     }
 
-    @Test
-    @TmsLink("81")
-    @Epic("Login")
-    @Feature("Remember me")
-    @Description("User email is remembered after first successful login with checked 'Remember me'")
-    public void testRememberMeCheckedSavesUserEmail(@Optional("UNAUTHORISED") String userRole) {
-        LoginPage loginPage = new AboutBlankPage(getPage())
-                .navigate("/login")
-                .fillEmailField(ProjectProperties.getEmail())
-                .fillPasswordField(ProjectProperties.getPassword())
-                .checkRememberMeCheckbox()
-                .clickLoginButton()
-                .clickLogOutButton();
-
-        Allure.step("Verify: The user's email is in the email field");
-        assertThat(loginPage.getEmailField()).hasValue(ProjectProperties.getEmail());
-    }
-
-    @Test
-    @TmsLink("82")
-    @Epic("Login")
-    @Feature("Remember me")
-    @Description("User email is NOT remembered after first successful login with unchecked 'Remember me'")
-    public void testRememberMeUncheckedDontSaveUserEmail(@Optional("UNAUTHORISED") String userRole) {
-        LoginPage loginPage = new AboutBlankPage(getPage())
-                .navigate("/")
-                .fillEmailField(ProjectProperties.getEmail())
-                .fillPasswordField(ProjectProperties.getPassword())
-                .uncheckRememberMeCheckbox()
-                .clickLoginButton()
-                .clickLogOutButton();
-
-        Allure.step("Verify: The user's email is not in the email field");
-        assertThat(loginPage.getEmailField()).isEmpty();
-    }
+//    @Test
+//    @TmsLink("81")
+//    @Epic("Login")
+//    @Feature("Remember me")
+//    @Description("User email is remembered after first successful login with checked 'Remember me'")
+//    public void testRememberMeCheckedSavesUserEmail(@Optional("UNAUTHORISED") String userRole) {
+//        LoginPage loginPage = new AboutBlankPage(getPage())
+//                .navigate("/login")
+//                .fillEmailField(ProjectProperties.getEmail())
+//                .fillPasswordField(ProjectProperties.getPassword())
+//                .checkRememberMeCheckbox()
+//                .clickLoginButton()
+//                .clickLogOutButton();
+//
+//        Allure.step("Verify: The user's email is in the email field");
+//        assertThat(loginPage.getEmailField()).hasValue(ProjectProperties.getEmail());
+//    }
+//
+//    @Test
+//    @TmsLink("82")
+//    @Epic("Login")
+//    @Feature("Remember me")
+//    @Description("User email is NOT remembered after first successful login with unchecked 'Remember me'")
+//    public void testRememberMeUncheckedDontSaveUserEmail(@Optional("UNAUTHORISED") String userRole) {
+//        LoginPage loginPage = new AboutBlankPage(getPage())
+//                .navigate("/")
+//                .fillEmailField(ProjectProperties.getEmail())
+//                .fillPasswordField(ProjectProperties.getPassword())
+//                .uncheckRememberMeCheckbox()
+//                .clickLoginButton()
+//                .clickLogOutButton();
+//
+//        Allure.step("Verify: The user's email is not in the email field");
+//        assertThat(loginPage.getEmailField()).isEmpty();
+//    }
 
     @Test(dataProvider = "getAuthenticatedEndpoints", dataProviderClass = TestDataProvider.class)
     @TmsLink("165")

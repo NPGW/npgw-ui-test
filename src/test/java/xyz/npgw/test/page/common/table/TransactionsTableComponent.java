@@ -4,7 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
@@ -17,35 +16,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class TransactionsTableComponent extends BaseTableComponent<TransactionsPage> {
+public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
 
     private final String refundTransactionButtonSelector;
     private final Locator cardTypeImage;
+    private final CurrentPageT currentPageT;
 
-    public TransactionsTableComponent(Page page) {
+    public TransactionsTableComponent(Page page, CurrentPageT currentPageT) {
         super(page);
 
         this.refundTransactionButtonSelector = "[data-testid='RefundTransactionButton']";
         this.cardTypeImage = locator("img[alt='logo']");
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected TransactionsPage getCurrentPage() {
-        return new TransactionsPage(getPage());
+    protected CurrentPageT getCurrentPage() {
+        return currentPageT;
     }
 
     @Step("Click on the first transaction from the table")
-    public TransactionDetailsDialog clickOnFirstTransaction() {
+    public TransactionDetailsDialog<CurrentPageT> clickOnFirstTransaction() {
         getFirstRowCell("NPGW reference").click();
 
-        return new TransactionDetailsDialog(getPage());
+        return new TransactionDetailsDialog<>(getPage(), currentPageT);
     }
 
     @Step("Click on the transaction NPGW reference")
-    public TransactionDetailsDialog clickOnTransaction(int index) {
+    public TransactionDetailsDialog<CurrentPageT> clickOnTransaction(int index) {
         getRows().getByRole(AriaRole.LINK).nth(index).click();
 
-        return new TransactionDetailsDialog(getPage());
+        return new TransactionDetailsDialog<>(getPage(), currentPageT);
     }
 
     public String getFirstRowReference() {
@@ -127,10 +128,10 @@ public class TransactionsTableComponent extends BaseTableComponent<TransactionsP
     }
 
     @Step("Click 'Refund transaction'")
-    public RefundTransactionDialog clickRefundTransaction(Locator row) {
+    public RefundTransactionDialog<CurrentPageT> clickRefundTransaction(Locator row) {
         row.locator(refundTransactionButtonSelector).click();
 
-        return new RefundTransactionDialog(getPage());
+        return new RefundTransactionDialog<>(getPage(), currentPageT);
     }
 
     public List<String> getRowData(Locator row) {

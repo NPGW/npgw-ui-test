@@ -56,12 +56,12 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         return this;
     }
 
-    @Step("Press 'Login' button")
-    public DashboardPage clickLoginButton() {
-        loginButton.click();
-
-        return new DashboardPage(getPage());
-    }
+//    @Step("Press 'Login' button")
+//    public DashboardPage clickLoginButton() {
+//        loginButton.click();
+//
+//        return new DashboardPage(getPage());
+//    }
 
     @Step("Press 'Login' button to change password")
     public LoginPage clickLoginButtonToChangePassword() {
@@ -99,15 +99,34 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
     }
 
     @Step("Login to the site as '{email}'")
-    public DashboardPage loginAs(String email, String password) {
+    public void loginAs(String email, String password) {
         fillEmailField(email);
         fillPasswordField(password);
-        clickLoginButton();
+//        clickLoginButton();
+        loginButton.click();
 
         getPage().waitForURL("**/dashboard");
 //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+    }
 
-        return new DashboardPage(getPage());
+    public UserDashboardPage loginAsUser(String email, String password) {
+        loginAs(email, password);
+
+        return new UserDashboardPage(getPage());
+    }
+
+    @Step("Login to the site as '{email}'")
+    public AdminDashboardPage loginAsAdmin(String email, String password) {
+        loginAs(email, password);
+
+        return new AdminDashboardPage(getPage());
+    }
+
+    @Step("Login to the site as '{email}'")
+    public SuperDashboardPage loginAsSuper(String email, String password) {
+        loginAs(email, password);
+
+        return new SuperDashboardPage(getPage());
     }
 
     @Step("Login as disabled user with '{email}'")

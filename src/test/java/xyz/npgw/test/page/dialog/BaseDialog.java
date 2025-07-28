@@ -7,15 +7,14 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseModel;
-import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 
 import java.util.List;
 
 @Getter
 @SuppressWarnings("unchecked")
-public abstract class BaseDialog<ReturnPageT extends BasePage, CurrentDialogT extends BaseDialog<?, ?>>
-        extends BaseModel implements AlertTrait<CurrentDialogT> {
+public abstract class BaseDialog<ReturnPageT, CurrentDialogT> extends BaseModel implements
+        AlertTrait<CurrentDialogT> {
 
     private final Locator dialog = getByRole(AriaRole.DIALOG);
     private final Locator dialogHeader = locator("section header");

@@ -4,21 +4,24 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
-import xyz.npgw.test.page.system.TeamPage;
 
-public class DeleteUserDialog extends BaseDialog<TeamPage, DeleteUserDialog> {
+public final class DeleteUserDialog<CurrentPageT>
+        extends BaseDialog<CurrentPageT, DeleteUserDialog<CurrentPageT>> {
 
-    public DeleteUserDialog(Page page) {
+    private final CurrentPageT currentPageT;
+
+    public DeleteUserDialog(Page page, CurrentPageT currentPageT) {
         super(page);
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
+    protected CurrentPageT getReturnPage() {
+        return currentPageT;
     }
 
     @Step("Click 'Delete' button")
-    public TeamPage clickDeleteButton() {
+    public CurrentPageT clickDeleteButton() {
         getByRole(AriaRole.BUTTON, "Delete").click();
 
         return getReturnPage();

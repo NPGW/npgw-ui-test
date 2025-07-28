@@ -5,11 +5,11 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.BaseDialog;
 
 @Getter
-public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, TransactionDetailsDialog> {
+public final class TransactionDetailsDialog<CurrentPageT>
+        extends BaseDialog<CurrentPageT, TransactionDetailsDialog<CurrentPageT>> {
 
     private static final String CARD_DETAILS_SECTION = "Card details";
     private static final String CUSTOMER_DETAILS_SECTION = "Customer details";
@@ -50,21 +50,23 @@ public class TransactionDetailsDialog extends BaseDialog<TransactionsPage, Trans
     private final Locator updatedOnValue = updatedOn.locator("+div");
     private final Locator npgwReferenceValue = npgwReference.locator("+div");
     private final Locator businessUnitReferenceValue = businessUnitReference.locator("+div");
+    private final CurrentPageT currentPageT;
 
-    public TransactionDetailsDialog(Page page) {
+    public TransactionDetailsDialog(Page page, CurrentPageT currentPageT) {
         super(page);
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected TransactionsPage getReturnPage() {
-        return new TransactionsPage(getPage());
+    protected CurrentPageT getReturnPage() {
+        return currentPageT;
     }
 
     @Step("Click on chevron in Card details section")
-    public TransactionDetailsDialog clickSection(String sectionName) {
+    public TransactionDetailsDialog<CurrentPageT> clickSection(String sectionName) {
         getByRole(AriaRole.BUTTON, sectionName).click();
 
-        return new TransactionDetailsDialog(getPage());
+        return this;
     }
 
     public Locator getCardTypeValue() {

@@ -7,21 +7,13 @@ import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.HeaderPage;
-import xyz.npgw.test.page.common.trait.AlertTrait;
-import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
-import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
-import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
-public final class DashboardPage extends HeaderPage<DashboardPage> implements
-        SelectDateRangeTrait<DashboardPage>,
-        AlertTrait<DashboardPage>,
-        SelectBusinessUnitTrait<DashboardPage>,
-        SelectCompanyTrait<DashboardPage> {
+public abstract class DashboardPage<ReturnPageT extends DashboardPage<ReturnPageT>> extends HeaderPage<ReturnPageT> {
 
     private final Locator htmlTag = locator("html");
     @Getter(AccessLevel.NONE)
@@ -53,46 +45,50 @@ public final class DashboardPage extends HeaderPage<DashboardPage> implements
         assertThat(getDashboardButton().locator("..")).hasAttribute("data-active", "true");
     }
 
+    protected abstract ReturnPageT getReturnPage();
+
     @Step("Click 'Refresh data' button")
-    public DashboardPage clickRefreshDataButton() {
+    public ReturnPageT clickRefreshDataButton() {
         refreshDataButton.click();
 
-        return this;
+        return getReturnPage();
     }
 
     @Step("Click 'Reset filter' button")
-    public DashboardPage clickResetFilterButton() {
+    public ReturnPageT clickResetFilterButton() {
         resetFilterButton.click();
 
-        return this;
+        return getReturnPage();
     }
 
     @Step("Click Currency Selector")
-    public DashboardPage clickCurrencySelector() {
+    public ReturnPageT clickCurrencySelector() {
         currencySelector.click();
 
-        return this;
+        return getReturnPage();
     }
 
+    //TODO - refactor these two to one step currency selection
+
     @Step("Select currency from dropdown menu")
-    public DashboardPage selectCurrency(String value) {
+    public ReturnPageT selectCurrency(String value) {
         getByRole(AriaRole.OPTION, value).click();
 
-        return this;
+        return getReturnPage();
     }
 
     @Step("Click 'Amount' button")
-    public DashboardPage clickAmountButton() {
+    public ReturnPageT clickAmountButton() {
         amountButton.click();
 
-        return this;
+        return getReturnPage();
     }
 
     @Step("Click 'Count' button")
-    public DashboardPage clickCountButton() {
+    public ReturnPageT clickCountButton() {
         countButton.click();
 
-        return this;
+        return getReturnPage();
     }
 
     public String getRequestData() {

@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 @Log4j2
 @Getter
-public abstract class BaseTableComponent<CurrentPageT extends BaseModel> extends BaseComponent {
+public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
 
     private final Locator root;
 

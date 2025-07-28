@@ -6,28 +6,32 @@ import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
-public class ResetUserPasswordDialog extends BaseDialog<TeamPage, ResetUserPasswordDialog> {
+public final class ResetUserPasswordDialog<CurrentPageT>
+        extends BaseDialog<CurrentPageT, ResetUserPasswordDialog<CurrentPageT>> {
 
-    public ResetUserPasswordDialog(Page page) {
+    private final CurrentPageT currentPageT;
+
+    public ResetUserPasswordDialog(Page page, CurrentPageT currentPageT) {
         super(page);
+        this.currentPageT = currentPageT;
     }
 
     @Override
-    protected TeamPage getReturnPage() {
-        return new TeamPage(getPage());
+    protected CurrentPageT getReturnPage() {
+        return currentPageT;
     }
 
     @Step("Enter new password in the 'New password' field")
-    public ResetUserPasswordDialog fillPasswordField(String newPassword) {
+    public ResetUserPasswordDialog<CurrentPageT> fillPasswordField(String newPassword) {
         getByPlaceholder("Enter new password").fill(newPassword);
 
         return this;
     }
 
     @Step("Click 'Reset' button")
-    public TeamPage clickResetButton() {
+    public CurrentPageT clickResetButton() {
         getByRole(AriaRole.BUTTON, "Reset").click();
 
-        return new TeamPage(getPage());
+        return getReturnPage();
     }
 }
