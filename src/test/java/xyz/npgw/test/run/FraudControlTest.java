@@ -770,7 +770,7 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
     }
 
-    @Test
+    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testEditFraudControl"})
     @TmsLink("1013")
     @Epic("System/Fraud control")
     @Feature("Control business unit controls table entries sorting")
@@ -784,8 +784,6 @@ public class FraudControlTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
                 .clickConnectButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlDisplayName())
-                .clickConnectButton()
                 .getTableControls().clickConnectControlButton(
                         FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
                 .clickConnectButton()
@@ -798,7 +796,8 @@ public class FraudControlTest extends BaseTest {
         sortedPriorityListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Priority in Desc order ");
-        Assert.assertEquals(actualPriorityList, sortedPriorityListDesc);
+        Assert.assertEquals(actualPriorityList, sortedPriorityListDesc,
+                "Priority column is not sorted in descending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Priority");
@@ -809,7 +808,8 @@ public class FraudControlTest extends BaseTest {
         Collections.sort(sortedPriorityListAsc);
 
         Allure.step("Verify that entries are sorted by Priority in Asc order ");
-        Assert.assertEquals(actualPriorityList, sortedPriorityListAsc);
+        Assert.assertEquals(actualPriorityList, sortedPriorityListAsc,
+                "Priority column is not sorted in ascending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Display name");
@@ -819,7 +819,8 @@ public class FraudControlTest extends BaseTest {
         Collections.sort(sortedDisplayNameListAsc);
 
         Allure.step("Verify that entries are sorted by Display name in Asc order ");
-        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc);
+        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc,
+                "Display name column is not sorted in ascending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Display name");
@@ -829,7 +830,8 @@ public class FraudControlTest extends BaseTest {
         sortedDisplayNameListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Display name in Desc order ");
-        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc);
+        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc,
+                "Display name column is not sorted in descending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Code");
@@ -839,7 +841,8 @@ public class FraudControlTest extends BaseTest {
         Collections.sort(sortedCodeListAsc);
 
         Allure.step("Verify that entries are sorted by Code in Asc order ");
-        Assert.assertEquals(actualCodeList, sortedCodeListAsc);
+        Assert.assertEquals(actualCodeList, sortedCodeListAsc,
+                "Code column is not sorted in ascending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Code");
@@ -849,7 +852,8 @@ public class FraudControlTest extends BaseTest {
         sortedCodeListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Code in Desc order ");
-        Assert.assertEquals(actualCodeList, sortedCodeListDesc);
+        Assert.assertEquals(actualCodeList, sortedCodeListDesc,
+                "Code column is not sorted in descending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Config");
@@ -858,7 +862,8 @@ public class FraudControlTest extends BaseTest {
         Collections.sort(sortedConfigListAsc);
 
         Allure.step("Verify that entries are sorted by Config in Asc order ");
-        Assert.assertEquals(actualConfigList, sortedConfigListAsc);
+        Assert.assertEquals(actualConfigList, sortedConfigListAsc,
+                "Config column is not sorted in ascending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Config");
@@ -868,7 +873,8 @@ public class FraudControlTest extends BaseTest {
         sortedConfigListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Config in Desc order ");
-        Assert.assertEquals(actualConfigList, sortedConfigListDesc);
+        Assert.assertEquals(actualConfigList, sortedConfigListDesc,
+                "Config column is not sorted in descending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Status");
@@ -877,7 +883,8 @@ public class FraudControlTest extends BaseTest {
         sortedStatusListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Status in Desc order ");
-        Assert.assertEquals(actualStatusList, sortedStatusListDesc);
+        Assert.assertEquals(actualStatusList, sortedStatusListDesc,
+                "Status column is not sorted in descending order");
 
         fraudControlPage
                 .getTableBusinessUnitControls().clickColumnHeader("Status");
@@ -887,7 +894,8 @@ public class FraudControlTest extends BaseTest {
         Collections.sort(sortedStatusListAsc);
 
         Allure.step("Verify that entries are sorted by Status in Asc order ");
-        Assert.assertEquals(actualStatusList, sortedStatusListAsc);
+        Assert.assertEquals(actualStatusList, sortedStatusListAsc,
+                "Status column is not sorted in ascending order");
     }
 
     @Test
@@ -919,8 +927,8 @@ public class FraudControlTest extends BaseTest {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_EMPTY_FIELDS
-                .getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(),
+                FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName());
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
