@@ -416,7 +416,6 @@ public class TransactionsPage extends HeaderPage<TransactionsPage> implements Tr
     public TransactionsPage selectExcel() {
         downloadExcelOption.click();
 
-
         return this;
     }
 
