@@ -774,7 +774,8 @@ public class FraudControlTest extends BaseTest {
     @TmsLink("1013")
     @Epic("System/Fraud control")
     @Feature("Control business unit controls table entries sorting")
-    @Description("Verify that entries can be sorted by Priority, Name, DisplayName, Code, Config, Status  in Asc and Desc order")
+    @Description("Verify that entries can be sorted by Priority, DisplayName, Code, Config, Status" +
+            "in Asc and Desc order")
     public void testBusinessUnitControlTableEntriesSorting() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLink()
