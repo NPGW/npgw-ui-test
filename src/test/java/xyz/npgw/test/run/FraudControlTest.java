@@ -61,10 +61,10 @@ public class FraudControlTest extends BaseTest {
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_EMPTY_FIELDS = FraudControl.builder()
             .controlName("Control with empty display name")
-            .controlCode(" ")
-            .controlDisplayName(" ")
+            .controlCode("")
+            .controlDisplayName("")
             .isActive(true)
-            .controlConfig(" ")
+            .controlConfig("")
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
@@ -786,8 +786,8 @@ public class FraudControlTest extends BaseTest {
                 .clickConnectButton()
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlDisplayName())
                 .clickConnectButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_EMPTY_FIELDS
-                        .getControlName())
+                .getTableControls().clickConnectControlButton(
+                        FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
                 .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getTableBusinessUnitControls().clickColumnHeader("Priority");
