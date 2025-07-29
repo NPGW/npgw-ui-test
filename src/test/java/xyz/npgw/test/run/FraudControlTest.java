@@ -518,7 +518,7 @@ public class FraudControlTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority",
-            "testChangeBusinessUnitFraudControlActivity"})
+            "testChangeBusinessUnitFraudControlActivity", "testChangeBusinessControlPriorityRestrictions"})
     @TmsLink("950")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -912,6 +912,40 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify: the selected business unit field is empty after reset");
         assertThat(fraudControlPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
+    }
+
+    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @TmsLink("1018")
+    @Epic("System/Fraud Control")
+    @Feature("Business Unit Control table")
+    @Description("Move the first Business unit control up" + "Move the last Business unit control down")
+    public void testChangeBusinessControlPriorityRestrictions() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableBusinessUnitControls().clickMoveBusinessUnitControlUpButton("0");
+
+        Allure.step("Check that the warning message is presented due to not moving up");
+        assertThat(page.getAlert().getMessage()).containsText("Error changing business unit control priority");
+
+        Allure.step("Check that no changes has been performed at this stage");
+        assertThat(page.getTableBusinessUnitControls().getCell(0, "Display name"))
+                .hasText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+        assertThat(page.getTableBusinessUnitControls().getCell(1, "Display name"))
+                .hasText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+
+        page.getTableBusinessUnitControls().clickMoveBusinessUnitControlDownButton("1");
+
+        Allure.step("Check that the warning message is presented due to not moving down");
+        assertThat(page.getAlert().getMessage()).containsText("Error changing business unit control priority");
+
+        Allure.step("Check that no changes has been performed at the end");
+        assertThat(page.getTableBusinessUnitControls().getCell(0, "Display name"))
+                .hasText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
+        assertThat(page.getTableBusinessUnitControls().getCell(1, "Display name"))
+                .hasText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
     }
 
     @AfterClass
