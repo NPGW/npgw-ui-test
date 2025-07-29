@@ -1,6 +1,7 @@
 package xyz.npgw.test.page;
 
 import com.microsoft.playwright.Page;
+import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;
@@ -14,7 +15,8 @@ public final class SuperTransactionsPage extends TransactionsPage<SuperTransacti
         SelectBusinessUnitTrait<SuperTransactionsPage>,
         SelectDateRangeTrait<SuperTransactionsPage>,
         SelectStatusTrait<SuperTransactionsPage>,
-        TransactionsTableTrait<SuperTransactionsPage> {
+        TransactionsTableTrait<SuperTransactionsPage>,
+        AlertTrait<SuperTransactionsPage> {
 
     public SuperTransactionsPage(Page page) {
         super(page);

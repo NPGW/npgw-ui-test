@@ -150,4 +150,15 @@ public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent
     public Locator getRefundButton(Locator row) {
         return row.locator(refundTransactionButtonSelector);
     }
+
+    public List<List<String>> getAllTableRows() {
+        return collectAllPages(() -> {
+            List<List<String>> rowsData = new ArrayList<>();
+            List<Locator> rows = getRows().all();
+            for (Locator row : rows) {
+                rowsData.add(getRowData(row));
+            }
+            return rowsData;
+        });
+    }
 }
