@@ -351,7 +351,6 @@ public class FraudControlTest extends BaseTest {
         assertThat(row).containsText("Inactive");
     }
 
-    @Ignore("https://github.com/NPGW/npgw-ui-test/issues/913")
     @Test(dependsOnMethods = "testAddInactiveFraudControl")
     @TmsLink("955")
     @Epic("System/Fraud Control")
@@ -410,7 +409,6 @@ public class FraudControlTest extends BaseTest {
         assertThat(rowFraudTwo).containsText("Active");
     }
 
-    @Ignore("https://github.com/NPGW/npgw-ui-test/issues/913")
     @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
     @TmsLink("967")
     @Epic("System/Fraud Control")
