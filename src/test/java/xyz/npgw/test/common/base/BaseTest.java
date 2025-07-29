@@ -171,6 +171,19 @@ public abstract class BaseTest {
         });
 
         initApiRequestContext();
+
+        if (method.getName().endsWith("AsSpecialUser")) {
+            new AboutBlankPage(page)
+                    .navigate("/")
+                    .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
+            return;
+        }
+        if (method.getName().endsWith("AsSpecialAdmin")) {
+            new AboutBlankPage(page)
+                    .navigate("/")
+                    .loginAsUser("testAdmin@email.com", ProjectProperties.getPassword());
+            return;
+        }
         openSite(args);
     }
 
