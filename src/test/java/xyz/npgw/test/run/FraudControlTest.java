@@ -61,10 +61,6 @@ public class FraudControlTest extends BaseTest {
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_EMPTY_FIELDS = FraudControl.builder()
             .controlName("Control with empty display name")
-            .controlCode("")
-            .controlDisplayName("")
-            .isActive(true)
-            .controlConfig("")
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
