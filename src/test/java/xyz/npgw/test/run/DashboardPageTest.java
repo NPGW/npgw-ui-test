@@ -219,7 +219,6 @@ public class DashboardPageTest extends BaseTest {
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
 
-    //    TODO - replace with correct expected values, actual ones are wrong
     @Test
     @TmsLink("720")
     @Epic("Dashboard")
