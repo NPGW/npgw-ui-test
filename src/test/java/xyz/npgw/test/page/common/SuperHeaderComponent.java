@@ -24,6 +24,14 @@ public class SuperHeaderComponent<CurrentPageT> extends HeaderComponent<CurrentP
         return new SuperDashboardPage(getPage());
     }
 
+    @Step("Click on 'Dashboard' menu in Header")
+    public SuperDashboardPage clickDashboardLink() {
+        getDashboardButton().click();
+        assertThat(getDashboardButton().locator("..")).hasAttribute("data-active", "true");
+
+        return new SuperDashboardPage(getPage());
+    }
+
     @Step("Click on 'Transactions' menu in Header")
     public SuperTransactionsPage clickTransactionsLink() {
         getTransactionsButton().click();

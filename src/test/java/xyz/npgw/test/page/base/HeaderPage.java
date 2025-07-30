@@ -14,6 +14,7 @@ import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {
 
     //TODO - refactor this to -> HeaderComponent getHeader() across project and remove this page
+    private final Locator dashboardButton = getByRole(AriaRole.LINK, "Dashboard");
     private final Locator logoImg = getPage().getByAltText("logo");
     private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(logoImg));
     private final Locator logOutButton = getByRole(AriaRole.BUTTON, "Log out");

@@ -22,6 +22,14 @@ public class UserHeaderComponent<CurrentPageT> extends HeaderComponent<CurrentPa
         return new UserDashboardPage(getPage());
     }
 
+    @Step("Click on 'Dashboard' menu in Header")
+    public UserDashboardPage clickDashboardLink() {
+        getDashboardButton().click();
+        assertThat(getDashboardButton().locator("..")).hasAttribute("data-active", "true");
+
+        return new UserDashboardPage(getPage());
+    }
+
     @Step("Click on 'Transactions' menu in Header")
     public UserTransactionsPage clickTransactionsLink() {
         getTransactionsButton().click();

@@ -24,6 +24,14 @@ public class AdminHeaderComponent<CurrentPageT> extends HeaderComponent<CurrentP
         return new AdminDashboardPage(getPage());
     }
 
+    @Step("Click on 'Dashboard' menu in Header")
+    public AdminDashboardPage clickDashboardLink() {
+        getDashboardButton().click();
+        assertThat(getDashboardButton().locator("..")).hasAttribute("data-active", "true");
+
+        return new AdminDashboardPage(getPage());
+    }
+
     @Step("Click on 'Transactions' menu in Header")
     public AdminTransactionsPage clickTransactionsLink() {
         getTransactionsButton().click();
