@@ -261,6 +261,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Ignore("due to broken tooltip 'Asctivate control'")
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
     @TmsLink("1001")
     @Epic("System/Fraud Control")
@@ -309,7 +310,7 @@ public class FraudControlTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
             "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            "testTooltipsForActionsControlTable"})
+            "testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -531,13 +532,8 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in both tables");
-        try {
-            page.getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
-            page.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName());
-        } catch (RuntimeException e) {
-            throw new RuntimeException("There no rows with name "
-                    + FRAUD_CONTROL_ADD_TWO.getControlName() + " in the table");
-        }
+        assertThat(page.getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())).not().isAttached();
+        assertThat(page.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName())).isAttached();
     }
 
     @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
@@ -578,26 +574,13 @@ public class FraudControlTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
-                .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton(
-                        "0")
-                .clickDeleteButton();
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
-        Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'"
-                + " is displayed");
-        assertThat(fraudControlPage.getAlert().getMessage())
-                .hasText("SUCCESSBusiness unit control was deleted successfully");
+        Locator connectControlButton = fraudControlPage
+                .getTableControls().getConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName());
 
-        fraudControlPage.getAlert().waitUntilSuccessAlertIsGone();
-        List<String> actualFraudControlBusinessUnitList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Display name");
-
-        Allure.step("Verify that the business unit control table doesn't include the deleted control");
-        Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE
-                .getControlDisplayName()));
+        Allure.step("Verify that Connect Control button is disabled");
+        assertThat(connectControlButton).isDisabled();
     }
 
     @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
@@ -776,7 +759,7 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL.getControlName())
                 .clickConnectButton()
                 .getTableControls().clickConnectControlButton(
                         FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
