@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
 public class FraudControlTest extends BaseTest {
 
@@ -57,6 +59,9 @@ public class FraudControlTest extends BaseTest {
             .isActive(false)
             .controlConfig("firstQueue")
             .build();
+    private static final FraudControl FRAUD_CONTROL_ADD_EMPTY_FIELDS = FraudControl.builder()
+            .controlName("Control with empty display name")
+            .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
@@ -70,6 +75,7 @@ public class FraudControlTest extends BaseTest {
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_EMPTY_FIELDS);
     }
 
     @Test
@@ -404,6 +410,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(rowFraudTwo).containsText("Active");
     }
 
+    @Ignore("https://github.com/NPGW/npgw-ui-test/issues/913")
     @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
     @TmsLink("967")
     @Epic("System/Fraud Control")
@@ -415,28 +422,76 @@ public class FraudControlTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+
+        Locator controlStatusCell = page.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
+        Locator businessControlRow = page.getTableBusinessUnitControls().getRowByDataKey("0");
+        Locator businessControlStatusCell = page.getTableBusinessUnitControls().getCell(businessControlRow, "Status");
+
+        Allure.step("Verify Fraud Control's current status in Business Unit Control Table");
+        assertThat(businessControlStatusCell).hasText("Active");
+
+        Allure.step("Verify Fraud Control's current status in Control Table");
+        assertThat(controlStatusCell).hasText("Active");
+
+        page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickDeactivateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
-        Locator controlCell = page.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
+        Allure.step("Verify that Fraud Control status has been changed to 'Inactive' in Control Table");
+        assertThat(controlStatusCell).hasText("Inactive");
+
+        Allure.step("Verify that Fraud Control status hasn't been changed in Business Unit Control Table");
+        assertThat(businessControlStatusCell).hasText("Active");
+
+        page.getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickActivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
+
+        Allure.step("Verify that Fraud Control status is Active in Control table again");
+        assertThat(controlStatusCell).hasText("Active");
+        assertThat(businessControlStatusCell).hasText("Active");
+    }
+
+    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @TmsLink("1009")
+    @Epic("System/Fraud Control")
+    @Feature("Business Unit Control table")
+    @Description("Activate Business unit control" + "Deactivate Business unit control")
+    public void testChangeBusinessUnitFraudControlActivity() {
+        FraudControlPage page = new DashboardPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+
+        Locator controlStatusCell = page.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
         Locator businessControlRow = page.getTableBusinessUnitControls().getRowByDataKey("0");
-        Locator businessControlCell = page.getTableBusinessUnitControls().getCell(businessControlRow, "Status");
+        Locator businessControlStatusCell = page.getTableBusinessUnitControls().getCell(businessControlRow, "Status");
+
+        Allure.step("Verify Fraud Control's current status in Business Unit Control Table");
+        assertThat(businessControlStatusCell).hasText("Active");
+
+        Allure.step("Verify Fraud Control's current status in Control Table");
+        assertThat(controlStatusCell).hasText("Active");
+
+        page.getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .clickDeactivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify that Fraud Control state hasn't been changed in Control Table");
-        assertThat(controlCell).hasText("Active");
+        assertThat(controlStatusCell).hasText("Active");
 
         Allure.step("Verify that Fraud Control state is Inactive now in Business Unit Control Table");
-        assertThat(businessControlCell).hasText("Inactive");
+        assertThat(businessControlStatusCell).hasText("Inactive");
 
         page.getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("0")
                 .clickActivateButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify that Fraud Control state is Active in Business Unit Control Table again");
-        assertThat(controlCell).hasText("Active");
-        assertThat(businessControlCell).hasText("Active");
+        assertThat(controlStatusCell).hasText("Active");
+        assertThat(businessControlStatusCell).hasText("Active");
     }
 
     @Test
@@ -462,7 +517,8 @@ public class FraudControlTest extends BaseTest {
                 .hasText("ERROREntity with name {" + FRAUD_CONTROL_NAME + "} already exists.");
     }
 
-    @Test(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority"})
+    @Test(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority",
+            "testChangeBusinessUnitFraudControlActivity"})
     @TmsLink("950")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -546,7 +602,8 @@ public class FraudControlTest extends BaseTest {
                 .getControlDisplayName()));
     }
 
-    @Test(dependsOnMethods = "testDeleteActiveFraudControlAddedToBusinessUnit")
+    @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
+            "testChangeBusinessUnitFraudControlActivity"})
     @TmsLink("986")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -582,7 +639,8 @@ public class FraudControlTest extends BaseTest {
         assertThat(row).not().containsText("Active");
     }
 
-    @Test(dependsOnMethods = "testDeleteActiveFraudControlAddedToBusinessUnit")
+    @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
+            "testChangeBusinessUnitFraudControlActivity"})
     @TmsLink("993")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -610,54 +668,67 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickColumnHeader("Name");
 
-        List<String> actualNameList = fraudControlPage.getTableControls().getColumnValues("Name");
+        List<String> actualNameList = fraudControlPage
+                .getTableControls().getColumnValues("Name");
         List<String> sortedNameListDesc = new ArrayList<>(actualNameList);
         sortedNameListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Name in Desc order ");
         Assert.assertEquals(actualNameList, sortedNameListDesc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Name");
-        actualNameList = fraudControlPage.getTableControls().getColumnValues("Name");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Name");
+        actualNameList = fraudControlPage
+                .getTableControls().getColumnValues("Name");
+
         List<String> sortedNameListAsc = new ArrayList<>(actualNameList);
         Collections.sort(sortedNameListAsc);
 
         Allure.step("Verify that entries are sorted by Name in Asc order ");
         Assert.assertEquals(actualNameList, sortedNameListAsc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Display name");
-        List<String> actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Display name");
+        List<String> actualDisplayNameList = fraudControlPage
+                .getTableControls().getColumnValues("Display name");
         List<String> sortedDisplayNameListAsc = new ArrayList<>(actualDisplayNameList);
         Collections.sort(sortedDisplayNameListAsc);
 
         Allure.step("Verify that entries are sorted by Display name in Asc order ");
         Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Display name");
-        actualDisplayNameList = fraudControlPage.getTableControls().getColumnValues("Display name");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Display name");
+        actualDisplayNameList = fraudControlPage
+                .getTableControls().getColumnValues("Display name");
         List<String> sortedDisplayNameListDesc = new ArrayList<>(actualDisplayNameList);
         sortedDisplayNameListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Display name in Desc order ");
         Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Code");
-        List<String> actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Code");
+        List<String> actualCodeList = fraudControlPage
+                .getTableControls().getColumnValues("Code");
         List<String> sortedCodeListAsc = new ArrayList<>(actualCodeList);
         Collections.sort(sortedCodeListAsc);
 
         Allure.step("Verify that entries are sorted by Code in Asc order ");
         Assert.assertEquals(actualCodeList, sortedCodeListAsc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Code");
-        actualCodeList = fraudControlPage.getTableControls().getColumnValues("Code");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Code");
+        actualCodeList = fraudControlPage
+                .getTableControls().getColumnValues("Code");
         List<String> sortedCodeListDesc = new ArrayList<>(actualCodeList);
         sortedCodeListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Code in Desc order ");
         Assert.assertEquals(actualCodeList, sortedCodeListDesc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Config");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Config");
         List<String> actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
         List<String> sortedConfigListAsc = new ArrayList<>(actualConfigList);
         Collections.sort(sortedConfigListAsc);
@@ -665,15 +736,18 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that entries are sorted by Config in Asc order ");
         Assert.assertEquals(actualConfigList, sortedConfigListAsc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Config");
-        actualConfigList = fraudControlPage.getTableControls().getColumnValues("Config");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Config");
+        actualConfigList = fraudControlPage
+                .getTableControls().getColumnValues("Config");
         List<String> sortedConfigListDesc = new ArrayList<>(actualConfigList);
         sortedConfigListDesc.sort(Collections.reverseOrder());
 
         Allure.step("Verify that entries are sorted by Config in Desc order ");
         Assert.assertEquals(actualConfigList, sortedConfigListDesc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Status");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Status");
         List<String> actualStatusList = fraudControlPage.getTableControls().getColumnValues("Status");
         List<String> sortedStatusListDesc = new ArrayList<>(actualStatusList);
         sortedStatusListDesc.sort(Collections.reverseOrder());
@@ -681,13 +755,163 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that entries are sorted by Status in Desc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListDesc);
 
-        fraudControlPage.getTableControls().clickColumnHeader("Status");
-        actualStatusList = fraudControlPage.getTableControls().getColumnValues("Status");
+        fraudControlPage
+                .getTableControls().clickColumnHeader("Status");
+        actualStatusList = fraudControlPage
+                .getTableControls().getColumnValues("Status");
         List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
         Collections.sort(sortedStatusListAsc);
 
         Allure.step("Verify that entries are sorted by Status in Asc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
+    }
+
+    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testEditFraudControl"})
+    @TmsLink("1013")
+    @Epic("System/Fraud control")
+    @Feature("Control business unit controls table entries sorting")
+    @Description("Verify that entries can be sorted by Priority, DisplayName, Code, Config, Status"
+            + "in Asc and Desc order")
+    public void testBusinessUnitControlTableEntriesSorting() {
+        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName())
+                .clickConnectButton()
+                .getTableControls().clickConnectControlButton(
+                        FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
+                .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTableBusinessUnitControls().clickColumnHeader("Priority");
+
+        List<String> actualPriorityList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Priority");
+        List<String> sortedPriorityListDesc = new ArrayList<>(actualPriorityList);
+        sortedPriorityListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Priority in Desc order ");
+        Assert.assertEquals(actualPriorityList, sortedPriorityListDesc,
+                "Priority column is not sorted in descending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Priority");
+        actualPriorityList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Priority");
+
+        List<String> sortedPriorityListAsc = new ArrayList<>(actualPriorityList);
+        Collections.sort(sortedPriorityListAsc);
+
+        Allure.step("Verify that entries are sorted by Priority in Asc order ");
+        Assert.assertEquals(actualPriorityList, sortedPriorityListAsc,
+                "Priority column is not sorted in ascending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Display name");
+        List<String> actualDisplayNameList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Display name");
+        List<String> sortedDisplayNameListAsc = new ArrayList<>(actualDisplayNameList);
+        Collections.sort(sortedDisplayNameListAsc);
+
+        Allure.step("Verify that entries are sorted by Display name in Asc order ");
+        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc,
+                "Display name column is not sorted in ascending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Display name");
+        actualDisplayNameList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Display name");
+        List<String> sortedDisplayNameListDesc = new ArrayList<>(actualDisplayNameList);
+        sortedDisplayNameListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Display name in Desc order ");
+        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc,
+                "Display name column is not sorted in descending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Code");
+        List<String> actualCodeList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Code");
+        List<String> sortedCodeListAsc = new ArrayList<>(actualCodeList);
+        Collections.sort(sortedCodeListAsc);
+
+        Allure.step("Verify that entries are sorted by Code in Asc order ");
+        Assert.assertEquals(actualCodeList, sortedCodeListAsc,
+                "Code column is not sorted in ascending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Code");
+        actualCodeList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Code");
+        List<String> sortedCodeListDesc = new ArrayList<>(actualCodeList);
+        sortedCodeListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Code in Desc order ");
+        Assert.assertEquals(actualCodeList, sortedCodeListDesc,
+                "Code column is not sorted in descending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Config");
+        List<String> actualConfigList = fraudControlPage.getTableBusinessUnitControls().getColumnValues("Config");
+        List<String> sortedConfigListAsc = new ArrayList<>(actualConfigList);
+        Collections.sort(sortedConfigListAsc);
+
+        Allure.step("Verify that entries are sorted by Config in Asc order ");
+        Assert.assertEquals(actualConfigList, sortedConfigListAsc,
+                "Config column is not sorted in ascending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Config");
+        actualConfigList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Config");
+        List<String> sortedConfigListDesc = new ArrayList<>(actualConfigList);
+        sortedConfigListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Config in Desc order ");
+        Assert.assertEquals(actualConfigList, sortedConfigListDesc,
+                "Config column is not sorted in descending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Status");
+        List<String> actualStatusList = fraudControlPage.getTableBusinessUnitControls().getColumnValues("Status");
+        List<String> sortedStatusListDesc = new ArrayList<>(actualStatusList);
+        sortedStatusListDesc.sort(Collections.reverseOrder());
+
+        Allure.step("Verify that entries are sorted by Status in Desc order ");
+        Assert.assertEquals(actualStatusList, sortedStatusListDesc,
+                "Status column is not sorted in descending order");
+
+        fraudControlPage
+                .getTableBusinessUnitControls().clickColumnHeader("Status");
+        actualStatusList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Status");
+        List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
+        Collections.sort(sortedStatusListAsc);
+
+        Allure.step("Verify that entries are sorted by Status in Asc order ");
+        Assert.assertEquals(actualStatusList, sortedStatusListAsc,
+                "Status column is not sorted in ascending order");
+    }
+
+    @Test
+    @TmsLink("1005")
+    @Epic("System/Fraud control")
+    @Feature("Reset filter")
+    @Description("'Reset filter' clears selected options")
+    public void testResetFilter() {
+        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
+                .clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .clickResetFilterButton();
+
+        Allure.step("Verify: the selected company field is empty after reset");
+        assertThat(fraudControlPage.getSelectCompany().getSelectCompanyField()).isEmpty();
+
+        Allure.step("Verify: the selected business unit field is empty after reset");
+        assertThat(fraudControlPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
     }
 
     @AfterClass
@@ -699,6 +923,8 @@ public class FraudControlTest extends BaseTest {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(),
+                FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName());
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
