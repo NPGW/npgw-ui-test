@@ -309,8 +309,8 @@ public class FraudControlTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
-            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            "testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting"})
+            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl"/*,
+            "testTooltipsForActionsControlTable"*/, "testBusinessUnitControlTableEntriesSorting"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
