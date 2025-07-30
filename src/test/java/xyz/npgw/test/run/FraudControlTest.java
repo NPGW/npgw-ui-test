@@ -532,7 +532,8 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in both tables");
-        assertThat(page.getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())).not().isAttached();
+        assertThat(page.getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName()))
+                .not().isAttached();
         assertThat(page.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName())).isAttached();
     }
 
