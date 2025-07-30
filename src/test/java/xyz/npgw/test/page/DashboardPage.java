@@ -6,14 +6,14 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
-public abstract class DashboardPage<ReturnPageT extends DashboardPage<ReturnPageT>> extends HeaderPage<ReturnPageT> {
+public abstract class DashboardPage<ReturnPageT extends DashboardPage<ReturnPageT>> extends BasePage {
 
     private final Locator htmlTag = locator("html");
     @Getter(AccessLevel.NONE)
@@ -39,10 +39,9 @@ public abstract class DashboardPage<ReturnPageT extends DashboardPage<ReturnPage
     private final Locator amountButton = getByTextExact("Amount");
     private final Locator countButton = getByTextExact("Count");
 
-
     public DashboardPage(Page page) {
         super(page);
-        assertThat(getDashboardButton().locator("..")).hasAttribute("data-active", "true");
+        assertThat(getByRole(AriaRole.LINK, "Dashboard").locator("..")).hasAttribute("data-active", "true");
     }
 
     protected abstract ReturnPageT getReturnPage();

@@ -18,7 +18,7 @@ import xyz.npgw.test.common.entity.CardType;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.Transaction;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 @Getter
 public abstract class TransactionsPage<ReturnPageT extends TransactionsPage<ReturnPageT>>
-        extends HeaderPage<ReturnPageT> {
+        extends BasePage {
 
     private final Locator businessUnitSelector = getByTextExact("Business unit").locator("../../..");
     private final Locator currencySelector = getByLabelExact("Currency");

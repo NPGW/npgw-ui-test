@@ -4,10 +4,10 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
 
-public abstract class ReportsPage<ReturnPageT extends ReportsPage<ReturnPageT>> extends HeaderPage<ReturnPageT> {
+public abstract class ReportsPage<ReturnPageT extends ReportsPage<ReturnPageT>> extends BasePage {
 
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator generateReportButton = getByRole(AriaRole.BUTTON, "Generate report");

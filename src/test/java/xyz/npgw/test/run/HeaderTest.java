@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class HeaderTest extends BaseTest {
+public final class HeaderTest extends BaseTest {
 
     @Test
     @TmsLink("209")
@@ -32,14 +32,14 @@ public class HeaderTest extends BaseTest {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage());
 
         Allure.step("Verify: Logo contains text 'NPGW'");
-        assertThat(dashboardPage.getLogo()).hasText("NPGW");
+        assertThat(dashboardPage.getHeader().getLogo()).hasText("NPGW");
 
         Allure.step("Verify: Logo contains image");
-        assertThat(dashboardPage.getLogoImg()).isVisible();
-        assertThat(dashboardPage.getLogoImg()).hasAttribute("src", Pattern.compile("/assets/.*png"));
+        assertThat(dashboardPage.getHeader().getLogoImg()).isVisible();
+        assertThat(dashboardPage.getHeader().getLogoImg()).hasAttribute("src", Pattern.compile("/assets/.*png"));
 
         Allure.step("Verify: Image inside logo is fully loaded");
-        Assert.assertTrue(dashboardPage.isLogoImageLoaded(), "Image inside logo should be fully loaded");
+        Assert.assertTrue(dashboardPage.getHeader().isLogoImageLoaded(), "Image inside logo should be fully loaded");
     }
 
     @Test
@@ -79,8 +79,8 @@ public class HeaderTest extends BaseTest {
         String newPassword = "QWEdsa123@";
 
         AdminDashboardPage adminDashboardPage = new AdminDashboardPage(getPage())
-                .clickUserMenuButton()
-                .clickProfileSettingsButton()
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickProfileSettingsButton()
                 .fillPasswordField(newPassword)
                 .fillRepeatPasswordField(newPassword)
                 .clickSaveButton();
@@ -90,7 +90,7 @@ public class HeaderTest extends BaseTest {
                 .hasText("SUCCESSPassword was changed successfully");
 
         adminDashboardPage
-                .clickLogOutButton()
+                .getHeader().clickLogOutButton()
                 .loginAs("%s.%s@email.com".formatted(getUid(), userRole.toLowerCase()), newPassword);
 
         Allure.step("Verify: Successfully login with changed password");
@@ -104,8 +104,8 @@ public class HeaderTest extends BaseTest {
     @Description("Log out via button in the user menu")
     public void testLogOutViaButtonInUserMenu() {
         LoginPage loginPage = new SuperDashboardPage(getPage())
-                .clickUserMenuButton()
-                .clickLogOutButtonUserMenu();
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickLogOutButtonUserMenu();
 
         Allure.step("Verify: Login Page URL");
         assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
@@ -118,7 +118,7 @@ public class HeaderTest extends BaseTest {
     @Description("Log out via button in the Header")
     public void testLogOutViaButtonInHeader() {
         LoginPage loginPage = new SuperDashboardPage(getPage())
-                .clickLogOutButton();
+                .getHeader().clickLogOutButton();
 
         Allure.step("Verify: Login Page URL");
         assertThat(loginPage.getPage()).hasURL(Constants.LOGIN_PAGE_URL);
@@ -131,8 +131,8 @@ public class HeaderTest extends BaseTest {
     @Description("Verify that the user can switch to the dark theme")
     public void testDarkColorThemeSwitch() {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
-                .clickUserMenuButton()
-                .clickDarkRadioButton();
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickDarkRadioButton();
 
         Allure.step("Verify that the dark color theme is selected");
         assertThat(dashboardPage.getHtmlTag()).hasClass("dark");
@@ -145,8 +145,8 @@ public class HeaderTest extends BaseTest {
     @Description("Verify that the user can switch to the light theme")
     public void testLightColorThemeSwitch() {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
-                .clickUserMenuButton()
-                .clickLightRadioButton();
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickLightRadioButton();
 
         Allure.step("Verify that the light color theme is selected");
         assertThat(dashboardPage.getHtmlTag()).hasClass("light");
@@ -171,8 +171,8 @@ public class HeaderTest extends BaseTest {
     @Description("Check password policy validation error messages when changing password in user menu")
     public void testChangePasswordValidationMessages(String userRole) {
         ProfileSettingsDialog<SuperDashboardPage> profileSettingsDialog = new SuperDashboardPage(getPage())
-                .clickUserMenuButton()
-                .clickProfileSettingsButton()
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickProfileSettingsButton()
                 .fillPasswordField("QWERTY1!")
                 .fillRepeatPasswordField("QWERTY1!")
                 .clickSaveButtonWhenError();
@@ -219,8 +219,8 @@ public class HeaderTest extends BaseTest {
     @Description("Verify Minimum and Maximum Password Length Restrictions (negative)")
     public void testPasswordLengthRestrictionsOnChange(String userRole) {
         ProfileSettingsDialog<SuperDashboardPage> profileSettingsDialog = new SuperDashboardPage(getPage())
-                .clickUserMenuButton()
-                .clickProfileSettingsButton()
+                .getHeader().clickUserMenuButton()
+                .getHeader().clickProfileSettingsButton()
                 .fillPasswordField("A".repeat(7))
                 .fillRepeatPasswordField("A".repeat(7));
 

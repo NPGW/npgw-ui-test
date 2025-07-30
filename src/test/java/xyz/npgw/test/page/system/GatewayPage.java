@@ -7,7 +7,7 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.BusinessUnitAcquirersTableTrait;
 import xyz.npgw.test.page.common.trait.MenuTrait;
@@ -17,7 +17,7 @@ import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.gateway.AddBusinessUnitAcquirerDialog;
 
 @Getter
-public final class GatewayPage extends HeaderPage<GatewayPage> implements
+public final class GatewayPage extends BasePage implements
         MenuTrait,
         SelectCompanyTrait<GatewayPage>,
         SelectBusinessUnitTrait<GatewayPage>,

@@ -4,14 +4,14 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AdminBusinessUnitsTableTrait;
 import xyz.npgw.test.page.common.trait.AdminHeaderTrait;
 import xyz.npgw.test.page.common.trait.AdminMenuTrait;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 
 @Getter
-public final class AdminBusinessUnitsPage extends HeaderPage<AdminBusinessUnitsPage> implements
+public final class AdminBusinessUnitsPage extends BasePage implements
         AdminHeaderTrait<AdminBusinessUnitsPage>,
         AdminMenuTrait,
         AdminBusinessUnitsTableTrait,

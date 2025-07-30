@@ -453,7 +453,7 @@ public class TeamPageTest extends BaseTest {
         Allure.step("Verify: success message is displayed");
         assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword was reset successfully");
 
-        teamPage.clickLogOutButton()
+        teamPage.getHeader().clickLogOutButton()
                 .fillEmailField(email)
                 .fillPasswordField("NewPassword1!")
                 .clickLoginButtonToChangePassword()
@@ -516,7 +516,7 @@ public class TeamPageTest extends BaseTest {
         assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "check");
 
         LoginPage loginPage = teamPage
-                .clickLogOutButton()
+                .getHeader().clickLogOutButton()
                 .loginAsDisabledUser(analystEmail, analystPassword);
 
         Allure.step("Verify: error message is displayed");
@@ -528,7 +528,7 @@ public class TeamPageTest extends BaseTest {
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()
                 .clickSaveChangesButton()
-                .clickLogOutButton()
+                .getHeader().clickLogOutButton()
                 .fillEmailField(analystEmail)
                 .fillPasswordField(analystPassword)
                 .clickLoginButtonToChangePassword()

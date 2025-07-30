@@ -10,15 +10,20 @@ import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.base.BaseComponent;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 @Getter
 public class HeaderComponent<CurrentPageT> extends BaseComponent {
 
     private final CurrentPageT currentPage;
     private final Locator logoImg = getPage().getByAltText("logo");
     private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(logoImg));
+
     private final Locator dashboardButton = getByRole(AriaRole.LINK, "Dashboard");
     private final Locator transactionsButton = getByRole(AriaRole.LINK, "Transactions");
     private final Locator reportsButton = getByRole(AriaRole.LINK, "Reports");
+    private final Locator systemAdministrationButton = getByRole(AriaRole.LINK, "System administration");
+
     private final Locator logOutButton = getByRole(AriaRole.BUTTON, "Log out");
     private final Locator userMenuButton = getByTestId("userMenuToggle");
     private final Locator profileSettingsButton = getByTextExact("Profile Settings");
@@ -80,5 +85,34 @@ public class HeaderComponent<CurrentPageT> extends BaseComponent {
         return (boolean) getLogoImg().evaluate(
                 "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
                         + " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
+    }
+
+    protected void clickDashboard() {
+        dashboardButton.click();
+        assertThat(dashboardButton.locator("..")).hasAttribute("data-active", "true");
+    }
+
+    protected void clickTransactions() {
+        transactionsButton.click();
+        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
+    }
+
+    protected void clickReports() {
+        reportsButton.click();
+        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+        assertThat(reportsButton.locator("..")).hasAttribute("data-active", "true");
+    }
+
+    protected void clickSystemAdministration() {
+        systemAdministrationButton.click();
+
+        //        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
+        assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
+        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
     }
 }

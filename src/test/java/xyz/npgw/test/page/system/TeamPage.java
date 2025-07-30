@@ -9,15 +9,14 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.User;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
 
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
-public abstract class TeamPage<ReturnPageT extends TeamPage<ReturnPageT>>
-        extends HeaderPage<TeamPage<ReturnPageT>> {
+public abstract class TeamPage<ReturnPageT extends TeamPage<ReturnPageT>> extends BasePage {
 
     private final Locator settings = getByTestId("SettingsButtonTeamPage");
 

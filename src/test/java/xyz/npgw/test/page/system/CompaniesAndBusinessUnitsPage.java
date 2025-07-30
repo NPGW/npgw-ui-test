@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.BusinessUnitsTableTrait;
 import xyz.npgw.test.page.common.trait.MenuTrait;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 @Getter
-public final class CompaniesAndBusinessUnitsPage extends HeaderPage<CompaniesAndBusinessUnitsPage> implements
+public final class CompaniesAndBusinessUnitsPage extends BasePage implements
         MenuTrait,
         SelectCompanyTrait<CompaniesAndBusinessUnitsPage>,
         AlertTrait<CompaniesAndBusinessUnitsPage>,
