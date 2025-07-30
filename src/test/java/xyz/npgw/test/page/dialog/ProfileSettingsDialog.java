@@ -5,11 +5,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.base.BasePage;
 
 @Getter
-public class ProfileSettingsDialog<ReturnPageT extends BasePage> extends
-        BaseDialog<ReturnPageT, ProfileSettingsDialog<ReturnPageT>> {
+public class ProfileSettingsDialog<ReturnPageT> extends BaseDialog<ReturnPageT, ProfileSettingsDialog<ReturnPageT>> {
 
     private final ReturnPageT returnPage;
 

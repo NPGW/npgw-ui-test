@@ -8,8 +8,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.base.BaseComponent;
-
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 
 @Getter
 public class HeaderComponent<CurrentPageT> extends BaseComponent {
@@ -32,37 +31,11 @@ public class HeaderComponent<CurrentPageT> extends BaseComponent {
         this.currentPage = currentPage;
     }
 
-    @Step("Click on 'Transactions' menu in Header")
-    public CurrentPageT clickTransactionsLink() {
-        transactionsButton.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
-
-        return currentPage;
-    }
-
-    @Step("Click on 'Reports' menu in Header")
-    public CurrentPageT clickReportsLink() {
-        reportsButton.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-
-        return currentPage;
-    }
-
     @Step("Click 'Log out' button")
     public LoginPage clickLogOutButton() {
         logOutButton.click();
 
         return new LoginPage(getPage());
-    }
-
-    @Step("Click 'Logo' button")
-    public CurrentPageT clickLogoButton() {
-        logo.click();
-
-        return currentPage;
     }
 
     @Step("Click 'User menu' button")
@@ -73,12 +46,12 @@ public class HeaderComponent<CurrentPageT> extends BaseComponent {
         return currentPage;
     }
 
-//    @Step("Click 'Profile Settings' button")
-//    public CurrentPageT clickProfileSettingsButton() {
-//        profileSettingsButton.click();
-//
-//        return new ProfileSettingsDialog<>(getPage(), (ReturnPageT) currentPage);
-//    }
+    @Step("Click 'Profile Settings' button")
+    public ProfileSettingsDialog<CurrentPageT> clickProfileSettingsButton() {
+        profileSettingsButton.click();
+
+        return new ProfileSettingsDialog<>(getPage(), currentPage);
+    }
 
     @Step("Click 'Log out' button in User menu")
     public LoginPage clickLogOutButtonUserMenu() {

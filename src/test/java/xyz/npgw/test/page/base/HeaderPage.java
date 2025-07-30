@@ -13,12 +13,9 @@ import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 @SuppressWarnings("unchecked")
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {
 
+    //TODO - refactor this to -> HeaderComponent getHeader() across project and remove this page
     private final Locator logoImg = getPage().getByAltText("logo");
     private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(logoImg));
-    private final Locator dashboardButton = getByRole(AriaRole.LINK, "Dashboard");
-    private final Locator transactionsButton = getByRole(AriaRole.LINK, "Transactions");
-    private final Locator reportsButton = getByRole(AriaRole.LINK, "Reports");
-    private final Locator systemAdministrationButton = getByRole(AriaRole.LINK, "System administration");
     private final Locator logOutButton = getByRole(AriaRole.BUTTON, "Log out");
     private final Locator userMenuButton = getByTestId("userMenuToggle");
     private final Locator profileSettingsButton = getByTextExact("Profile Settings");
@@ -30,51 +27,12 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         super(page);
     }
 
-//    @Step("Click on 'Transactions' menu in Header")
-//    public TransactionsPage clickTransactionsLink() {
-//        transactionsButton.click();
-//        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-//                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-//        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
-//
-//        return new TransactionsPage(getPage());
-//    }
-
-//    @Step("Click on 'Reports' menu in Header")
-//    public ReportsPage clickReportsLink() {
-//        reportsButton.click();
-//        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-//                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-//
-//        return new ReportsPage(getPage());
-//    }
-
-//    @Step("Click on 'System administration' menu in Header")
-//    public TeamPage clickSystemAdministrationLink() {
-//        systemAdministrationButton.click();
-//
-
-    /// /        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-//        assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
-//        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-//                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-//        getPage().waitForLoadState(LoadState.NETWORKIDLE);
-//
-//        return new TeamPage(getPage());
-//    }
     @Step("Click 'Log out' button")
     public LoginPage clickLogOutButton() {
         logOutButton.click();
 
         return new LoginPage(getPage());
     }
-
-//    @Step("Click 'Logo' button")
-//    public SuperDashboardPage clickLogoButton() {
-//        logo.click();
-//
-//        return new SuperDashboardPage(getPage());
-//    }
 
     @Step("Click 'User menu' button")
     public CurrentPageT clickUserMenuButton() {
