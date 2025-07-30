@@ -512,9 +512,9 @@ public class FraudControlTest extends BaseTest {
                 "The '*' symbol is not displayed in the 'Control name' label");
 
         Allure.step("Verify that the 'Create' button is disabled if the 'Control name field is empty");
-        assertThat(addControlDialog.getCreateButton()).hasAttribute("data-disabled","true");
-
+        assertThat(addControlDialog.getCreateButton()).hasAttribute("data-disabled", "true");
     }
+
     @Test
     @TmsLink("895")
     @Epic("System/Fraud control")
