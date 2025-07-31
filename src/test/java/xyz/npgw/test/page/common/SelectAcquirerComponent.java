@@ -11,7 +11,7 @@ import lombok.extern.log4j.Log4j2;
 public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
     @Getter
-    private final Locator selectAcquirerField = locator("input[aria-label='Select acquirer']");
+    private final Locator selectAcquirerField = locator("input[aria-label='Select acquirer MID']");
     @Getter
     private final Locator dropdownOptionList = getByRole(AriaRole.OPTION);
     private final Locator selectAcquirerContainer = locator("div[data-slot='input-wrapper']");

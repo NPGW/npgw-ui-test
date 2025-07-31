@@ -73,7 +73,7 @@ public class AddEditAcquirerTest extends BaseTest {
                 .clickAddAcquirer();
 
         Allure.step("Verify: the header contains the expected title text");
-        assertThat(addAcquirerDialog.getDialogHeader()).hasText("Add acquirer");
+        assertThat(addAcquirerDialog.getDialogHeader()).hasText("Setup acquirer MID");
 
         Allure.step("Verify: all placeholders are correct for each field");
         assertEquals(addAcquirerDialog.getAllPlaceholders(), List.of(
