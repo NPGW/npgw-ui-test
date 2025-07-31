@@ -575,13 +575,34 @@ public class FraudControlTest extends BaseTest {
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+                .clickActivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+                .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .clickDeactivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
 
-        Locator connectControlButton = fraudControlPage
-                .getTableControls().getConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName());
+        Allure.step("Verify the success message ‘SUCCESSBusiness unit control was deleted successfully'"
+                + " is displayed");
+        assertThat(fraudControlPage.getAlert().getMessage())
+                .hasText("SUCCESSBusiness unit control was deleted successfully");
 
-        Allure.step("Verify that Connect Control button is disabled");
-        assertThat(connectControlButton).isDisabled();
+        fraudControlPage.getAlert().waitUntilSuccessAlertIsGone();
+        List<String> actualFraudControlBusinessUnitList = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValues("Display name");
+
+        Allure.step("Verify that the business unit control table doesn't include the deleted control");
+        Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE
+                .getControlDisplayName()));
+
+        fraudControlPage.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+                .clickDeactivateButton();
     }
 
     @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
@@ -760,11 +781,17 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL.getControlName())
+                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+                .clickActivateButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
                 .clickConnectButton()
                 .getTableControls().clickConnectControlButton(
                         FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
                 .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .clickDeactivateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getTableBusinessUnitControls().clickColumnHeader("Priority");
 
@@ -874,6 +901,9 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that entries are sorted by Status in Asc order ");
         Assert.assertEquals(actualStatusList, sortedStatusListAsc,
                 "Status column is not sorted in ascending order");
+
+        fraudControlPage.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+                .clickDeactivateButton();
     }
 
     @Test
