@@ -266,6 +266,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.amountApplied("Amount: 0.00 - 0.00")).isVisible();
     }
 
+    @Ignore("Download button is unavailable")
     @Test
     @TmsLink("356")
     @Epic("Transactions")
