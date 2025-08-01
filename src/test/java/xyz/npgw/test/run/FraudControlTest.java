@@ -500,7 +500,7 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add fraud control")
     @Description("Verify the 'Control name' field is mandatory and marked with '*'")
     public void testControlNameIsMandatory() {
-        AddControlDialog addControlDialog = new FraudControlPage(getPage())
+        AddControlDialog addControlDialog = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl();
