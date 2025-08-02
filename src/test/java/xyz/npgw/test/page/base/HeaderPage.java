@@ -38,31 +38,21 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
 
     @Step("Click on 'Transactions' menu in Header")
     public TransactionsPage clickTransactionsLink() {
-        transactionsButton.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
-        assertThat(transactionsButton.locator("..")).hasAttribute("data-active", "true");
+        clickAndWait(transactionsButton);
 
         return new TransactionsPage(getPage());
     }
 
     @Step("Click on 'Reports' menu in Header")
     public ReportsPage clickReportsLink() {
-        reportsButton.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+        clickAndWait(reportsButton);
 
         return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' menu in Header")
     public TeamPage clickSystemAdministrationLink() {
-        systemAdministrationButton.click();
-
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
-        assertThat(systemAdministrationButton.locator("..")).hasAttribute("data-active", "true");
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+        clickAndWait(systemAdministrationButton);
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new TeamPage(getPage());
@@ -124,5 +114,13 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         return (boolean) getLogoImg().evaluate(
                 "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
                         + " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
+    }
+
+    private void clickAndWait(Locator button) {
+        button.click();
+        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();
+
+        assertThat(button.locator("..")).hasAttribute("data-active", "true");
     }
 }
