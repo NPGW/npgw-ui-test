@@ -267,7 +267,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertThat(addAcquirerDialog.getCreateButton()).isDisabled();
     }
 
-    @Ignore
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test
     @TmsLink("239")
     @Epic("System/Acquirers")
@@ -299,7 +299,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertEquals(actualPlaceholders, expectedPlaceholders);
     }
 
-    @Ignore
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test
     @TmsLink("450")
     @Epic("System/Acquirers")

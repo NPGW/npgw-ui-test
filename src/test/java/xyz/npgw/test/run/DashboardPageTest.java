@@ -57,6 +57,7 @@ public class DashboardPageTest extends BaseTest {
         assertThat(dashboardPage.getPage()).hasTitle(Constants.DASHBOARD_URL_TITLE);
     }
 
+    @Ignore("Failed 01.08.2025 The error message has been removed; it's now impossible to select the wrong date")
     @Test
     @TmsLink("403")
     @Epic("Dashboard")
@@ -246,12 +247,12 @@ public class DashboardPageTest extends BaseTest {
         dashboardPage.clickCurrencySelector().selectCurrency("EUR");
 
         Allure.step("Verify: INITIATED main block contents");
-        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR6601,00,000");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR660100,000");
 
         dashboardPage.clickCurrencySelector().selectCurrency("GBP");
 
         Allure.step("Verify: INITIATED main block contents");
-        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP0.7710,00,00,000");
+        assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP0.77100,000,000");
     }
 
     @AfterClass

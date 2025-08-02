@@ -323,11 +323,9 @@ public class TransactionsTableTest extends BaseTest {
     public void testCheckUncheckAllVisibleColumns() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings()
-                .clickRefreshDataButton();
+                .clickSettingsButton();
 
         Allure.step("Verify: All column headers except 'Actions' are displayed in the Settings");
         assertThat(transactionsPage.getColumns()).hasText(SETTINGS_COLUMNS);
@@ -338,7 +336,7 @@ public class TransactionsTableTest extends BaseTest {
         transactionsPage
                 .clickSettingsButton()
                 .uncheckAllCheckboxInSettings()
-                .clickRefreshDataButton();
+                .clickSettingsButton();
 
         Allure.step("Verify: Only 'Actions' column is displayed in the transactions table header");
         assertThat(transactionsPage.getTable().getColumnHeaders()).hasText("Actions");
@@ -352,15 +350,13 @@ public class TransactionsTableTest extends BaseTest {
     public void testCheckUncheckOneVisibleColumn() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings();
 
         for (String item : SETTINGS_COLUMNS) {
             transactionsPage
                     .uncheckVisibleColumn(item)
-                    .clickRefreshDataButton();
+                    .clickSettingsButton();
 
             Allure.step("Verify: Only one column header is NOT displayed in the Transactions");
             assertThat(transactionsPage.getTable().getColumnHeaders())
@@ -377,7 +373,7 @@ public class TransactionsTableTest extends BaseTest {
         for (String item : SETTINGS_COLUMNS) {
             transactionsPage
                     .checkVisibleColumn(item)
-                    .clickRefreshDataButton();
+                    .clickSettingsButton();
 
             Allure.step("Verify: Only two column headers are displayed in the transactions table");
             assertThat(transactionsPage.getTable().getColumnHeaders()).hasText(new String[]{item, "Actions"});
@@ -624,8 +620,6 @@ public class TransactionsTableTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickSettingsButton()
                 .uncheckAllCheckboxInSettings()
                 .checkVisibleColumn(creationDate)
@@ -639,7 +633,7 @@ public class TransactionsTableTest extends BaseTest {
                 .dragArrowsToLastPosition(currency) // creationDate amount status currency...
                 .dragArrows(creationDate, status) // amount status creationDate currency...
                 .dragArrows(amount, creationDate) // status creationDate amount currency...
-                .clickRefreshDataButton();
+                .pressEscapeKey();
 
         Allure.step("Verify: Selected column headers are displayed in the correct order in the transactions table.");
         assertThat(transactionsPage.getTable().getColumnHeaders())

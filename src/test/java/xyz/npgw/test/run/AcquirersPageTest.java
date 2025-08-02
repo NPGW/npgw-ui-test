@@ -260,7 +260,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getColumnHeaders()).hasText(COLUMNS_HEADERS);
     }
 
-    @Ignore
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test
     @TmsLink("463")
     @Epic("System/Acquirers")
@@ -384,7 +384,7 @@ public class AcquirersPageTest extends BaseTest {
         TestUtils.deleteAcquirer(getApiRequestContext(), acquirerName);
     }
 
-    @Ignore
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test
     @TmsLink("588")
     @Epic("System/Acquirers")
@@ -425,7 +425,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("Active");
     }
 
-    @Ignore
+    @Ignore("Failed 01.08.2025 due to Adding 'Select Acquirer code' field'")
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("708")
     @Epic("System/Acquirers")
@@ -446,7 +446,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText("All");
     }
 
-    @Ignore
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test(priority = 1)
     @TmsLink("726")
     @Epic("System/Acquirers")
