@@ -120,8 +120,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 
-    @Ignore("failed on new filters")
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("412")
     @Epic("System/Acquirers")
     @Feature("Add acquirer")

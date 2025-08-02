@@ -61,7 +61,6 @@ public class AcquirersPageTest extends BaseTest {
         TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
     }
 
-    @Ignore
     @Test
     @TmsLink("134")
     @Epic("System/Acquirers")
@@ -105,7 +104,6 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getRows()).not().hasCount(0);
     }
 
-    @Ignore
     @Test
     @TmsLink("168")
     @Epic("System/Acquirers")
@@ -352,7 +350,6 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
-    @Ignore
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("557")
     @Epic("System/Acquirers")
