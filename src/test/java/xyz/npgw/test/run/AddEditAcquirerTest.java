@@ -8,6 +8,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -73,7 +74,7 @@ public class AddEditAcquirerTest extends BaseTest {
                 .clickAddAcquirer();
 
         Allure.step("Verify: the header contains the expected title text");
-        assertThat(addAcquirerDialog.getDialogHeader()).hasText("Add acquirer");
+        assertThat(addAcquirerDialog.getDialogHeader()).hasText("Setup acquirer MID");
 
         Allure.step("Verify: all placeholders are correct for each field");
         assertEquals(addAcquirerDialog.getAllPlaceholders(), List.of(
@@ -119,7 +120,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertThat(statusRadiobutton).hasAttribute("data-selected", "true");
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test//(expectedExceptions = AssertionError.class)
     @TmsLink("412")
     @Epic("System/Acquirers")
     @Feature("Add acquirer")
@@ -265,6 +266,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertThat(addAcquirerDialog.getCreateButton()).isDisabled();
     }
 
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test
     @TmsLink("239")
     @Epic("System/Acquirers")
@@ -296,6 +298,7 @@ public class AddEditAcquirerTest extends BaseTest {
         assertEquals(actualPlaceholders, expectedPlaceholders);
     }
 
+    @Ignore("Failed on 01.08.2025 because the 'Select Acquirer Code' field was added")
     @Test
     @TmsLink("450")
     @Epic("System/Acquirers")

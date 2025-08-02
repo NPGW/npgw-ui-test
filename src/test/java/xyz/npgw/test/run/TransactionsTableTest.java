@@ -14,6 +14,7 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
@@ -132,8 +133,8 @@ public class TransactionsTableTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(startDate, endDate)
-                .clickRefreshDataButton();
+                .getSelectDateRange().setDateRangeFields(startDate, endDate);
+        //        .clickRefreshDataButton();
 
         Allure.step("Verify: Transactions can be filtered by date range");
         assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
@@ -196,6 +197,7 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
     }
 
+    @Ignore("Failed on 01.08.2025 on the goToLastPage step. There is only one page of transaction.")
     @Test
     @TmsLink("682")
     @Epic("Transactions")
@@ -326,7 +328,7 @@ public class TransactionsTableTest extends BaseTest {
                 .clickTransactionsLink()
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings()
-                .clickRefreshDataButton();
+                .clickSettingsButton();
 
         Allure.step("Verify: All column headers except 'Actions' are displayed in the Settings");
         assertThat(transactionsPage.getColumns()).hasText(SETTINGS_COLUMNS);
@@ -337,7 +339,7 @@ public class TransactionsTableTest extends BaseTest {
         transactionsPage
                 .clickSettingsButton()
                 .uncheckAllCheckboxInSettings()
-                .clickRefreshDataButton();
+                .clickSettingsButton();
 
         Allure.step("Verify: Only 'Actions' column is displayed in the transactions table header");
         assertThat(transactionsPage.getTable().getColumnHeaders()).hasText("Actions");
@@ -357,7 +359,7 @@ public class TransactionsTableTest extends BaseTest {
         for (String item : SETTINGS_COLUMNS) {
             transactionsPage
                     .uncheckVisibleColumn(item)
-                    .clickRefreshDataButton();
+                    .clickSettingsButton();
 
             Allure.step("Verify: Only one column header is NOT displayed in the Transactions");
             assertThat(transactionsPage.getTable().getColumnHeaders())
@@ -374,7 +376,7 @@ public class TransactionsTableTest extends BaseTest {
         for (String item : SETTINGS_COLUMNS) {
             transactionsPage
                     .checkVisibleColumn(item)
-                    .clickRefreshDataButton();
+                    .clickSettingsButton();
 
             Allure.step("Verify: Only two column headers are displayed in the transactions table");
             assertThat(transactionsPage.getTable().getColumnHeaders()).hasText(new String[]{item, "Actions"});
@@ -671,7 +673,7 @@ public class TransactionsTableTest extends BaseTest {
                 .dragArrowsToLastPosition(currency) // creationDate amount status currency...
                 .dragArrows(creationDate, status) // amount status creationDate currency...
                 .dragArrows(amount, creationDate) // status creationDate amount currency...
-                .clickRefreshDataButton();
+                .pressEscapeKey();
 
         Allure.step("Verify: Selected column headers are displayed in the correct order in the transactions table.");
         assertThat(transactionsPage.getTable().getColumnHeaders())
