@@ -129,6 +129,8 @@ public class TransactionsTableTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange().setDateRangeFields(startDate, endDate)
                 .clickRefreshDataButton();
 
@@ -321,6 +323,8 @@ public class TransactionsTableTest extends BaseTest {
     public void testCheckUncheckAllVisibleColumns() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings()
                 .clickRefreshDataButton();
@@ -348,6 +352,8 @@ public class TransactionsTableTest extends BaseTest {
     public void testCheckUncheckOneVisibleColumn() {
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickSettingsButton()
                 .checkAllCheckboxInSettings();
 
@@ -618,6 +624,8 @@ public class TransactionsTableTest extends BaseTest {
 
         TransactionsPage transactionsPage = new DashboardPage(getPage())
                 .clickTransactionsLink()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickSettingsButton()
                 .uncheckAllCheckboxInSettings()
                 .checkVisibleColumn(creationDate)

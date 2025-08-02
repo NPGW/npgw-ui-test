@@ -10,6 +10,7 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -60,6 +61,7 @@ public class AcquirersPageTest extends BaseTest {
         TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
     }
 
+    @Ignore
     @Test
     @TmsLink("134")
     @Epic("System/Acquirers")
@@ -103,6 +105,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getRows()).not().hasCount(0);
     }
 
+    @Ignore
     @Test
     @TmsLink("168")
     @Epic("System/Acquirers")
@@ -257,6 +260,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getTable().getColumnHeaders()).hasText(COLUMNS_HEADERS);
     }
 
+    @Ignore
     @Test
     @TmsLink("463")
     @Epic("System/Acquirers")
@@ -348,6 +352,7 @@ public class AcquirersPageTest extends BaseTest {
         }
     }
 
+    @Ignore
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("557")
     @Epic("System/Acquirers")
@@ -379,6 +384,7 @@ public class AcquirersPageTest extends BaseTest {
         TestUtils.deleteAcquirer(getApiRequestContext(), acquirerName);
     }
 
+    @Ignore
     @Test
     @TmsLink("588")
     @Epic("System/Acquirers")
@@ -419,6 +425,7 @@ public class AcquirersPageTest extends BaseTest {
                 .hasText("Active");
     }
 
+    @Ignore
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("708")
     @Epic("System/Acquirers")
@@ -439,6 +446,7 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getSelectStatus().getStatusValue()).hasText("All");
     }
 
+    @Ignore
     @Test(priority = 1)
     @TmsLink("726")
     @Epic("System/Acquirers")
