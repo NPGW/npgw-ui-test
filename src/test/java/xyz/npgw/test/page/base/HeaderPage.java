@@ -6,10 +6,12 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.AdminDashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.dashboard.UserDashboardPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
 
@@ -34,6 +36,31 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
 
     public HeaderPage(Page page) {
         super(page);
+    }
+
+    protected CurrentPageT self() {
+        return (CurrentPageT) this;
+    }
+
+    @Step("Click on 'Dashboard' in the Header")
+    public SuperDashboardPage clickDashboardLinkAsSuper() {
+        dashboardButton.click();
+
+        return new SuperDashboardPage(getPage());
+    }
+
+    @Step("Click on 'Dashboard' in the Header")
+    public AdminDashboardPage clickDashboardLinkAsAdmin() {
+        dashboardButton.click();
+
+        return new AdminDashboardPage(getPage());
+    }
+
+    @Step("Click on 'Dashboard' in the Header")
+    public UserDashboardPage clickDashboardLinkAsUser() {
+        dashboardButton.click();
+
+        return new UserDashboardPage(getPage());
     }
 
     @Step("Click on 'Transactions' menu in Header")
@@ -66,10 +93,10 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     }
 
     @Step("Click 'Logo' button")
-    public DashboardPage clickLogoButton() {
+    public SuperDashboardPage clickLogoButton() {
         logo.click();
 
-        return new DashboardPage(getPage());
+        return new SuperDashboardPage(getPage());
     }
 
     @Step("Click 'User menu' button")
@@ -77,7 +104,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
         userMenuButton.click();
 
-        return (CurrentPageT) this;
+        return self();
     }
 
     @Step("Click 'Profile Settings' button")
@@ -100,14 +127,14 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     public CurrentPageT clickLightRadioButton() {
         lightRadioButtonInUserMenu.click();
 
-        return (CurrentPageT) this;
+        return self();
     }
 
     @Step("Click the 'Dark' radio button in the user menu")
     public CurrentPageT clickDarkRadioButton() {
         darkRadioButtonInUserMenu.click();
 
-        return (CurrentPageT) this;
+        return self();
     }
 
     public boolean isLogoImageLoaded() {

@@ -13,7 +13,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
 
@@ -44,7 +44,7 @@ public class ReportsPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'Reports page' after clicking on 'Reports' link on the header")
     public void testNavigateToReportsPage() {
-        ReportsPage reportsPage = new DashboardPage(getPage())
+        ReportsPage reportsPage = new SuperDashboardPage(getPage())
                 .clickReportsLink();
 
         Allure.step("Verify: Reports Page URL");
@@ -61,7 +61,7 @@ public class ReportsPageTest extends BaseTest {
     @Feature("Data range")
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
-        ReportsPage reportsPage = new DashboardPage(getPage())
+        ReportsPage reportsPage = new SuperDashboardPage(getPage())
                 .clickReportsLink()
                 .getSelectDateRange().setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
@@ -78,7 +78,7 @@ public class ReportsPageTest extends BaseTest {
     @Feature("Generate report")
     @Description("Verify content of 'Generation Parameters dialog'")
     public void testContentOfGenerationParametersDialog() {
-        ReportsParametersDialog generationParametersDialog = new DashboardPage(getPage())
+        ReportsParametersDialog generationParametersDialog = new SuperDashboardPage(getPage())
                 .clickReportsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
@@ -113,7 +113,7 @@ public class ReportsPageTest extends BaseTest {
     @Feature("Generate report")
     @Description("Check/uncheck reports columns in the 'Generation Parameters dialog'")
     public void testCheckboxesOfGenerationParameters() {
-        ReportsParametersDialog generationParametersDialog = new DashboardPage(getPage())
+        ReportsParametersDialog generationParametersDialog = new SuperDashboardPage(getPage())
                 .clickReportsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)

@@ -17,7 +17,7 @@ import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.system.AcquirersPage;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("The visibility of elements in the filter")
     public void testVisibilityAcquirersListControlTab() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -93,7 +93,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("The visibility of the acquirers table header and table contents")
     public void testVisibilityHeaderAndAcquirersList() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -110,7 +110,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Select acquirer")
     @Description("Click on 'Select acquirer' field opens a dropdown populated with acquirers")
     public void testSelectAcquirerDropdownFunctionality() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().clickSelectAcquirerField();
@@ -125,7 +125,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Status")
     @Description("The 'Status' dropdown toggles and contains options All, Active, Inactive.")
     public void testOpenStatusDropdown() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectStatus().clickSelector();
@@ -140,7 +140,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Status")
     @Description("Filter acquirers by status.")
     public void testFilterAcquirersByStatus(String status) {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectStatus().select(status);
@@ -156,7 +156,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Status")
     @Description("Verify that re-selecting an already selected status keeps the selection unchanged.")
     public void testRetainStatusWhenReSelectingSameOption() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -181,7 +181,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify the default 'Rows Per Page' value is 25 and the dropdown contains the correct options.")
     public void testRowsPerPageDropdownOptions() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -203,7 +203,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Rows Per Page")
     @Description("Verify Selecting 'Rows Per Page' Option Updates the Field Value.")
     public void testSelectingRowsPerPageOptionUpdatesFieldValue() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -223,7 +223,7 @@ public class AcquirersPageTest extends BaseTest {
     public void testRowsPerPageSelectionDisplaysCorrectNumberOfRows() {
         List<Integer> totalRowsForDifferentPaginations = new ArrayList<>();
 
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -250,7 +250,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Verify Acquirers table contains correct column headers")
     public void testDisplayCorrectColumnHeadersInAcquirersTable() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -267,7 +267,7 @@ public class AcquirersPageTest extends BaseTest {
             "Verifies that the Acquirers table displays correct data for the selected acquirer and shows relevant "
                     + "action buttons.")
     public void testDisplaySingleRowWhenAcquirerIsSelected() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName());
@@ -327,7 +327,7 @@ public class AcquirersPageTest extends BaseTest {
     @Description("Verifies that table column headers are displayed correctly on each page when navigating"
             + " through paginated results.")
     public void testColumnHeadersDisplayCorrectlyOnAllPages() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab();
 
@@ -359,7 +359,7 @@ public class AcquirersPageTest extends BaseTest {
         String acquirerName = "%s %s acquirer".formatted(TestUtils.now(), status);
         SystemConfig systemConfig = new SystemConfig();
 
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .clickAddAcquirer()
@@ -388,7 +388,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Acquirers list")
     @Description("Verify Acquirer can be activated and deactivated from the table")
     public void testAcquirerCanBeActivatedAndDeactivated() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().selectAcquirer(CHANGE_STATE_ACQUIRER.getAcquirerName())
@@ -429,7 +429,7 @@ public class AcquirersPageTest extends BaseTest {
     @Feature("Reset")
     @Description("'Reset' button clears selected filter values and resets them to default.")
     public void testResetFilter(String status) {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirer().selectAcquirer(ACQUIRER.getAcquirerName())

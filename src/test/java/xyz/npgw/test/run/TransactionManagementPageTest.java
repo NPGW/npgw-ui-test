@@ -9,7 +9,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.TransactionsPage;
 import xyz.npgw.test.page.dialog.adjustment.AddAdjustmentDialog;
 import xyz.npgw.test.page.system.TransactionManagementPage;
@@ -75,7 +75,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Feature("Add adjustment")
     @Description("Search by NPGW reference within Add adjustment dialog and check placeholders")
     public void testPlaceholdersAndSearchNpgwInAddAdjustment() {
-        String referenceFromTable = new DashboardPage(getPage())
+        String referenceFromTable = new SuperDashboardPage(getPage())
                 .clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
