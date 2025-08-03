@@ -380,7 +380,7 @@ public class AddEditAcquirerTest extends BaseTest {
     protected void afterClass() {
         TestUtils.deleteAcquirer(getApiRequestContext(), EXISTING_ACQUIRER);
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.getAcquirerName());
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_FOR_EDIT.getAcquirerDisplayName());
+        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_FOR_EDIT.getAcquirerName());
         super.afterClass();
     }
 }
