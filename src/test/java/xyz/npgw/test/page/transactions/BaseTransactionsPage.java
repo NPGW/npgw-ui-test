@@ -17,7 +17,6 @@ import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.base.HeaderPage;
-import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;
 import xyz.npgw.test.page.common.trait.SelectStatusTrait;

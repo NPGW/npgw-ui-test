@@ -7,7 +7,6 @@ import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.HeaderPage;
-import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;
 

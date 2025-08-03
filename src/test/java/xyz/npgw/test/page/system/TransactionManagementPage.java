@@ -3,8 +3,6 @@ package xyz.npgw.test.page.system;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import lombok.Getter;
-import xyz.npgw.test.page.transactions.SuperTransactionsPage;
-import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.dialog.adjustment.AddAdjustmentDialog;
 
 @Getter
