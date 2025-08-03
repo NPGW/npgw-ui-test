@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 @Getter
-public class AcquirersPage extends BaseSystemPage<AcquirersPage>
+public class AcquirersPage extends SuperSystemPage<AcquirersPage>
         implements AcquirersTableTrait,
                    SelectAcquirerTrait<AcquirersPage>,
                    SelectStatusTrait<AcquirersPage> {

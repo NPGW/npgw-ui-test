@@ -8,7 +8,7 @@ import xyz.npgw.test.page.common.trait.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
 
-public class FraudControlPage extends BaseSystemPage<FraudControlPage>
+public class FraudControlPage extends SuperSystemPage<FraudControlPage>
         implements SelectCompanyTrait<FraudControlPage>,
                    SelectBusinessUnitTrait<FraudControlPage>,
                    ControlsTableTrait,

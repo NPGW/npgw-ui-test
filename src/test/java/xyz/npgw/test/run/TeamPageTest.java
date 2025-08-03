@@ -208,7 +208,7 @@ public class TeamPageTest extends BaseTest {
     public void testDeletingBusinessUnitWithUsersFailsWithError() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
+                .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE)
                 .clickDeleteButton();

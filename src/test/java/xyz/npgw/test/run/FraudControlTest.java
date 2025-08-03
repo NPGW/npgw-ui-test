@@ -87,7 +87,7 @@ public class FraudControlTest extends BaseTest {
     public void testAddActiveFraudControl() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL.getControlName())
                 .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode())
@@ -115,7 +115,7 @@ public class FraudControlTest extends BaseTest {
     public void testCancelAddingFraudControlToBusinessUnit() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL.getControlName())
@@ -150,7 +150,7 @@ public class FraudControlTest extends BaseTest {
     public void testCancelDeletingFraudControl() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
                 .clickCancelButton();
 
@@ -180,7 +180,7 @@ public class FraudControlTest extends BaseTest {
     public void testCancelDeactivationFraudControl() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
                 .clickCancelButton();
 
@@ -214,7 +214,7 @@ public class FraudControlTest extends BaseTest {
     public void testCancelEditingFraudControl() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
                 .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
@@ -271,7 +271,7 @@ public class FraudControlTest extends BaseTest {
     public void testTooltipsForActionsControlTable() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
@@ -319,7 +319,7 @@ public class FraudControlTest extends BaseTest {
     public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
                 .clickDeleteButton();
 
@@ -335,7 +335,7 @@ public class FraudControlTest extends BaseTest {
     public void testAddInactiveFraudControl() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_INACTIVE.getControlName())
                 .fillFraudControlCodeField(FRAUD_CONTROL_INACTIVE.getControlCode())
@@ -362,7 +362,7 @@ public class FraudControlTest extends BaseTest {
     public void testChangeControlActivityForFraudControlNotAddedToBusinessUnit() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickActivateControlButton(FRAUD_CONTROL_INACTIVE.getControlName())
                 .clickActivateButton();
 
@@ -389,7 +389,7 @@ public class FraudControlTest extends BaseTest {
     public void testAddFraudControlToBusinessUnit() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
@@ -420,7 +420,7 @@ public class FraudControlTest extends BaseTest {
     public void testChangeControlActivityForFraudControlAddedToBusinessUnit() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
@@ -461,7 +461,7 @@ public class FraudControlTest extends BaseTest {
     public void testChangeBusinessUnitFraudControlActivity() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
@@ -502,7 +502,7 @@ public class FraudControlTest extends BaseTest {
     public void testControlNameIsMandatory() {
         AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .clickAddFraudControl();
 
         Allure.step("Verify that the 'Control name' field is marked with '*'");
@@ -522,7 +522,7 @@ public class FraudControlTest extends BaseTest {
     public void testErrorMessageForExistingControlName() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickCreateButton()
@@ -546,7 +546,7 @@ public class FraudControlTest extends BaseTest {
     public void testDeleteActiveFraudControlAddedToBusinessUnit() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("1")
@@ -566,7 +566,7 @@ public class FraudControlTest extends BaseTest {
     public void testChangeFraudControlPriority() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableBusinessUnitControls().clickMoveBusinessUnitControlUpButton("1")
@@ -594,7 +594,7 @@ public class FraudControlTest extends BaseTest {
     public void testDeleteInactiveFraudControlAddedToBusinessUnit() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
@@ -635,7 +635,7 @@ public class FraudControlTest extends BaseTest {
     public void testEditFraudControl() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
                 .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
@@ -672,7 +672,7 @@ public class FraudControlTest extends BaseTest {
     public void testNotEditControlName() {
         EditControlDialog editControlDialog = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls()
                 .clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName());
 
@@ -689,7 +689,7 @@ public class FraudControlTest extends BaseTest {
     public void testControlTableEntriesSorting() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getTableControls().clickColumnHeader("Name");
 
         List<String> actualNameList = fraudControlPage
@@ -799,7 +799,7 @@ public class FraudControlTest extends BaseTest {
     public void testBusinessUnitControlTableEntriesSorting() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
@@ -935,7 +935,7 @@ public class FraudControlTest extends BaseTest {
     public void testResetFilter() {
         FraudControlPage fraudControlPage = new FraudControlPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickResetFilterButton();
@@ -955,7 +955,7 @@ public class FraudControlTest extends BaseTest {
     public void testChangeBusinessControlPriorityRestrictions() {
         FraudControlPage page = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickFraudControlTab()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableBusinessUnitControls().clickMoveBusinessUnitControlUpButton("0");

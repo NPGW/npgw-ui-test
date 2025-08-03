@@ -69,35 +69,35 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
 
     @Step("Click on 'Transactions' in the Header")
     public SuperTransactionsPage clickTransactionsLinkAsSuper() {
-        clickAndWait(transactionsButton);
+        clickAndWaitForTable(transactionsButton);
 
         return new SuperTransactionsPage(getPage());
     }
 
     @Step("Click on 'Transactions' in the Header")
     public AdminTransactionsPage clickTransactionsLinkAsAdmin() {
-        clickAndWait(transactionsButton);
+        clickAndWaitForTable(transactionsButton);
 
         return new AdminTransactionsPage(getPage());
     }
 
     @Step("Click on 'Transactions' in the Header")
     public UserTransactionsPage clickTransactionsLinkAsUser() {
-        clickAndWait(transactionsButton);
+        clickAndWaitForTable(transactionsButton);
 
         return new UserTransactionsPage(getPage());
     }
 
     @Step("Click on 'Reports' in the Header")
     public ReportsPage clickReportsLink() {
-        clickAndWait(reportsButton);
+        clickAndWaitForTable(reportsButton);
 
         return new ReportsPage(getPage());
     }
 
     @Step("Click on 'System administration' in the Header")
     public TeamPage clickSystemAdministrationLinkAsSuper() {
-        clickAndWait(systemAdministrationButton);
+        clickAndWaitForTable(systemAdministrationButton);
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new TeamPage(getPage());
@@ -105,7 +105,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
 
     @Step("Click on 'System administration' in the Header")
     public TeamPage clickSystemAdministrationLinkAsAdmin() {
-        clickAndWait(systemAdministrationButton);
+        clickAndWaitForTable(systemAdministrationButton);
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
         return new TeamPage(getPage());
@@ -166,10 +166,10 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     public boolean isLogoImageLoaded() {
         return (boolean) getLogoImg().evaluate(
                 "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
-                        + " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
+                + " && !img.src.includes('base64') && !img.src.endsWith('.svg') && !img.src.endsWith('.ico')");
     }
 
-    private void clickAndWait(Locator button) {
+    private void clickAndWaitForTable(Locator button) {
         button.click();
         getByRole(AriaRole.GRIDCELL, "No rows to display.")
                 .or(getByRole(AriaRole.BUTTON, "next page button")).waitFor();

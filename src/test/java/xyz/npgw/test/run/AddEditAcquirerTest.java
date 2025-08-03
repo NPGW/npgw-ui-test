@@ -70,7 +70,7 @@ public class AddEditAcquirerTest extends BaseTest {
     public void testAddAcquirerFormOpensWithCorrectHeaderAndFieldsAndClosesCorrectly() {
         AddAcquirerDialog addAcquirerDialog = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab()
+                .clickAcquirersTab()
                 .clickAddAcquirer();
 
         Allure.step("Verify: the header contains the expected title text");
@@ -111,7 +111,7 @@ public class AddEditAcquirerTest extends BaseTest {
     public void testToggleStatusRadioButtonsCorrectly(String status) {
         Locator statusRadiobutton = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab()
+                .clickAcquirersTab()
                 .clickAddAcquirer()
                 .clickStatusRadiobutton(status)
                 .getStatusRadiobutton(status);
@@ -128,7 +128,7 @@ public class AddEditAcquirerTest extends BaseTest {
     public void testAddAcquirer() {
         AddAcquirerDialog addAcquirerDialog = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab()
+                .clickAcquirersTab()
                 .clickAddAcquirer();
 
 //      Bug!! acquirerDisplayNameField isn't editable
@@ -207,7 +207,7 @@ public class AddEditAcquirerTest extends BaseTest {
     public void testCreateAcquirerWithDuplicateNameShowsError() {
         AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab();
+                .clickAcquirersTab();
 
         AddAcquirerDialog acquirerDialog = acquirersPage
                 .clickAddAcquirer()
@@ -238,7 +238,7 @@ public class AddEditAcquirerTest extends BaseTest {
     public void testDefaultStateOfAddAcquirerDialog() {
         AddAcquirerDialog addAcquirerDialog = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab()
+                .clickAcquirersTab()
                 .clickAddAcquirer();
 
         Allure.step("Verify: Acquirer name field is marked as invalid");
@@ -288,7 +288,7 @@ public class AddEditAcquirerTest extends BaseTest {
 
         List<String> actualPlaceholders = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab()
+                .clickAcquirersTab()
                 .getSelectAcquirer().typeName(ACQUIRER_FOR_EDIT)
                 .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT)
                 .getTable().clickEditAcquirerButton(ACQUIRER_FOR_EDIT)
@@ -307,7 +307,7 @@ public class AddEditAcquirerTest extends BaseTest {
     public void testEditAcquirerVerifyUpdatedData() {
         AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
                 .clickSystemAdministrationLinkAsSuper()
-                .getSystemMenu().clickAcquirersTab()
+                .clickAcquirersTab()
                 .getSelectAcquirer().typeName(ACQUIRER_FOR_EDIT)
                 .getSelectAcquirer().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT)
                 .getTable().clickEditAcquirerButton(ACQUIRER_FOR_EDIT)

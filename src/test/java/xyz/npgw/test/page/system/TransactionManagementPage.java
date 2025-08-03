@@ -6,7 +6,7 @@ import lombok.Getter;
 import xyz.npgw.test.page.dialog.adjustment.AddAdjustmentDialog;
 
 @Getter
-public class TransactionManagementPage extends BaseSystemPage<TransactionManagementPage> {
+public class TransactionManagementPage extends SuperSystemPage<TransactionManagementPage> {
 
     private final Locator addAdjustmentButton = getByTestId("AddAdjustmentButtonTransactionManagementPage");
     private final Locator transactionsTable = getByLabelExact("transactions table");

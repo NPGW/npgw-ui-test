@@ -14,7 +14,7 @@ import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.gateway.AddBusinessUnitAcquirerDialog;
 
 @Getter
-public class GatewayPage extends BaseSystemPage<GatewayPage>
+public class GatewayPage extends SuperSystemPage<GatewayPage>
         implements SelectCompanyTrait<GatewayPage>,
                    SelectBusinessUnitTrait<GatewayPage>,
                    SelectAcquirerTrait<GatewayPage>,

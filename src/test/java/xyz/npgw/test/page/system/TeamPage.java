@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
-public class TeamPage extends BaseSystemPage<TeamPage>
+public class TeamPage extends SuperSystemPage<TeamPage>
         implements UsersTableTrait,
                    SelectCompanyTrait<TeamPage>,
                    SelectStatusTrait<TeamPage> {

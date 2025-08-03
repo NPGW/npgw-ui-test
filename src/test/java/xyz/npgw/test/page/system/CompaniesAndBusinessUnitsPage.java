@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 @Getter
-public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage>
+public class CompaniesAndBusinessUnitsPage extends SuperSystemPage<CompaniesAndBusinessUnitsPage>
         implements SelectCompanyTrait<CompaniesAndBusinessUnitsPage>,
                    BusinessUnitsTableTrait {
 
