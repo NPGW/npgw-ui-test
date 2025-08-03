@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
-import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -27,7 +27,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Check that after click on transactions in column NPGW reference user see transaction details")
     public void testCheckTransactionDetails() {
         TransactionDetailsDialog transactionDetailsDialog = new SuperDashboardPage(getPage())
-                .clickTransactionsLink()
+                .clickTransactionsLinkAsSuper()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction();
@@ -58,7 +58,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Check the hiding of parameters by pressing the chevron in Card details section")
     public void testCheckTheHidingOfParameters() {
         TransactionDetailsDialog transactionDetailsDialog = new SuperDashboardPage(getPage())
-                .clickTransactionsLink()
+                .clickTransactionsLinkAsSuper()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
@@ -113,8 +113,8 @@ public class TransactionDetailsTest extends BaseTest {
     @Feature("Transaction details")
     @Description("Closes the transaction details dialog using both the button and the icon.")
     public void testCloseTransactionDetailsDialog() {
-        TransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLink()
+        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
+                .clickTransactionsLinkAsSuper()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
@@ -137,8 +137,8 @@ public class TransactionDetailsTest extends BaseTest {
     @Feature("Transaction details")
     @Description("Verify, that the data in Transaction Details Dialog corresponds to the data in Transactions table")
     public void testDataMatching() {
-        TransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLink()
+        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
+                .clickTransactionsLinkAsSuper()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -180,14 +180,14 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Check that the 'Pending' occurs at most once in the Payment lifecycle section")
     public void testPendingOccursAtMostOnceInLifecycle() {
         new SuperDashboardPage(getPage())
-                .clickTransactionsLink()
+                .clickTransactionsLinkAsSuper()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().selectRowsPerPageOption("10")
                 .getTable().goToLastPage();
 
-        TransactionsPage transactionsPage = new TransactionsPage(getPage());
+        SuperTransactionsPage transactionsPage = new SuperTransactionsPage(getPage());
         int numberOfTransactions = transactionsPage
                 .getTable().getRows()
                 .count();

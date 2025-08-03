@@ -13,7 +13,7 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.LoginPage;
-import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 
 import java.util.regex.Pattern;
@@ -47,8 +47,8 @@ public class HeaderTest extends BaseTest {
     @Feature("Transactions menu item")
     @Description("Check after clicking on Transactions user redirected to Transactions page")
     public void testTransactionsLink() {
-        TransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLink();
+        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
+                .clickTransactionsLinkAsSuper();
 
         Allure.step("Verify: Transactions Page URL");
         assertThat(transactionsPage.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
@@ -61,7 +61,7 @@ public class HeaderTest extends BaseTest {
     @Description("Check that click on Logo return user to the dashboard page from other pages")
     public void testClickLogoReturnToDashboardPage() {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLink()
+                .clickTransactionsLinkAsSuper()
                 .clickLogoButton();
 
         Allure.step("Verify: Dashboard Page URL");

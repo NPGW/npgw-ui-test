@@ -10,10 +10,12 @@ import xyz.npgw.test.page.dashboard.AdminDashboardPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.ReportsPage;
-import xyz.npgw.test.page.TransactionsPage;
+import xyz.npgw.test.page.transactions.AdminTransactionsPage;
+import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 import xyz.npgw.test.page.dashboard.UserDashboardPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 import xyz.npgw.test.page.system.TeamPage;
+import xyz.npgw.test.page.transactions.UserTransactionsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -63,11 +65,25 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         return new UserDashboardPage(getPage());
     }
 
-    @Step("Click on 'Transactions' menu in Header")
-    public TransactionsPage clickTransactionsLink() {
+    @Step("Click on 'Transactions' in the Header")
+    public SuperTransactionsPage clickTransactionsLinkAsSuper() {
         clickAndWait(transactionsButton);
 
-        return new TransactionsPage(getPage());
+        return new SuperTransactionsPage(getPage());
+    }
+
+    @Step("Click on 'Transactions' in the Header")
+    public AdminTransactionsPage clickTransactionsLinkAsAdmin() {
+        clickAndWait(transactionsButton);
+
+        return new AdminTransactionsPage(getPage());
+    }
+
+    @Step("Click on 'Transactions' in the Header")
+    public UserTransactionsPage clickTransactionsLinkAsUser() {
+        clickAndWait(transactionsButton);
+
+        return new UserTransactionsPage(getPage());
     }
 
     @Step("Click on 'Reports' menu in Header")

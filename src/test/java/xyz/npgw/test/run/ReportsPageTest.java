@@ -136,7 +136,7 @@ public class ReportsPageTest extends BaseTest {
 
         generationParametersDialog
                 .clickCloseIcon()
-                .clickTransactionsLink()
+                .clickTransactionsLinkAsSuper()
                 .clickReportsLink()
                 .clickGenerateReportButton();
 
