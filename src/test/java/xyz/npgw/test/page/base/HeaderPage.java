@@ -86,15 +86,23 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         return new UserTransactionsPage(getPage());
     }
 
-    @Step("Click on 'Reports' menu in Header")
+    @Step("Click on 'Reports' in the Header")
     public ReportsPage clickReportsLink() {
         clickAndWait(reportsButton);
 
         return new ReportsPage(getPage());
     }
 
-    @Step("Click on 'System administration' menu in Header")
-    public TeamPage clickSystemAdministrationLink() {
+    @Step("Click on 'System administration' in the Header")
+    public TeamPage clickSystemAdministrationLinkAsSuper() {
+        clickAndWait(systemAdministrationButton);
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
+
+        return new TeamPage(getPage());
+    }
+
+    @Step("Click on 'System administration' in the Header")
+    public TeamPage clickSystemAdministrationLinkAsAdmin() {
         clickAndWait(systemAdministrationButton);
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
 

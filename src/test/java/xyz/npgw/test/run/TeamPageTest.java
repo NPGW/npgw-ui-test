@@ -54,7 +54,7 @@ public class TeamPageTest extends BaseTest {
     @Description("User navigate to 'System administration page'")
     public void testNavigateToSystemAdministrationPage() {
         TeamPage systemAdministrationPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink();
+                .clickSystemAdministrationLinkAsSuper();
 
         Allure.step("Verify: System administration Page URL");
         assertThat(systemAdministrationPage.getPage()).hasURL(Constants.SYSTEM_PAGE_URL);
@@ -72,7 +72,7 @@ public class TeamPageTest extends BaseTest {
         systemAdminEmail = "%s.newsuper@email.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(systemAdminEmail)
@@ -91,7 +91,7 @@ public class TeamPageTest extends BaseTest {
     @Description("Verify system admin can be deleted")
     public void testDeleteSystemAdmin() {
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany("super")
                 .getTable().clickDeleteUserIcon(systemAdminEmail)
                 .clickDeleteButton();
@@ -116,7 +116,7 @@ public class TeamPageTest extends BaseTest {
         companyAdminEmail = "%s.newadmin@email.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(companyAdminEmail)
@@ -135,7 +135,7 @@ public class TeamPageTest extends BaseTest {
     @Description("Verify company admin can be deleted")
     public void testDeleteCompanyAdmin() {
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .getTable().clickDeleteUserIcon(companyAdminEmail)
                 .clickDeleteButton();
@@ -160,7 +160,7 @@ public class TeamPageTest extends BaseTest {
         companyAnalystEmail = "%s.newuser@email.com".formatted(TestUtils.now());
 
         AddUserDialog addUserDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton();
 
@@ -207,7 +207,7 @@ public class TeamPageTest extends BaseTest {
     @Description("Verify that business unit cannot be deleted if there are users associated with it")
     public void testDeletingBusinessUnitWithUsersFailsWithError() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE)
@@ -225,7 +225,7 @@ public class TeamPageTest extends BaseTest {
     @Description("Verify company analyst can be deleted")
     public void testDeleteCompanyAnalyst() {
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .getTable().clickDeleteUserIcon(companyAnalystEmail)
                 .clickDeleteButton();
@@ -250,7 +250,7 @@ public class TeamPageTest extends BaseTest {
         String email = "%s.edit.analyst@email.com".formatted(TestUtils.now());
 
         EditUserDialog editUserDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -305,7 +305,7 @@ public class TeamPageTest extends BaseTest {
         String email = "%s.email@gmail.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
@@ -325,7 +325,7 @@ public class TeamPageTest extends BaseTest {
         String email = "%s.change@gmail.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -357,7 +357,7 @@ public class TeamPageTest extends BaseTest {
         String email = "%s.edit@gmail.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
@@ -387,7 +387,7 @@ public class TeamPageTest extends BaseTest {
         String email = "%s.deactivate.and.activate@gmail.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
@@ -437,7 +437,7 @@ public class TeamPageTest extends BaseTest {
         String email = "%s.reset.password@gmail.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .clickAddUserButton()
                 .fillEmailField(email)
                 .fillPasswordField("Password1!")
@@ -473,7 +473,7 @@ public class TeamPageTest extends BaseTest {
         String analystPassword = "CompanyAnalyst123!";
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .clickAddUserButton()
                 .fillEmailField(analystEmail)
                 .fillPasswordField(analystPassword)
@@ -522,7 +522,7 @@ public class TeamPageTest extends BaseTest {
 
         loginPage
                 .loginAs("%s.admin@email.com".formatted(getUid()), ProjectProperties.getPassword())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()
                 .clickSaveChangesButton()
@@ -548,7 +548,7 @@ public class TeamPageTest extends BaseTest {
         final String email = "%s.filter@email.com".formatted(TestUtils.now());
 
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -580,7 +580,7 @@ public class TeamPageTest extends BaseTest {
     @Description("Verify that users can be sorted alphabetically")
     public void testCheckSortingListOfUsersAlphabetically() {
         List<String> sortedUsersAlphabetically = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getTable().clickSortIcon("Username")
                 .getTable().getColumnValues("Username");
@@ -599,7 +599,7 @@ public class TeamPageTest extends BaseTest {
     @Description("Verify that users can be sorted in reverse alphabetical order")
     public void testCheckSortingListOfUsersReverse() {
         List<String> sortedUsersReverseAlphabetically = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getTable().clickSortIcon("Username")
                 .getTable().clickSortIcon("Username")
@@ -621,7 +621,7 @@ public class TeamPageTest extends BaseTest {
         final String companyAdmin = "%s.companydmin@email.com".formatted(TestUtils.now());
 
         AddUserDialog addUserDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSelectCompany().selectCompany(getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(companyAdmin)
@@ -649,7 +649,7 @@ public class TeamPageTest extends BaseTest {
     @Description("'Reset filter' button resets the 'Status' filter to 'All' and clears the selected company")
     public void testResetFilter() {
         TeamPage teamPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLink();
+                .clickSystemAdministrationLinkAsSuper();
 
         Allure.step("Verify: 'Status' filter displays 'All' by default");
         assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");

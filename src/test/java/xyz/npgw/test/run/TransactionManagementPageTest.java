@@ -28,7 +28,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Verify possibility to add adjustment with Transaction adjustment")
     public void testAddTransactionAdjustment() {
         TransactionManagementPage page = new TransactionManagementPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
                 .getTable().clickTransaction()
@@ -45,7 +45,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Close button with no changes performed")
     public void testClickCloseButtonWithNoChanges() {
         TransactionManagementPage page = new TransactionManagementPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
                 .getTable().clickTransaction()
@@ -61,7 +61,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Create button is disabled if nothing is selected")
     public void testCreateButtonIsDisabledByDefault() {
         AddAdjustmentDialog page = new TransactionManagementPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton();
 
@@ -83,7 +83,7 @@ public class TransactionManagementPageTest extends BaseTest {
                 .getTable().getFirstRowReference();
 
         AddAdjustmentDialog addAdjustmentDialog = new SuperTransactionsPage(getPage())
-                .clickSystemAdministrationLink()
+                .clickSystemAdministrationLinkAsSuper()
                 .getSystemMenu().clickTransactionManagementTab()
                 .clickAddAdjustmentButton();
 
