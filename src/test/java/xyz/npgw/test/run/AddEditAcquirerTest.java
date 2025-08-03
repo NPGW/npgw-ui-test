@@ -133,7 +133,7 @@ public class AddEditAcquirerTest extends BaseTest {
 
 //      Bug!! acquirerDisplayNameField isn't editable
 //      TODO - remove Boolean after fixing bug
-        Boolean isEditableAcquirerDisplayNameField = addAcquirerDialog.getAcquirerDisplayNameField().isEditable();
+        boolean isEditableAcquirerDisplayNameField = addAcquirerDialog.getAcquirerDisplayNameField().isEditable();
 
         AcquirersPage acquirersPage = addAcquirerDialog
                 .fillAcquirerNameField(ACQUIRER.getAcquirerName())
