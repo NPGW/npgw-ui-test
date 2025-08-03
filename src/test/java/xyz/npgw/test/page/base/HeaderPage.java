@@ -6,6 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.LoginPage;
@@ -21,7 +22,8 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 @Getter
 @SuppressWarnings("unchecked")
-public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage {
+public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage
+        implements AlertTrait<CurrentPageT> {
 
     private final Locator logoImg = getPage().getByAltText("logo");
     private final Locator logo = getByRole(AriaRole.LINK).filter(new Locator.FilterOptions().setHas(logoImg));

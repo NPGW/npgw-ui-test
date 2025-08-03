@@ -37,11 +37,11 @@ import java.util.regex.Pattern;
 
 @Getter
 public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactionsPage<CurrentPageT>>
-        extends HeaderPage<CurrentPageT> implements TransactionsTableTrait,
-        SelectBusinessUnitTrait<CurrentPageT>,
-        SelectDateRangeTrait<CurrentPageT>,
-        SelectStatusTrait<CurrentPageT>,
-        AlertTrait<CurrentPageT> {
+        extends HeaderPage<CurrentPageT>
+        implements TransactionsTableTrait,
+                   SelectBusinessUnitTrait<CurrentPageT>,
+                   SelectDateRangeTrait<CurrentPageT>,
+                   SelectStatusTrait<CurrentPageT> {
 
     private final Locator businessUnitSelector = getByTextExact("Business unit").locator("../../..");
     private final Locator currencySelector = getByLabelExact("Currency");

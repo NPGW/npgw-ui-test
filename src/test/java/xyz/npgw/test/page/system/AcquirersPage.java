@@ -24,10 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 @Getter
-public class AcquirersPage extends BaseSystemPage<AcquirersPage> implements AcquirersTableTrait,
-        SelectAcquirerTrait<AcquirersPage>,
-        AlertTrait<AcquirersPage>,
-        SelectStatusTrait<AcquirersPage> {
+public class AcquirersPage extends BaseSystemPage<AcquirersPage>
+        implements AcquirersTableTrait,
+                   SelectAcquirerTrait<AcquirersPage>,
+                   SelectStatusTrait<AcquirersPage> {
 
     private final Locator addAcquirerButton = getByTestId("AddAcquirerButton");
     private final Locator addAcquirerDialog = getByRole(AriaRole.DIALOG);

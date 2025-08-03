@@ -24,10 +24,9 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 @Getter
-public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage> implements
-        SelectCompanyTrait<CompaniesAndBusinessUnitsPage>,
-        AlertTrait<CompaniesAndBusinessUnitsPage>,
-        BusinessUnitsTableTrait {
+public class CompaniesAndBusinessUnitsPage extends BaseSystemPage<CompaniesAndBusinessUnitsPage>
+        implements SelectCompanyTrait<CompaniesAndBusinessUnitsPage>,
+                   BusinessUnitsTableTrait {
 
     private final Locator addCompanyButton = getByTestId("AddCompanyButton");
     private final Locator editCompanyButton = getByTestId("EditCompanyButton");

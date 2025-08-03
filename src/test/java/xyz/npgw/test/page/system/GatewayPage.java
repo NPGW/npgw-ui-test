@@ -15,9 +15,11 @@ import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.dialog.gateway.AddBusinessUnitAcquirerDialog;
 
 @Getter
-public class GatewayPage extends BaseSystemPage<GatewayPage> implements SelectCompanyTrait<GatewayPage>,
-        SelectBusinessUnitTrait<GatewayPage>, SelectAcquirerTrait<GatewayPage>, AlertTrait<GatewayPage>,
-        BusinessUnitAcquirersTableTrait {
+public class GatewayPage extends BaseSystemPage<GatewayPage>
+        implements SelectCompanyTrait<GatewayPage>,
+                   SelectBusinessUnitTrait<GatewayPage>,
+                   SelectAcquirerTrait<GatewayPage>,
+                   BusinessUnitAcquirersTableTrait {
 
     private final Locator currencyValue = locator("div[data-slot='innerWrapper'] span");
     @Getter(AccessLevel.NONE)

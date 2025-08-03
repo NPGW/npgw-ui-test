@@ -8,8 +8,7 @@ import xyz.npgw.test.page.common.trait.AlertTrait;
 import xyz.npgw.test.page.dialog.adjustment.AddAdjustmentDialog;
 
 @Getter
-public class TransactionManagementPage extends BaseSystemPage<TransactionManagementPage>
-        implements AlertTrait<SuperTransactionsPage> {
+public class TransactionManagementPage extends BaseSystemPage<TransactionManagementPage> {
 
     private final Locator addAdjustmentButton = getByTestId("AddAdjustmentButtonTransactionManagementPage");
     private final Locator transactionsTable = getByLabelExact("transactions table");

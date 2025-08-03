@@ -11,10 +11,11 @@ import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.common.trait.SelectDateRangeTrait;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
 
-public class ReportsPage extends HeaderPage<ReportsPage> implements ReportsTableTrait,
-        SelectDateRangeTrait<ReportsPage>,
-        SelectCompanyTrait<ReportsPage>,
-        SelectBusinessUnitTrait<ReportsPage> {
+public class ReportsPage extends HeaderPage<ReportsPage>
+        implements ReportsTableTrait,
+                   SelectDateRangeTrait<ReportsPage>,
+                   SelectCompanyTrait<ReportsPage>,
+                   SelectBusinessUnitTrait<ReportsPage> {
 
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator generateReportButton = getByRole(AriaRole.BUTTON, "Generate report");

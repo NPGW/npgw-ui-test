@@ -17,10 +17,9 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 @Getter
 public abstract class BaseDashboardPage<CurrentPageT extends BaseDashboardPage<CurrentPageT>>
-        extends HeaderPage<CurrentPageT> implements
-        SelectDateRangeTrait<CurrentPageT>,
-        AlertTrait<CurrentPageT>,
-        SelectBusinessUnitTrait<CurrentPageT> {
+        extends HeaderPage<CurrentPageT>
+        implements SelectDateRangeTrait<CurrentPageT>,
+                   SelectBusinessUnitTrait<CurrentPageT> {
 
     private final Locator htmlTag = locator("html");
     @Getter(AccessLevel.NONE)
