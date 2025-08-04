@@ -39,8 +39,8 @@ public class AddEditAcquirerTest extends BaseTest {
             .build();
 
     private static final Acquirer ACQUIRER_FOR_EDIT = Acquirer.builder()
-            .acquirerName("%s acquirer for edit".formatted(RUN_ID))
-            .acquirerDisplayName("%s acquirer for edit".formatted(RUN_ID))
+            .acquirerName("%s acquirer for edit form".formatted(RUN_ID))
+            .acquirerDisplayName("%s acquirer for edit form".formatted(RUN_ID))
             .acquirerMidMcc("5411")
             .build();
 
@@ -293,8 +293,7 @@ public class AddEditAcquirerTest extends BaseTest {
         List<String> actualPlaceholders = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirerMid().typeName(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
-                .getSelectAcquirerMid().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
+                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
                 .getTable().clickEditAcquirerButton(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
                 .getAllPlaceholders();
 
@@ -311,8 +310,7 @@ public class AddEditAcquirerTest extends BaseTest {
         AcquirersPage acquirersPage = new DashboardPage(getPage())
                 .clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirerMid().typeName(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
-                .getSelectAcquirerMid().clickAcquirerInDropdown(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
+                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
                 .getTable().clickEditAcquirerButton(ACQUIRER_FOR_EDIT.getAcquirerDisplayName())
 //      TODO - change after fixing bug
 //                .fillAcquirerDisplayNameField(ACQUIRER_EDITED.getAcquirerDisplayName())
