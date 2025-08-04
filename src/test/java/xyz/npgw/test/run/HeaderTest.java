@@ -62,7 +62,7 @@ public class HeaderTest extends BaseTest {
     public void testClickLogoReturnToDashboardPage() {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .clickTransactionsLinkAsSuper()
-                .clickLogoButton();
+                .clickLogoButtonAsSuper();
 
         Allure.step("Verify: Dashboard Page URL");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);

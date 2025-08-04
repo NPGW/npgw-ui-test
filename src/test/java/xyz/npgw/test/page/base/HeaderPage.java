@@ -119,10 +119,24 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
     }
 
     @Step("Click 'Logo' button")
-    public SuperDashboardPage clickLogoButton() {
+    public SuperDashboardPage clickLogoButtonAsSuper() {
         logo.click();
 
         return new SuperDashboardPage(getPage());
+    }
+
+    @Step("Click 'Logo' button")
+    public AdminDashboardPage clickLogoButtonAsAdmin() {
+        logo.click();
+
+        return new AdminDashboardPage(getPage());
+    }
+
+    @Step("Click 'Logo' button")
+    public UserDashboardPage clickLogoButtonAsUser() {
+        logo.click();
+
+        return new UserDashboardPage(getPage());
     }
 
     @Step("Click 'User menu' button")

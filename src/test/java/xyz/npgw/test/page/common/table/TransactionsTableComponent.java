@@ -8,7 +8,6 @@ import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
-import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -19,21 +18,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class TransactionsTableComponent extends BaseTableComponent<SuperTransactionsPage> {
+public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
 
     private final String refundTransactionButtonSelector;
     private final Locator cardTypeImage;
 
-    public TransactionsTableComponent(Page page) {
-        super(page);
+    public TransactionsTableComponent(Page page, CurrentPageT currentPage) {
+        super(page, currentPage);
 
         this.refundTransactionButtonSelector = "[data-testid='RefundTransactionButton']";
         this.cardTypeImage = locator("img[alt='logo']");
     }
 
     @Override
-    protected SuperTransactionsPage getCurrentPage() {
-        return new SuperTransactionsPage(getPage());
+    protected CurrentPageT getCurrentPage() {
+        return currentPage;
     }
 
     @Step("Click on the first transaction from the table")

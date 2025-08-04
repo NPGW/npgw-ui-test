@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 @Getter
 public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactionsPage<CurrentPageT>>
         extends HeaderPage<CurrentPageT>
-        implements TransactionsTableTrait,
+        implements TransactionsTableTrait<CurrentPageT>,
                    SelectBusinessUnitTrait<CurrentPageT>,
                    SelectDateRangeTrait<CurrentPageT>,
                    SelectStatusTrait<CurrentPageT> {

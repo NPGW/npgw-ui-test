@@ -12,8 +12,8 @@ import xyz.npgw.test.page.system.TeamPage;
 
 public class UsersTableComponent extends BaseTableComponent<TeamPage> {
 
-    public UsersTableComponent(Page page) {
-        super(page);
+    public UsersTableComponent(Page page, TeamPage currentPage) {
+        super(page, currentPage);
     }
 
     @Override
