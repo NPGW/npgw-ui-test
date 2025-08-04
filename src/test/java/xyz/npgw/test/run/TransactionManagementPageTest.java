@@ -10,9 +10,9 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
-import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 import xyz.npgw.test.page.dialog.adjustment.AddAdjustmentDialog;
 import xyz.npgw.test.page.system.TransactionManagementPage;
+import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;

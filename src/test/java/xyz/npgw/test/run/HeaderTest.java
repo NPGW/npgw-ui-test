@@ -11,10 +11,10 @@ import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
-import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.LoginPage;
-import xyz.npgw.test.page.transactions.SuperTransactionsPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
+import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 import java.util.regex.Pattern;
 

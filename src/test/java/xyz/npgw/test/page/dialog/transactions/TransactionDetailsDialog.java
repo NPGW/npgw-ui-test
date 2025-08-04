@@ -5,8 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 import xyz.npgw.test.page.dialog.BaseDialog;
+import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 @Getter
 public class TransactionDetailsDialog extends BaseDialog<SuperTransactionsPage, TransactionDetailsDialog> {
