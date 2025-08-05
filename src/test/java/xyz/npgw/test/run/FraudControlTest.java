@@ -1014,9 +1014,9 @@ public class FraudControlTest extends BaseTest {
                 "?", "(", ")", "_", "`", "+", ";"
         );
 
-        AddControlDialog addControlDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
-                .getSystemMenu().clickFraudControlTab()
+        AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickFraudControlTab()
                 .clickAddFraudControl();
 
         for (String symbol : invalidSymbols) {
