@@ -1006,9 +1006,9 @@ public class FraudControlTest extends BaseTest {
     @TmsLink("1079")
     @Epic("System/Fraud Control")
     @Feature("Add Fraud control")
-    @Description("Verify that error message is displayed when special symbols are entered in the Control name field" +
-            " after clicking create button")
-    public void testSpecialSymbolsInControlNameNotAllowed () {
+    @Description("Verify that error message is displayed when special symbols are entered in the Control name field"
+            + " after clicking create button")
+    public void testSpecialSymbolsInControlNameNotAllowed() {
         List<String> invalidSymbols = Arrays.asList(
                 "@", "#", "$", "%", "*", "=", "/", "\\", ":", "|", "^", "~", "!", "\"", "<", ">", "[", "]", "{", "}",
                 "?", "(", ")", "_", "`", "+", ";"
@@ -1021,8 +1021,8 @@ public class FraudControlTest extends BaseTest {
 
         for (String symbol : invalidSymbols) {
             String input = "a" + symbol.repeat(4);
-            String expectedMessage = "ERRORInvalid name: '" + input + "'. It may only contain letters, digits," +
-                    " ampersands (&), hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
+            String expectedMessage = "ERRORInvalid name: '" + input + "'. It may only contain letters, digits,"
+                    + " ampersands (&), hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
 
             addControlDialog
                     .fillFraudControlNameField(input)
