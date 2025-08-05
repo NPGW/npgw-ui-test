@@ -988,9 +988,9 @@ public class FraudControlTest extends BaseTest {
     @Feature("Business Unit Control table")
     @Description("Priority icons for only one Business unit control")
     public void testPriorityIconsDisableForOnlyOneBusinessUnitControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
-                .getSystemMenu().clickFraudControlTab()
+        FraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
