@@ -130,9 +130,9 @@ public class AddEditAcquirerTest extends BaseTest {
     @Feature("Setup acquirer MID")
     @Description("New acquirer MID can be successfully set up and displayed correctly in the acquirers table.")
     public void testSetupAcquirerMid() {
-        AcquirersPage acquirersPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
-                .getSystemMenu().clickAcquirersTab()
+        AcquirersPage acquirersPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickAcquirersTab()
                 .clickSetupAcquirerMidButton()
                 .fillAcquirerNameField(ACQUIRER.getAcquirerName())
                 .fillAcquirerDisplayNameField(ACQUIRER.getAcquirerDisplayName())
