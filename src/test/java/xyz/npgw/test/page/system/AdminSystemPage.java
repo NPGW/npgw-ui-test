@@ -5,11 +5,14 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.common.table.header.AdminHeaderMenuComponent;
+import xyz.npgw.test.page.common.table.header.AdminHeaderMenuTrait;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public abstract class AdminSystemPage<CurrentPageT extends AdminSystemPage<CurrentPageT>>
-        extends HeaderPage<CurrentPageT> {
+        extends HeaderPage<CurrentPageT>
+        implements AdminHeaderMenuTrait<CurrentPageT> {
 
     private final Locator teamTab = getByRole(AriaRole.TAB, "Team");
     private final Locator businessUnitsTab = getByRole(AriaRole.TAB, "Business units");

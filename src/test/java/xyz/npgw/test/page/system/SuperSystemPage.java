@@ -5,11 +5,13 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.HeaderPage;
+import xyz.npgw.test.page.common.table.header.SuperHeaderMenuTrait;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public abstract class SuperSystemPage<CurrentPageT extends SuperSystemPage<CurrentPageT>>
-        extends HeaderPage<CurrentPageT> {
+        extends HeaderPage<CurrentPageT>
+        implements SuperHeaderMenuTrait<CurrentPageT> {
 
     private final Locator teamTab = getByRole(AriaRole.TAB, "Team");
     private final Locator companiesAndBusinessUnitsTab = getByRole(AriaRole.TAB, "Companies and business units");
@@ -23,10 +25,10 @@ public abstract class SuperSystemPage<CurrentPageT extends SuperSystemPage<Curre
     }
 
     @Step("Click 'Team' tab")
-    public TeamPage clickTeamTab() {
+    public SuperTeamPage clickTeamTab() {
         clickAndCheckActive(teamTab);
 
-        return new TeamPage(getPage());
+        return new SuperTeamPage(getPage());
     }
 
     @Step("Click 'Companies and business units' tab")

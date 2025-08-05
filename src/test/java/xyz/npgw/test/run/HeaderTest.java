@@ -31,14 +31,14 @@ public class HeaderTest extends BaseTest {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage());
 
         Allure.step("Verify: Logo contains text 'NPGW'");
-        assertThat(dashboardPage.getLogo()).hasText("NPGW");
+        assertThat(dashboardPage.getHeader().getLogo()).hasText("NPGW");
 
         Allure.step("Verify: Logo contains image");
-        assertThat(dashboardPage.getLogoImg()).isVisible();
-        assertThat(dashboardPage.getLogoImg()).hasAttribute("src", Pattern.compile("/assets/.*png"));
+        assertThat(dashboardPage.getHeader().getLogoImg()).isVisible();
+        assertThat(dashboardPage.getHeader().getLogoImg()).hasAttribute("src", Pattern.compile("/assets/.*png"));
 
         Allure.step("Verify: Image inside logo is fully loaded");
-        Assert.assertTrue(dashboardPage.isLogoImageLoaded(), "Image inside logo should be fully loaded");
+        Assert.assertTrue(dashboardPage.getHeader().isLogoImageLoaded(), "Image inside logo should be fully loaded");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class HeaderTest extends BaseTest {
     @Description("Check after clicking on Transactions user redirected to Transactions page")
     public void testTransactionsLink() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper();
+                .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Transactions Page URL");
         assertThat(transactionsPage.getPage()).hasURL(Constants.TRANSACTIONS_PAGE_URL);
@@ -61,8 +61,8 @@ public class HeaderTest extends BaseTest {
     @Description("Check that click on Logo return user to the dashboard page from other pages")
     public void testClickLogoReturnToDashboardPage() {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
-                .clickLogoButtonAsSuper();
+                .getHeader().clickTransactionsLink()
+                .getHeader().clickLogoButton();
 
         Allure.step("Verify: Dashboard Page URL");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);

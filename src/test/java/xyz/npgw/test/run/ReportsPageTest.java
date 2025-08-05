@@ -45,7 +45,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("User navigate to 'Reports page' after clicking on 'Reports' link on the header")
     public void testNavigateToReportsPage() {
         ReportsPage reportsPage = new SuperDashboardPage(getPage())
-                .clickReportsLink();
+                .getHeader().clickReportsLink();
 
         Allure.step("Verify: Reports Page URL");
         assertThat(reportsPage.getPage()).hasURL(Constants.REPORTS_PAGE_URL);
@@ -62,7 +62,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
         ReportsPage reportsPage = new SuperDashboardPage(getPage())
-                .clickReportsLink()
+                .getHeader().clickReportsLink()
                 .getSelectDateRange().setDateRangeFields("01-04-2025", "01-04-2024")
                 .clickRefreshDataButton();
 
@@ -79,7 +79,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("Verify content of 'Generation Parameters dialog'")
     public void testContentOfGenerationParametersDialog() {
         ReportsParametersDialog generationParametersDialog = new SuperDashboardPage(getPage())
-                .clickReportsLink()
+                .getHeader().clickReportsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
                 .clickGenerateReportButton();
@@ -114,7 +114,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("Check/uncheck reports columns in the 'Generation Parameters dialog'")
     public void testCheckboxesOfGenerationParameters() {
         ReportsParametersDialog generationParametersDialog = new SuperDashboardPage(getPage())
-                .clickReportsLink()
+                .getHeader().clickReportsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
                 .clickGenerateReportButton();
@@ -136,8 +136,8 @@ public class ReportsPageTest extends BaseTest {
 
         generationParametersDialog
                 .clickCloseIcon()
-                .clickTransactionsLinkAsSuper()
-                .clickReportsLink()
+                .getHeader().clickTransactionsLink()
+                .getHeader().clickReportsLink()
                 .clickGenerateReportButton();
 
         Allure.step("Verify: All report columns remained unchecked after exiting the 'Generation Parameters dialog'");
@@ -176,7 +176,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
         ReportsPage reportsPage = new ReportsPage(getPage())
-                .clickReportsLink();
+                .getHeader().clickReportsLink();
 
         String defaultStartDate = reportsPage.getSelectDateRange().getStartDate().textContent();
         String defaultEndDate = reportsPage.getSelectDateRange().getEndDate().textContent();
@@ -206,7 +206,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("'Filename' column header sorts entries in alphabetical and reverse order")
     public void testSortingByFilename() {
         ReportsPage reportsPage = new ReportsPage(getPage())
-                .clickReportsLink()
+                .getHeader().clickReportsLink()
                 .getTable().clickColumnHeader("Filename");
 
         List<String> actualFilenameList = reportsPage.getTable().getColumnValues("Filename");
@@ -237,7 +237,7 @@ public class ReportsPageTest extends BaseTest {
     @Description("'Size' column header sorts entries in ascending and descending order")
     public void testSortingBySize() {
         ReportsPage reportsPage = new ReportsPage(getPage())
-                .clickReportsLink()
+                .getHeader().clickReportsLink()
                 .getTable().clickColumnHeader("Size");
 
         List<String> actualSizeList = reportsPage.getTable().getColumnValues("Size");

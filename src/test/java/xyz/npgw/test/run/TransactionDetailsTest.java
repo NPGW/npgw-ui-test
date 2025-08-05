@@ -27,7 +27,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Check that after click on transactions in column NPGW reference user see transaction details")
     public void testCheckTransactionDetails() {
         TransactionDetailsDialog transactionDetailsDialog = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
+                .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction();
@@ -58,7 +58,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Check the hiding of parameters by pressing the chevron in Card details section")
     public void testCheckTheHidingOfParameters() {
         TransactionDetailsDialog transactionDetailsDialog = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
+                .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
@@ -114,7 +114,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Closes the transaction details dialog using both the button and the icon.")
     public void testCloseTransactionDetailsDialog() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
+                .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
@@ -138,7 +138,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Verify, that the data in Transaction Details Dialog corresponds to the data in Transactions table")
     public void testDataMatching() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
+                .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -180,7 +180,7 @@ public class TransactionDetailsTest extends BaseTest {
     @Description("Check that the 'Pending' occurs at most once in the Payment lifecycle section")
     public void testPendingOccursAtMostOnceInLifecycle() {
         new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
+                .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)

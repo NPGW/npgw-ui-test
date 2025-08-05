@@ -80,7 +80,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("The 'Currency' dropdown toggles and contains options")
     public void testOpenCurrencyDropdown() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .clickCurrencyValue();
 
@@ -95,7 +95,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify that re-selecting an already selected currency keeps the selection unchanged.")
     public void testRetainCurrencyWhenReSelectingSameOption() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab();
 
         Locator actualCurrency = gatewayPage
@@ -126,7 +126,7 @@ public class GatewayPageTest extends BaseTest {
             + " and when no company is selected, the list is empty with 'No items.'")
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME);
 
@@ -159,7 +159,7 @@ public class GatewayPageTest extends BaseTest {
         String merchantTitle = "second";
 
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -197,7 +197,7 @@ public class GatewayPageTest extends BaseTest {
         Company company = new Company(new Faker().company().name(), new Faker().company().industry());
 
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -243,7 +243,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Check possibility to select an appropriate acquirer to merchant")
     public void testSelectAcquirer() {
         GatewayPage page = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
@@ -271,7 +271,7 @@ public class GatewayPageTest extends BaseTest {
             + " Move merchant-acquirer up to increase their priority")
     public void testMoveMerchantAcquirerDownAndUpButtons() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
@@ -312,7 +312,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify the active and inactive merchant acquirers can be added")
     public void testAddMerchantAcquirer() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[1])
@@ -344,7 +344,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Merchant acquirer can be successfully deleted")
     public void testDeleteMerchantAcquirer() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_DELETION_TEST)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME_DELETION_TEST)
@@ -367,7 +367,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify that merchant acquirer can be activated and deactivated by Super")
     public void testActivateDeactivateMerchantAcquirer() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
@@ -398,7 +398,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify that entries can be sorted by Priority, Status, Acquirer and Currencies in Asc and Desc order")
     public void testSortEntries() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
@@ -499,7 +499,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify that click on Cancel button cancels the Merchant Acquirer status change")
     public void testCancelButtonInChangeMerchantAcquirerActivityDialog() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
@@ -523,7 +523,7 @@ public class GatewayPageTest extends BaseTest {
     @Description("Verify that click on Cancel button cancels the Merchant Acquirer status change")
     public void testCloseButtonInChangeMerchantAcquirerActivityDialog() {
         GatewayPage gatewayPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])

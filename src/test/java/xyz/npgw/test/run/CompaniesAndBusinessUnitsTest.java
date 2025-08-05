@@ -67,7 +67,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("The company info block can be hidden and shown via settings.")
     public void testToggleCompanyInfoVisibilityViaSettings() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .clickSettings()
@@ -90,7 +90,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Validates successful company creation and correct field persistence.")
     public void testAddCompany() {
         AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -175,7 +175,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickEditCompanyButton()
@@ -255,7 +255,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Verify that company can be deleted")
     public void testDeleteCompany() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickDeleteSelectedCompany()
@@ -286,7 +286,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Error is displayed when trying to create a company with an already existing name")
     public void testAddCompanyWithSameName() {
         AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME_FOR_TEST_RUN)
@@ -305,7 +305,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Verify that company cannot be deleted if there are associated business units")
     public void testCannotDeleteCompanyWithAssociatedBusinessUnit() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickDeleteSelectedCompany()
@@ -326,7 +326,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         String email = "%s.admin123@email.com".formatted(TestUtils.now());
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -351,7 +351,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Verify default filter state was applied once reset")
     public void testResetAppliedFilter() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .clickOnResetFilterButton();
@@ -371,7 +371,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Error message is shown for company name is shorter than 4 or longer than 100 characters.")
     public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
         AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(name)
@@ -390,7 +390,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Verify required field states, placeholders, and button state in empty 'Add Company' form.")
     public void testAddCompanyFormValidationWhenEmpty() {
         AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -434,7 +434,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Error is displayed when trying to create a company with special characters in the name.")
     public void testErrorIsDisplayedWhenCreatingCompanyWithSpecialCharacters(String character) {
         AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField("Company" + character)
@@ -454,7 +454,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Error message when trying to create a company with invalid length and special characters.")
     public void testErrorForInvalidCompanyNameLengthAndCharacters(String name, String character) {
         AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(name + character)
@@ -474,7 +474,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Description("Company can be added by filling out required fields")
     public void testAddCompanyByFillRequiredFields() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME_REQUIRED_FIELD)

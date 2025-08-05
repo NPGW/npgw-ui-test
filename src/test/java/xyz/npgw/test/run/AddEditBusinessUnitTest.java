@@ -46,7 +46,7 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Description("Verify that a new business unit wasn't added once click 'Close' button")
     public void testCloseButtonAndDiscardChanges() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company241.companyName())
@@ -70,7 +70,7 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Description("Validates successful business unit addition to company (E2E test).")
     public void testAddBusinessUnitEndToEndTest() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab();
 
         Allure.step("Verify: 'Add business unit' button is disabled before selecting a company");
@@ -123,7 +123,7 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Description("Verify that all elements of dialog are displayed properly")
     public void testElementsOfEditBusinessUnitDialog() {
         EditBusinessUnitDialog editBusinessUnitDialog = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_FOR_EDIT)
                 .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE);
@@ -163,7 +163,7 @@ public class AddEditBusinessUnitTest extends BaseTest {
         String originalBusinessUnitId = businessUnitForEdit.merchantId();
 
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_FOR_EDIT)
                 .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE)
@@ -188,7 +188,7 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Description("Verify that business unit can be deleted")
     public void testDeleteBusinessUnit() {
         CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_FOR_EDIT)
                 .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE_EDITED)

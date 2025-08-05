@@ -28,7 +28,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Verify possibility to add adjustment with Transaction adjustment")
     public void testAddTransactionAdjustment() {
         TransactionManagementPage page = new TransactionManagementPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
                 .getTable().clickTransaction()
@@ -45,7 +45,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Close button with no changes performed")
     public void testClickCloseButtonWithNoChanges() {
         TransactionManagementPage page = new TransactionManagementPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickTransactionManagementTab()
                 .clickAddAdjustmentButton()
                 .getTable().clickTransaction()
@@ -61,7 +61,7 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Create button is disabled if nothing is selected")
     public void testCreateButtonIsDisabledByDefault() {
         AddAdjustmentDialog page = new TransactionManagementPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickTransactionManagementTab()
                 .clickAddAdjustmentButton();
 
@@ -76,14 +76,14 @@ public class TransactionManagementPageTest extends BaseTest {
     @Description("Search by NPGW reference within Add adjustment dialog and check placeholders")
     public void testPlaceholdersAndSearchNpgwInAddAdjustment() {
         String referenceFromTable = new SuperDashboardPage(getPage())
-                .clickTransactionsLinkAsSuper()
+                .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().getFirstRowReference();
 
         AddAdjustmentDialog addAdjustmentDialog = new SuperTransactionsPage(getPage())
-                .clickSystemAdministrationLinkAsSuper()
+                .getHeader().clickSystemAdministrationLink()
                 .clickTransactionManagementTab()
                 .clickAddAdjustmentButton();
 

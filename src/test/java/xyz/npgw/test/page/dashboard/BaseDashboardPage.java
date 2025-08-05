@@ -45,7 +45,7 @@ public abstract class BaseDashboardPage<CurrentPageT extends BaseDashboardPage<C
 
     public BaseDashboardPage(Page page) {
         super(page);
-        assertThat(getDashboardButton().locator("..")).hasAttribute("data-active", "true");
+        assertThat(getByRole(AriaRole.LINK, "Dashboard").locator("..")).hasAttribute("data-active", "true");
     }
 
     @Step("Click 'Refresh data' button")
