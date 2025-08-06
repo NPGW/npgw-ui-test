@@ -495,8 +495,7 @@ public class TransactionsTableTest extends BaseTest {
         } while (transactionsPage.getTable().goToNextPage());
     }
 
-//  Not all transactions are exported, only those on the current page
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("880")
     @Epic("Transactions")
     @Feature("Export table data")
@@ -506,7 +505,8 @@ public class TransactionsTableTest extends BaseTest {
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getSelectStatus().select("INITIATED");
 
         Download download = getPage().waitForDownload(
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
@@ -532,7 +532,7 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     //  Not all transactions are exported, only those on the current page
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("957")
     @Epic("Transactions")
     @Feature("Export table data")
@@ -542,7 +542,9 @@ public class TransactionsTableTest extends BaseTest {
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getTable().selectRowsPerPageOption("100")
+                .getSelectStatus().select("PENDING");
 
         Download download = getPage().waitForDownload(
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
@@ -575,7 +577,7 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     //  Not all transactions are exported, only those on the current page
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("1011")
     @Epic("Transactions")
     @Feature("Export table data")
@@ -585,7 +587,9 @@ public class TransactionsTableTest extends BaseTest {
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .getTable().selectRowsPerPageOption("100")
+                .getSelectStatus().select("PENDING");
 
         Download download = getPage().waitForDownload(
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
