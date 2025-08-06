@@ -37,6 +37,8 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
     private final Locator paginationItems;
     private final Locator nextPageButton;
     private final Locator previousPageButton;
+    private final Locator leftDotsButton;
+    private final Locator firstPageButton;
 
     private final Locator noRowsToDisplayMessage;
 
@@ -62,6 +64,9 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
                 .setName("next page button"));
         this.previousPageButton = root.getByRole(AriaRole.BUTTON, new Locator.GetByRoleOptions()
                 .setName("previous page button"));
+        this.leftDotsButton = root.locator("li[aria-label='previous page button'] + li[aria-label='dots element']");
+        this.firstPageButton = root.getByLabel("pagination item 1", new Locator.GetByLabelOptions().setExact(true));
+
         this.noRowsToDisplayMessage = root.getByText("No rows to display.",
                 new Locator.GetByTextOptions().setExact(true));
 
@@ -243,12 +248,18 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         } while (goToNextPage());
     }
 
+    @Step("Click pagination page button #1")
     public boolean goToFirstPageIfNeeded() {
         if (hasNoPagination()) {
             return false;
         }
+
+        while (leftDotsButton.count() > 0 && leftDotsButton.isVisible()) {
+           leftDotsButton.click();
+        }
+
         if (isNotCurrentPage("1")) {
-            clickPaginationPageButton("1");
+            firstPageButton.click();
         }
 
         return true;
@@ -261,10 +272,6 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         clickPaginationPageButton(paginationItems.last().innerText());
 
         return true;
-    }
-
-    private boolean isNotCurrentPage(String number) {
-        return !getActivePageButton().innerText().equals(number);
     }
 
     public boolean goToNextPage() {
@@ -315,6 +322,10 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         } while (goToNextPage());
 
         return allValues;
+    }
+
+    private boolean isNotCurrentPage(String number) {
+        return !getActivePageButton().innerText().equals(number);
     }
 
     public interface PageCallback {
