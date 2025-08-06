@@ -46,8 +46,8 @@ public class TransactionDetailsTest extends BaseTest {
 
         Allure.step("Verify: The Customer details labels");
         assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
-                .hasText(new String[]{"Name", "Date of birth", "E-Mail", "Phone",
-                        "Country", "State", "City", "ZIP", "Address"});
+                .hasText(new String[]{"E-Mail", "Name", "Address", "City",
+                        "ZIP", "Country", "Phone", "Date of birth"});
     }
 
 

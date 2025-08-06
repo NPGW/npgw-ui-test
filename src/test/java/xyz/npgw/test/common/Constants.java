@@ -1,7 +1,5 @@
 package xyz.npgw.test.common;
 
-import java.time.ZonedDateTime;
-
 public class Constants {
 
     public static final String LOGIN_PAGE_URL = ProjectProperties.getBaseUrl() + "/";
