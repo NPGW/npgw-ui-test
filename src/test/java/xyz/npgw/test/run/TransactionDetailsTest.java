@@ -16,6 +16,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
 public class TransactionDetailsTest extends BaseTest {
 
@@ -180,7 +181,7 @@ public class TransactionDetailsTest extends BaseTest {
     public void testPendingOccursAtMostOnceInLifecycle() {
         new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setOneWeekBeforeNowRange()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().selectRowsPerPageOption("10")

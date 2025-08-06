@@ -23,15 +23,12 @@ import java.util.regex.Pattern;
 @Getter
 public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
 
-    protected CurrentPageT currentPage;
     private final Locator root;
-
     private final Locator columnHeaders;
     private final Locator rows;
     private final Locator headerRow;
     private final Locator firstRow;
     private final Locator lastRow;
-
     private final Locator rowsPerPage;
     private final Locator rowsPerPageDropdown;
     private final Locator paginationItems;
@@ -39,8 +36,8 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
     private final Locator previousPageButton;
     private final Locator leftDotsButton;
     private final Locator firstPageButton;
-
     private final Locator noRowsToDisplayMessage;
+    protected CurrentPageT currentPage;
 
     public BaseTableComponent(Page page, CurrentPageT currentPage) {
         this(page, currentPage, page.locator("body"));
@@ -74,8 +71,6 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
                 .or(lastRow)
                 .waitFor();
     }
-
-    protected abstract CurrentPageT getCurrentPage();
 
     public Locator getColumnHeader(String name) {
         return columnHeaders.getByText(name, new Locator.GetByTextOptions().setExact(true));
@@ -255,7 +250,7 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         }
 
         while (leftDotsButton.count() > 0 && leftDotsButton.isVisible()) {
-           leftDotsButton.click();
+            leftDotsButton.click();
         }
 
         if (isNotCurrentPage("1")) {
@@ -283,12 +278,6 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         return true;
     }
 
-    protected String columnSelector(String columnHeader) {
-        int index = ((Number) getColumnHeader(columnHeader).evaluate("el => el.cellIndex")).intValue() + 1;
-
-        return "td:nth-child(" + index + ")";
-    }
-
     public boolean hasNoPagination() {
         return paginationItems.first().isHidden();
     }
@@ -304,6 +293,14 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
                         .map(parser)
                         .toList()
         );
+    }
+
+    protected abstract CurrentPageT getCurrentPage();
+
+    protected String columnSelector(String columnHeader) {
+        int index = ((Number) getColumnHeader(columnHeader).evaluate("el => el.cellIndex")).intValue() + 1;
+
+        return "td:nth-child(" + index + ")";
     }
 
     protected <T> List<T> collectAllPages(Supplier<List<T>> currentPageExtractor) {

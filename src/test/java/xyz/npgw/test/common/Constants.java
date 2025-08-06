@@ -1,5 +1,7 @@
 package xyz.npgw.test.common;
 
+import java.time.ZonedDateTime;
+
 public class Constants {
 
     public static final String LOGIN_PAGE_URL = ProjectProperties.getBaseUrl() + "/";
@@ -16,4 +18,6 @@ public class Constants {
 
     public static final String COMPANY_NAME_FOR_TEST_RUN = "CompanyForTestRunOnly Inc.";
     public static final String BUSINESS_UNIT_FOR_TEST_RUN = "MerchantCompanyForTestRunOnly Inc.";
+
+    public static final String ONE_DATE_FOR_TABLE = "05-08-2025";
 }
