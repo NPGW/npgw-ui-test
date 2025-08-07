@@ -7,7 +7,6 @@ import com.microsoft.playwright.options.LoadState;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;
 import xyz.npgw.test.page.system.AdminTeamPage;
-import xyz.npgw.test.page.system.SuperTeamPage;
 import xyz.npgw.test.page.transactions.AdminTransactionsPage;
 
 public class AdminHeaderMenuComponent<CurrentPageT> extends BaseHeaderMenuComponent<CurrentPageT> {

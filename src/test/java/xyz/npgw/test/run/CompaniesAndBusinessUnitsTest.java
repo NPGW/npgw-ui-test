@@ -13,7 +13,6 @@ import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.dashboard.AdminDashboardPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
