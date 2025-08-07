@@ -1026,7 +1026,7 @@ public class FraudControlTest extends BaseTest {
 
             addControlDialog
                     .fillFraudControlNameField(input)
-                    .clickCreateButton();
+                    .clickSetupButton();
 
             Allure.step("Verify error message for symbol: " + symbol);
             assertThat(addControlDialog.getAlert().getMessage()).containsText(expectedMessage);
