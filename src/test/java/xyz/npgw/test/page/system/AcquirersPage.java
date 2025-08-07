@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 @Getter
 public class AcquirersPage extends HeaderPage<AcquirersPage>
-        implements SuperHeaderMenuTrait<FraudControlPage>,
+        implements SuperHeaderMenuTrait<AcquirersPage>,
                    SuperSystemMenuTrait,
                    SelectAcquirerTrait<AcquirersPage>,
                    SelectStatusTrait<AcquirersPage>,

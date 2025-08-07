@@ -9,9 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.page.base.HeaderPage;
-import xyz.npgw.test.page.common.header.SuperHeaderMenuTrait;
-import xyz.npgw.test.page.common.system.SuperSystemMenuTrait;
-import xyz.npgw.test.page.common.trait.SelectCompanyTrait;
 import xyz.npgw.test.page.common.trait.SelectStatusTrait;
 import xyz.npgw.test.page.common.trait.UsersTableTrait;
 import xyz.npgw.test.page.dialog.user.AddUserDialog;
@@ -21,9 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends HeaderPage<CurrentPageT>
-        implements SuperHeaderMenuTrait<CurrentPageT>,
-                   SuperSystemMenuTrait,
-                   SelectStatusTrait<CurrentPageT>,
+        implements SelectStatusTrait<CurrentPageT>,
                    UsersTableTrait {
 
     public BaseTeamPage(Page page) {
