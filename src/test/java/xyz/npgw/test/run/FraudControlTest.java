@@ -1045,31 +1045,31 @@ public class FraudControlTest extends BaseTest {
         String invalidControlName101Chars = "a".repeat(101);
 
         AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
-              .getHeader().clickSystemAdministrationLink()
-              .getSystemMenu().clickFraudControlTab()
-              .clickAddFraudControl()
-              .fillFraudControlNameField(invalidControlName3Chars);
+                 .getHeader().clickSystemAdministrationLink()
+                 .getSystemMenu().clickFraudControlTab()
+                 .clickAddFraudControl()
+                 .fillFraudControlNameField(invalidControlName3Chars);
 
-    Allure.step("Verify that the Setup button is disabled if Control name contains 3 characters");
-    assertThat(addControlDialog.getSetupButton()).isDisabled();
+        Allure.step("Verify that the Setup button is disabled if Control name contains 3 characters");
+        assertThat(addControlDialog.getSetupButton()).isDisabled();
 
-    addControlDialog
-            .fillFraudControlNameField(validControlName4Chars);
+        addControlDialog
+                .fillFraudControlNameField(validControlName4Chars);
 
-    Allure.step("Verify that the Setup button is enabled if  Control name contains 4 characters");
-    assertThat(addControlDialog.getSetupButton()).isEnabled();
+        Allure.step("Verify that the Setup button is enabled if  Control name contains 4 characters");
+        assertThat(addControlDialog.getSetupButton()).isEnabled();
 
-    addControlDialog
-            .fillFraudControlNameField(validControlName100Chars);
+        addControlDialog
+                .fillFraudControlNameField(validControlName100Chars);
 
-    Allure.step("Verify that the Setup button is enabled if Control name contains 100 characters");
-    assertThat(addControlDialog.getSetupButton()).isEnabled();
+        Allure.step("Verify that the Setup button is enabled if Control name contains 100 characters");
+        assertThat(addControlDialog.getSetupButton()).isEnabled();
 
-    addControlDialog
-            .fillFraudControlNameField(invalidControlName101Chars);
+        addControlDialog
+                .fillFraudControlNameField(invalidControlName101Chars);
 
-    Allure.step("Verify that a Control name field has limit of 100 characters");
-    Assert.assertEquals(addControlDialog.getControlNameInput().inputValue().length(), 100);
+        Allure.step("Verify that a Control name field has limit of 100 characters");
+        Assert.assertEquals(addControlDialog.getControlNameInput().inputValue().length(), 100);
     }
 
     @AfterClass
