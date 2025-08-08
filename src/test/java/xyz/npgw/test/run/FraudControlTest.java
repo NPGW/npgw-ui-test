@@ -1046,7 +1046,7 @@ public class FraudControlTest extends BaseTest {
 
         AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
               .getHeader().clickSystemAdministrationLink()
-              .clickFraudControlTab()
+              .getSystemMenu().clickFraudControlTab()
               .clickAddFraudControl()
               .fillFraudControlNameField(invalidControlName3Chars);
 
