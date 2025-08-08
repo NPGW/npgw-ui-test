@@ -1050,6 +1050,12 @@ public class FraudControlTest extends BaseTest {
                  .clickAddFraudControl()
                  .fillFraudControlNameField(invalidControlName3Chars);
 
+        String ariaInvalid = addControlDialog.getControlNameInput().getAttribute("aria-invalid");
+
+        Allure.step("Verify that the 'Control Name' field is highlighted in red");
+        Assert.assertEquals(ariaInvalid, "true", "The 'Control Name' field should be"
+                + " highlighted in red");
+
         Allure.step("Verify that the Setup button is disabled if Control name contains 3 characters");
         assertThat(addControlDialog.getSetupButton()).isDisabled();
 
