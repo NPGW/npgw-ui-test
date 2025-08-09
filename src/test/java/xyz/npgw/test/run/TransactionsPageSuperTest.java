@@ -30,7 +30,7 @@ import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
-public class TransactionsPageTest extends BaseTest {
+public class TransactionsPageSuperTest extends BaseTest {
 
     private static final String COMPANY_NAME = "%s test request company".formatted(RUN_ID);
     private static final String MERCHANT_TITLE = "%s test request merchant".formatted(RUN_ID);
