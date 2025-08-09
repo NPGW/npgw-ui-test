@@ -11,14 +11,14 @@ import xyz.npgw.test.common.entity.CardType;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.FraudControl;
-import xyz.npgw.test.common.entity.Info;
-import xyz.npgw.test.common.entity.MerchantAcquirer;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.entity.User;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,11 +41,6 @@ public final class TestUtils {
         ZonedDateTime zonedDateTime = ZonedDateTime.parse(date.substring(0, 11) + ".2025",
                 DateTimeFormatter.ofPattern("MMdd.HHmmss.yyyy").withZone(ZoneOffset.UTC));
         return zonedDateTime.isBefore(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
-    }
-
-    public static ZonedDateTime lastBuildDate(APIRequestContext request) {
-        String lastBuildDate = Info.get(request).app().version().replaceAll("^.*\\.|-.*$", "");
-        return ZonedDateTime.parse(lastBuildDate, DateTimeFormatter.ofPattern("yyMMddHHmm").withZone(ZoneOffset.UTC));
     }
 
     public static BusinessUnit createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
@@ -94,12 +89,10 @@ public final class TestUtils {
     }
 
     public static String getCurrentRange() {
-        final java.time.LocalDate currentDate = java.time.LocalDate.now();
-        final String[] dataNow = currentDate.toString().split("-");
-        final int lastDay = currentDate.lengthOfMonth();
-        final String monthYear = "/" + dataNow[1] + "/" + dataNow[0];
+        YearMonth yearMonth = YearMonth.from(LocalDate.now());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        return "Date range01" + monthYear + "-" + lastDay + monthYear;
+        return yearMonth.atDay(1).format(formatter) + "-" + yearMonth.atEndOfMonth().format(formatter);
     }
 
     @SneakyThrows

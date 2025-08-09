@@ -68,7 +68,7 @@ public class DashboardPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange()
-                .setDateRangeFields("01-04-2025", "01-04-2024")
+                .setDateRangeFields("01/04/2025 - 01/04/2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
@@ -222,7 +222,6 @@ public class DashboardPageTest extends BaseTest {
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
 
-    //    TODO - replace with correct expected values, actual ones are wrong
     @Test
     @TmsLink("720")
     @Epic("Dashboard")
@@ -232,7 +231,7 @@ public class DashboardPageTest extends BaseTest {
         getPage().route("**/summary", this::summaryHandler);
 
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025")
+                .getSelectDateRange().setDateRangeFields("01/05/2025 - 31/05/2025")
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 

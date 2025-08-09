@@ -28,6 +28,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
 public class DashboardPageAdminTest extends BaseTest {
 
@@ -64,7 +65,7 @@ public class DashboardPageAdminTest extends BaseTest {
     public void testErrorMessageForReversedDateRangeAsTestAdmin() {
         AdminDashboardPage dashboardPage = new AdminDashboardPage(getPage())
                 .getSelectDateRange()
-                .setDateRangeFields("01-04-2025", "01-04-2024")
+                .setDateRangeFields("01/04/2025 - 01/04/2024")
                 .pressTabKey();
 
         Allure.step("Verify: error message is shown for invalid date range");
@@ -81,7 +82,7 @@ public class DashboardPageAdminTest extends BaseTest {
     public void testVisibleChartElementsAreDisplayedCorrectlyAsTestAdmin() {
         AdminDashboardPage dashboardPage = new AdminDashboardPage(getPage())
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
         assertThat(dashboardPage.getYAxisLabels()).hasText(new String[]{"100%", "80%", "60%", "40%", "20%", "0%"});
@@ -135,7 +136,7 @@ public class DashboardPageAdminTest extends BaseTest {
         Pattern pattern = Pattern.compile("(INITIATED|PENDING|SUCCESS|FAILED)(EUR.*|USD.*|GBP.*)");
         AdminDashboardPage dashboardPage = new AdminDashboardPage(getPage())
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);
@@ -222,7 +223,7 @@ public class DashboardPageAdminTest extends BaseTest {
         getPage().route("**/summary", this::summaryHandler);
 
         AdminDashboardPage dashboardPage = new AdminDashboardPage(getPage())
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025")
+                .getSelectDateRange().setDateRangeFields("01/05/2025 - 31/05/2025")
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: INITIATED main block contents");
