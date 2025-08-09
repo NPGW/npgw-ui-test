@@ -69,9 +69,10 @@ public final class TestUtils {
                     .forEach(user -> User.delete(request, user.email()));
             Arrays.stream(BusinessUnit.getAll(request, companyName))
                     .forEach(businessUnit -> {
-                        while (BusinessUnit.delete(request, companyName, businessUnit) == 409) {
-                            MerchantAcquirer.delete(request, businessUnit.merchantId());
-                        }
+                        BusinessUnit.deleteWithTimeout(request, companyName, businessUnit);
+//                        while (BusinessUnit.delete(request, companyName, businessUnit) == 409) {
+//                            MerchantAcquirer.delete(request, businessUnit.merchantId());
+//                        }
                     });
         }
     }
