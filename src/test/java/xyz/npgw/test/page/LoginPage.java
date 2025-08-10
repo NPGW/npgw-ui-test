@@ -7,7 +7,7 @@ import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BasePage;
-import xyz.npgw.test.page.common.trait.AlertTrait;
+import xyz.npgw.test.page.component.AlertTrait;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 
 import static io.qameta.allure.model.Parameter.Mode.MASKED;
