@@ -41,7 +41,7 @@ public abstract class BaseDialog<
         return allPlaceholdersWithoutSearch.all().stream().map(l -> l.getAttribute("placeholder")).toList();
     }
 
-    protected CurrentDialogT selfDialog() {
+    protected CurrentDialogT getCurrentDialog() {
         return (CurrentDialogT) this;
     }
 
@@ -50,7 +50,7 @@ public abstract class BaseDialog<
         inputFields.last().waitFor();
         inputFields.getByLabel(label).clear();
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Click on the 'Close' button to close form")

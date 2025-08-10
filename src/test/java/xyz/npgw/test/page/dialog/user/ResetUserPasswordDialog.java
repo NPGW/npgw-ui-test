@@ -19,7 +19,7 @@ public abstract class ResetUserPasswordDialog<
     public CurrentDialogT fillPasswordField(String newPassword) {
         getByPlaceholder("Enter new password").fill(newPassword);
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Click 'Reset' button")

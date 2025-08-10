@@ -24,14 +24,14 @@ public abstract class UserDialog<
     public CurrentDialogT checkActiveRadiobutton() {
         getByRoleExact(AriaRole.RADIO, "Active").check();
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Check 'Inactive' status radiobutton")
     public CurrentDialogT checkInactiveRadiobutton() {
         getByRole(AriaRole.RADIO, "Inactive").check();
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Check 'Company admin' user role radiobutton")
@@ -39,7 +39,7 @@ public abstract class UserDialog<
         getByRole(AriaRole.RADIO, "Company admin").check();
 //        assertThat(getByRole(AriaRole.RADIO, "Company admin")).isChecked();
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Check 'Company analyst' user role radiobutton")
@@ -47,7 +47,7 @@ public abstract class UserDialog<
         getByRole(AriaRole.RADIO, "Company analyst").check();
 //        assertThat(getByRole(AriaRole.RADIO, "Company analyst")).isChecked();
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Check '{businessUnitName}' checkbox")
@@ -55,13 +55,13 @@ public abstract class UserDialog<
 //        getByTextExact("Allowed business units").waitFor();
         getByRole(AriaRole.CHECKBOX, businessUnitName).setChecked(true);
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Uncheck '{businessUnitName}' checkbox")
     public CurrentDialogT uncheckAllowedBusinessUnitCheckbox(String businessUnitName) {
         getByRole(AriaRole.CHECKBOX, businessUnitName).setChecked(false);
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 }

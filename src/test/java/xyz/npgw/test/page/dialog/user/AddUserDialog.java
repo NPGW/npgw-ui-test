@@ -24,14 +24,14 @@ public abstract class AddUserDialog<
     public CurrentDialogT fillEmailField(String email) {
         getByPlaceholder("Enter user email").fill(email);
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Enter user password")
     public CurrentDialogT fillPasswordField(@Param(name = "Password", mode = MASKED) String password) {
         getByPlaceholder("Enter user password").fill(password);
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 
     @Step("Click 'Create' button")
@@ -45,6 +45,6 @@ public abstract class AddUserDialog<
     public CurrentDialogT clickCreateButtonAndTriggerError() {
         createButton.click();
 
-        return selfDialog();
+        return getCurrentDialog();
     }
 }
