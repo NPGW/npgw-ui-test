@@ -9,11 +9,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
-import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;
-import xyz.npgw.test.page.component.table.BusinessUnitAcquirersTableTrait;
 import xyz.npgw.test.page.component.select.SelectAcquirerTrait;
 import xyz.npgw.test.page.component.select.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.component.select.SelectCompanyTrait;
+import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;
+import xyz.npgw.test.page.component.table.BusinessUnitAcquirersTableTrait;
 import xyz.npgw.test.page.dialog.gateway.AddBusinessUnitAcquirerDialog;
 
 @Getter

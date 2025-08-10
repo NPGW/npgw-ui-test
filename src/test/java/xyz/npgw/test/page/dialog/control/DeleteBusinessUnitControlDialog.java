@@ -6,7 +6,8 @@ import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
-public class DeleteBusinessUnitControlDialog extends BaseDialog<SuperFraudControlPage, DeleteBusinessUnitControlDialog> {
+public class DeleteBusinessUnitControlDialog
+        extends BaseDialog<SuperFraudControlPage, DeleteBusinessUnitControlDialog> {
 
     public DeleteBusinessUnitControlDialog(Page page) {
         super(page);

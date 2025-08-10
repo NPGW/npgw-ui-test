@@ -6,10 +6,10 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
-import xyz.npgw.test.page.component.table.ReportsTableTrait;
 import xyz.npgw.test.page.component.select.SelectBusinessUnitTrait;
 import xyz.npgw.test.page.component.select.SelectCompanyTrait;
 import xyz.npgw.test.page.component.select.SelectDateRangeTrait;
+import xyz.npgw.test.page.component.table.ReportsTableTrait;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
 
 public class ReportsPage extends HeaderPage<ReportsPage>

@@ -13,10 +13,10 @@ import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
-import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;
-import xyz.npgw.test.page.component.table.AcquirersTableTrait;
 import xyz.npgw.test.page.component.select.SelectAcquirerTrait;
 import xyz.npgw.test.page.component.select.SelectStatusTrait;
+import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;
+import xyz.npgw.test.page.component.table.AcquirersTableTrait;
 import xyz.npgw.test.page.dialog.acquirer.DeleteAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.SetupAcquirerMidDialog;
 
