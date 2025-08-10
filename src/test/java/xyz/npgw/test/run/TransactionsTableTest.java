@@ -126,14 +126,14 @@ public class TransactionsTableTest extends BaseTest {
     @Feature("Filter")
     @Description("Filtering transactions by date range")
     public void testFilteringTransactionsByDateRange() {
-        String startDate = "01-06-2025";
-        String endDate = "05-06-2025";
+        String startDate = "01/06/2025";
+        String endDate = "05/06/2025";
 
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(startDate, endDate)
+                .getSelectDateRange().setDateRangeFields(startDate + " - " + endDate)
                 .clickRefreshDataButton();
 
         Allure.step("Verify: Transactions can be filtered by date range");
@@ -307,7 +307,7 @@ public class TransactionsTableTest extends BaseTest {
     public void testPaginationNextButton() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().selectRowsPerPageOption("10")
@@ -421,7 +421,7 @@ public class TransactionsTableTest extends BaseTest {
     public void testRefundButtonVisibility() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
