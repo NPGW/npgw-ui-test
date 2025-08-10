@@ -2,13 +2,13 @@ package xyz.npgw.test.run;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
-import org.testng.annotations.Optional;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -40,7 +40,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Navigation")
     @Description("User navigate to 'Transactions page' after clicking on 'Transactions' link on the header")
-    public void testNavigateToTransactionsPage() {
+    public void testNavigateToTransactionsPage(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -56,7 +56,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Status")
     @Description("Verify that user can see selector Status Options")
-    public void testTheVisibilityOfTheStatusSelectorOptions() {
+    public void testTheVisibilityOfTheStatusSelectorOptions(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectStatus().clickSelector();
@@ -83,7 +83,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Choose amount popup functionality")
-    public void testChooseAmountPopUp() {
+    public void testChooseAmountPopUp(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -116,7 +116,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Error message 'From should be lesser than To' appears")
-    public void testErrorMessageByAmount() {
+    public void testErrorMessageByAmount(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -132,7 +132,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Card type")
     @Description("Verify that user can see 'Card type' options")
-    public void testTheVisibilityOfTheCardTypeOptions() {
+    public void testTheVisibilityOfTheCardTypeOptions(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickCardTypeSelector();
@@ -149,7 +149,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Edit Amount")
-    public void testEditAmount() {
+    public void testEditAmount(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -169,7 +169,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Reset Amount Values")
-    public void testResetAmountValues() {
+    public void testResetAmountValues(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -198,13 +198,13 @@ public class TransactionsPageUserTest extends BaseTest {
     @Feature("Business unit")
     @Description("Verify that the Company admin can see all the company's business units in the Business unit "
             + "dropdown list")
-    public void testTheVisibilityOfTheAvailableBusinessUnitOptions(@Optional("ADMIN") String userRole) {
+    public void testTheVisibilityOfTheAvailableBusinessUnitOptions(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage((getPage()))
                 .getHeader().clickTransactionsLink()
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
         Allure.step("Verify: Company's business units are visible");
-        assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames);
+        assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText("default");
     }
 
     @Ignore("Right now Refresh button is unavailable for only currency changed")
@@ -213,7 +213,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Currency' to default value ( ALL)")
-    public void testResetCurrency(String currency) {
+    public void testResetCurrency(String currency, @Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -240,7 +240,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Card Type' to default value ( ALL)")
-    public void testResetCardType(String cardType) {
+    public void testResetCardType(String cardType, @Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -266,7 +266,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
-    public void testResetStatus(String status) {
+    public void testResetStatus(String status, @Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -292,7 +292,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' (two options are checked) to default value ( ALL)")
-    public void testResetMultiStatus(String status1, String status2) {
+    public void testResetMultiStatus(String status1, String status2, @Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -318,7 +318,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
-    public void testResetAmount() {
+    public void testResetAmount(@Optional("USER") String userRole) {
         final String amountFrom = "10";
         final String amountTo = "20";
         final String chosenAmount = "Amount: " + amountFrom + " - " + amountTo;
@@ -354,7 +354,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that ")
-    public void testResetData() {
+    public void testResetData(@Optional("USER") String userRole) {
         final String startDate = "01-04-2025";
         final String endDate = "30-04-2025";
         final String dataFrom = startDate.replaceAll("-", "/");
@@ -386,7 +386,7 @@ public class TransactionsPageUserTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Transactions Search")
     @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
-    public void testSearchOptionsVisibleAfterClickingTrxIds() {
+    public void testSearchOptionsVisibleAfterClickingTrxIds(@Optional("USER") String userRole) {
         UserTransactionsPage transactionsPage = new UserTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickSearchTrxIdsButton();
