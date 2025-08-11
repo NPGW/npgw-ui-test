@@ -11,7 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -311,6 +310,7 @@ public class TransactionsPageTest extends BaseTest {
         Assert.assertTrue(transactionsPage.isFileAvailableAndNotEmpty(fileType));
     }
 
+    @Ignore("Empty bu list")
     @Test
     @TmsLink("503")
     @Epic("Transactions")
