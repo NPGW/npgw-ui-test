@@ -33,8 +33,9 @@ public class SelectCurrencyComponent<CurrentPageT extends HeaderPage<?>> extends
     }
 
     @Step("Select currency {value} from dropdown menu")
-    public CurrentPageT selectCurrency(String value) {
-        Locator option = getByRole(AriaRole.OPTION, value);
+    public CurrentPageT select(String currency) {
+        clickCurrencySelector();
+        Locator option = getByRole(AriaRole.OPTION, currency);
         option.waitFor();
         option.click();
         currencyDropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.HIDDEN));

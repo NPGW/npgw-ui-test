@@ -102,8 +102,7 @@ public class DashboardPageUserTest extends BaseTest {
     public void testResetFilterAsTestUser() {
         UserDashboardPage dashboardPage = new UserDashboardPage(getPage())
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectCurrency().clickCurrencySelector()
-                .getSelectCurrency().selectCurrency("EUR")
+                .getSelectCurrency().select("EUR")
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected business unit field is empty after reset");
@@ -228,23 +227,17 @@ public class DashboardPageUserTest extends BaseTest {
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR120");
 
-        dashboardPage
-                .getSelectCurrency().clickCurrencySelector()
-                .getSelectCurrency().selectCurrency("USD");
+        dashboardPage.getSelectCurrency().select("USD");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDUSD550.0K100");
 
-        dashboardPage
-                .getSelectCurrency().clickCurrencySelector()
-                .getSelectCurrency().selectCurrency("EUR");
+        dashboardPage.getSelectCurrency().select("EUR");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR660100,000");
 
-        dashboardPage
-                .getSelectCurrency().clickCurrencySelector()
-                .getSelectCurrency().selectCurrency("GBP");
+        dashboardPage.getSelectCurrency().select("GBP");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP0.77100,000,000");

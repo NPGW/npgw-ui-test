@@ -102,16 +102,12 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCurrency().getCurrencySelector();
 
         for (String currency : expectedOptions) {
-            gatewayPage
-                    .getSelectCurrency().clickCurrencySelector()
-                    .getSelectCurrency().selectCurrency(currency);
+            gatewayPage.getSelectCurrency().select(currency);
 
             Allure.step("Verify currency has value: " + currency);
             assertThat(actualCurrency).hasText(currency);
 
-            gatewayPage
-                    .getSelectCurrency().clickCurrencySelector()
-                    .getSelectCurrency().selectCurrency(currency);
+            gatewayPage.getSelectCurrency().select(currency);
 
             Allure.step("Verify currency has the same value: " + currency);
             assertThat(actualCurrency).hasText(currency);
@@ -213,8 +209,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
-                .getSelectCurrency().clickCurrencySelector()
-                .getSelectCurrency().selectCurrency(selectedCurrency);
+                .getSelectCurrency().select(selectedCurrency);
 
         Allure.step("Verify that all the values are presented in filter's filter");
         assertThat(gatewayPage.getSelectCurrency().getCurrencySelector()).containsText(selectedCurrency);

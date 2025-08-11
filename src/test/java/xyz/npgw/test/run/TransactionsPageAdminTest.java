@@ -219,9 +219,7 @@ public class TransactionsPageAdminTest extends BaseTest {
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
 
-        transactionsPage
-                .getSelectCurrency().clickCurrencySelector()
-                .getSelectCurrency().selectCurrency(currency);
+        transactionsPage.getSelectCurrency().select(currency);
 
         Allure.step("Verify: Filter displays the selected currency");
         assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
