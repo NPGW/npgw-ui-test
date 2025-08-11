@@ -217,20 +217,20 @@ public class TransactionsPageAdminTest extends BaseTest {
                 .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
-        assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
+        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
 
         transactionsPage
-                .clickCurrencySelector()
-                .selectCurrency(currency);
+                .getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency(currency);
 
         Allure.step("Verify: Filter displays the selected currency");
-        assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
+        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
 
         transactionsPage
                 .clickResetFilterButton();
 
         Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
-        assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
+        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
     }
 
     @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)

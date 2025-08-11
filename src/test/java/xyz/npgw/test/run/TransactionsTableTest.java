@@ -186,12 +186,12 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        List<String> currencyValues = transactionsPage.clickCurrencySelector()
-                .selectCurrency(currency)
+        List<String> currencyValues = transactionsPage.getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency(currency)
                 .getTable().getColumnValuesFromAllPages("Currency");
 
         Allure.step("Verify: Filter displays the selected currency");
-        assertThat(transactionsPage.getCurrencySelector()).containsText(currency);
+        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
 
         Allure.step("Verify: All values in the Currency column match the selected currency");
         assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
@@ -213,7 +213,9 @@ public class TransactionsTableTest extends BaseTest {
 
         transactionsPage.getTable().goToLastPage();
 
-        transactionsPage.clickCurrencySelector().selectCurrency("EUR");
+        transactionsPage
+                .getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency("EUR");
 
         Allure.step("Verify: Transactions are still present then filter is applied on the last page");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);

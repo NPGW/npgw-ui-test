@@ -106,8 +106,8 @@ public class DashboardPageTest extends BaseTest {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
-                .clickCurrencySelector()
-                .selectCurrency("EUR")
+                .getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency("EUR")
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
@@ -117,7 +117,7 @@ public class DashboardPageTest extends BaseTest {
         assertThat(dashboardPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
-        assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
+        assertThat(dashboardPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
     }
 
     @Test
@@ -238,17 +238,23 @@ public class DashboardPageTest extends BaseTest {
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR120");
 
-        dashboardPage.clickCurrencySelector().selectCurrency("USD");
+        dashboardPage
+                .getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency("USD");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDUSD550.0K100");
 
-        dashboardPage.clickCurrencySelector().selectCurrency("EUR");
+        dashboardPage
+                .getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency("EUR");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR660100,000");
 
-        dashboardPage.clickCurrencySelector().selectCurrency("GBP");
+        dashboardPage
+                .getSelectCurrency().clickCurrencySelector()
+                .getSelectCurrency().selectCurrency("GBP");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP0.77100,000,000");
