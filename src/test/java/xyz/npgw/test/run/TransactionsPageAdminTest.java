@@ -8,7 +8,6 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
@@ -40,7 +39,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Navigation")
     @Description("User navigate to 'Transactions page' after clicking on 'Transactions' link on the header")
-    public void testNavigateToTransactionsPage(@Optional("ADMIN") String userRole) {
+    public void testNavigateToTransactionsPageAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -56,7 +55,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Status")
     @Description("Verify that user can see selector Status Options")
-    public void testTheVisibilityOfTheStatusSelectorOptions(@Optional("ADMIN") String userRole) {
+    public void testTheVisibilityOfTheStatusSelectorOptionsAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectStatus().clickSelector();
@@ -83,7 +82,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Choose amount popup functionality")
-    public void testChooseAmountPopUp(@Optional("ADMIN") String userRole) {
+    public void testChooseAmountPopUpAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -116,7 +115,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Error message 'From should be lesser than To' appears")
-    public void testErrorMessageByAmount(@Optional("ADMIN") String userRole) {
+    public void testErrorMessageByAmountAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -132,7 +131,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Card type")
     @Description("Verify that user can see 'Card type' options")
-    public void testTheVisibilityOfTheCardTypeOptions(@Optional("ADMIN") String userRole) {
+    public void testTheVisibilityOfTheCardTypeOptionsAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickCardTypeSelector();
@@ -149,7 +148,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Edit Amount")
-    public void testEditAmount(@Optional("ADMIN") String userRole) {
+    public void testEditAmountAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -169,7 +168,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Amount")
     @Description("Reset Amount Values")
-    public void testResetAmountValues(@Optional("ADMIN") String userRole) {
+    public void testResetAmountValuesAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
@@ -198,7 +197,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Feature("Business unit")
     @Description("Verify that the Company admin can see all the company's business units in the Business unit "
             + "dropdown list")
-    public void testTheVisibilityOfTheAvailableBusinessUnitOptions(@Optional("ADMIN") String userRole) {
+    public void testTheVisibilityOfTheAvailableBusinessUnitOptionsAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage((getPage()))
                 .getHeader().clickTransactionsLink()
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
@@ -207,13 +206,12 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText(businessUnitNames);
     }
 
-    @Ignore("Right now Refresh button is unavailable for only currency changed")
     @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
     @TmsLink("567")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Currency' to default value ( ALL)")
-    public void testResetCurrency(String currency, @Optional("ADMIN") String userRole) {
+    public void testResetCurrencyAsAdmin(String currency) {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -234,13 +232,12 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.getCurrencySelector()).containsText("ALL");
     }
 
-    @Ignore("Right now Refresh button is unavailable for only Cart type changed")
     @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
     @TmsLink("598")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Card Type' to default value ( ALL)")
-    public void testResetCardType(String cardType, @Optional("ADMIN") String userRole) {
+    public void testResetCardTypeAsAdmin(String cardType) {
         AdminTransactionsPage transactionsPage = new AdminTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -260,13 +257,12 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
     }
 
-    @Ignore("Right now Refresh button is unavailable for only status changed")
     @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("639")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
-    public void testResetStatus(String status, @Optional("ADMIN") String userRole) {
+    public void testResetStatusAsAdmin(String status) {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -292,7 +288,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Status' (two options are checked) to default value ( ALL)")
-    public void testResetMultiStatus(String status1, String status2, @Optional("ADMIN") String userRole) {
+    public void testResetMultiStatusAsAdmin(String status1, String status2) {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -312,13 +308,12 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Ignore("Right now Refresh button is unavailable for only amount changed")
     @Test
     @TmsLink("668")
     @Epic("Transactions")
     @Feature("Reset filter")
     @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
-    public void testResetAmount(@Optional("ADMIN") String userRole) {
+    public void testResetAmountAsAdmin() {
         final String amountFrom = "10";
         final String amountTo = "20";
         final String chosenAmount = "Amount: " + amountFrom + " - " + amountTo;
@@ -348,37 +343,32 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.getAmountButton()).hasText("Amount");
     }
 
-    @Ignore("Right now Refresh button is unavailable for only data range changed")
     @Test
     @TmsLink("736")
     @Epic("Transactions")
     @Feature("Reset filter")
-    @Description("Verify, that ")
-    public void testResetData(@Optional("ADMIN") String userRole) {
-        final String startDate = "01-04-2025";
-        final String endDate = "30-04-2025";
-        final String dataFrom = startDate.replaceAll("-", "/");
-        final String dataTo = endDate.replaceAll("-", "/");
-        final String selectedRange = "Date range" + dataFrom + "-" + dataTo;
-        final String currentRange = TestUtils.getCurrentRange();
+    @Description("Verify, that date picker contains default value before and after reset filter")
+    public void testResetDataAsTestAdmin() {
+        final String dateRange = "01/04/2025-30/04/2025";
+        final String defaultRange = TestUtils.getCurrentRange();
 
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: the 'Data' input field value is current month by default");
-        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
+        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).containsText(defaultRange);
 
         transactionsPage
-                .getSelectDateRange().setDateRangeFields(startDate, endDate);
+                .getSelectDateRange().setDateRangeFields(dateRange);
 
         Allure.step("Verify: the 'Data' input field value is checked period");
-        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(selectedRange);
+        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).containsText(dateRange);
 
         transactionsPage
                 .clickResetFilterButton();
 
         Allure.step("Verify: the 'Data' input field value is current month after reset");
-        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).hasText(currentRange);
+        assertThat(transactionsPage.getSelectDateRange().getDateRangeField()).containsText(defaultRange);
     }
 
     @Test
@@ -386,7 +376,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Epic("Transactions")
     @Feature("Transactions Search")
     @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
-    public void testSearchOptionsVisibleAfterClickingTrxIds(@Optional("ADMIN") String userRole) {
+    public void testSearchOptionsVisibleAfterClickingTrxIdsAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .clickSearchTrxIdsButton();
