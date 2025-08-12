@@ -518,8 +518,10 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .getTable().clickCopyBusinessUnitIdToClipboardButton(Constants.BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickGenerateSecretTokenButton(Constants.BUSINESS_UNIT_FOR_TEST_RUN);
 
-        assertThat(generateTokenConfirmDialog.getDialogHeader()).hasText("MerchantCompanyForTestRunOnly Inc. secret token");
-        assertThat(generateTokenConfirmDialog.getContent()).hasText("Doing this will deactivate any current token in use");
+        assertThat(generateTokenConfirmDialog.getDialogHeader())
+                .hasText("MerchantCompanyForTestRunOnly Inc. secret token");
+        assertThat(generateTokenConfirmDialog.getContent())
+                .hasText("Doing this will deactivate any current token in use");
 
         SecretTokenDialog secretTokenDialog = generateTokenConfirmDialog
                 .clickGenerateButton()
