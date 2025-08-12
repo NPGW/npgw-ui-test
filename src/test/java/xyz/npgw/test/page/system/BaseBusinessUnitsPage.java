@@ -14,6 +14,7 @@ public abstract class BaseBusinessUnitsPage<CurrentPageT extends HeaderPage<Curr
         extends HeaderPage<CurrentPageT> {
 
     private final Locator settings = getByTestId("SettingsButtonMerchantsPage");
+    private final Locator viewDocumentation = getByTestId("ViewDocumentationButtonMerchantsPage");
 
     private final Locator pageContent = locator("div.contentBlock");
 
