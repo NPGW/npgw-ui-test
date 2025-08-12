@@ -11,6 +11,7 @@ import xyz.npgw.test.common.entity.CardType;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.FraudControl;
+import xyz.npgw.test.common.entity.MerchantAcquirer;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.entity.User;
@@ -64,10 +65,10 @@ public final class TestUtils {
                     .forEach(user -> User.delete(request, user.email()));
             Arrays.stream(BusinessUnit.getAll(request, companyName))
                     .forEach(businessUnit -> {
-                        BusinessUnit.deleteWithTimeout(request, companyName, businessUnit);
-//                        while (BusinessUnit.delete(request, companyName, businessUnit) == 409) {
-//                            MerchantAcquirer.delete(request, businessUnit.merchantId());
-//                        }
+//                        BusinessUnit.deleteWithTimeout(request, companyName, businessUnit);
+                        while (BusinessUnit.delete(request, companyName, businessUnit) == 409) {
+                            MerchantAcquirer.delete(request, businessUnit.merchantId());
+                        }
                     });
         }
     }
