@@ -47,7 +47,6 @@ public abstract class BaseBusinessUnitsPage<CurrentPageT extends HeaderPage<Curr
 
     @Step("Click 'Settings'")
     public CurrentPageT clickSettings() {
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
         settings.click();
 
         return self();
