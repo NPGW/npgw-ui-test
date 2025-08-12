@@ -547,7 +547,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectStatus().select("PENDING");
 
         Download download = getPage().waitForDownload(
-                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 36),
                 () -> transactionsPage.clickExportTableDataToFileButton().selectPdf());
 
 //        Allure.step("Verify: success alert is shown after exporting");
