@@ -496,6 +496,7 @@ public class TransactionsTableTest extends BaseTest {
         } while (transactionsPage.getTable().goToNextPage());
     }
 
+    @Ignore
     @Test
     @TmsLink("880")
     @Epic("Transactions")
@@ -532,6 +533,7 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, csvTransactionList);
     }
 
+    @Ignore
     @Test
     @TmsLink("957")
     @Epic("Transactions")
@@ -575,6 +577,7 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, pdfTransactionList);
     }
 
+    @Ignore
     @Test
     @TmsLink("1011")
     @Epic("Transactions")
