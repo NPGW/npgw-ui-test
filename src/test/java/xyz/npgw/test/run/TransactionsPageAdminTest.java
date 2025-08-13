@@ -66,6 +66,8 @@ public class TransactionsPageAdminTest extends BaseTest {
                 "INITIATED",
                 "PENDING",
                 "SUCCESS",
+                "AUTHORISED",
+                "PARTIAL_CAPTURE",
                 "FAILED",
                 "CANCELLED",
                 "EXPIRED",

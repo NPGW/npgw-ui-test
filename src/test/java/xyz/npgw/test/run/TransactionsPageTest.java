@@ -126,6 +126,8 @@ public class TransactionsPageTest extends BaseTest {
                 "INITIATED",
                 "PENDING",
                 "SUCCESS",
+                "AUTHORISED",
+                "PARTIAL_CAPTURE",
                 "FAILED",
                 "CANCELLED",
                 "EXPIRED",
