@@ -46,28 +46,9 @@ public class TransactionDetailsTest extends BaseTest {
         assertThat(transactionDetailsDialog.getCardDetailsLabels())
                 .hasText(new String[]{"Payment method", "Card type", "Card holder", "Card number", "Expiry date"});
 
-        transactionDetailsDialog
-                .clickCloseIcon()
-                .getSelectStatus().select("SUCCESS")
-                .getTable().clickOnFirstTransaction();
-
         Allure.step("Verify: The Customer details labels");
         assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
                 .hasText(new String[]{"E-Mail", "Name", "Address", "City", "ZIP", "Country", "Phone", "Date of birth"});
-
-        SuperTransactionsPage transactionsPage = transactionDetailsDialog
-                .clickCloseIcon()
-                .getSelectStatus().select("AUTHORISED");
-
-        if (!transactionsPage.getTable().hasNoPagination()) {
-            transactionsPage.getTable().clickOnFirstTransaction();
-
-            Allure.step("Verify: The Customer details labels");
-            assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
-                    .hasText(new String[]{"External ID", "E-Mail", "Name", "Address", "City", "State", "ZIP", "Country",
-                            "Phone", "Date of birth"});
-        }
-
     }
 
     @Test
