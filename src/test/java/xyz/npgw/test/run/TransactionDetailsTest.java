@@ -29,6 +29,7 @@ public class TransactionDetailsTest extends BaseTest {
     public void testCheckTransactionDetails() {
         TransactionDetailsDialog transactionDetailsDialog = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction();
@@ -45,17 +46,28 @@ public class TransactionDetailsTest extends BaseTest {
         assertThat(transactionDetailsDialog.getCardDetailsLabels())
                 .hasText(new String[]{"Payment method", "Card type", "Card holder", "Card number", "Expiry date"});
 
-//        //TODO  this is for ALL TYPES EXCEPT AUTHORISED transactions type
-//        Allure.step("Verify: The Customer details labels");
-//        assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
-//                .hasText(new String[]{"External ID", "E-Mail", "Name", "Address", "City", "State", "ZIP", "Country",
-//                        "Phone", "Date of birth"});
-//
-//        //TODO  this is for AUTHORISED transactions type
-//        Allure.step("Verify: The Customer details labels");
-//        assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
-//                .hasText(new String[]{"E-Mail", "Name", "Address", "City", "ZIP", "Country", "Phone",
-//                        "Date of birth"});
+        transactionDetailsDialog
+                .clickCloseIcon()
+                .getSelectStatus().select("SUCCESS")
+                .getTable().clickOnFirstTransaction();
+
+        Allure.step("Verify: The Customer details labels");
+        assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
+                .hasText(new String[]{"E-Mail", "Name", "Address", "City", "ZIP", "Country", "Phone", "Date of birth"});
+
+        SuperTransactionsPage transactionsPage = transactionDetailsDialog
+                .clickCloseIcon()
+                .getSelectStatus().select("AUTHORISED");
+
+        if (!transactionsPage.getTable().hasNoPagination()) {
+            transactionsPage.getTable().clickOnFirstTransaction();
+
+            Allure.step("Verify: The Customer details labels");
+            assertThat(transactionDetailsDialog.getCustomerDetailsLabels())
+                    .hasText(new String[]{"External ID", "E-Mail", "Name", "Address", "City", "State", "ZIP", "Country",
+                            "Phone", "Date of birth"});
+        }
+
     }
 
     @Test
