@@ -17,7 +17,7 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.TransactionSummary;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
 public class DashboardPageTest extends BaseTest {
 
@@ -48,7 +49,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Navigation")
     @Description("User navigate to 'Dashboard page' after login")
     public void testNavigateToDashboardAfterLogin() {
-        DashboardPage dashboardPage = new DashboardPage(getPage());
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage());
 
         Allure.step("Verify: Dashboard Page URL");
         assertThat(dashboardPage.getPage()).hasURL(Constants.DASHBOARD_PAGE_URL);
@@ -63,11 +64,11 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Data range")
     @Description("Error message is displayed when start date is after end date.")
     public void testErrorMessageForReversedDateRange() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getSelectDateRange()
-                .setDateRangeFields("01-04-2025", "01-04-2024")
+                .setDateRangeFields("01/04/2025 - 01/04/2024")
                 .clickRefreshDataButton();
 
         Allure.step("Verify: error message is shown for invalid date range");
@@ -81,10 +82,10 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Chart Display")
     @Description("All key chart elements are correctly displayed")
     public void testVisibleChartElementsAreDisplayedCorrectly() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
         assertThat(dashboardPage.getYAxisLabels()).hasText(new String[]{"100%", "80%", "60%", "40%", "20%", "0%"});
@@ -102,11 +103,10 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options to default")
     public void testResetFilter() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE)
-                .clickCurrencySelector()
-                .selectCurrency("EUR")
+                .getSelectCurrency().select("EUR")
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
@@ -116,7 +116,7 @@ public class DashboardPageTest extends BaseTest {
         assertThat(dashboardPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
 
         Allure.step("Verify: the currency selector displays 'ALL' after reset");
-        assertThat(dashboardPage.getCurrencySelector()).containsText("ALL");
+        assertThat(dashboardPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
     }
 
     @Test
@@ -125,7 +125,7 @@ public class DashboardPageTest extends BaseTest {
     @Feature("Refresh data")
     @Description("Correct merchant ID is sent to the server")
     public void testCheckMerchantId() {
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
@@ -140,10 +140,10 @@ public class DashboardPageTest extends BaseTest {
     @Description("Correct transaction summary is displayed on Dashboard page")
     public void testTransactionSummary() {
         Pattern pattern = Pattern.compile("(INITIATED|PENDING|SUCCESS|FAILED)(EUR.*|USD.*|GBP.*)");
-        DashboardPage dashboardPage = new DashboardPage(getPage())
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setOneDayBeforeBuildRange(TestUtils.lastBuildDate(getApiRequestContext()));
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);
@@ -221,7 +221,6 @@ public class DashboardPageTest extends BaseTest {
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
 
-    //    TODO - replace with correct expected values, actual ones are wrong
     @Test
     @TmsLink("720")
     @Epic("Dashboard")
@@ -230,25 +229,25 @@ public class DashboardPageTest extends BaseTest {
     public void testTransactionSummaryMock() {
         getPage().route("**/summary", this::summaryHandler);
 
-        DashboardPage dashboardPage = new DashboardPage(getPage())
-                .getSelectDateRange().setDateRangeFields("01-05-2025", "31-05-2025")
+        SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
+                .getSelectDateRange().setDateRangeFields("01/05/2025 - 31/05/2025")
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR120");
 
-        dashboardPage.clickCurrencySelector().selectCurrency("USD");
+        dashboardPage.getSelectCurrency().select("USD");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDUSD550.0K100");
 
-        dashboardPage.clickCurrencySelector().selectCurrency("EUR");
+        dashboardPage.getSelectCurrency().select("EUR");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR660100,000");
 
-        dashboardPage.clickCurrencySelector().selectCurrency("GBP");
+        dashboardPage.getSelectCurrency().select("GBP");
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP0.77100,000,000");

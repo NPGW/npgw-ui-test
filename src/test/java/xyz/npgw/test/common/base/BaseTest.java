@@ -39,9 +39,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -146,18 +148,13 @@ public abstract class BaseTest {
         });
 
         context.route("**/*", route -> {
-//            log.info("request -> {}", route.request().url());
             if (route.request().url().endsWith(".css")
                     || route.request().url().endsWith(".js")
                     || route.request().url().endsWith(".png")) {
-//                log.info("request ready to handle");
                 if (requestMap.get(route.request().url()) == null) {
-//                    log.info("request map entry not found - > fetching and storing");
                     APIResponse apiResponse = route.fetch();
                     requestMap.put(route.request().url(),
                             new Response(apiResponse.status(), apiResponse.headers(), apiResponse.body()));
-                } else {
-//                    log.info("fulfill request with stored data - {}", route.request().url());
                 }
                 Response r = requestMap.get(route.request().url());
                 route.fulfill(new Route.FulfillOptions()
@@ -165,12 +162,39 @@ public abstract class BaseTest {
                         .setHeaders(r.headers)
                         .setBodyBytes(r.body));
             } else {
-//                log.info("fallback request - {}", route.request().url());
                 route.fallback();
             }
         });
 
         initApiRequestContext();
+
+        if (method.getName().endsWith("Unauthenticated")) {
+            return;
+        }
+        if (method.getName().endsWith("AsTestUser")) {
+            new AboutBlankPage(page)
+                    .navigate("/")
+                    .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
+            return;
+        }
+        if (method.getName().endsWith("AsUser")) {
+            List<Object> arguments = new ArrayList<>(Arrays.asList(args));
+            arguments.add(0, "USER");
+            openSite(arguments.toArray());
+            return;
+        }
+        if (method.getName().endsWith("AsTestAdmin")) {
+            new AboutBlankPage(page)
+                    .navigate("/")
+                    .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
+            return;
+        }
+        if (method.getName().endsWith("AsAdmin")) {
+            List<Object> arguments = new ArrayList<>(Arrays.asList(args));
+            arguments.add(0, "ADMIN");
+            openSite(arguments.toArray());
+            return;
+        }
         openSite(args);
     }
 
@@ -181,7 +205,7 @@ public abstract class BaseTest {
                 userRole = UserRole.valueOf((String) args[0]);
             } catch (IllegalArgumentException e) {
                 if (args[0].equals("UNAUTHORISED")) {
-                    new AboutBlankPage(page).navigate("/");
+//                    new AboutBlankPage(page).navigate("/");
                     return;
                 }
             }
@@ -204,7 +228,7 @@ public abstract class BaseTest {
             User.passChallenge(apiRequestContext, user.email(), user.password());
         }
 
-        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getPassword());
+        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getPassword(), userRole.getName());
 //        initPageRequestContext();
     }
 

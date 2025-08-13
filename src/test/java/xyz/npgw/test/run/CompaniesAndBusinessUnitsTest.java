@@ -8,14 +8,19 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.AdminDashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
-import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
+import xyz.npgw.test.page.dialog.merchant.GenerateTokenConfirmDialog;
+import xyz.npgw.test.page.dialog.merchant.SecretTokenDialog;
+import xyz.npgw.test.page.system.AdminBusinessUnitsPage;
+import xyz.npgw.test.page.system.SuperCompaniesAndBusinessUnitsPage;
 
 import java.util.List;
 
@@ -66,8 +71,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Settings")
     @Description("The company info block can be hidden and shown via settings.")
     public void testToggleCompanyInfoVisibilityViaSettings() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .clickSettings()
@@ -89,15 +94,15 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Add company")
     @Description("Validates successful company creation and correct field persistence.")
     public void testAddCompany() {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
         Allure.step("Verify: 'Create' button is disabled before filling required fields");
         assertThat(addCompanyDialog.getCreateButton()).isDisabled();
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = addCompanyDialog
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = addCompanyDialog
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .fillCompanyDescriptionField(company.description())
@@ -174,8 +179,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Edit company")
     @Description("Edit company info and save")
     public void testEditCompanyInfoAndSave() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickEditCompanyButton()
@@ -254,8 +259,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Delete Company")
     @Description("Verify that company can be deleted")
     public void testDeleteCompany() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .clickDeleteSelectedCompany()
@@ -285,8 +290,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Add company")
     @Description("Error is displayed when trying to create a company with an already existing name")
     public void testAddCompanyWithSameName() {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME_FOR_TEST_RUN)
@@ -304,8 +309,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Delete Company")
     @Description("Verify that company cannot be deleted if there are associated business units")
     public void testCannotDeleteCompanyWithAssociatedBusinessUnit() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickDeleteSelectedCompany()
@@ -325,8 +330,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     public void testCannotDeleteCompanyWithAssignedUser() {
         String email = "%s.admin123@email.com".formatted(TestUtils.now());
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickAddUserButton()
                 .fillEmailField(email)
@@ -350,8 +355,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Reset filter")
     @Description("Verify default filter state was applied once reset")
     public void testResetAppliedFilter() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .clickOnResetFilterButton();
@@ -364,23 +369,38 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
     }
 
-    @Test(dataProvider = "getInvalidCompanyNameLengths", dataProviderClass = TestDataProvider.class)
+
+    @Test
     @TmsLink("191")
     @Epic("System/Companies and business units")
     @Feature("Add company")
     @Description("Error message is shown for company name is shorter than 4 or longer than 100 characters.")
-    public void testVerifyErrorMessageForInvalidCompanyNameLength(String name) {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+    public void testVerifyErrorMessageForInvalidCompanyNameLength() {
+        AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
-                .fillCompanyNameField(name)
-                .fillCompanyTypeField(COMPANY_TYPE)
-                .clickCreateButtonAndTriggerError();
+                .fillCompanyNameField("1");
 
-        Allure.step("Verify: error message for invalid company name is displayed");
-        assertThat(addCompanyDialog.getAlert().getMessage()).containsText(
-                "Invalid companyName: '%s'. It must contain between 4 and 100 characters".formatted(name));
+        Allure.step("Verify: 'Create' button is disabled for name length = 1");
+        assertThat(addCompanyDialog.getCreateButton()).isDisabled();
+
+        addCompanyDialog.fillCompanyNameField("123");
+
+        Allure.step("Verify: 'Create' button is disabled for name length = 3");
+        assertThat(addCompanyDialog.getCreateButton()).isDisabled();
+
+        addCompanyDialog.fillCompanyNameField("1234");
+
+        Allure.step("Verify: 'Create' button is enabled for name length = 4");
+        assertThat(addCompanyDialog.getCreateButton()).isEnabled();
+
+        addCompanyDialog.fillCompanyNameField("1".repeat(120));
+
+        Allure.step("Verify: 'Create' button is enabled for name length = 100");
+        assertThat(addCompanyDialog.getCreateButton()).isEnabled();
+        Allure.step("Verify: 'Maximal Company name length = 100");
+        assertEquals(addCompanyDialog.getCompanyNameValue().length(), 100);
     }
 
     @Test
@@ -389,8 +409,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Add company")
     @Description("Verify required field states, placeholders, and button state in empty 'Add Company' form.")
     public void testAddCompanyFormValidationWhenEmpty() {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton();
 
@@ -420,7 +440,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         Allure.step("Verify: 'Create' button is disabled when required fields are not filled.");
         assertThat(addCompanyDialog.getCreateButton()).isDisabled();
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = addCompanyDialog
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = addCompanyDialog
                 .clickCloseButton();
 
         Allure.step("Verify: the 'Add Company' dialog is no longer visible");
@@ -433,8 +453,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Add company")
     @Description("Error is displayed when trying to create a company with special characters in the name.")
     public void testErrorIsDisplayedWhenCreatingCompanyWithSpecialCharacters(String character) {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField("Company" + character)
@@ -453,8 +473,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Add company")
     @Description("Error message when trying to create a company with invalid length and special characters.")
     public void testErrorForInvalidCompanyNameLengthAndCharacters(String name, String character) {
-        AddCompanyDialog addCompanyDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddCompanyDialog addCompanyDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(name + character)
@@ -473,8 +493,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Add company")
     @Description("Company can be added by filling out required fields")
     public void testAddCompanyByFillRequiredFields() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(COMPANY_NAME_REQUIRED_FIELD)
@@ -484,6 +504,52 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         Allure.step("Verify: company creation success message is displayed");
         assertThat(companiesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("SUCCESSCompany was created successfully");
+    }
+
+    @Test
+    @TmsLink("???")
+    @Epic("System/Business units")
+    @Feature("Generate token")
+    @Description("Generate API secret token as company admin")
+    public void testGenerateTokenAsTestAdmin() {
+        GenerateTokenConfirmDialog generateTokenConfirmDialog = new AdminDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickBusinessUnitsTab()
+                .getTable().clickCopyBusinessUnitIdToClipboardButton(Constants.BUSINESS_UNIT_FOR_TEST_RUN)
+                .getTable().clickGenerateSecretTokenButton(Constants.BUSINESS_UNIT_FOR_TEST_RUN);
+
+        assertThat(generateTokenConfirmDialog.getDialogHeader())
+                .hasText("MerchantCompanyForTestRunOnly Inc. secret token");
+        assertThat(generateTokenConfirmDialog.getContent())
+                .hasText("Doing this will deactivate any current token in use");
+
+        SecretTokenDialog secretTokenDialog = generateTokenConfirmDialog
+                .clickGenerateButton()
+                .clickCopySecretToken();
+
+        assertThat(secretTokenDialog.getDialogHeader()).hasText("MerchantCompanyForTestRunOnly Inc. secret token");
+    }
+
+    @Test
+    @TmsLink("691")
+    @Epic("System/Business units")
+    @Feature("Settings")
+    @Description("The company info block can be hidden and shown via settings.")
+    public void testToggleCompanyInfoVisibilityViaSettingsAsAdmin() {
+        AdminBusinessUnitsPage adminBusinessUnitsPage = new AdminDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickBusinessUnitsTab()
+                .clickSettings()
+                .checkHideCompanyInfo();
+
+        Allure.step("Verify: company info block is hidden after selecting 'Hide' in settings");
+        assertThat(adminBusinessUnitsPage.getCompanyInfoBlock()).isHidden();
+
+        adminBusinessUnitsPage
+                .checkShowCompanyInfo();
+
+        Allure.step("Verify: company info block is visible again after selecting 'Show' in settings");
+        assertThat(adminBusinessUnitsPage.getCompanyInfoBlock()).isVisible();
     }
 
     @AfterClass

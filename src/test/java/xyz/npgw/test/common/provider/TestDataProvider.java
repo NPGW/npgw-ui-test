@@ -16,10 +16,10 @@ public class TestDataProvider {
     @DataProvider
     public static Object[][] getAuthenticatedEndpoints() {
         return new Object[][]{
-                {"UNAUTHORISED", "/dashboard"},
-                {"UNAUTHORISED", "/transactions"},
-                {"UNAUTHORISED", "/reports"},
-                {"UNAUTHORISED", "/system"},
+                {"/dashboard"},
+                {"/transactions"},
+                {"/reports"},
+                {"/system"},
         };
     }
 
@@ -47,7 +47,7 @@ public class TestDataProvider {
         return new Object[][]{
                 {"C", "@"},
                 {"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. "
-                        + "Aenean commodo ligula eget dolor. Aenean ma", "!"}
+                        + "Aenean commodo ligula eget dolor. Aenean ", "!"}
         };
     }
 

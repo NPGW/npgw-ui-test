@@ -13,10 +13,10 @@ import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
-import xyz.npgw.test.page.system.CompaniesAndBusinessUnitsPage;
+import xyz.npgw.test.page.system.SuperCompaniesAndBusinessUnitsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -45,8 +45,8 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Feature("Add business unit")
     @Description("Verify that a new business unit wasn't added once click 'Close' button")
     public void testCloseButtonAndDiscardChanges() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company241.companyName())
@@ -69,8 +69,8 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Feature("Add business unit")
     @Description("Validates successful business unit addition to company (E2E test).")
     public void testAddBusinessUnitEndToEndTest() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
         Allure.step("Verify: 'Add business unit' button is disabled before selecting a company");
@@ -122,8 +122,8 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Feature("Edit business unit")
     @Description("Verify that all elements of dialog are displayed properly")
     public void testElementsOfEditBusinessUnitDialog() {
-        EditBusinessUnitDialog editBusinessUnitDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        EditBusinessUnitDialog editBusinessUnitDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_FOR_EDIT)
                 .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE);
@@ -140,7 +140,7 @@ public class AddEditBusinessUnitTest extends BaseTest {
         Allure.step("Verify: all labels are correct for each field");
         assertThat(editBusinessUnitDialog.getFieldLabel()).hasText(new String[]{"Company name", "Business unit name"});
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = editBusinessUnitDialog
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = editBusinessUnitDialog
                 .clickCloseButton();
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' button");
@@ -162,8 +162,8 @@ public class AddEditBusinessUnitTest extends BaseTest {
     public void testEditBusinessUnit() {
         String originalBusinessUnitId = businessUnitForEdit.merchantId();
 
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_FOR_EDIT)
                 .getTable().clickEditBusinessUnitButton(MERCHANT_TITLE)
@@ -187,8 +187,8 @@ public class AddEditBusinessUnitTest extends BaseTest {
     @Feature("Delete business unit")
     @Description("Verify that business unit can be deleted")
     public void testDeleteBusinessUnit() {
-        CompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_FOR_EDIT)
                 .getTable().clickDeleteBusinessUnitButton(MERCHANT_TITLE_EDITED)

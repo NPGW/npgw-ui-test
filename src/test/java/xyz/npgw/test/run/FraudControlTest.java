@@ -14,12 +14,13 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
 import xyz.npgw.test.page.dialog.control.EditControlDialog;
-import xyz.npgw.test.page.system.FraudControlPage;
+import xyz.npgw.test.page.system.SuperFraudControlPage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -85,8 +86,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Add Active Fraud Control")
     public void testAddActiveFraudControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL.getControlName())
@@ -94,7 +95,7 @@ public class FraudControlTest extends BaseTest {
                 .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName())
                 .checkActiveRadiobutton()
-                .clickCreateButton();
+                .clickSetupButton();
 
         Locator row = page.getTableControls().getRow(FRAUD_CONTROL.getControlName());
 
@@ -113,8 +114,8 @@ public class FraudControlTest extends BaseTest {
             + "Add Fraud Control to Business Unit with 'Cross'"
             + "Add Fraud Control to Business Unit with ESC")
     public void testCancelAddingFraudControlToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -148,8 +149,8 @@ public class FraudControlTest extends BaseTest {
             + "Delete Fraud Control with 'Cross'"
             + "Delete Fraud Control with ESC")
     public void testCancelDeletingFraudControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
                 .clickCancelButton();
@@ -178,8 +179,8 @@ public class FraudControlTest extends BaseTest {
             + "Deactivate Fraud Control with 'Cross'"
             + "Deactivate Fraud Control with ESC")
     public void testCancelDeactivationFraudControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName())
                 .clickCancelButton();
@@ -212,8 +213,8 @@ public class FraudControlTest extends BaseTest {
             + "Edit Fraud Control with 'Cross'"
             + "Edit Fraud Control with ESC")
     public void testCancelEditingFraudControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
@@ -269,8 +270,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Control table")
     @Description("Tooltips for available actions check")
     public void testTooltipsForActionsControlTable() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
@@ -317,8 +318,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Delete Active Fraud Control not added to Business Unit")
     public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
                 .clickDeleteButton();
@@ -333,8 +334,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Add Inactive Fraud Control")
     public void testAddInactiveFraudControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_INACTIVE.getControlName())
@@ -342,7 +343,7 @@ public class FraudControlTest extends BaseTest {
                 .fillFraudControlConfigField(FRAUD_CONTROL_INACTIVE.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_INACTIVE.getControlDisplayName())
                 .checkInactiveRadiobutton()
-                .clickCreateButton();
+                .clickSetupButton();
 
         Locator row = page.getTableControls().getRow(FRAUD_CONTROL_INACTIVE.getControlName());
 
@@ -360,8 +361,8 @@ public class FraudControlTest extends BaseTest {
     @Description("Activate Fraud Control not added to Business Unit"
             + "Deactivate Fraud Control not added to Business Unit")
     public void testChangeControlActivityForFraudControlNotAddedToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickActivateControlButton(FRAUD_CONTROL_INACTIVE.getControlName())
                 .clickActivateButton();
@@ -387,8 +388,8 @@ public class FraudControlTest extends BaseTest {
     @Description("Add Fraud Control to Business Unit (No Fraud Control)"
             + "Add Fraud Control to Business Unit (Business unit has Fraud Control)")
     public void testAddFraudControlToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -418,8 +419,8 @@ public class FraudControlTest extends BaseTest {
     @Description("Activate Fraud Control added to Business Unit"
             + "Deactivate Fraud Control added to Business Unit")
     public void testChangeControlActivityForFraudControlAddedToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
@@ -459,8 +460,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Business Unit Control table")
     @Description("Activate Business unit control" + "Deactivate Business unit control")
     public void testChangeBusinessUnitFraudControlActivity() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
@@ -500,8 +501,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add fraud control")
     @Description("Verify the 'Control name' field is mandatory and marked with '*'")
     public void testControlNameIsMandatory() {
-        AddControlDialog addControlDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl();
 
@@ -511,7 +512,7 @@ public class FraudControlTest extends BaseTest {
                 "The '*' symbol is not displayed in the 'Control name' label");
 
         Allure.step("Verify that the 'Create' button is disabled if the 'Control name field is empty");
-        assertThat(addControlDialog.getCreateButton()).hasAttribute("data-disabled", "true");
+        assertThat(addControlDialog.getSetupButton()).hasAttribute("data-disabled", "true");
     }
 
     @Test
@@ -520,16 +521,16 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add fraud control")
     @Description("Verify the error message when attempting to create a Fraud Control with the existing name")
     public void testErrorMessageForExistingControlName() {
-        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage fraudControlPage = new SuperFraudControlPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
-                .clickCreateButton()
+                .clickSetupButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
-                .clickCreateButton();
+                .clickSetupButton();
 
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
 
@@ -544,8 +545,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Delete Active Fraud Control added to Business Unit")
     public void testDeleteActiveFraudControlAddedToBusinessUnit() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -564,8 +565,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Business Unit Control table")
     @Description("Move Business unit control up" + "Move Business unit control down")
     public void testChangeFraudControlPriority() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -592,8 +593,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Remove inactive Fraud control added to Business unit")
     public void testDeleteInactiveFraudControlAddedToBusinessUnit() {
-        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage fraudControlPage = new SuperFraudControlPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -633,8 +634,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Edit Fraud Control")
     public void testEditFraudControl() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
@@ -670,8 +671,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Verify,Control name is immutable")
     public void testNotEditControlName() {
-        EditControlDialog editControlDialog = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        EditControlDialog editControlDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls()
                 .clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName());
@@ -687,8 +688,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Control table entries sorting")
     @Description("Verify that entries can be sorted by Name, DisplayName, Code, Config, Status  in Asc and Desc order")
     public void testControlTableEntriesSorting() {
-        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage fraudControlPage = new SuperFraudControlPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickColumnHeader("Name");
 
@@ -790,15 +791,16 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(actualStatusList, sortedStatusListAsc);
     }
 
-    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testEditFraudControl"})
+    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testEditFraudControl",
+            "testPriorityIconsDisableForOnlyOneBusinessUnitControl"})
     @TmsLink("1013")
     @Epic("System/Fraud control")
     @Feature("Control business unit controls table entries sorting")
     @Description("Verify that entries can be sorted by Priority, DisplayName, Code, Config, Status"
             + "in Asc and Desc order")
     public void testBusinessUnitControlTableEntriesSorting() {
-        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage fraudControlPage = new SuperFraudControlPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -933,8 +935,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options")
     public void testResetFilter() {
-        FraudControlPage fraudControlPage = new FraudControlPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage fraudControlPage = new SuperFraudControlPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
@@ -953,8 +955,8 @@ public class FraudControlTest extends BaseTest {
     @Feature("Business Unit Control table")
     @Description("Move the first Business unit control up" + "Move the last Business unit control down")
     public void testChangeBusinessControlPriorityRestrictions() {
-        FraudControlPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
@@ -979,6 +981,101 @@ public class FraudControlTest extends BaseTest {
                 .hasText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
         assertThat(page.getTableBusinessUnitControls().getCell(1, "Display name"))
                 .hasText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+    }
+
+    @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit"})
+    @TmsLink("1064")
+    @Epic("System/Fraud Control")
+    @Feature("Business Unit Control table")
+    @Description("Priority icons for only one Business unit control")
+    public void testPriorityIconsDisableForOnlyOneBusinessUnitControl() {
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+
+        Allure.step("Verify Up button is disabled on Business Unit Control table because of one control");
+        assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlUpButton("0")).isDisabled();
+
+        Allure.step("Verify Down button is disabled on Business Unit Control table because of one control");
+        assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlDownButton("0")).isDisabled();
+    }
+
+    @Test
+    @TmsLink("1079")
+    @Epic("System/Fraud Control")
+    @Feature("Add Fraud control")
+    @Description("Verify that error message is displayed when special symbols are entered in the Control name field"
+            + " after clicking create button")
+    public void testSpecialSymbolsInControlNameNotAllowed() {
+        List<String> invalidSymbols = Arrays.asList(
+                "@", "#", "$", "%", "*", "=", "/", "\\", ":", "|", "^", "~", "!", "\"", "<", ">", "[", "]", "{", "}",
+                "?", "(", ")", "_", "`", "+", ";"
+        );
+
+        AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .clickAddFraudControl();
+
+        for (String symbol : invalidSymbols) {
+            String input = "a" + symbol.repeat(4);
+            String expectedMessage = "ERRORInvalid name: '" + input + "'. It may only contain letters, digits,"
+                    + " ampersands (&), hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
+
+            addControlDialog
+                    .fillFraudControlNameField(input)
+                    .clickSetupButton();
+
+            Allure.step("Verify error message for symbol: " + symbol);
+            assertThat(addControlDialog.getAlert().getMessage()).containsText(expectedMessage);
+        }
+    }
+
+    @Test
+    @TmsLink("1091")
+    @Epic("System/Fraud Control")
+    @Feature("Add Fraud control")
+    @Description("Verify that the Control Name field requires between 4 and 100 characters")
+    public void testControlNameLengthRestrictions() {
+        String invalidControlName3Chars = "a".repeat(3);
+        String validControlName4Chars = "a".repeat(4);
+        String validControlName100Chars = "a".repeat(100);
+        String invalidControlName101Chars = "a".repeat(101);
+
+        AddControlDialog addControlDialog = new SuperDashboardPage(getPage())
+                 .getHeader().clickSystemAdministrationLink()
+                 .getSystemMenu().clickFraudControlTab()
+                 .clickAddFraudControl()
+                 .fillFraudControlNameField(invalidControlName3Chars);
+
+        String ariaInvalid = addControlDialog.getControlNameInput().getAttribute("aria-invalid");
+
+        Allure.step("Verify that the 'Control Name' field is highlighted in red");
+        Assert.assertEquals(ariaInvalid, "true", "The 'Control Name' field should be"
+                + " highlighted in red");
+
+        Allure.step("Verify that the Setup button is disabled if Control name contains 3 characters");
+        assertThat(addControlDialog.getSetupButton()).isDisabled();
+
+        addControlDialog
+                .fillFraudControlNameField(validControlName4Chars);
+
+        Allure.step("Verify that the Setup button is enabled if  Control name contains 4 characters");
+        assertThat(addControlDialog.getSetupButton()).isEnabled();
+
+        addControlDialog
+                .fillFraudControlNameField(validControlName100Chars);
+
+        Allure.step("Verify that the Setup button is enabled if Control name contains 100 characters");
+        assertThat(addControlDialog.getSetupButton()).isEnabled();
+
+        addControlDialog
+                .fillFraudControlNameField(invalidControlName101Chars);
+
+        Allure.step("Verify that a Control name field has limit of 100 characters");
+        Assert.assertEquals(addControlDialog.getControlNameInput().inputValue().length(), 100);
     }
 
     @AfterClass

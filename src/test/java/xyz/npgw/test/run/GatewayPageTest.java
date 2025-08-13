@@ -16,8 +16,8 @@ import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.DashboardPage;
-import xyz.npgw.test.page.system.GatewayPage;
+import xyz.npgw.test.page.dashboard.SuperDashboardPage;
+import xyz.npgw.test.page.system.SuperGatewayPage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,13 +79,13 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Currency")
     @Description("The 'Currency' dropdown toggles and contains options")
     public void testOpenCurrencyDropdown() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
-                .clickCurrencyValue();
+                .getSelectCurrency().clickCurrencySelector();
 
         Allure.step("Verify: The 'Currency' dropdown toggles and contains options");
-        assertThat(gatewayPage.getCurrencyOptions()).hasText(expectedOptions);
+        assertThat(gatewayPage.getSelectCurrency().getCurrencyOptions()).hasText(expectedOptions);
     }
 
     @Test
@@ -94,24 +94,20 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Currency")
     @Description("Verify that re-selecting an already selected currency keeps the selection unchanged.")
     public void testRetainCurrencyWhenReSelectingSameOption() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab();
 
         Locator actualCurrency = gatewayPage
-                .getCurrencyValue();
+                .getSelectCurrency().getCurrencySelector();
 
         for (String currency : expectedOptions) {
-            gatewayPage
-                    .clickCurrencyValue()
-                    .selectCurrency(currency);
+            gatewayPage.getSelectCurrency().select(currency);
 
             Allure.step("Verify currency has value: " + currency);
             assertThat(actualCurrency).hasText(currency);
 
-            gatewayPage
-                    .clickCurrencyValue()
-                    .selectCurrency(currency);
+            gatewayPage.getSelectCurrency().select(currency);
 
             Allure.step("Verify currency has the same value: " + currency);
             assertThat(actualCurrency).hasText(currency);
@@ -125,8 +121,8 @@ public class GatewayPageTest extends BaseTest {
     @Description("Check that selecting a company populates the 'Business units list',"
             + " and when no company is selected, the list is empty with 'No items.'")
     public void testBusinessUnitsListUpdatesOnCompanySelection() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME);
 
@@ -158,8 +154,8 @@ public class GatewayPageTest extends BaseTest {
     public void testCompaniesBusinessUnitsPresence() {
         String merchantTitle = "second";
 
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -196,8 +192,8 @@ public class GatewayPageTest extends BaseTest {
         String selectedCurrency = expectedCurrency.get(new Random().nextInt(expectedCurrency.size() - 1) + 1);
         Company company = new Company(new Faker().company().name(), new Faker().company().industry());
 
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(company.companyName())
@@ -213,11 +209,10 @@ public class GatewayPageTest extends BaseTest {
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
-                .clickCurrencyValue()
-                .selectCurrency(selectedCurrency);
+                .getSelectCurrency().select(selectedCurrency);
 
         Allure.step("Verify that all the values are presented in filter's filter");
-        assertThat(gatewayPage.getCurrencyValue()).containsText(selectedCurrency);
+        assertThat(gatewayPage.getSelectCurrency().getCurrencySelector()).containsText(selectedCurrency);
         assertThat(gatewayPage.getSelectBusinessUnit().getSelectBusinessUnitField()).hasValue(company.companyType());
         assertThat(gatewayPage.getSelectCompany().getSelectCompanyField()).hasValue(company.companyName());
 
@@ -225,7 +220,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickResetFilterButton();
 
         Allure.step("Verify that all the filter are cleaned");
-        assertThat(gatewayPage.getCurrencyValue()).containsText("ALL");
+        assertThat(gatewayPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
         assertThat(gatewayPage.getSelectBusinessUnit().getSelectBusinessUnitField())
                 .hasAttribute("placeholder", "Select business unit");
         assertThat(gatewayPage.getSelectCompany().getSelectCompanyField())
@@ -242,14 +237,14 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Check possibility to select an appropriate acquirer to merchant")
     public void testSelectAcquirer() {
-        GatewayPage page = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton();
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
         assertThat(page.getTable().getCell(0, "Business unit")).hasText(expectedBusinessUnitsList[2]);
@@ -270,17 +265,17 @@ public class GatewayPageTest extends BaseTest {
     @Description("Move merchant-acquirer down to reduce their priority,"
             + " Move merchant-acquirer up to increase their priority")
     public void testMoveMerchantAcquirerDownAndUpButtons() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER_MOVE.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerName())
+                .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Check that the first created acquirer priority is 0");
@@ -311,18 +306,18 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Verify the active and inactive merchant acquirers can be added")
     public void testAddMerchantAcquirer() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[1])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .checkInactiveRadiobutton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER_MOVE.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerName())
+                .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone();
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
@@ -343,14 +338,14 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Merchant acquirer can be successfully deleted")
     public void testDeleteMerchantAcquirer() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_DELETION_TEST)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME_DELETION_TEST)
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone() //TODO remove alert closing BUG workaround
                 .getTable().clickDeleteBusinessUnitAcquirer("0")
                 .clickDeleteButton();
@@ -366,14 +361,14 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Verify that merchant acquirer can be activated and deactivated by Super")
     public void testActivateDeactivateMerchantAcquirer() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickDeactivateButton();
 
@@ -397,21 +392,21 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Verify that entries can be sorted by Priority, Status, Acquirer and Currencies in Asc and Desc order")
     public void testSortEntries() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .checkInactiveRadiobutton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER_EUR.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_EUR.getAcquirerName())
+                .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER_GBP.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_GBP.getAcquirerName())
+                .clickConnectButton()
                 .getTable().clickColumnHeader("Status");
 
         List<String> actualStatusList = gatewayPage.getTable().getColumnValues("Status");
@@ -498,14 +493,14 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Verify that click on Cancel button cancels the Merchant Acquirer status change")
     public void testCancelButtonInChangeMerchantAcquirerActivityDialog() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickCancelButton();
 
@@ -522,14 +517,14 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Merchant acquirer")
     @Description("Verify that click on Cancel button cancels the Merchant Acquirer status change")
     public void testCloseButtonInChangeMerchantAcquirerActivityDialog() {
-        GatewayPage gatewayPage = new DashboardPage(getPage())
-                .clickSystemAdministrationLink()
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerInDialog(ACQUIRER.getAcquirerName())
-                .clickCreateButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .clickConnectButton()
                 .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickCloseIcon();
 

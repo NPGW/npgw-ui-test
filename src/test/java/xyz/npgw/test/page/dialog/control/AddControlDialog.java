@@ -5,14 +5,14 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.page.common.trait.AlertTrait;
-import xyz.npgw.test.page.system.FraudControlPage;
+import xyz.npgw.test.page.component.AlertTrait;
+import xyz.npgw.test.page.system.SuperFraudControlPage;
 
 @Getter
 public class AddControlDialog extends ControlDialog<AddControlDialog> implements
         AlertTrait<AddControlDialog> {
 
-    private final Locator createButton = getByRole(AriaRole.BUTTON, "Create");
+    private final Locator setupButton = getByRole(AriaRole.BUTTON, "Setup");
 
     public AddControlDialog(Page page) {
         super(page);
@@ -20,14 +20,14 @@ public class AddControlDialog extends ControlDialog<AddControlDialog> implements
 
     @Step("Click on the 'Create' button and trigger an error")
     public AddControlDialog clickCreateButtonAndTriggerError() {
-        createButton.click();
+        setupButton.click();
 
         return this;
     }
 
     @Step("Click on the 'Create' button")
-    public FraudControlPage clickCreateButton() {
-        createButton.click();
+    public SuperFraudControlPage clickSetupButton() {
+        setupButton.click();
 
         return getReturnPage();
     }
