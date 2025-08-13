@@ -507,7 +507,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectStatus().select("INITIATED");
+                .getTable().selectRowsPerPageOption("100");
 
         Download download = getPage().waitForDownload(
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
@@ -532,7 +532,6 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, csvTransactionList);
     }
 
-    //  Not all transactions are exported, only those on the current page
     @Test
     @TmsLink("957")
     @Epic("Transactions")
@@ -544,16 +543,15 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getTable().selectRowsPerPageOption("100")
-                .getSelectStatus().select("PENDING");
+                .getTable().selectRowsPerPageOption("100");
 
         Download download = getPage().waitForDownload(
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
                 () -> transactionsPage.clickExportTableDataToFileButton().selectPdf());
 
-//        Allure.step("Verify: success alert is shown after exporting");
-//        assertThat(transactionsPage.getAlert().getMessage())
-//                .hasText(EXPORT_SUCCESS_MESSAGE);
+        Allure.step("Verify: success alert is shown after exporting");
+        assertThat(transactionsPage.getAlert().getMessage())
+                .hasText(EXPORT_SUCCESS_MESSAGE);
 
         Path targetPath = Paths.get("downloads", "transactions-export.pdf");
         Files.createDirectories(targetPath.getParent());
@@ -577,7 +575,6 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, pdfTransactionList);
     }
 
-    //  Not all transactions are exported, only those on the current page
     @Test
     @TmsLink("1011")
     @Epic("Transactions")
@@ -589,8 +586,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getTable().selectRowsPerPageOption("100")
-                .getSelectStatus().select("PENDING");
+                .getTable().selectRowsPerPageOption("100");
 
         Download download = getPage().waitForDownload(
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
