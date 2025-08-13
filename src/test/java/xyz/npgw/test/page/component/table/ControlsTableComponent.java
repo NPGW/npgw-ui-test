@@ -55,7 +55,7 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
         return tooltip;
     }
 
-    @Step("Hover over Activate Control icon to get Tooltip")
+    @Step("Hover over Delete Control icon to get Tooltip")
     public Locator hoverOverDeleteIcon(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).getByTestId("DeleteControlButton").hover();
@@ -65,7 +65,7 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
         return tooltip;
     }
 
-    @Step("Hover over Activate Control icon to get Tooltip")
+    @Step("Hover over Connect Control icon to get Tooltip")
     public Locator hoverOverConnectControlIcon(String controlName) {
         getRow(controlName).hover();
         getRow(controlName).getByTestId("ConnectControlButton").hover();

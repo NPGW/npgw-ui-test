@@ -263,7 +263,6 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
-    @Ignore("due to broken tooltip 'Asctivate control'")
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
     @TmsLink("1001")
     @Epic("System/Fraud Control")
@@ -287,7 +286,7 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that Activate icon Tooltip is presented on Control table");
         assertThat(activateIconTooltip).isVisible();
-        assertThat(activateIconTooltip).hasText("Аctivate control");
+        assertThat(activateIconTooltip).hasText("Activate control");
 
         Locator deactivateIconTooltip = page.getTableControls()
                 .hoverOverDeactivateControlIcon(FRAUD_CONTROL.getControlName());
@@ -310,9 +309,54 @@ public class FraudControlTest extends BaseTest {
         assertThat(connectControlIconTooltip).hasText("Connect control to business unit");
     }
 
+    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+    @TmsLink("1123")
+    @Epic("System/Fraud Control")
+    @Feature("Business Unit Control table")
+    @Description("Tooltips for available actions check")
+    public void testTooltipsForActionsBusinessUnitControlTable() {
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+
+        Locator moveControlDownIcon = page.getTableBusinessUnitControls().hoverOverMoveControlDownIcon("0");
+
+        Allure.step("Verify that Move Business Control Down icon Tooltip is presented on Business Control table");
+        assertThat(moveControlDownIcon).isVisible();
+        assertThat(moveControlDownIcon).hasText("Move business unit control down");
+
+        Locator moveControlUpIcon = page.getTableBusinessUnitControls().hoverOverMoveControlUpIcon("0");
+
+        Allure.step("Verify that Move Business Control Up icon Tooltip is presented on Business Control table");
+        assertThat(moveControlUpIcon).isVisible();
+        assertThat(moveControlUpIcon).hasText("Move business unit control up");
+
+        Locator activateIconTooltip = page.getTableBusinessUnitControls()
+                .hoverOverActivateControlIcon("0");
+
+        Allure.step("Verify that Activate icon Tooltip is presented on Business Unit Control table");
+        assertThat(activateIconTooltip).isVisible();
+        assertThat(activateIconTooltip).hasText("Аctivate business unit control");
+
+        Locator deactivateIconTooltip = page.getTableBusinessUnitControls()
+                .hoverOverDeactivateControlIcon("1");
+
+        Allure.step("Verify that Deactivate icon Tooltip is presented on Business Unit Control table");
+        assertThat(deactivateIconTooltip).isVisible();
+        assertThat(deactivateIconTooltip).hasText("Deactivate business unit control");
+
+        Locator deleteIconTooltip = page.getTableBusinessUnitControls().hoverOverDeleteIcon("0");
+
+        Allure.step("Verify that Delete icon Tooltip is presented on Business Unit Control table");
+        assertThat(deleteIconTooltip).isVisible();
+        assertThat(deleteIconTooltip).hasText("Delete business unit control");
+    }
+
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
-            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl"/*,
-            "testTooltipsForActionsControlTable"*/, "testBusinessUnitControlTableEntriesSorting"})
+            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
+            "testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
