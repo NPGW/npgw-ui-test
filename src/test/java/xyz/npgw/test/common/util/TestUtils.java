@@ -109,6 +109,21 @@ public final class TestUtils {
         log.info("User presence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
     }
 
+    @SneakyThrows
+    public static void waitForCompanyPresent(APIRequestContext request, String companyName) {
+        double timeout = ProjectProperties.getDefaultTimeout();
+        while (Arrays.stream(Company.getAll(request))
+                .noneMatch(item -> item.companyName().equals(companyName))) {
+            TimeUnit.MILLISECONDS.sleep(300);
+            timeout -= 300;
+            if (timeout <= 0) {
+                throw new TimeoutError("Waiting for company '%s' present".formatted(companyName));
+            }
+        }
+        log.info("Company present wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
+    }
+
+
     public static Transaction mapToTransaction(List<String> cells) {
         return new Transaction(
                 cells.get(0),
