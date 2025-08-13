@@ -52,6 +52,7 @@ public class TransactionsTableTest extends BaseTest {
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final String[] COLUMNS_HEADERS = {
             "Creation Date (GMT)",
+            "Type",
             "Business unit ID",
             "NPGW reference",
             "Business unit reference",

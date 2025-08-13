@@ -1,7 +1,6 @@
 package xyz.npgw.test.run;
 
 import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.TimeoutError;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -305,7 +304,6 @@ public class TransactionsPageTest extends BaseTest {
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectStatus().select("INITIATED")
                 .clickDownloadButton();
 
         Allure.step("Verify: that files can be downloaded");
@@ -353,7 +351,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
     }
 
-    @Test(expectedExceptions = TimeoutError.class)
+    @Test
     @TmsLink("620")
     @Epic("Transactions")
     @Feature("Refresh data")
@@ -393,7 +391,7 @@ public class TransactionsPageTest extends BaseTest {
         assertTrue(transactionsPage.getRequestData().contains("10000"));
     }
 
-    @Test(expectedExceptions = TimeoutError.class)
+    @Test
     @TmsLink("621")
     @Epic("Transactions")
     @Feature("Refresh data")
