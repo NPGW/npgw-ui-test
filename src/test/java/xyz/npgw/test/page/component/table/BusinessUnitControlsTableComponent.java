@@ -76,50 +76,51 @@ public class BusinessUnitControlsTableComponent extends BaseTableComponent<Super
     }
 
     @Step("Hover over Deactivate Control icon to get Tooltip")
-    public Locator hoverOverDeactivateControlIcon(String priority) {
-        getRowByDataKey(priority).hover();
-        getRowByDataKey(priority).locator("//*[@data-icon='ban']/..").hover();
+    public SuperFraudControlPage hoverOverDeactivateControlIcon(String priority) {
+        Locator row = getRowByDataKey(priority);
+        row.hover();
+        row.locator("//*[@data-icon='ban']/..").hover();
 
-        tooltip.waitFor();
-
-        return tooltip;
+        return getCurrentPage();
     }
 
     @Step("Hover over Activate Control icon to get Tooltip")
-    public Locator hoverOverActivateControlIcon(String priority) {
-        getRowByDataKey(priority).hover();
-        getRowByDataKey(priority).locator("//*[@data-icon='check']/..").hover();
+    public SuperFraudControlPage hoverOverActivateControlIcon(String priority) {
+        Locator row = getRowByDataKey(priority);
+        row.hover();
+        row.locator("//*[@data-icon='check']/..").hover();
 
-        tooltip.waitFor();
-
-        return tooltip;
+        return getCurrentPage();
     }
 
     @Step("Hover over Delete Control icon to get Tooltip")
-    public Locator hoverOverDeleteIcon(String priority) {
-        getRowByDataKey(priority).hover();
-        getRowByDataKey(priority).locator("//*[@data-icon='trash']/..").hover();
+    public SuperFraudControlPage hoverOverDeleteIcon(String priority) {
+        Locator row = getRowByDataKey(priority);
+        row.hover();
+        row.locator("//*[@data-icon='trash']/..").hover();
 
-        tooltip.waitFor();
-
-        return tooltip;
+        return getCurrentPage();
     }
 
     @Step("Hover over Move Control down icon to get Tooltip")
-    public Locator hoverOverMoveControlDownIcon(String priority) {
-        getRowByDataKey(priority).hover();
-        getRowByDataKey(priority).locator("//*[@data-icon='circle-arrow-down']/..").hover();
+    public SuperFraudControlPage hoverOverMoveControlDownIcon(String priority) {
+        Locator row = getRowByDataKey(priority);
+        row.hover();
+        row.locator("//*[@data-icon='circle-arrow-down']/..").hover();
 
-        tooltip.waitFor();
-
-        return tooltip;
+        return getCurrentPage();
     }
 
     @Step("Hover over Move Control up icon to get Tooltip")
-    public Locator hoverOverMoveControlUpIcon(String priority) {
-        getRowByDataKey(priority).hover();
-        getRowByDataKey(priority).locator("//*[@data-icon='circle-arrow-up']/..").hover();
+    public SuperFraudControlPage hoverOverMoveControlUpIcon(String priority) {
+        Locator row = getRowByDataKey(priority);
+        row.hover();
+        row.locator("//*[@data-icon='circle-arrow-up']/..").hover();
 
+        return getCurrentPage();
+    }
+
+    public Locator getTooltip() {
         tooltip.waitFor();
 
         return tooltip;
