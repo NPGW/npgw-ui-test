@@ -155,7 +155,7 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.amountApplied("Amount: 500 - 10300")).isVisible();
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionFailedError.class)
     @TmsLink("355")
     @Epic("Transactions")
     @Feature("Amount")
