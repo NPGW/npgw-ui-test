@@ -498,7 +498,6 @@ public class TransactionsTableTest extends BaseTest {
         } while (transactionsPage.getTable().goToNextPage());
     }
 
-    @Ignore
     @Test
     @TmsLink("880")
     @Epic("Transactions")
