@@ -503,7 +503,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getTable().hoverOverDeleteIcon()
                 .getTable().getTooltip();
 
-        Allure.step("Verify that Delete icon Tooltip is presented on Control table");
+        Allure.step("Verify that Delete icon Tooltip is appears on the Acquirers table");
         assertThat(deleteIconTooltip).isVisible();
         assertThat(deleteIconTooltip).hasText("Delete acquirer MID");
 
@@ -511,7 +511,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getTable().hoverOverBulkActionsIcon()
                 .getTable().getTooltip();
 
-        Allure.step("Verify that Connect control icon Tooltip is presented on Control table");
+        Allure.step("Verify that Bulk actions icon Tooltip is appears on the Acquirers table");
         assertThat(bulkActionsIconTooltip).isVisible();
         assertThat(bulkActionsIconTooltip).hasText("Bulk actions");
     }
