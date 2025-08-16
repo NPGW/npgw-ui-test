@@ -30,11 +30,7 @@ public class PropertyUtils {
         }
     }
 
-    private static String getValueFromEnvironment(String propName) {
-        return System.getenv(propName.replace('.', '_').toUpperCase());
-    }
-
     public static String getValue(String value) {
-        return properties.getProperty(value, getValueFromEnvironment(value));
+        return properties.getProperty(value, System.getenv(value.replace('.', '_').toUpperCase()));
     }
 }
