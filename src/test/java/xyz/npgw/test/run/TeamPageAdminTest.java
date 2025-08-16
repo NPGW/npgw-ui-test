@@ -9,7 +9,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.FrameworkOptions;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.LoginPage;
@@ -441,7 +441,7 @@ public class TeamPageAdminTest extends BaseTest {
         assertThat(teamPage.getAlert().getMessage()).hasText("ERRORUser is disabled.");
 
         loginPage
-                .loginAsAdmin("%s.admin@email.com".formatted(getUid()), ProjectProperties.getPassword())
+                .loginAsAdmin("%s.admin@email.com".formatted(getUid()), FrameworkOptions.getPassword())
                 .getHeader().clickSystemAdministrationLink()
                 .getTable().clickEditUserButton(analystEmail)
                 .checkActiveRadiobutton()

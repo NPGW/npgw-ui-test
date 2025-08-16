@@ -1,0 +1,49 @@
+package xyz.npgw.test.common;
+
+import com.microsoft.playwright.options.ColorScheme;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.nio.file.Path;
+
+import static xyz.npgw.test.common.util.BrowserUtils.initObject;
+
+public final class FrameworkOptions {
+
+    private static final String FRAMEWORK_OPTIONS = "framework.options";
+
+    @Getter
+    @Setter
+    private static String baseURL;
+    @Getter
+    @Setter
+    private static String email;
+    @Getter
+    @Setter
+    private static String password;
+    @Getter
+    @Setter
+    private static boolean tracingMode;
+    @Getter
+    @Setter
+    private static boolean videoMode;
+    @Getter
+    @Setter
+    private static boolean closeBrowserIfError = true;
+    @Getter
+    @Setter
+    private static ColorScheme colorScheme = ColorScheme.DARK;
+    @Getter
+    @Setter
+    private static Path artefactDir;
+    @Getter
+    @Setter
+    private static double defaultTimeout = 5000.0;
+    @Getter
+    @Setter
+    private static int additionalRetries = 0;
+
+    static {
+        initObject(FrameworkOptions.class, FRAMEWORK_OPTIONS);
+    }
+}

@@ -8,7 +8,7 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.FrameworkOptions;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.LoginPage;
@@ -159,7 +159,7 @@ public class HeaderTest extends BaseTest {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage());
 
         Allure.step("Verify that the current color theme matches the default browser theme");
-        assertThat(dashboardPage.getHtmlTag()).hasClass(ProjectProperties.getColorScheme().name().toLowerCase());
+        assertThat(dashboardPage.getHtmlTag()).hasClass(FrameworkOptions.getColorScheme().name().toLowerCase());
     }
 
     @Test(dataProvider = "getUserRole", dataProviderClass = TestDataProvider.class)

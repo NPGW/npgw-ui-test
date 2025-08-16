@@ -8,7 +8,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.FrameworkOptions;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
 import xyz.npgw.test.page.component.select.SelectCompanyTrait;
@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<SuperCompaniesAndBusinessUnitsPage>
         implements SuperHeaderMenuTrait<SuperCompaniesAndBusinessUnitsPage>,
-                   SuperSystemMenuTrait,
-                   SelectCompanyTrait<SuperCompaniesAndBusinessUnitsPage>,
-                   SuperBusinessUnitsTableTrait {
+        SuperSystemMenuTrait,
+        SelectCompanyTrait<SuperCompaniesAndBusinessUnitsPage>,
+        SuperBusinessUnitsTableTrait {
 
     private final Locator addCompanyButton = getByTestId("AddCompanyButton");
     private final Locator editCompanyButton = getByTestId("EditCompanyButton");
@@ -85,7 +85,7 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
 
     @SneakyThrows
     public SuperCompaniesAndBusinessUnitsPage waitForCompanyAbsence(APIRequestContext request, String companyName) {
-        double timeout = ProjectProperties.getDefaultTimeout();
+        double timeout = FrameworkOptions.getDefaultTimeout();
         while (Arrays.stream(Company.getAll(request)).anyMatch(item -> item.companyName().equals(companyName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -93,7 +93,7 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
                 throw new TimeoutError("Waiting for company '%s' absence".formatted(companyName));
             }
         }
-        log.info("Company absence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
+        log.info("Company absence wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
 
         return this;
     }

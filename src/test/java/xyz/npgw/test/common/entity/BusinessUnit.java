@@ -7,7 +7,7 @@ import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.CustomLog;
 import lombok.SneakyThrows;
-import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.FrameworkOptions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +41,7 @@ public record BusinessUnit(
 
     @SneakyThrows
     public static void deleteWithTimeout(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
-        double timeout = ProjectProperties.getDefaultTimeout();
+        double timeout = FrameworkOptions.getDefaultTimeout();
         while (204 != delete(request, companyName, businessUnit)) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;

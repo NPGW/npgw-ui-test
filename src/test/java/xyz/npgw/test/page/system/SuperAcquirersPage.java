@@ -9,7 +9,7 @@ import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.FrameworkOptions;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
@@ -27,10 +27,10 @@ import java.util.concurrent.TimeUnit;
 @Getter
 public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
         implements SuperHeaderMenuTrait<SuperAcquirersPage>,
-                   SuperSystemMenuTrait,
-                   SelectAcquirerTrait<SuperAcquirersPage>,
-                   SelectStatusTrait<SuperAcquirersPage>,
-                   AcquirersTableTrait {
+        SuperSystemMenuTrait,
+        SelectAcquirerTrait<SuperAcquirersPage>,
+        SelectStatusTrait<SuperAcquirersPage>,
+        AcquirersTableTrait {
 
     private final Locator setupAcquirerMidButton = getByTestId("AddAcquirerButton");
     private final Locator setupAcquirerMidDialog = getByRole(AriaRole.DIALOG);
@@ -66,7 +66,7 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
 
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerPresence(APIRequestContext request, String acquirerName) {
-        double timeout = ProjectProperties.getDefaultTimeout();
+        double timeout = FrameworkOptions.getDefaultTimeout();
         while (Arrays.stream(Acquirer.getAll(request)).noneMatch(item -> item.getAcquirerName().equals(acquirerName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -74,7 +74,7 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
                 throw new TimeoutError("Waiting for acquirer '%s' presence".formatted(acquirerName));
             }
         }
-        log.info("Acquirer presence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
+        log.info("Acquirer presence wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
         refreshDataButton.click();
 
         return this;
@@ -82,7 +82,7 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
 
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerAbsence(APIRequestContext request, String acquirerName) {
-        double timeout = ProjectProperties.getDefaultTimeout();
+        double timeout = FrameworkOptions.getDefaultTimeout();
         while (Arrays.stream(Acquirer.getAll(request)).anyMatch(item -> item.getAcquirerName().equals(acquirerName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -90,7 +90,7 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
                 throw new TimeoutError("Waiting for acquirer '%s' absence".formatted(acquirerName));
             }
         }
-        log.info("Acquirer absence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
+        log.info("Acquirer absence wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
         refreshDataButton.click();
 
         return this;

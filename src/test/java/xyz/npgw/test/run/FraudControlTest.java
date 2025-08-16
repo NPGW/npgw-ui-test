@@ -708,7 +708,6 @@ public class FraudControlTest extends BaseTest {
                     .getTableControls().getColumnValuesFromAllPages(columnName);
 
             Allure.step("Verify that entries are now sorted ascending by %s".formatted(columnName));
-            System.out.println(columnName + "--->" + columnValues);
             Assert.assertEquals(columnValues, columnValues.stream().sorted().toList());
 
             columnValues = fraudControlPage
