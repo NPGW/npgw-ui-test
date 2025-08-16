@@ -99,7 +99,7 @@ public final class BrowserUtils {
                 .map(str -> List.of(str.split(";")))
                 .orElse(List.of())
                 .forEach(arg -> {
-                    String[] methodParams = arg.split("=");
+                    String[] methodParams = arg.trim().split("=");
                     if (methodParams.length > 1) {
                         String[] methodArgs = methodParams[1].split(",");
 
@@ -117,7 +117,7 @@ public final class BrowserUtils {
                 .map(str -> List.of(str.split(";")))
                 .orElse(List.of())
                 .forEach(arg -> {
-                    String[] methodParams = arg.split("=");
+                    String[] methodParams = arg.trim().split("=");
                     if (methodParams.length > 1) {
                         String[] methodArgs = methodParams[1].split(",");
 
