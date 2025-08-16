@@ -10,7 +10,7 @@ import static xyz.npgw.test.common.util.BrowserUtils.initObject;
 
 public final class ProjectProperties {
 
-    private static final String FRAMEWORK_OPTIONS = "project.properties";
+    private static final String PROJECT_PROPERTIES = "project.properties";
 
     @Getter
     @Setter
@@ -44,6 +44,6 @@ public final class ProjectProperties {
     private static int additionalRetries = 0;
 
     static {
-        initObject(ProjectProperties.class, FRAMEWORK_OPTIONS);
+        initObject(ProjectProperties.class, PROJECT_PROPERTIES);
     }
 }
