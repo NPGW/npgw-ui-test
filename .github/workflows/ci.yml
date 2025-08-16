@@ -56,7 +56,7 @@ jobs:
           PLAYWRIGHT_OPTIONS_CREATE:
             setEnv=PLAYWRIGHT_JAVA_SRC:src/test/java;
           PLAYWRIGHT_OPTIONS_LAUNCH:
-            setHeadless=false;
+            setHeadless=true;
             setSlowMo=0.0;
             setArgs=;
             setEnv=
