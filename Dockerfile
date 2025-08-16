@@ -18,7 +18,7 @@ WORKDIR /
 
 ENV DOCKER_RUN=1
 
-ENV FRAMEWORK_OPTIONS="setBaseURL=https://test.npgw.xyz;setEmail=test@email.com;setPassword=Qwerty123!;setTracingMode=true;setVideoMode=true;setColorScheme=DARK;setCloseBrowserIfError=true;setDefaultTimeout=5000;setAdditionalRetries=0"
+ENV PROJECT_PROPERTIES="setBaseURL=https://test.npgw.xyz;setEmail=test@email.com;setPassword=Qwerty123!;setTracingMode=true;setVideoMode=true;setCloseBrowserIfError=true;setColorScheme=DARK;setArtefactDir=target/artefact;setDefaultTimeout=5000;setAdditionalRetries=0"
 ENV PLAYWRIGHT_BROWSER="chromium"
 ENV PLAYWRIGHT_OPTIONS_CREATE="setEnv=PLAYWRIGHT_JAVA_SRC:src/test/java"
 ENV PLAYWRIGHT_OPTIONS_LAUNCH="setHeadless=false;setSlowMo=0.0;setArgs=;setEnv="

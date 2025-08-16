@@ -7,7 +7,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.FrameworkOptions;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.AboutBlankPage;
@@ -41,14 +41,14 @@ public class LoginPageTest extends BaseTest {
     public void testRememberMeCheckedSavesUserEmailUnauthenticated() {
         LoginPage loginPage = new AboutBlankPage(getPage())
                 .navigate("/login")
-                .fillEmailField(FrameworkOptions.getEmail())
-                .fillPasswordField(FrameworkOptions.getPassword())
+                .fillEmailField(ProjectProperties.getEmail())
+                .fillPasswordField(ProjectProperties.getPassword())
                 .checkRememberMeCheckbox()
                 .clickLoginButton()
                 .clickLogOutButton();
 
         Allure.step("Verify: The user's email is in the email field");
-        assertThat(loginPage.getEmailField()).hasValue(FrameworkOptions.getEmail());
+        assertThat(loginPage.getEmailField()).hasValue(ProjectProperties.getEmail());
     }
 
     @Test
@@ -59,8 +59,8 @@ public class LoginPageTest extends BaseTest {
     public void testRememberMeUncheckedDontSaveUserEmailUnauthenticated() {
         LoginPage loginPage = new AboutBlankPage(getPage())
                 .navigate("/")
-                .fillEmailField(FrameworkOptions.getEmail())
-                .fillPasswordField(FrameworkOptions.getPassword())
+                .fillEmailField(ProjectProperties.getEmail())
+                .fillPasswordField(ProjectProperties.getPassword())
                 .uncheckRememberMeCheckbox()
                 .clickLoginButton()
                 .clickLogOutButton();

@@ -40,17 +40,17 @@ jobs:
       - name: Run tests
         run: mvn test
         env:
-          FRAMEWORK_OPTIONS:
+          PROJECT_PROPERTIES:
             setBaseURL=https://test.npgw.xyz;
             setEmail=${{ secrets.USER_EMAIL }};
             setPassword=${{ secrets.USER_PASSWORD }};
             setTracingMode=true;
             setVideoMode=true;
+            setCloseBrowserIfError=true;            
             setColorScheme=DARK;
-            setCloseBrowserIfError=true;
+            setArtefactDir=target/artefact;
             setDefaultTimeout=5000;
-            setAdditionalRetries=0;
-            setArtefactDir=target/artefact
+            setAdditionalRetries=0
           PLAYWRIGHT_BROWSER:
             chromium
           PLAYWRIGHT_OPTIONS_CREATE:

@@ -2,7 +2,7 @@ package xyz.npgw.test.common;
 
 public class Constants {
 
-    public static final String BASE_URL = FrameworkOptions.getBaseURL();
+    public static final String BASE_URL = ProjectProperties.getBaseURL();
     public static final String LOGIN_PAGE_URL = BASE_URL + "/";
     public static final String DASHBOARD_PAGE_URL = BASE_URL + "/dashboard";
     public static final String TRANSACTIONS_PAGE_URL = BASE_URL + "/transactions";

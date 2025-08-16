@@ -4,7 +4,7 @@ import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.TimeoutError;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.common.FrameworkOptions;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
@@ -99,7 +99,7 @@ public final class TestUtils {
 
     @SneakyThrows
     public static void waitForUserPresence(APIRequestContext request, String email, String companyName) {
-        double timeout = FrameworkOptions.getDefaultTimeout();
+        double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(User.getAll(request, companyName)).noneMatch(user -> user.email().equals(email))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -107,12 +107,12 @@ public final class TestUtils {
                 throw new TimeoutError("Waiting for user '%s' presence".formatted(email));
             }
         }
-        log.info("User presence wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
+        log.info("User presence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
     }
 
     @SneakyThrows
     public static void waitForCompanyPresent(APIRequestContext request, String companyName) {
-        double timeout = FrameworkOptions.getDefaultTimeout();
+        double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(Company.getAll(request))
                 .noneMatch(item -> item.companyName().equals(companyName))) {
             TimeUnit.MILLISECONDS.sleep(300);
@@ -121,7 +121,7 @@ public final class TestUtils {
                 throw new TimeoutError("Waiting for company '%s' present".formatted(companyName));
             }
         }
-        log.info("Company present wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
+        log.info("Company present wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
     }
 
 

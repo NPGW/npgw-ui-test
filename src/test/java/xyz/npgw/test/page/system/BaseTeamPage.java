@@ -7,7 +7,7 @@ import com.microsoft.playwright.TimeoutError;
 import io.qameta.allure.Step;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
-import xyz.npgw.test.common.FrameworkOptions;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.select.SelectStatusTrait;
@@ -46,7 +46,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
 
     @SneakyThrows
     public CurrentPageT waitForUserPresence(APIRequestContext request, String email, String companyName) {
-        double timeout = FrameworkOptions.getDefaultTimeout();
+        double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(User.getAll(request, companyName)).noneMatch(user -> user.email().equals(email))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -54,7 +54,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
                 throw new TimeoutError("Waiting for user '%s' presence".formatted(email));
             }
         }
-        log.info("User presence wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
+        log.info("User presence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
         clickRefreshDataButton();
 
         return self();
@@ -62,7 +62,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
 
     @SneakyThrows
     public CurrentPageT waitForUserAbsence(APIRequestContext request, String email, String companyName) {
-        double timeout = FrameworkOptions.getDefaultTimeout();
+        double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(User.getAll(request, companyName)).anyMatch(user -> user.email().equals(email))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -70,7 +70,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
                 throw new TimeoutError("Waiting for user '%s' absence".formatted(email));
             }
         }
-        log.info("User absence wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
+        log.info("User absence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
         clickRefreshDataButton();
 
         return self();
@@ -78,7 +78,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
 
     @SneakyThrows
     public CurrentPageT waitForUserActivation(APIRequestContext request, String email, String companyName) {
-        double timeout = FrameworkOptions.getDefaultTimeout();
+        double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(User.getAll(request, companyName))
                 .noneMatch(user -> user.email().equals(email) && user.enabled())) {
             TimeUnit.MILLISECONDS.sleep(300);
@@ -87,7 +87,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
                 throw new TimeoutError("Waiting for user '%s' activation".formatted(email));
             }
         }
-        log.info("User activation wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
+        log.info("User activation wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
         clickRefreshDataButton();
 
         return self();
@@ -95,7 +95,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
 
     @SneakyThrows
     public CurrentPageT waitForUserDeactivation(APIRequestContext request, String email, String companyName) {
-        double timeout = FrameworkOptions.getDefaultTimeout();
+        double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(User.getAll(request, companyName))
                 .noneMatch(user -> user.email().equals(email) && !user.enabled())) {
             TimeUnit.MILLISECONDS.sleep(300);
@@ -104,7 +104,7 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
                 throw new TimeoutError("Waiting for user '%s' deactivation".formatted(email));
             }
         }
-        log.info("User deactivation wait took {}ms", FrameworkOptions.getDefaultTimeout() - timeout);
+        log.info("User deactivation wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
         clickRefreshDataButton();
 
         return self();

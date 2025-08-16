@@ -16,7 +16,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.FrameworkOptions;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
@@ -512,7 +512,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getTable().selectRowsPerPageOption("100");
 
         Download download = getPage().waitForDownload(
-                new Page.WaitForDownloadOptions().setTimeout(FrameworkOptions.getDefaultTimeout() * 6),
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
                 () -> transactionsPage.clickExportTableDataToFileButton().selectCsv());
 
         Allure.step("Verify: success alert is shown after exporting");
@@ -549,7 +549,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getTable().selectRowsPerPageOption("100");
 
         Download download = getPage().waitForDownload(
-                new Page.WaitForDownloadOptions().setTimeout(FrameworkOptions.getDefaultTimeout() * 6),
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
                 () -> transactionsPage.clickExportTableDataToFileButton().selectPdf());
 
         Allure.step("Verify: success alert is shown after exporting");
@@ -592,7 +592,7 @@ public class TransactionsTableTest extends BaseTest {
                 .getTable().selectRowsPerPageOption("100");
 
         Download download = getPage().waitForDownload(
-                new Page.WaitForDownloadOptions().setTimeout(FrameworkOptions.getDefaultTimeout() * 6),
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
                 () -> transactionsPage.clickExportTableDataToFileButton().selectExcel());
 
         Allure.step("Verify: success alert is shown after exporting");

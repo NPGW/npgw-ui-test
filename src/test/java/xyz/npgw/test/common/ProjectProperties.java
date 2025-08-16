@@ -8,9 +8,9 @@ import java.nio.file.Path;
 
 import static xyz.npgw.test.common.util.BrowserUtils.initObject;
 
-public final class FrameworkOptions {
+public final class ProjectProperties {
 
-    private static final String FRAMEWORK_OPTIONS = "framework.options";
+    private static final String FRAMEWORK_OPTIONS = "project.properties";
 
     @Getter
     @Setter
@@ -44,6 +44,6 @@ public final class FrameworkOptions {
     private static int additionalRetries = 0;
 
     static {
-        initObject(FrameworkOptions.class, FRAMEWORK_OPTIONS);
+        initObject(ProjectProperties.class, FRAMEWORK_OPTIONS);
     }
 }

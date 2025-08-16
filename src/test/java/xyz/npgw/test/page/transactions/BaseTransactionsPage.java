@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.Assert;
-import xyz.npgw.test.common.FrameworkOptions;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.base.HeaderPage;
@@ -277,7 +277,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
 
     public boolean isFileAvailableAndNotEmpty(String fileType) {
         Download download = getPage().waitForDownload(
-                new Page.WaitForDownloadOptions().setTimeout(FrameworkOptions.getDefaultTimeout() * 6),
+                new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
                 () -> getByRole(AriaRole.MENUITEM, fileType).click());
 
         int length = 0;

@@ -21,7 +21,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import xyz.npgw.test.common.FrameworkOptions;
+import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Credentials;
 import xyz.npgw.test.common.entity.Token;
@@ -73,15 +73,15 @@ public abstract class BaseTest {
     protected void beforeSuite() {
         Playwright playwright = BrowserUtils.createPlaywright();
         APIRequestContext apiRequestContext = playwright.request()
-                .newContext(new APIRequest.NewContextOptions().setBaseURL(FrameworkOptions.getBaseURL()));
-        Credentials credentials = new Credentials(FrameworkOptions.getEmail(), FrameworkOptions.getPassword());
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+        Credentials credentials = new Credentials(ProjectProperties.getEmail(), ProjectProperties.getPassword());
         Token token = User.getTokenResponse(apiRequestContext, credentials).token();
         apiRequestContext.dispose();
 
         if (token != null && !token.idToken().isEmpty()) {
             apiRequestContext = playwright.request()
                     .newContext(new APIRequest.NewContextOptions()
-                            .setBaseURL(FrameworkOptions.getBaseURL())
+                            .setBaseURL(ProjectProperties.getBaseURL())
                             .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
             CleanupUtils.clean(apiRequestContext);
             apiRequestContext.dispose();
@@ -103,7 +103,7 @@ public abstract class BaseTest {
     @BeforeMethod
     protected void beforeMethod(Method method, ITestResult testResult, Object[] args) {
         testId = "%s/%s/%s(%d)%s".formatted(
-                FrameworkOptions.getArtefactDir(),
+                ProjectProperties.getArtefactDir(),
                 method.getDeclaringClass().getSimpleName(),
                 method.getName(),
                 testResult.getMethod().getCurrentInvocationCount(),
@@ -112,12 +112,12 @@ public abstract class BaseTest {
 
         context = BrowserUtils.createContext(browser);
 
-        if (FrameworkOptions.isTracingMode()) {
+        if (ProjectProperties.isTracingMode()) {
             BrowserUtils.startTracing(context);
         }
 
         page = context.newPage();
-        page.setDefaultTimeout(FrameworkOptions.getDefaultTimeout());
+        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
         page.addLocatorHandler(page.getByText("Loading..."), locator -> {
         });
 
@@ -148,7 +148,7 @@ public abstract class BaseTest {
         if (method.getName().endsWith("AsTestUser")) {
             new AboutBlankPage(page)
                     .navigate("/")
-                    .loginAsUser("testUser@email.com", FrameworkOptions.getPassword());
+                    .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
             return;
         }
         if (method.getName().endsWith("AsUser")) {
@@ -160,7 +160,7 @@ public abstract class BaseTest {
         if (method.getName().endsWith("AsTestAdmin")) {
             new AboutBlankPage(page)
                     .navigate("/")
-                    .loginAsAdmin("testAdmin@email.com", FrameworkOptions.getPassword());
+                    .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
             return;
         }
         if (method.getName().endsWith("AsAdmin")) {
@@ -197,18 +197,18 @@ public abstract class BaseTest {
                     userRole,
                     (userRole == UserRole.USER) ? new String[]{businessUnit.merchantId()} : new String[]{},
                     email,
-                    FrameworkOptions.getPassword());
+                    ProjectProperties.getPassword());
             User.create(apiRequestContext, user);
             User.passChallenge(apiRequestContext, user.email(), user.password());
         }
 
-        new AboutBlankPage(page).navigate("/").loginAs(email, FrameworkOptions.getPassword(), userRole.getName());
+        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getPassword(), userRole.getName());
 //        initPageRequestContext();
     }
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) throws IOException {
-        if (!testResult.isSuccess() && !FrameworkOptions.isCloseBrowserIfError()) {
+        if (!testResult.isSuccess() && !ProjectProperties.isCloseBrowserIfError()) {
             page.pause();
         }
 
@@ -217,7 +217,7 @@ public abstract class BaseTest {
 
         if (page != null) {
             page.close();
-            if (FrameworkOptions.isVideoMode() && page.video() != null) {
+            if (ProjectProperties.isVideoMode() && page.video() != null) {
                 if (testResult.getStatus() == ITestResult.FAILURE || testResult.getStatus() == ITestResult.SKIP) {
                     Path videoFilePath = Paths.get(testId + ".webm");
                     page.video().saveAs(videoFilePath);
@@ -229,7 +229,7 @@ public abstract class BaseTest {
         }
 
         if (context != null) {
-            if (FrameworkOptions.isTracingMode()) {
+            if (ProjectProperties.isTracingMode()) {
                 if (testResult.getStatus() == ITestResult.FAILURE || testResult.getStatus() == ITestResult.SKIP) {
                     Path traceFilePath = Paths.get(testId + ".zip");
                     context.tracing().stop(new Tracing.StopOptions().setPath(traceFilePath));
@@ -264,15 +264,15 @@ public abstract class BaseTest {
             return;
         }
         APIRequestContext request = playwright.request()
-                .newContext(new APIRequest.NewContextOptions().setBaseURL(FrameworkOptions.getBaseURL()));
-        Credentials credentials = new Credentials(FrameworkOptions.getEmail(), FrameworkOptions.getPassword());
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+        Credentials credentials = new Credentials(ProjectProperties.getEmail(), ProjectProperties.getPassword());
         Token token = User.getTokenResponse(request, credentials).token();
         request.dispose();
 
         if (token != null && !token.idToken().isEmpty()) {
             apiRequestContext = playwright.request()
                     .newContext(new APIRequest.NewContextOptions()
-                            .setBaseURL(FrameworkOptions.getBaseURL())
+                            .setBaseURL(ProjectProperties.getBaseURL())
                             .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
             bestBefore = LocalTime.now().plusSeconds(token.expiresIn()).minusMinutes(3);
         }
