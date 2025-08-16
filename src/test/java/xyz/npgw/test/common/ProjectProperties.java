@@ -14,7 +14,7 @@ public final class ProjectProperties {
 
     @Getter
     @Setter
-    private static String baseURL;
+    private static String baseURL = "https://test.npgw.xyz";
     @Getter
     @Setter
     private static String email;
@@ -23,10 +23,10 @@ public final class ProjectProperties {
     private static String password;
     @Getter
     @Setter
-    private static boolean tracingMode;
+    private static boolean tracingMode = false;
     @Getter
     @Setter
-    private static boolean videoMode;
+    private static boolean videoMode = false;
     @Getter
     @Setter
     private static boolean closeBrowserIfError = true;
@@ -35,7 +35,7 @@ public final class ProjectProperties {
     private static ColorScheme colorScheme = ColorScheme.DARK;
     @Getter
     @Setter
-    private static Path artefactDir;
+    private static Path artefactDir = Path.of("target/artefact");
     @Getter
     @Setter
     private static double defaultTimeout = 5000.0;
