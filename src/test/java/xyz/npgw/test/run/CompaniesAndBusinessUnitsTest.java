@@ -6,12 +6,14 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;
@@ -42,6 +44,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     private static final String COMPANY_TYPE = "CompanyType";
     private static final String BUSINESS_UNIT_NAME = "Business unit name test";
     private static final String BUSINESS_UNIT_NAME_EDITED = "Edited Business unit name test";
+    private static final String ADMIN_EMAIL = "%s.admin123@email.com".formatted(TestUtils.now());
 
     Company company = new Company(
             COMPANY_NAME_TEST, "Company Type Test",
@@ -451,13 +454,11 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     @Feature("Delete Company")
     @Description("Verify that company cannot be deleted if there are users assigned to it")
     public void testCannotDeleteCompanyWithAssignedUser() {
-        String email = "%s.admin123@email.com".formatted(TestUtils.now());
-
         SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickAddUserButton()
-                .fillEmailField(email)
+                .fillEmailField(ADMIN_EMAIL)
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
@@ -733,5 +734,12 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' icon");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
     }
-}
 
+    @AfterClass
+    @Override
+    protected void afterClass() {
+        User.delete(getApiRequestContext(), ADMIN_EMAIL);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
+        super.afterClass();
+    }
+}
