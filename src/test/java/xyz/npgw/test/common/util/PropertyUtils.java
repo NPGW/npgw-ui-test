@@ -31,7 +31,6 @@ public class PropertyUtils {
     }
 
     public static String getValue(String value) {
-        System.out.println(System.getenv(value.replace('.', '_').toUpperCase()));
         return properties.getProperty(value, System.getenv(value.replace('.', '_').toUpperCase()));
     }
 }
