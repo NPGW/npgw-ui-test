@@ -27,6 +27,8 @@ public abstract class BaseDialog<
     private final Locator allPlaceholdersWithoutSearch = dialog.locator(
             "[data-slot='input']:not([placeholder='Search...'])");
     private final Locator fieldLabel = dialog.locator("label[data-slot='label']");
+    private final Locator modalWindowHeaderTitle = locator("header.flex.text-large.font-semibold");
+    private final Locator modalWindowsMainTextBody = locator("div.flex.flex-1.flex-col.gap-3.px-6.py-2");
 
     public BaseDialog(Page page) {
         super(page);
@@ -73,5 +75,19 @@ public abstract class BaseDialog<
         getPage().keyboard().press("Escape");
 
         return getReturnPage();
+    }
+
+    @Step("Get Modal window title")
+    public Locator getModalWindowHeaderTitle() {
+        modalWindowHeaderTitle.waitFor();
+
+        return modalWindowHeaderTitle;
+    }
+
+    @Step("Get Modal window main body")
+    public Locator getModalWindowMainBodyText() {
+        modalWindowsMainTextBody.waitFor();
+
+        return modalWindowsMainTextBody;
     }
 }

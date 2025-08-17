@@ -9,13 +9,13 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateControlDialog;
 import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
@@ -370,7 +370,8 @@ public class FraudControlTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
             "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            "testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting"})
+            "testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting",
+            "testVerifyWarningModalWindowChangeActivityForControlTable"})
     @TmsLink("949")
     @Epic("System/Fraud Control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -1062,6 +1063,40 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that a Control name field has limit of 100 characters");
         Assert.assertEquals(addControlDialog.getControlNameInput().inputValue().length(), 100);
+    }
+
+    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
+    @TmsLink("1143")
+    @Epic("System/Fraud Control")
+    @Feature("Change control activity dialog Control table")
+    @Description("Warning message text")
+    public void testVerifyWarningModalWindowChangeActivityForControlTable() {
+        DeactivateControlDialog dialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL.getControlName());
+
+        Locator windowHeader = dialog.getModalWindowHeaderTitle();
+        Locator windowMainBody = dialog.getModalWindowsMainTextBody();
+
+        Allure.step("Verify Deactivate control modal window text");
+        assertThat(windowHeader).hasText("Change control activity");
+
+        Allure.step("Verify Deactivate control modal window main body text");
+        assertThat(windowMainBody).hasText("Are you sure you want to deactivate control "
+                + FRAUD_CONTROL.getControlDisplayName() + "?");
+
+        dialog.clickCancelButton()
+                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_INACTIVE.getControlName());
+
+        Allure.step("Verify Activate control modal window text");
+        assertThat(windowHeader).hasText("Change control activity");
+
+        Allure.step("Verify Activate control modal window main body text");
+        assertThat(windowMainBody).hasText("Are you sure you want to activate control "
+                + FRAUD_CONTROL_INACTIVE.getControlDisplayName() + "?");
+
+        dialog.clickCancelButton();
     }
 
     @AfterClass
