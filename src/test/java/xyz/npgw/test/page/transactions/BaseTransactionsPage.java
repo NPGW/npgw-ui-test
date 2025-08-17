@@ -360,6 +360,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     @Step("Click 'Export table data to file' button")
     public CurrentPageT clickExportTableDataToFileButton() {
         downloadButton.click();
+        getPage().waitForTimeout(3000); //TODO replace with adequate wait for 10000 transactions for export
 
         return self();
     }
@@ -373,7 +374,6 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
 
     @Step("Select 'PDF' option")
     public CurrentPageT selectPdf() {
-        getPage().waitForTimeout(3000); //TODO replace with adequate wait for 10000 transactions for export
         downloadPdfOption.click();
 
         return self();
