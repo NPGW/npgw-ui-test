@@ -19,7 +19,7 @@ public class ApiLogger {
     public void response(APIResponse response, String message) {
         switch (response.status() / 100) {
             case 2:
-                log.debug("{} {}", message, response.status());
+                log.info("{} {}", message, response.status());
                 break;
             case 4:
                 String errorMessage = response.text();

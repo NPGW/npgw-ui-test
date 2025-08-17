@@ -108,7 +108,7 @@ public abstract class BaseTest {
                 method.getName(),
                 testResult.getMethod().getCurrentInvocationCount(),
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
-//        log.info(">>> {}", testId);
+        log.info(">>> {}", testId);
 
         context = BrowserUtils.createContext(browser);
 
@@ -213,7 +213,7 @@ public abstract class BaseTest {
         }
 
         long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
-//        log.info("{} <<< {} in {} s", status(testResult.getStatus()), testId, testDuration);
+        log.info("{} <<< {} in {} s", status(testResult.getStatus()), testId, testDuration);
 
         if (page != null) {
             page.close();
