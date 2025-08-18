@@ -365,7 +365,7 @@ public class TransactionsPageAdminTest extends BaseTest {
     @Test
     @TmsLink("851")
     @Epic("Transactions")
-    @Feature("Transactions Search")
+    @Feature("Transactions search")
     @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
     public void testSearchOptionsVisibleAfterClickingTrxIdsAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
