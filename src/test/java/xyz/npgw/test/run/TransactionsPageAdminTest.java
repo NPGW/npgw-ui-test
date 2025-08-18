@@ -183,7 +183,6 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.amountApplied("Amount: 0.00 - 0.00")).isVisible();
     }
 
-    @Ignore("Empty bu list")
     @Test
     @TmsLink("503")
     @Epic("Transactions")
