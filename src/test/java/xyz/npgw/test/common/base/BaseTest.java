@@ -213,7 +213,9 @@ public abstract class BaseTest {
         }
 
         long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
-//        log.info("{} <<< {} in {} s", status(testResult.getStatus()), testId, testDuration);
+        if (testResult.getStatus() == ITestResult.FAILURE) {
+            log.info("{} <<< {} in {} s", status(testResult.getStatus()), testId, testDuration);
+        }
 
         if (page != null) {
             page.close();
