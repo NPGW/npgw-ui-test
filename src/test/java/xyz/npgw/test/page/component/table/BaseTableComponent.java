@@ -143,7 +143,7 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         return getCurrentPage();
     }
 
-    @Step("Click the 'Rows Per Page' dropdown Chevron")
+    @Step("Click the 'Rows per page' dropdown Chevron")
     public CurrentPageT clickRowsPerPageChevron() {
         rowsPerPage.locator("svg").click();
 
@@ -154,7 +154,7 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         return rowsPerPageDropdown.locator("li");
     }
 
-    @Step("Select Rows Per Page '{option}'")
+    @Step("Select 'Rows per page' '{option}'")
     public CurrentPageT selectRowsPerPageOption(String option) {
         clickRowsPerPageChevron();
         rowsPerPageDropdown.getByText(option, new Locator.GetByTextOptions().setExact(true)).click();

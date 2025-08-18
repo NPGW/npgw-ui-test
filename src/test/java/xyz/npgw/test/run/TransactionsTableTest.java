@@ -288,7 +288,7 @@ public class TransactionsTableTest extends BaseTest {
     @TmsLink("127")
     @Epic("Transactions")
     @Feature("Pagination")
-    @Description("Displaying rows per page options when clicking on the RowsPerPage selector")
+    @Description("Displaying 'Rows per page' options when clicking on the RowsPerPage selector")
     public void testCountOptionsSelectorRows() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()

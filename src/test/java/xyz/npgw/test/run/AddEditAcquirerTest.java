@@ -221,7 +221,7 @@ public class AddEditAcquirerTest extends BaseTest {
     @Test
     @TmsLink("1119")
     @Epic("System/Acquirers")
-    @Feature("Setup Acquirer MID")
+    @Feature("Setup acquirer MID")
     @Description("Verify that the 'Entity name' field requires between 4 and 100 characters")
     public void testEntityNameIsMandatoryLengthRestrictions() {
         String invalidControlName3Chars = "a".repeat(3);
