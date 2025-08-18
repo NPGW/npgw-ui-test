@@ -17,7 +17,6 @@ import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
-import xyz.npgw.test.page.system.SuperCompaniesAndBusinessUnitsPage;
 import xyz.npgw.test.page.system.SuperGatewayPage;
 
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 
 public class GatewayPageTest extends BaseTest {
 
@@ -56,7 +56,6 @@ public class GatewayPageTest extends BaseTest {
     private static final String BUSINESS_UNIT_NAME_DELETION_TEST = "BU-1";
     private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
             "MerchantAcquirer"};
-    private final String[] expectedOptions = new String[]{"ALL", "EUR", "USD", "GBP"};
 
     @BeforeClass
     @Override
@@ -85,7 +84,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCurrency().clickCurrencySelector();
 
         Allure.step("Verify: The 'Currency' dropdown toggles and contains options");
-        assertThat(gatewayPage.getSelectCurrency().getCurrencyOptions()).hasText(expectedOptions);
+        assertThat(gatewayPage.getSelectCurrency().getCurrencyOptions()).hasText(CURRENCY_OPTIONS);
     }
 
     @Test
@@ -101,7 +100,7 @@ public class GatewayPageTest extends BaseTest {
         Locator actualCurrency = gatewayPage
                 .getSelectCurrency().getCurrencySelector();
 
-        for (String currency : expectedOptions) {
+        for (String currency : CURRENCY_OPTIONS) {
             gatewayPage.getSelectCurrency().select(currency);
 
             Allure.step("Verify currency has value: " + currency);
@@ -186,8 +185,7 @@ public class GatewayPageTest extends BaseTest {
     @Feature("Currency")
     @Description("Verify Reset filter cleans all the filters applied")
     public void testResetAllTheFilters() {
-        List<String> expectedCurrency = List.of("All", "EUR", "USD", "GBP");
-        String selectedCurrency = expectedCurrency.get(new Random().nextInt(expectedCurrency.size() - 1) + 1);
+        String selectedCurrency = CURRENCY_OPTIONS[new Random().nextInt(CURRENCY_OPTIONS.length - 1) + 1];
         Company company = new Company(new Faker().company().name(), new Faker().company().industry());
 
         SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())

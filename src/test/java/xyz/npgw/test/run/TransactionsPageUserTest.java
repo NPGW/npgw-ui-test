@@ -18,10 +18,12 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.UserDashboardPage;
 import xyz.npgw.test.page.transactions.UserTransactionsPage;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 
 public class TransactionsPageUserTest extends BaseTest {
 
@@ -198,28 +200,31 @@ public class TransactionsPageUserTest extends BaseTest {
         assertThat(transactionsPage.getSelectBusinessUnit().getDropdownOptionList()).hasText("default");
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("567")
     @Epic("Transactions")
     @Feature("Reset filter")
-    @Description("Verify, that 'Reset filter' button change 'Currency' to default value ( ALL)")
-    public void testResetCurrencyAsUser(String currency) {
+    @Description("Verify, that 'Reset filter' button change 'Currency' to default value (ALL)")
+    public void testResetCurrencyAsUser() {
         UserTransactionsPage transactionsPage = new UserDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
 
-        transactionsPage.getSelectCurrency().select(currency);
+        for (String currency : Arrays.copyOfRange(CURRENCY_OPTIONS, 1, CURRENCY_OPTIONS.length)) {
+            transactionsPage
+                    .getSelectCurrency().select(currency);
 
-        Allure.step("Verify: Filter displays the selected currency");
-        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
+            Allure.step("Verify: Filter displays the selected currency");
+            assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
 
-        transactionsPage
-                .clickResetFilterButton();
+            transactionsPage
+                    .clickResetFilterButton();
 
-        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
-        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
+            Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button ");
+            assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText("ALL");
+        }
     }
 
     @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)

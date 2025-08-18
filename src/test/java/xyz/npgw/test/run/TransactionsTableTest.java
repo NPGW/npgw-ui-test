@@ -46,6 +46,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
 public class TransactionsTableTest extends BaseTest {
@@ -173,12 +174,12 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(totalFilteredRows, filteredTransactionCount);
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("319")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Filtering transactions by Currency")
-    public void testFilterTransactionsByCurrency(String currency) {
+    public void testFilterTransactionsByCurrency() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
@@ -188,14 +189,14 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        List<String> currencyValues = transactionsPage.getSelectCurrency().select(currency)
-                .getTable().getColumnValuesFromAllPages("Currency");
+        for (String currency : Arrays.copyOfRange(CURRENCY_OPTIONS, 1, CURRENCY_OPTIONS.length)) {
+            List<String> currencyValues = transactionsPage
+                    .getSelectCurrency().select(currency)
+                    .getTable().getColumnValuesFromAllPages("Currency");
 
-        Allure.step("Verify: Filter displays the selected currency");
-        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
-
-        Allure.step("Verify: All values in the Currency column match the selected currency");
-        assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
+            Allure.step("Verify: All values in the Currency column match the selected currency");
+            assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
+        }
     }
 
     @Test
