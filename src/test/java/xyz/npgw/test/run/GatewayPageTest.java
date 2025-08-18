@@ -154,32 +154,27 @@ public class GatewayPageTest extends BaseTest {
     public void testCompaniesBusinessUnitsPresence() {
         String companyName = "%s company for 602".formatted(TestUtils.now());
 
-        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+        SuperGatewayPage superGatewayPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .clickAddCompanyButton()
                 .fillCompanyNameField(companyName)
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
-
-        TestUtils.waitForCompanyPresent(getApiRequestContext(), companyName);
-
-        SuperGatewayPage gatewayPage = companiesAndBusinessUnitsPage
-                .getSelectCompany().selectCompany(companyName)
+                .getAlert().clickCloseButton()
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField("First")
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField("Second")
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(companyName)
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
         Allure.step("Verify that all the Business units are presented in the list");
-        assertThat(gatewayPage.getSelectBusinessUnit().getDropdownOptionList())
+        assertThat(superGatewayPage.getSelectBusinessUnit().getDropdownOptionList())
                 .hasText(new String[]{"First", "Second"});
 
         TestUtils.deleteCompany(getApiRequestContext(), companyName);
@@ -203,8 +198,6 @@ public class GatewayPageTest extends BaseTest {
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
-                //Behaviour is changed now
-//                .getSelectCompany().selectCompany(company.companyName())
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
                 .clickCreateButton()
