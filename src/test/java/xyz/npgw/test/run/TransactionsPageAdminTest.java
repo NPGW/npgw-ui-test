@@ -23,7 +23,9 @@ import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
+import static xyz.npgw.test.common.Constants.CARD_TYPES;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
+import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
 public class TransactionsPageAdminTest extends BaseTest {
 
@@ -65,7 +67,7 @@ public class TransactionsPageAdminTest extends BaseTest {
                 .getSelectStatus().clickSelector();
 
         Allure.step("Verify: Selector Status Options are visible");
-        assertThat(transactionsPage.getSelectStatus().getStatusOptions()).hasText(Constants.TRANSACTION_STATUSES);
+        assertThat(transactionsPage.getSelectStatus().getStatusOptions()).hasText(TRANSACTION_STATUSES);
 
         Allure.step("Verify: Default selected option in status selector is 'ALL'");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
@@ -227,54 +229,58 @@ public class TransactionsPageAdminTest extends BaseTest {
         }
     }
 
-    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("598")
     @Epic("Transactions")
     @Feature("Reset filter")
-    @Description("Verify, that 'Reset filter' button change 'Card Type' to default value ( ALL)")
-    public void testResetCardTypeAsAdmin(String cardType) {
+    @Description("Verify, that 'Reset filter' button change 'Card Type' to default value (ALL)")
+    public void testResetCardTypeAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminTransactionsPage(getPage())
                 .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
 
-        transactionsPage
-                .selectCardType(cardType);
+        for (String cardType : Arrays.copyOfRange(CARD_TYPES, 1, CARD_TYPES.length)) {
+            transactionsPage
+                    .selectCardType(cardType);
 
-        Allure.step("Verify: Filter displays the selected payment method");
-        assertThat(transactionsPage.getCardTypeValue()).containsText(cardType);
+            Allure.step("Verify: Filter displays the selected payment method");
+            assertThat(transactionsPage.getCardTypeValue()).containsText(cardType);
 
-        transactionsPage
-                .clickResetFilterButton();
+            transactionsPage
+                    .clickResetFilterButton();
 
-        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
-        assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
+            Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
+            assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
+        }
     }
 
-    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("639")
     @Epic("Transactions")
     @Feature("Reset filter")
-    @Description("Verify, that 'Reset filter' button change 'Status' to default value ( ALL)")
-    public void testResetStatusAsAdmin(String status) {
+    @Description("Verify, that 'Reset filter' button change 'Status' to default value (ALL)")
+    public void testResetStatusAsAdmin() {
         AdminTransactionsPage transactionsPage = new AdminDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
 
-        transactionsPage
-                .getSelectStatus().selectTransactionStatuses(status);
+        for (String status : Arrays.copyOfRange(TRANSACTION_STATUSES, 1, TRANSACTION_STATUSES.length)) {
+            transactionsPage
+                    .getSelectStatus().selectTransactionStatuses(status);
 
-        Allure.step("Verify: Filter displays the selected Status");
-        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status);
+            Allure.step("Verify: Filter displays the selected Status");
+            assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText(status);
 
-        transactionsPage
-                .clickResetFilterButton();
+            transactionsPage
+                    .clickResetFilterButton();
 
-        Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
-        assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+            Allure.step("Verify: Filter displays 'ALL' after applying 'Reset filter' button");
+            assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
+        }
     }
 
     @Ignore("multistatus not working atm")

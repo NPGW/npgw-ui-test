@@ -24,7 +24,6 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.entity.Type;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
@@ -45,9 +44,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.CARD_TYPES;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
+import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
 public class TransactionsTableTest extends BaseTest {
 
@@ -102,12 +103,12 @@ public class TransactionsTableTest extends BaseTest {
                 .allMatch(value -> value >= Double.parseDouble(amountFrom) && value <= Double.parseDouble(amountTo)));
     }
 
-    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("673")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Filtering transactions by Card type displays only matching entries in the table.")
-    public void testFilterByCardType(String cardType) {
+    public void testFilterByCardType() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
@@ -116,11 +117,14 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        List<String> cardTypeList = transactionsPage.selectCardType(cardType)
-                .getTable().getCardTypeColumnValuesAllPages();
+        for (String cardType : Arrays.copyOfRange(CARD_TYPES, 1, CARD_TYPES.length)) {
+            List<String> cardTypeList = transactionsPage
+                    .selectCardType(cardType)
+                    .getTable().getCardTypeColumnValuesAllPages();
 
-        Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
-        assertTrue(cardTypeList.stream().allMatch(value -> value.equals(cardType)));
+            Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
+            assertTrue(cardTypeList.stream().allMatch(value -> value.equals(cardType)));
+        }
     }
 
     @Test
@@ -143,12 +147,12 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
     }
 
-    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("679")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
-    public void testFilterByStatus(String status) {
+    public void testFilterByStatus() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
@@ -158,20 +162,22 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        int statusesCount = transactionsPage
-                .getTable().countValues("Status", status);
+        for (String status : Arrays.copyOfRange(TRANSACTION_STATUSES, 1, TRANSACTION_STATUSES.length)) {
+            int statusesCount = transactionsPage
+                    .getTable().countValues("Status", status);
 
-        int filteredTransactionCount = transactionsPage
-                .getSelectStatus().select(status)
-                .getTable().countValues("Status", status);
+            int filteredTransactionCount = transactionsPage
+                    .getSelectStatus().select(status)
+                    .getTable().countValues("Status", status);
 
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
+            int totalFilteredRows = transactionsPage.getTable().countAllRows();
 
-        Allure.step("Verify: All transactions with selected statuses are shown after filter.");
-        assertEquals(statusesCount, filteredTransactionCount);
+            Allure.step("Verify: All transactions with selected statuses are shown after filter.");
+            assertEquals(statusesCount, filteredTransactionCount);
 
-        Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
-        assertEquals(totalFilteredRows, filteredTransactionCount);
+            Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
+            assertEquals(totalFilteredRows, filteredTransactionCount);
+        }
     }
 
     @Test
