@@ -456,10 +456,10 @@ public class FraudControlTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Locator rowFraudOne = page.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
         Locator rowFraudTwo = page.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
@@ -498,7 +498,7 @@ public class FraudControlTest extends BaseTest {
 
         page.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickDeactivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control status has been changed to 'Inactive' in Control Table");
         assertThat(controlStatusCell).hasText("Inactive");
@@ -508,7 +508,7 @@ public class FraudControlTest extends BaseTest {
 
         page.getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickActivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control status is Active in Control table again");
         assertThat(controlStatusCell).hasText("Active");
@@ -539,7 +539,7 @@ public class FraudControlTest extends BaseTest {
 
         page.getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
                 .clickDeactivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control state hasn't been changed in Control Table");
         assertThat(controlStatusCell).hasText("Active");
@@ -549,7 +549,7 @@ public class FraudControlTest extends BaseTest {
 
         page.getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("0")
                 .clickActivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control state is Active in Business Unit Control Table again");
         assertThat(controlStatusCell).hasText("Active");
@@ -588,7 +588,7 @@ public class FraudControlTest extends BaseTest {
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickSetupButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
                 .clickSetupButton();
@@ -632,14 +632,14 @@ public class FraudControlTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableBusinessUnitControls().clickMoveBusinessUnitControlUpButton("1")
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Check that the second Fraud Control is '0' priority now");
         assertThat(page.getTableBusinessUnitControls().getRowByDataKey("0"))
                 .containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
 
         page.getTableBusinessUnitControls().clickMoveBusinessUnitControlDownButton("0")
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Check that the second Fraud Control is '1' priority again");
         assertThat(page.getTableBusinessUnitControls().getRowByDataKey("0"))
@@ -661,13 +661,13 @@ public class FraudControlTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
                 .clickActivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
                 .clickDeactivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
                 .clickDeleteButton();
 
@@ -676,7 +676,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit control was deleted successfully");
 
-        fraudControlPage.getAlert().waitUntilSuccessAlertIsGone();
+        fraudControlPage.getAlert().clickCloseButton();
         List<String> actualFraudControlBusinessUnitList = fraudControlPage
                 .getTableBusinessUnitControls().getColumnValues("Display name");
 
@@ -794,16 +794,16 @@ public class FraudControlTest extends BaseTest {
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
                 .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
                 .clickActivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
                 .clickConnectButton()
                 .getTableControls().clickConnectControlButton(
                         FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
                 .clickDeactivateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickColumnHeader("Priority");
 
         List<String> actualPriorityList = fraudControlPage

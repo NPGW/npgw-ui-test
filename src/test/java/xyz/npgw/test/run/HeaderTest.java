@@ -180,7 +180,7 @@ public class HeaderTest extends BaseTest {
                 .hasText("ERRORPassword does not conform to policy: Password must have lowercase characters");
 
         profileSettingsDialog
-                .getAlert().waitUntilAlertIsHidden()
+                .getAlert().clickCloseButton()
                 .fillPasswordField("qwerty1!")
                 .fillRepeatPasswordField("qwerty1!")
                 .clickSaveButtonWhenError();
@@ -190,7 +190,7 @@ public class HeaderTest extends BaseTest {
                 .hasText("ERRORPassword does not conform to policy: Password must have uppercase characters");
 
         profileSettingsDialog
-                .getAlert().waitUntilAlertIsHidden()
+                .getAlert().clickCloseButton()
                 .fillPasswordField("Qwertyu!")
                 .fillRepeatPasswordField("Qwertyu!")
                 .clickSaveButtonWhenError();
@@ -200,7 +200,7 @@ public class HeaderTest extends BaseTest {
                 .hasText("ERRORPassword does not conform to policy: Password must have numeric characters");
 
         profileSettingsDialog
-                .getAlert().waitUntilAlertIsHidden()
+                .getAlert().clickCloseButton()
                 .fillPasswordField("Qwertyu1")
                 .fillRepeatPasswordField("Qwertyu1")
                 .clickSaveButtonWhenError();

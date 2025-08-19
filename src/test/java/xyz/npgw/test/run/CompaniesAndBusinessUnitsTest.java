@@ -128,7 +128,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .fillCompanyMobileField(company.companyAddress().mobile())
                 .fillCompanyFaxField(company.companyAddress().fax())
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .clickOnResetFilterButton()
                 .getSelectCompany().selectCompany(company.companyName());
 
@@ -360,7 +360,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .hasText("SUCCESSCompany was updated successfully");
 
         companiesAndBusinessUnitsPage
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify: name field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getName()).hasValue(editedCompany.companyName());
@@ -462,7 +462,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickDeleteSelectedCompany()
