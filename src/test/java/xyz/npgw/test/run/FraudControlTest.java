@@ -676,7 +676,9 @@ public class FraudControlTest extends BaseTest {
         assertThat(fraudControlPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit control was deleted successfully");
 
-        fraudControlPage.getAlert().clickCloseButton();
+        fraudControlPage
+                .getAlert().clickCloseButton();
+
         List<String> actualFraudControlBusinessUnitList = fraudControlPage
                 .getTableBusinessUnitControls().getColumnValues("Display name");
 
