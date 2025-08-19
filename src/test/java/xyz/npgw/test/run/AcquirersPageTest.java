@@ -229,16 +229,15 @@ public class AcquirersPageTest extends BaseTest {
                 .getSystemMenu().clickAcquirersTab();
 
         for (String option : ROWS_PER_PAGE_OPTIONS) {
-            acquirersPage.getTable().selectRowsPerPageOption(option);
-
-            List<Integer> rowsCountPerPage = acquirersPage.getTable().getRowCountsPerPage();
-            int rowsSum = acquirersPage.getTable().countAllRows(rowsCountPerPage);
-            boolean allValid = rowsCountPerPage.stream().allMatch(count -> count <= Integer.parseInt(option));
+            List<Integer> rowsCountPerPage = acquirersPage
+                    .getTable().selectRowsPerPageOption(option)
+                    .getTable().getRowCountsPerPage();
 
             Allure.step(String.format("Verify: The table contains rows less than or equal to '%s' per page", option));
-            assertTrue(allValid, "Not all row counts are less than or equal to " + option);
+            assertTrue(rowsCountPerPage.stream().allMatch(count -> count <= Integer.parseInt(option)),
+                    "Not all row counts are less than or equal to " + option);
 
-            totalRowsForDifferentPaginations.add(rowsSum);
+            totalRowsForDifferentPaginations.add(rowsCountPerPage.stream().mapToInt(Integer::intValue).sum());
         }
 
         Assert.assertEquals(totalRowsForDifferentPaginations.stream().distinct().count(), 1,

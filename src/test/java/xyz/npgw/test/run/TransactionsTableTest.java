@@ -162,21 +162,19 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
+        List<String> defaultStatusList = transactionsPage
+                .getTable().getColumnValuesFromAllPages("Status");
+
         for (String status : Arrays.copyOfRange(TRANSACTION_STATUSES, 1, TRANSACTION_STATUSES.length)) {
-            int statusesCount = transactionsPage
-                    .getTable().countValues("Status", status);
-
-            int filteredTransactionCount = transactionsPage
+            List<String> statusListAfterFilter = transactionsPage
                     .getSelectStatus().select(status)
-                    .getTable().countValues("Status", status);
-
-            int totalFilteredRows = transactionsPage.getTable().countAllRows();
+                    .getTable().getColumnValuesFromAllPages("Status");
 
             Allure.step("Verify: All transactions with selected statuses are shown after filter.");
-            assertEquals(statusesCount, filteredTransactionCount);
+            assertEquals(defaultStatusList.stream().filter(s -> s.equals(status)).toList(), statusListAfterFilter);
 
             Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
-            assertEquals(totalFilteredRows, filteredTransactionCount);
+            assertTrue(statusListAfterFilter.stream().allMatch(s -> s.equals(status)));
         }
     }
 
