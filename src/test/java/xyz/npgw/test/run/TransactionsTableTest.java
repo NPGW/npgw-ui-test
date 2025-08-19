@@ -534,7 +534,6 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, csvTransactionList);
     }
 
-    @Ignore
     @Test
     @TmsLink("957")
     @Epic("Transactions")
