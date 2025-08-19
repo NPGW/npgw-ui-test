@@ -15,6 +15,7 @@ public abstract class ControlDialog<CurrentDialogT extends ControlDialog<Current
 
     private final Locator controlNameInput = getByPlaceholder("Enter control name");
     private final Locator controlNameLabel = getByTextExact("Control name");
+    private final Locator controlTypeLabel = getByLabelExact("Control type").last();
 
     public ControlDialog(Page page) {
         super(page);
@@ -64,6 +65,14 @@ public abstract class ControlDialog<CurrentDialogT extends ControlDialog<Current
     @Step("Fill in fraud control config: {controlConfig}")
     public CurrentDialogT fillFraudControlConfigField(String controlConfig) {
         getByPlaceholder("Enter control config").fill(controlConfig);
+
+        return (CurrentDialogT) this;
+    }
+
+    @Step("Fill in fraud control type: {controlType}")
+    public CurrentDialogT fillFraudControlTypeField(String controlType) {
+        controlTypeLabel.click();
+        locator("role=option >> text=" + controlType).click();
 
         return (CurrentDialogT) this;
     }
