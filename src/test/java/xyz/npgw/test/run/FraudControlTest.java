@@ -11,6 +11,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.ControlType;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -40,7 +41,6 @@ public class FraudControlTest extends BaseTest {
     private static final FraudControl FRAUD_CONTROL_FRAUD_SCREEN = FraudControl.builder()
             .controlName("ControlScreen")
             .controlCode("1522")
-            .controlType("Fraud Screen")
             .controlDisplayName("ControlFSC")
             .controlConfig("type")
             .build();
@@ -126,7 +126,7 @@ public class FraudControlTest extends BaseTest {
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_FRAUD_SCREEN.getControlName())
                 .fillFraudControlCodeField(FRAUD_CONTROL_FRAUD_SCREEN.getControlCode())
-                .fillFraudControlTypeField(FRAUD_CONTROL_FRAUD_SCREEN.getControlType())
+                .selectFraudControlTypeField(ControlType.FRAUD_SCREEN)
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_FRAUD_SCREEN.getControlDisplayName())
                 .fillFraudControlConfigField(FRAUD_CONTROL_FRAUD_SCREEN.getControlConfig())
                 .checkActiveRadiobutton()
@@ -138,7 +138,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlCode());
         assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlConfig());
         assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlDisplayName());
-        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlType());
+        assertThat(row).containsText(ControlType.FRAUD_SCREEN.getDisplayText());
         assertThat(row).containsText("Active");
     }
 

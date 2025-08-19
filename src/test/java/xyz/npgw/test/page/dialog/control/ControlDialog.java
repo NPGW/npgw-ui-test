@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
+import xyz.npgw.test.common.entity.ControlType;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
@@ -70,9 +71,9 @@ public abstract class ControlDialog<CurrentDialogT extends ControlDialog<Current
     }
 
     @Step("Fill in fraud control type: {controlType}")
-    public CurrentDialogT fillFraudControlTypeField(String controlType) {
+    public CurrentDialogT selectFraudControlTypeField(ControlType controlType) {
         controlTypeLabel.click();
-        locator("role=option >> text=" + controlType).click();
+        locator("role=option >> text=" + controlType.getDisplayText()).click();
 
         return (CurrentDialogT) this;
     }
