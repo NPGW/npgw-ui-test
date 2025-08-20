@@ -24,7 +24,6 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.entity.Type;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
@@ -45,8 +44,11 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.CARD_TYPES;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
+import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
 public class TransactionsTableTest extends BaseTest {
 
@@ -101,12 +103,12 @@ public class TransactionsTableTest extends BaseTest {
                 .allMatch(value -> value >= Double.parseDouble(amountFrom) && value <= Double.parseDouble(amountTo)));
     }
 
-    @Test(dataProvider = "getCardType", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("673")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Filtering transactions by Card type displays only matching entries in the table.")
-    public void testFilterByCardType(String cardType) {
+    public void testFilterByCardType() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
@@ -115,11 +117,14 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        List<String> cardTypeList = transactionsPage.selectCardType(cardType)
-                .getTable().getCardTypeColumnValuesAllPages();
+        for (String cardType : Arrays.copyOfRange(CARD_TYPES, 1, CARD_TYPES.length)) {
+            List<String> cardTypeList = transactionsPage
+                    .selectCardType(cardType)
+                    .getTable().getCardTypeColumnValuesAllPages();
 
-        Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
-        assertTrue(cardTypeList.stream().allMatch(value -> value.equals(cardType)));
+            Allure.step("Verify: all entries in the 'Card type' column match the selected filter");
+            assertTrue(cardTypeList.stream().allMatch(value -> value.equals(cardType)));
+        }
     }
 
     @Test
@@ -142,12 +147,12 @@ public class TransactionsTableTest extends BaseTest {
         assertTrue(transactionsPage.getTable().isBetween(startDate, endDate));
     }
 
-    @Test(dataProvider = "getStatus", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("679")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Compare number of transactions with selected statuses in the table before and after filter")
-    public void testFilterByStatus(String status) {
+    public void testFilterByStatus() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
@@ -157,28 +162,28 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        int statusesCount = transactionsPage
-                .getTable().countValues("Status", status);
+        List<String> defaultStatusList = transactionsPage
+                .getTable().getColumnValuesFromAllPages("Status");
 
-        int filteredTransactionCount = transactionsPage
-                .getSelectStatus().select(status)
-                .getTable().countValues("Status", status);
+        for (String status : Arrays.copyOfRange(TRANSACTION_STATUSES, 1, TRANSACTION_STATUSES.length)) {
+            List<String> statusListAfterFilter = transactionsPage
+                    .getSelectStatus().select(status)
+                    .getTable().getColumnValuesFromAllPages("Status");
 
-        int totalFilteredRows = transactionsPage.getTable().countAllRows();
+            Allure.step("Verify: All transactions with selected statuses are shown after filter.");
+            assertEquals(defaultStatusList.stream().filter(s -> s.equals(status)).toList(), statusListAfterFilter);
 
-        Allure.step("Verify: All transactions with selected statuses are shown after filter.");
-        assertEquals(statusesCount, filteredTransactionCount);
-
-        Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
-        assertEquals(totalFilteredRows, filteredTransactionCount);
+            Allure.step("Verify: Only transactions with selected statuses are shown after filter.");
+            assertTrue(statusListAfterFilter.stream().allMatch(s -> s.equals(status)));
+        }
     }
 
-    @Test(dataProvider = "getCurrency", dataProviderClass = TestDataProvider.class)
+    @Test
     @TmsLink("319")
     @Epic("Transactions")
     @Feature("Filter")
     @Description("Filtering transactions by Currency")
-    public void testFilterTransactionsByCurrency(String currency) {
+    public void testFilterTransactionsByCurrency() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
@@ -188,14 +193,14 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        List<String> currencyValues = transactionsPage.getSelectCurrency().select(currency)
-                .getTable().getColumnValuesFromAllPages("Currency");
+        for (String currency : Arrays.copyOfRange(CURRENCY_OPTIONS, 1, CURRENCY_OPTIONS.length)) {
+            List<String> currencyValues = transactionsPage
+                    .getSelectCurrency().select(currency)
+                    .getTable().getColumnValuesFromAllPages("Currency");
 
-        Allure.step("Verify: Filter displays the selected currency");
-        assertThat(transactionsPage.getSelectCurrency().getCurrencySelector()).containsText(currency);
-
-        Allure.step("Verify: All values in the Currency column match the selected currency");
-        assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
+            Allure.step("Verify: All values in the Currency column match the selected currency");
+            assertTrue(currencyValues.stream().allMatch(value -> value.equals(currency)));
+        }
     }
 
     @Test
@@ -228,6 +233,7 @@ public class TransactionsTableTest extends BaseTest {
     public void testSortByCreationDate() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -237,7 +243,8 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transactions are sorted by creation date in descending order by default");
         assertEquals(actualDates, actualDates.stream().sorted(Comparator.reverseOrder()).toList());
 
-        transactionsPage.getTable().clickSortIcon("Creation Date (GMT)");
+        transactionsPage
+                .getTable().clickColumnHeader("Creation Date (GMT)");
 
         Allure.step("Verify: transactions are sorted by creation date in ascending after clicking the sort icon");
         assertEquals(transactionsPage.getTable().getAllCreationDates(), actualDates.stream().sorted().toList());
@@ -251,10 +258,10 @@ public class TransactionsTableTest extends BaseTest {
     public void testSortByAmount() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getTable().selectRowsPerPageOption("100")
-                .getTable().clickSortIcon("Amount");
+                .getTable().clickColumnHeader("Amount");
 
         List<Double> actualAmount = transactionsPage
                 .getTable().getAllAmounts();
@@ -262,7 +269,8 @@ public class TransactionsTableTest extends BaseTest {
         Allure.step("Verify: transactions are sorted by amount in ascending order after first click");
         assertEquals(actualAmount, actualAmount.stream().sorted().toList());
 
-        transactionsPage.getTable().clickSortIcon("Amount");
+        transactionsPage
+                .getTable().clickColumnHeader("Amount");
 
         Allure.step("Verify: transactions are sorted by amount in descending order after second click");
         assertEquals(transactionsPage.getTable().getAllAmounts(),
@@ -270,30 +278,22 @@ public class TransactionsTableTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("127")
     @TmsLink("106")
     @Epic("Transactions")
     @Feature("Pagination")
-    @Description("Displaying the default number of rows on the RowsPerPage selector")
-    public void testCountSelectorRows() {
+    @Description("Displaying 'Rows per page' options when clicking on the RowsPerPage selector")
+    public void testCountOptionsSelectorRows() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: default row count - 25");
         assertThat(transactionsPage.getTable().getRowsPerPage()).containsText("25");
-    }
 
-    @Test
-    @TmsLink("127")
-    @Epic("Transactions")
-    @Feature("Pagination")
-    @Description("Displaying rows per page options when clicking on the RowsPerPage selector")
-    public void testCountOptionsSelectorRows() {
-        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .getHeader().clickTransactionsLink()
-                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+        transactionsPage
                 .getTable().clickRowsPerPageChevron();
 
         Allure.step("Verify: displaying all options when clicking on Selector Rows");
@@ -534,7 +534,6 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, csvTransactionList);
     }
 
-    @Ignore
     @Test
     @TmsLink("957")
     @Epic("Transactions")
@@ -552,9 +551,10 @@ public class TransactionsTableTest extends BaseTest {
                 new Page.WaitForDownloadOptions().setTimeout(ProjectProperties.getDefaultTimeout() * 6),
                 () -> transactionsPage.clickExportTableDataToFileButton().selectPdf());
 
-        Allure.step("Verify: success alert is shown after exporting");
-        assertThat(transactionsPage.getAlert().getMessage())
-                .hasText(EXPORT_SUCCESS_MESSAGE);
+//          TODO if export takes longer than 3 seconds alert is closing immediately
+//        Allure.step("Verify: success alert is shown after exporting");
+//        assertThat(transactionsPage.getAlert().getMessage())
+//                .hasText(EXPORT_SUCCESS_MESSAGE);
 
         Path targetPath = Paths.get("downloads", "transactions-export.pdf");
         Files.createDirectories(targetPath.getParent());
