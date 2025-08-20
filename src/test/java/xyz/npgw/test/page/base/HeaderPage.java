@@ -82,11 +82,4 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
 
         return self();
     }
-
-    //    TODO remove this later
-    public CurrentPageT waitForTimeout(double timeout) {
-        getPage().waitForTimeout(timeout);
-
-        return self();
-    }
 }
