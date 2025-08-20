@@ -760,9 +760,8 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Entries are by default sorted ascending by Name");
         Assert.assertEquals(defaultColumnValues, defaultColumnValues.stream().sorted().toList());
 
-        List<String> columns = List.of(/*"Type", */"Display name", "Name", "Code", "Config" /*, "Status"*/);
+        List<String> columns = List.of(/*"Type", */"Display name", "Name", "Code", "Config", "Status");
         //TODO sort by "Type" broken --- atm not sorting - [Fraud Screen, BIN Check, Fraud Screen] on first click
-        //TODO sort by "Status" broken --- atm wrong order - [Inactive, Active] on first click
 
         columns.forEach(columnName -> {
             List<String> columnValues = fraudControlPage
