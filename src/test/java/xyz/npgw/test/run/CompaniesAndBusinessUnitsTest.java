@@ -315,15 +315,14 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         assertThat(deleteBusinessUnitDialog.getConfirmationQuestion())
                 .hasText("Are you sure you want to delete business unit %s?".formatted(BUSINESS_UNIT_NAME_EDITED));
 
-//TODO remove when bug fixed
-//        Allure.step("Verify: dialog header is 'business unit'");
-//        assertThat(deleteBusinessUnitDialog.getDialogHeader())
-//                .hasText("Delete business unit");
+        Allure.step("Verify: dialog header text");
+        assertThat(deleteBusinessUnitDialog.getDialogHeader())
+                .hasText("Delete business unit");
 
         SuperCompaniesAndBusinessUnitsPage superCompaniesAndBusinessUnitsPage = deleteBusinessUnitDialog
                 .clickDeleteButton();
 
-        Allure.step("Verify: the header contains the expected title text");
+        Allure.step("Verify: alert text");
         assertThat(superCompaniesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit was deleted successfully");
     }
