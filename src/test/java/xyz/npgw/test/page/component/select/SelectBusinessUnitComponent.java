@@ -6,6 +6,8 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class SelectBusinessUnitComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
     @Getter
@@ -29,6 +31,7 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends SelectComponent<C
 
     @Step("Select '{businessUnitName}' business unit using filter")
     public CurrentPageT selectBusinessUnit(String businessUnitName) {
+        assertThat(selectBusinessUnitDropdownChevron).isEnabled();
         select(selectBusinessUnitField, businessUnitName);
 
         return currentPage;

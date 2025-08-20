@@ -10,7 +10,6 @@ import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.component.AlertTrait;
 import xyz.npgw.test.page.dialog.ProfileSettingsDialog;
 
-
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> extends BasePage
@@ -84,7 +83,7 @@ public abstract class HeaderPage<CurrentPageT extends HeaderPage<CurrentPageT>> 
         return self();
     }
 
-//    TODO remove this later
+    //    TODO remove this later
     public CurrentPageT waitForTimeout(double timeout) {
         getPage().waitForTimeout(timeout);
 

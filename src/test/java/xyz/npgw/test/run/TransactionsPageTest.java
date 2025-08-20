@@ -314,7 +314,7 @@ public class TransactionsPageTest extends BaseTest {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage((getPage()))
                 .getHeader().clickTransactionsLink()
                 .getSelectCompany().selectCompany(getCompanyName())
-                .waitForTimeout(500)
+//                .waitForTimeout(500)
                 .getSelectBusinessUnit().clickSelectBusinessUnitPlaceholder();
 
         Allure.step("Verify: Company's business units are visible");

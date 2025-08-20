@@ -32,38 +32,38 @@ import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 public class FraudControlTest extends BaseTest {
 
     private static final FraudControl FRAUD_CONTROL = FraudControl.builder()
-            .controlName("ControlEverything")
+            .controlName("%s ControlEverything".formatted(RUN_ID))
             .controlCode("8848")
             .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
-            .controlName("ControlNothing")
+            .controlName("%s ControlNothing".formatted(RUN_ID))
             .controlCode("9905")
             .controlDisplayName("DisplayNotAvailable")
             .controlConfig("suspicious")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_ONE = FraudControl.builder()
-            .controlName("ControlOne")
+            .controlName("%s ControlOne".formatted(RUN_ID))
             .controlCode("0001")
             .controlDisplayName("ControlDisplayFirst")
             .controlConfig("firstQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_TWO = FraudControl.builder()
-            .controlName("ControlTwo")
+            .controlName("%s ControlTwo".formatted(RUN_ID))
             .controlCode("0002")
             .controlDisplayName("ControlDisplaySecond")
             .controlConfig("secondQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_INACTIVE = FraudControl.builder()
-            .controlName("Inactive control")
+            .controlName("%s Inactive control".formatted(RUN_ID))
             .controlCode("0003")
             .controlDisplayName("Inactive control")
             .isActive(false)
             .controlConfig("firstQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_EMPTY_FIELDS = FraudControl.builder()
-            .controlName("Control with empty display name")
+            .controlName("%s Control with empty display name".formatted(RUN_ID))
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
@@ -798,8 +798,7 @@ public class FraudControlTest extends BaseTest {
                 .getAlert().clickCloseButton()
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
                 .clickConnectButton()
-                .getTableControls().clickConnectControlButton(
-                        FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
