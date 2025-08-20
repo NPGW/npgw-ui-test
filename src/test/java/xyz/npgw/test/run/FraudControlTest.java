@@ -16,6 +16,7 @@ import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.DeactivateControlDialog;
 import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
@@ -1133,6 +1134,42 @@ public class FraudControlTest extends BaseTest {
                 + FRAUD_CONTROL_INACTIVE.getControlDisplayName() + "?");
 
         dialog.clickCancelButton();
+    }
+
+    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+    @TmsLink("1157")
+    @Epic("System/Fraud control")
+    @Feature("Change control activity dialog Business Unit Control table")
+    @Description("Warning message text")
+    public void testVerifyWarningModalWindowChangeActivityForBusinessUnitControlTable() {
+        DeactivateBusinessUnitControlDialog dialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("1");
+
+        Locator windowHeader = dialog.getModalWindowHeaderTitle();
+        Locator windowMainBody = dialog.getModalWindowsMainTextBody();
+
+        Allure.step("Verify Deactivate Business unit control modal window text");
+        assertThat(windowHeader).hasText("Change business unit control activity");
+
+        Allure.step("Verify Deactivate Business unit control modal window main body text");
+        assertThat(windowMainBody).hasText("Are you sure you want to deactivate business unit control "
+                + FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName() + " with priority " + "1?");
+
+        dialog.clickCloseIcon()
+                .getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("0");
+
+        Allure.step("Verify Activate control modal window text");
+        assertThat(windowHeader).hasText("Change business unit control activity");
+
+        Allure.step("Verify Activate control modal window main body text");
+        assertThat(windowMainBody).hasText("Are you sure you want to activate business unit control "
+                + FRAUD_CONTROL_ADD_ONE.getControlDisplayName() + " with priority " + "0?");
+
+        dialog.clickCloseIcon();
     }
 
     @AfterClass
