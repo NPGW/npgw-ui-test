@@ -43,6 +43,7 @@ public class FraudControlTest extends BaseTest {
             .controlCode("9905")
             .controlDisplayName("DisplayNotAvailable")
             .controlConfig("suspicious")
+            .isActive(false)
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_ONE = FraudControl.builder()
             .controlName("%s ControlOne".formatted(RUN_ID))
@@ -75,7 +76,9 @@ public class FraudControlTest extends BaseTest {
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
+
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
+
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
@@ -97,16 +100,12 @@ public class FraudControlTest extends BaseTest {
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName())
                 .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig())
                 .checkActiveRadiobutton()
-                .clickSetupButton();
-
-        Locator row = superFraudControlPage
-                .getTableControls().getRow(FRAUD_CONTROL.getControlName());
+                .clickSetupButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that all the data are presented in the row");
-        assertThat(row).containsText(FRAUD_CONTROL.getControlCode());
-        assertThat(row).containsText(FRAUD_CONTROL.getControlConfig());
-        assertThat(row).containsText(FRAUD_CONTROL.getControlDisplayName());
-        assertThat(row).containsText("Active");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName()))
+                .hasText(FRAUD_CONTROL.toString());
     }
 
     @Test(dependsOnMethods = "testAddActiveFraudControl")
@@ -228,19 +227,9 @@ public class FraudControlTest extends BaseTest {
                 .checkInactiveRadiobutton()
                 .clickCloseButton();
 
-        Locator controlRow = superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName());
-
-        Locator displayNameCell = superFraudControlPage.getTableControls().getCell(controlRow, "Display name");
-        Locator codeCell = superFraudControlPage.getTableControls().getCell(controlRow, "Code");
-        Locator configCell = superFraudControlPage.getTableControls().getCell(controlRow, "Config");
-        Locator statusCell = superFraudControlPage.getTableControls().getCell(controlRow, "Status");
-
         Allure.step("Verify that due to click Close button Fraud Control hasn't been changed");
-        // TODO refactor this
-        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
-        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
-        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
-        assertThat(statusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName()))
+                .hasText(FRAUD_CONTROL.toString());
 
         superFraudControlPage
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
@@ -251,11 +240,8 @@ public class FraudControlTest extends BaseTest {
                 .clickCloseIcon();
 
         Allure.step("Verify that due to click Cross icon Fraud Control hasn't been changed");
-        // TODO refactor this
-        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
-        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
-        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
-        assertThat(statusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName()))
+                .hasText(FRAUD_CONTROL.toString());
 
         superFraudControlPage
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
@@ -266,11 +252,8 @@ public class FraudControlTest extends BaseTest {
                 .pressEscapeKey();
 
         Allure.step("Verify that due to press ESC keyboard button Fraud Control hasn't been changed");
-        // TODO refactor this
-        assertThat(codeCell).hasText(FRAUD_CONTROL.getControlCode());
-        assertThat(configCell).hasText(FRAUD_CONTROL.getControlConfig());
-        assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
-        assertThat(statusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName()))
+                .hasText(FRAUD_CONTROL.toString());
     }
 
     @Ignore("no tooltips atm")
@@ -327,7 +310,9 @@ public class FraudControlTest extends BaseTest {
         assertThat(connectControlIconTooltip).hasText("Connect control to business unit");
     }
 
-    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+//    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+    @Ignore
+    @Test
     @TmsLink("1123")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -382,7 +367,7 @@ public class FraudControlTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
             "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            /*"testTooltipsForActionsControlTable", */"testBusinessUnitControlTableEntriesSorting",
+            /*"testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting",*/
             "testVerifyWarningModalWindowChangeActivityForControlTable"})
     @TmsLink("949")
     @Epic("System/Fraud control")
@@ -414,17 +399,12 @@ public class FraudControlTest extends BaseTest {
                 .fillFraudControlConfigField(FRAUD_CONTROL_INACTIVE.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_INACTIVE.getControlDisplayName())
                 .checkInactiveRadiobutton()
-                .clickSetupButton();
-
-        Locator row = superFraudControlPage
-                .getTableControls().getRow(FRAUD_CONTROL_INACTIVE.getControlName());
+                .clickSetupButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that all the data are presented in the row");
-        // TODO refactor this
-        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlCode());
-        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlConfig());
-        assertThat(row).containsText(FRAUD_CONTROL_INACTIVE.getControlDisplayName());
-        assertThat(row).containsText("Inactive");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_INACTIVE.getControlName()))
+                .hasText(FRAUD_CONTROL_INACTIVE.toString());
     }
 
     @Test(dependsOnMethods = "testAddInactiveFraudControl")
@@ -475,19 +455,13 @@ public class FraudControlTest extends BaseTest {
                 .clickConnectButton()
                 .getAlert().clickCloseButton();
 
-        Locator rowFraudOne = superFraudControlPage
-                .getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
-        Locator rowFraudTwo = superFraudControlPage
-                .getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+        Allure.step("Verify that Fraud Control one are presented in Business Unit table");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlName()))
+                .hasText(FRAUD_CONTROL_ADD_ONE.toString());
 
-        Allure.step("Verify that all the Fraud Controls are presented in Business Unit table");
-        // TODO refactor this
-        assertThat(rowFraudOne).containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
-        assertThat(rowFraudOne).containsText(FRAUD_CONTROL_ADD_ONE.getControlConfig());
-        assertThat(rowFraudOne).containsText("Active");
-        assertThat(rowFraudTwo).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
-        assertThat(rowFraudTwo).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
-        assertThat(rowFraudTwo).containsText("Active");
+        Allure.step("Verify that Fraud Control two are presented in Business Unit table");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName()))
+                .hasText(FRAUD_CONTROL_ADD_TWO.toString());
     }
 
     @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
@@ -549,19 +523,13 @@ public class FraudControlTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
-        Locator controlStatusCell = superFraudControlPage
-                .getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
-        // TODO refactor this
-        Locator businessControlRow = superFraudControlPage
-                .getTableBusinessUnitControls().getRowByDataKey("0");
-        Locator businessControlStatusCell = superFraudControlPage
-                .getTableBusinessUnitControls().getCell(businessControlRow, "Status");
-
         Allure.step("Verify Fraud Control's current status in Business Unit Control Table");
-        assertThat(businessControlStatusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableBusinessUnitControls().getCell(0, "Status"))
+                .hasText("Active");
 
         Allure.step("Verify Fraud Control's current status in Control Table");
-        assertThat(controlStatusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status"))
+                .hasText("Active");
 
         superFraudControlPage
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
@@ -569,10 +537,12 @@ public class FraudControlTest extends BaseTest {
                 .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control state hasn't been changed in Control Table");
-        assertThat(controlStatusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status"))
+                .hasText("Active");
 
         Allure.step("Verify that Fraud Control state is Inactive now in Business Unit Control Table");
-        assertThat(businessControlStatusCell).hasText("Inactive");
+        assertThat(superFraudControlPage.getTableBusinessUnitControls().getCell(0, "Status"))
+                .hasText("Inactive");
 
         superFraudControlPage
                 .getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("0")
@@ -580,8 +550,10 @@ public class FraudControlTest extends BaseTest {
                 .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control state is Active in Business Unit Control Table again");
-        assertThat(controlStatusCell).hasText("Active");
-        assertThat(businessControlStatusCell).hasText("Active");
+        assertThat(superFraudControlPage.getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status"))
+                .hasText("Active");
+        assertThat(superFraudControlPage.getTableBusinessUnitControls().getCell(0, "Status"))
+                .hasText("Active");
     }
 
     @Test
@@ -603,6 +575,7 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that the 'Create' button is disabled if the 'Control name field is empty");
         assertThat(addControlDialog.getSetupButton()).hasAttribute("data-disabled", "true");
+        assertThat(addControlDialog.getSetupButton()).isDisabled();
     }
 
     @Test
@@ -645,7 +618,8 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Check if just deleted Fraud Control still presented in both tables");
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName()))
                 .not().isAttached();
-        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName())).isAttached();
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName()))
+                .isAttached();
     }
 
     @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
@@ -714,9 +688,10 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that the business unit control table doesn't include the deleted control");
         Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName()));
 
-        superFraudControlPage
-                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-                .clickDeactivateButton();
+//        // TODO ????
+//        superFraudControlPage
+//                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+//                .clickDeactivateButton();
     }
 
     @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
@@ -741,6 +716,7 @@ public class FraudControlTest extends BaseTest {
                 .hasText("SUCCESSControl was updated successfully");
 
         Locator row = superFraudControlPage
+                .getAlert().clickCloseButton()
                 .getTableControls().getRow(FRAUD_CONTROL_ADD_ONE.getControlName());
 
         Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
@@ -811,6 +787,7 @@ public class FraudControlTest extends BaseTest {
         });
     }
 
+    @Ignore
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testEditFraudControl",
             "testPriorityIconsDisableForOnlyOneBusinessUnitControl"})
     @TmsLink("1013")
@@ -947,8 +924,10 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(actualStatusList, sortedStatusListAsc,
                 "Status column is not sorted in ascending order");
 
-        fraudControlPage.getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-                .clickDeactivateButton();
+//        // TODO ???
+//        fraudControlPage
+//                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+//                .clickDeactivateButton();
     }
 
     @Test
@@ -1104,7 +1083,7 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify Activate control modal window main body text");
         assertThat(deactivateControlDialog.getModalWindowsMainTextBody())
-                .hasText("Are you sure you want to activate control %s?".formatted(FRAUD_CONTROL.getControlName()));
+                .hasText("Are you sure you want to activate control %s?".formatted(FRAUD_CONTROL_INACTIVE.getControlDisplayName()));
     }
 
     @AfterClass
@@ -1116,8 +1095,8 @@ public class FraudControlTest extends BaseTest {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(),
-                FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName());
+
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }

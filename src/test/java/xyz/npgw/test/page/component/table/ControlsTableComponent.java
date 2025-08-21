@@ -69,10 +69,8 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     }
 
     @Step("Click 'List icon' button")
-    public EditControlDialog clickListIconButton(String controlName) {
+    public void clickListIconButton(String controlName) {
         getRow(controlName).locator("//*[@data-icon='list']/..").click();
-
-        return new EditControlDialog(getPage());
     }
 
     @Step("Click 'Edit control' button")
