@@ -509,6 +509,7 @@ public class FraudControlTest extends BaseTest {
 
         Locator controlStatusCell = superFraudControlPage
                 .getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
+
         // TODO refactor this
         Locator businessControlRow = superFraudControlPage
                 .getTableBusinessUnitControls().getRowByDataKey("0");
