@@ -78,7 +78,8 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     @Step("Click 'Edit control' button")
     public EditControlDialog clickEditControlButton(String controlName) {
         clickListIconButton(controlName);
-        getRow(controlName).getByTestId("EditControlButton").click();
+        getByTextExact("Edit control").click();
+//        getRow(controlName).getByTestId("EditControlButton").click();
 
         return new EditControlDialog(getPage());
     }
@@ -86,7 +87,8 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     @Step("Click 'Activate control' button")
     public ActivateControlDialog clickActivateControlButton(String controlName) {
         clickListIconButton(controlName);
-        getRow(controlName).locator("//*[@data-icon='check']/..").click();
+        getByTextExact("Activate control").click();
+//        getRow(controlName).locator("//*[@data-icon='check']/..").click();
 
         return new ActivateControlDialog(getPage());
     }
@@ -94,7 +96,8 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     @Step("Click 'Deactivate control' button")
     public DeactivateControlDialog clickDeactivateControlButton(String controlName) {
         clickListIconButton(controlName);
-        getRow(controlName).locator("//*[@data-icon='ban']/..").click();
+        getByTextExact("Deactivate control").click();
+//        getRow(controlName).locator("//*[@data-icon='ban']/..").click();
 
         return new DeactivateControlDialog(getPage());
     }
@@ -102,7 +105,8 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     @Step("Click 'Delete control' button")
     public DeleteControlDialog clickDeleteControlButton(String controlName) {
         clickListIconButton(controlName);
-        getRow(controlName).getByTestId("DeleteControlButton").click();
+        getByTextExact("Delete control").click();
+//        getRow(controlName).getByTestId("DeleteControlButton").click();
 
         return new DeleteControlDialog(getPage());
     }
@@ -110,7 +114,8 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     @Step("Click 'Connect control' button")
     public ConnectControlToBusinessUnitDialog clickConnectControlButton(String controlName) {
         clickListIconButton(controlName);
-        getRow(controlName).getByTestId("ConnectControlButton").click();
+        getByTextExact("Connect control to business unit").click();
+//        getRow(controlName).getByTestId("ConnectControlButton").click();
 
         return new ConnectControlToBusinessUnitDialog(getPage());
     }
