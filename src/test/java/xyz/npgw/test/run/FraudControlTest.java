@@ -41,6 +41,7 @@ public class FraudControlTest extends BaseTest {
             .build();
     private static final FraudControl FRAUD_CONTROL_FRAUD_SCREEN = FraudControl.builder()
             .controlName("%s ControlScreen".formatted(RUN_ID))
+            .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
             .controlCode("1522")
             .controlDisplayName("ControlFSC")
             .controlConfig("type")
@@ -121,7 +122,7 @@ public class FraudControlTest extends BaseTest {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Add Active Fraud Control with Fraud Screen type")
     public void testAddActiveFraudControlWithFraudScreenType() {
-        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+        SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
@@ -133,14 +134,9 @@ public class FraudControlTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .clickSetupButton();
 
-        Locator row = page.getTableControls().getRow(FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
-
         Allure.step("Verify that all the data are presented in the row");
-        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlCode());
-        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlConfig());
-        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlDisplayName());
-        assertThat(row).containsText(ControlType.FRAUD_SCREEN.getDisplayText());
-        assertThat(row).containsText("Active");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_FRAUD_SCREEN.getControlName()))
+                .hasText(FRAUD_CONTROL_FRAUD_SCREEN.toString());
     }
 
     @Test(dependsOnMethods = "testAddActiveFraudControl")
@@ -345,7 +341,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(connectControlIconTooltip).hasText("Connect control to business unit");
     }
 
-//    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+    //    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
     @Ignore
     @Test
     @TmsLink("1123")
