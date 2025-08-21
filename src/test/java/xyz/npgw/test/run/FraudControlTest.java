@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.entity.ControlType;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -37,6 +38,12 @@ public class FraudControlTest extends BaseTest {
             .controlCode("8848")
             .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
+            .build();
+    private static final FraudControl FRAUD_CONTROL_FRAUD_SCREEN = FraudControl.builder()
+            .controlName("%s ControlScreen".formatted(RUN_ID))
+            .controlCode("1522")
+            .controlDisplayName("ControlFSC")
+            .controlConfig("type")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
             .controlName("%s ControlNothing".formatted(RUN_ID))
@@ -106,6 +113,34 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that all the data are presented in the row");
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName()))
                 .hasText(FRAUD_CONTROL.toString());
+    }
+
+    @Test
+    @TmsLink("1154")
+    @Epic("System/Fraud control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Add Active Fraud Control with Fraud Screen type")
+    public void testAddActiveFraudControlWithFraudScreenType() {
+        SuperFraudControlPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .clickAddFraudControl()
+                .fillFraudControlNameField(FRAUD_CONTROL_FRAUD_SCREEN.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_FRAUD_SCREEN.getControlCode())
+                .selectFraudControlTypeField(ControlType.FRAUD_SCREEN)
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_FRAUD_SCREEN.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_FRAUD_SCREEN.getControlConfig())
+                .checkActiveRadiobutton()
+                .clickSetupButton();
+
+        Locator row = page.getTableControls().getRow(FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
+
+        Allure.step("Verify that all the data are presented in the row");
+        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlCode());
+        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlConfig());
+        assertThat(row).containsText(FRAUD_CONTROL_FRAUD_SCREEN.getControlDisplayName());
+        assertThat(row).containsText(ControlType.FRAUD_SCREEN.getDisplayText());
+        assertThat(row).containsText("Active");
     }
 
     @Test(dependsOnMethods = "testAddActiveFraudControl")
@@ -1095,6 +1130,7 @@ public class FraudControlTest extends BaseTest {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName());
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
