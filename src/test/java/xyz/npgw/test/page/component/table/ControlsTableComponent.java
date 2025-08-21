@@ -68,8 +68,16 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
         return getCurrentPage();
     }
 
+    @Step("Click 'List icon' button")
+    public EditControlDialog clickListIconButton(String controlName) {
+        getRow(controlName).locator("//*[@data-icon='list']/..").click();
+
+        return new EditControlDialog(getPage());
+    }
+
     @Step("Click 'Edit control' button")
     public EditControlDialog clickEditControlButton(String controlName) {
+        clickListIconButton(controlName);
         getRow(controlName).getByTestId("EditControlButton").click();
 
         return new EditControlDialog(getPage());
@@ -77,7 +85,7 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
 
     @Step("Click 'Activate control' button")
     public ActivateControlDialog clickActivateControlButton(String controlName) {
-        getRow(controlName).hover();
+        clickListIconButton(controlName);
         getRow(controlName).locator("//*[@data-icon='check']/..").click();
 
         return new ActivateControlDialog(getPage());
@@ -85,7 +93,7 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
 
     @Step("Click 'Deactivate control' button")
     public DeactivateControlDialog clickDeactivateControlButton(String controlName) {
-        getRow(controlName).hover();
+        clickListIconButton(controlName);
         getRow(controlName).locator("//*[@data-icon='ban']/..").click();
 
         return new DeactivateControlDialog(getPage());
@@ -93,6 +101,7 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
 
     @Step("Click 'Delete control' button")
     public DeleteControlDialog clickDeleteControlButton(String controlName) {
+        clickListIconButton(controlName);
         getRow(controlName).getByTestId("DeleteControlButton").click();
 
         return new DeleteControlDialog(getPage());
@@ -100,13 +109,9 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
 
     @Step("Click 'Connect control' button")
     public ConnectControlToBusinessUnitDialog clickConnectControlButton(String controlName) {
+        clickListIconButton(controlName);
         getRow(controlName).getByTestId("ConnectControlButton").click();
 
         return new ConnectControlToBusinessUnitDialog(getPage());
-    }
-
-    @Step("Get 'Connect control' button locator")
-    public Locator getConnectControlButton(String controlName) {
-        return getRow(controlName).getByTestId("ConnectControlButton");
     }
 }

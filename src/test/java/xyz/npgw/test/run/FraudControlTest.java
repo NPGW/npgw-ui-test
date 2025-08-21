@@ -9,6 +9,7 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.FraudControl;
@@ -237,7 +238,8 @@ public class FraudControlTest extends BaseTest {
         assertThat(displayNameCell).hasText(FRAUD_CONTROL.getControlDisplayName());
         assertThat(statusCell).hasText("Active");
 
-        page.getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
+        page
+                .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
                 .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
                 .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
@@ -264,6 +266,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Ignore("no tooltips atm")
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
     @TmsLink("1001")
     @Epic("System/Fraud control")
@@ -372,7 +375,7 @@ public class FraudControlTest extends BaseTest {
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
             "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            "testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting",
+            /*"testTooltipsForActionsControlTable", */"testBusinessUnitControlTableEntriesSorting",
             "testVerifyWarningModalWindowChangeActivityForControlTable"})
     @TmsLink("949")
     @Epic("System/Fraud control")
