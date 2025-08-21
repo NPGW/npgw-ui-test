@@ -53,6 +53,7 @@ public class SelectBusinessUnitComponent<CurrentPageT> extends SelectComponent<C
 
     @Step("Click 'Select Business unit' placeholder")
     public CurrentPageT clickSelectBusinessUnitPlaceholder() {
+        assertThat(selectBusinessUnitDropdownChevron).isEnabled();
         selectBusinessUnitPlaceholder.click();
 
         return currentPage;
