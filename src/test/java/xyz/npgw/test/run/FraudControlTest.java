@@ -841,7 +841,8 @@ public class FraudControlTest extends BaseTest {
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("1")
-                .clickDeactivateButton();
+                .clickDeactivateButton()
+                .getAlert().clickCloseButton();
 
         List<String> defaultColumnValues = fraudControlPage
                 .getTableBusinessUnitControls().getColumnValuesFromAllPages("Priority");
