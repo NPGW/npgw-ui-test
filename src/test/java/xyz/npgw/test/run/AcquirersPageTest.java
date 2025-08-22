@@ -491,7 +491,7 @@ public class AcquirersPageTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER.getAcquirerDisplayName())
-                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerDisplayName())
+                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerName())
                 .fillAcquirerDisplayNameField(ACQUIRER_EDITED.getAcquirerDisplayName())
                 .fillAcquirerMidField(ACQUIRER_EDITED.getAcquirerMid())
                 .fillAcquirerMccField(ACQUIRER_EDITED.getAcquirerMidMcc())
