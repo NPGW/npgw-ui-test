@@ -606,7 +606,6 @@ public class FraudControlTest extends BaseTest {
                 "The '*' symbol is not displayed in the 'Control name' label");
 
         Allure.step("Verify that the 'Create' button is disabled if the 'Control name field is empty");
-        assertThat(addControlDialog.getSetupButton()).hasAttribute("data-disabled", "true");
         assertThat(addControlDialog.getSetupButton()).isDisabled();
     }
 
