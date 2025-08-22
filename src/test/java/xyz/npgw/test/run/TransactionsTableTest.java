@@ -615,8 +615,8 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, excelTransactionList);
     }
 
-    @Ignore("Locator expected to have text: [Status, Creation Date (GMT), Amount, Currency, Actions]\n"
-            + "\tReceived: [Currency, Status, Creation Date (GMT), Amount, Actions]")
+//    @Ignore("Locator expected to have text: [Status, Creation Date (GMT), Amount, Currency, Actions]\n"
+//            + "\tReceived: [Currency, Status, Creation Date (GMT), Amount, Actions]")
     @Test
     @TmsLink("978")
     @Epic("Transactions")
