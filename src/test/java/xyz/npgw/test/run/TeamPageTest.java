@@ -703,30 +703,30 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
-        List<Locator> CommonIconBtns = teamPage.getCommonIconBtn().all();
-        for (Locator icon : CommonIconBtns) {
-            Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon" );
+        List<Locator> commonIconBtns = teamPage.getCommonIconBtn().all();
+        for (Locator icon : commonIconBtns) {
+            Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon");
             icon.hover();
 
-            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '" + teamPage.getIconBtnModal().last().textContent() + "' tooltip" );
+            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '" + teamPage.getIconBtnModal().last().textContent());
             assertEquals(tooltipsContent.get(icon.getAttribute("data-icon")), teamPage.getIconBtnModal().last().textContent());
         }
         List<Locator> rowIconBtns = teamPage.getTable().getRowIconBtn(email).all();
         for (Locator rowIconBtn : rowIconBtns) {
-            Allure.step("Hover on '" + rowIconBtn.getAttribute("data-icon") + "' icon" );
+            Allure.step("Hover on '" + rowIconBtn.getAttribute("data-icon") + "' icon");
             rowIconBtn.hover();
 
-            Allure.step("Verify, over '" + rowIconBtn.getAttribute("data-icon") + "' appears '" + teamPage.getIconBtnModal().last().textContent() + "' tooltip" );
+            Allure.step("Verify, over '" + rowIconBtn.getAttribute("data-icon") + "' appears '" + teamPage.getIconBtnModal().last().textContent());
             assertEquals(tooltipsContent.get(rowIconBtn.getAttribute("data-icon")), teamPage.getIconBtnModal().last().textContent());
         }
         teamPage.getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton()
                 .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
         for (Locator rowIconBtn : rowIconBtns) {
-            Allure.step("Hover on " + rowIconBtn.getAttribute("data-icon") + " icon" );
+            Allure.step("Hover on " + rowIconBtn.getAttribute("data-icon") + " icon");
             rowIconBtn.hover();
 
-            Allure.step("Verify, over " + rowIconBtn.getAttribute("data-icon") + " appears '" + teamPage.getIconBtnModal().last().textContent() + "' tooltip" );
+            Allure.step("Verify, over " + rowIconBtn.getAttribute("data-icon") + " appears '" + teamPage.getIconBtnModal().last().textContent());
             assertEquals(tooltipsContent.get(rowIconBtn.getAttribute("data-icon")), teamPage.getIconBtnModal().last().textContent());
         }
     }

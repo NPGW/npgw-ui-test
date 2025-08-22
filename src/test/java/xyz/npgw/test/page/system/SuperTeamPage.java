@@ -1,8 +1,6 @@
 package xyz.npgw.test.page.system;
 
-import io.qameta.allure.Step;
 import lombok.Getter;
-
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import lombok.extern.log4j.Log4j2;

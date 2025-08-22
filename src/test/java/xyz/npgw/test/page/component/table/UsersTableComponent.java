@@ -14,7 +14,7 @@ public class UsersTableComponent<CurrentPageT> extends BaseTableComponent<Curren
         return getRow(userEmail).getByTestId("ChangeUserActivityButton").locator("svg");
     }
 
-    public Locator getRowIconBtn (String userEmail) {
+    public Locator getRowIconBtn(String userEmail) {
         return getRow(userEmail).locator("svg");
     }
 
