@@ -703,15 +703,15 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
-        List<Locator> commonIconButtons = teamPage.getCommonIconBtn().all();
+        List<Locator> commonIconButtons = teamPage.getCommonIconButton().all();
         for (Locator icon : commonIconButtons) {
             Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon");
             icon.hover();
 
             Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '"
-                    + teamPage.getIconBtnModal().last().textContent());
+                    + teamPage.getIconButtonModal().last().textContent());
             assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-icon")),
-                    teamPage.getIconBtnModal().last().textContent());
+                    teamPage.getIconButtonModal().last().textContent());
         }
         List<Locator> rowIconButtons = teamPage.getTable().getRowIconBtn(email).all();
         for (Locator rowIconButton : rowIconButtons) {
@@ -719,9 +719,9 @@ public class TeamPageTest extends BaseTest {
             rowIconButton.hover();
 
             Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
-                    + teamPage.getIconBtnModal().last().textContent());
+                    + teamPage.getIconButtonModal().last().textContent());
             assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
-                    teamPage.getIconBtnModal().last().textContent());
+                    teamPage.getIconButtonModal().last().textContent());
         }
         teamPage.getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton()
@@ -731,9 +731,9 @@ public class TeamPageTest extends BaseTest {
             rowIconButton.hover();
 
             Allure.step("Verify, over " + rowIconButton.getAttribute("data-icon") + " appears '"
-                    + teamPage.getIconBtnModal().last().textContent());
+                    + teamPage.getIconButtonModal().last().textContent());
             assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
-                    teamPage.getIconBtnModal().last().textContent());
+                    teamPage.getIconButtonModal().last().textContent());
         }
     }
 }

@@ -21,8 +21,8 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
         implements SelectStatusTrait<CurrentPageT> {
 
     public final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
-    private final Locator commonIconBtn = locator("[role='tabpanel']>div>div:first-child button[data-testid] svg");
-    private final Locator iconBtnModal = locator("[data-slot='content']");
+    private final Locator commonIconButton = locator("[role='tabpanel']>div>div:first-child button[data-testid] svg");
+    private final Locator iconButtonModal = locator("[data-slot='content']");
 
     public BaseTeamPage(Page page) {
         super(page);
