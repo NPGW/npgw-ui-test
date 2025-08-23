@@ -1,12 +1,10 @@
 package xyz.npgw.test.run;
 
-import com.microsoft.playwright.TimeoutError;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.opentest4j.AssertionFailedError;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
@@ -23,7 +21,7 @@ import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
-import static xyz.npgw.test.common.Constants.CARD_TYPES;
+import static xyz.npgw.test.common.Constants.CARD_OPTIONS;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
@@ -135,7 +133,7 @@ public class TransactionsPageUserTest extends BaseTest {
                 .clickCardTypeSelector();
 
         Allure.step("Verify: Payment Method Options are visible");
-        assertEquals(transactionsPage.getCardTypeOptions(), List.of("ALL", "VISA", "MASTERCARD"));
+        assertThat(transactionsPage.getCardTypeOptions()).hasText(CARD_OPTIONS);
 
         Allure.step("Verify: Default selected option in Payment Method Options is 'ALL'");
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
@@ -245,7 +243,7 @@ public class TransactionsPageUserTest extends BaseTest {
         Allure.step("Verify: Filter displays 'ALL' by default");
         assertThat(transactionsPage.getCardTypeValue()).containsText("ALL");
 
-        for (String cardType : Arrays.copyOfRange(CARD_TYPES, 1, CARD_TYPES.length)) {
+        for (String cardType : Arrays.copyOfRange(CARD_OPTIONS, 1, CARD_OPTIONS.length)) {
             transactionsPage
                     .selectCardType(cardType);
 

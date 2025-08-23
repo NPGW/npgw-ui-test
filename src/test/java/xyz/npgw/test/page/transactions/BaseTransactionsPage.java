@@ -94,13 +94,10 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator dialog = locator("[role='dialog']");
     private final Locator dropdownMenuContent = locator("[data-slot='content'][data-open='true']");
     private final Locator amountApplied = locator("//*[@data-icon='pencil']/..");
+    private final Locator columns = getByRole(AriaRole.MENUITEM).getByRole(AriaRole.BUTTON);
 
     public BaseTransactionsPage(Page page) {
         super(page);
-    }
-
-    public Locator amountApplied(String amount) {
-        return getByTextExact(amount);
     }
 
     @Step("Click 'Refresh Data' button")
@@ -204,21 +201,12 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    public List<String> getCardTypeOptions() {
-        return cardTypeOptions.all().stream().map(Locator::innerText).toList();
-    }
-
     @Step("Click on the Settings button")
     public CurrentPageT clickSettingsButton() {
         settingsButton.click();
         getByTextExact("Visible columns").waitFor();
 
         return self();
-    }
-
-
-    public Locator getColumns() {
-        return getByRole(AriaRole.MENUITEM).getByRole(AriaRole.BUTTON);
     }
 
     @Step("Uncheck all 'Visible columns' in Settings")
