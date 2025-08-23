@@ -73,7 +73,7 @@ public class TransactionsPageUserTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
-    @Test(expectedExceptions = TimeoutError.class)
+    @Test
     @TmsLink("263")
     @Epic("Transactions")
     @Feature("Amount")
@@ -83,12 +83,14 @@ public class TransactionsPageUserTest extends BaseTest {
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField("10")
+                .clickClearAmountFromButton()
                 .fillAmountFromField("20")
                 .clickAmountClearButton()
                 .fillAmountFromField("100")
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromDecreaseArrow()
+                .fillAmountToField("123.00")
                 .clickClearAmountToButton()
                 .fillAmountToField("5000")
                 .clickAmountToIncreaseArrow()
@@ -96,8 +98,8 @@ public class TransactionsPageUserTest extends BaseTest {
                 .clickAmountToDecreaseArrow()
                 .clickAmountApplyButton();
 
-        Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.amountApplied("Amount: 101 - 4999")).isVisible();
+        Allure.step("Verify: Applied amount text");
+        assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 101.00 - 4999.00");
 
         transactionsPage
                 .clickAmountAppliedClearButton();

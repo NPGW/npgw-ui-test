@@ -19,7 +19,9 @@ import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
+import xyz.npgw.test.page.dashboard.UserDashboardPage;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
+import xyz.npgw.test.page.transactions.UserTransactionsPage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -132,7 +134,7 @@ public class TransactionsPageTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
-    @Test(expectedExceptions = TimeoutError.class)
+    @Test
     @TmsLink("263")
     @Epic("Transactions")
     @Feature("Amount")
@@ -142,12 +144,14 @@ public class TransactionsPageTest extends BaseTest {
                 .getHeader().clickTransactionsLink()
                 .clickAmountButton()
                 .fillAmountFromField("10")
+                .clickClearAmountFromButton()
                 .fillAmountFromField("20")
                 .clickAmountClearButton()
                 .fillAmountFromField("100")
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromIncreaseArrow()
                 .clickAmountFromDecreaseArrow()
+                .fillAmountToField("123.00")
                 .clickClearAmountToButton()
                 .fillAmountToField("5000")
                 .clickAmountToIncreaseArrow()
@@ -155,8 +159,8 @@ public class TransactionsPageTest extends BaseTest {
                 .clickAmountToDecreaseArrow()
                 .clickAmountApplyButton();
 
-        Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.amountApplied("Amount: 101 - 4999")).isVisible();
+        Allure.step("Verify: Applied amount text");
+        assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 101.00 - 4999.00");
 
         transactionsPage
                 .clickAmountAppliedClearButton();

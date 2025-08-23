@@ -68,7 +68,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator settingsButton = getByTestId("SettingsButtonTransactionsPage");
-    private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage");
+    private final Locator downloadButton = getByTestId("ExportToFileuttonTransactionsPage"); //TODO missing B in utton
     private final Locator amountButton = getByRole(AriaRole.BUTTON, "Amount");
     private final Locator amountFromField = getByLabelExact("From").locator("..");
     private final Locator amountToField = getByLabelExact("To").locator("..");
@@ -93,6 +93,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator downloadPdfOption = getByRole(AriaRole.MENUITEM, "PDF");
     private final Locator dialog = locator("[role='dialog']");
     private final Locator dropdownMenuContent = locator("[data-slot='content'][data-open='true']");
+    private final Locator amountApplied = locator("//*[@data-icon='pencil']/..");
 
     public BaseTransactionsPage(Page page) {
         super(page);
@@ -118,34 +119,34 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
 
     @Step("Fill 'From' amount value")
     public CurrentPageT fillAmountFromField(String value) {
-        amountFromInputField.click();
-        amountFromInputField.clear();
+//        amountFromInputField.click();
+//        amountFromInputField.clear();
         amountFromInputField.fill(value);
-        amountFromField.press("Enter");
+//        amountFromField.press("Enter");
 
         return self();
     }
 
     @Step("Fill 'To' amount value")
     public CurrentPageT fillAmountToField(String value) {
-        amountToInputField.click();
-        amountToInputField.clear();
+//        amountToInputField.click();
+//        amountToInputField.clear();
         amountToInputField.fill(value);
-        amountToField.press("Enter");
+//        amountToField.press("Enter");
 
         return self();
     }
 
     @Step("Clear 'From' amount input field ")
     public CurrentPageT clickClearAmountFromButton() {
-        clearAmountFromButton.click();
+        clearAmountFromButton.click(new Locator.ClickOptions().setForce(true));
 
         return self();
     }
 
     @Step("Clear 'To' amount input field ")
     public CurrentPageT clickClearAmountToButton() {
-        clearAmountToButton.click();
+        clearAmountToButton.click(new Locator.ClickOptions().setForce(true));
 
         return self();
     }
