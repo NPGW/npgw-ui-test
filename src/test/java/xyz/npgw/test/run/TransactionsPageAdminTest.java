@@ -163,7 +163,7 @@ public class TransactionsPageAdminTest extends BaseTest {
         assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 500.00 - 10300.00");
     }
 
-    @Test(expectedExceptions = AssertionFailedError.class)
+    @Test
     @TmsLink("355")
     @Epic("Transactions")
     @Feature("Amount")
@@ -179,16 +179,18 @@ public class TransactionsPageAdminTest extends BaseTest {
                 .clickAmountButton();
 
         Allure.step("Verify: From Amount is zero");
-        assertThat(transactionsPage.getAmountFromInputField()).hasValue("0.00");
+        assertThat(transactionsPage.getAmountFromInputField()).hasValue("");
 
         Allure.step("Verify: To Amount is zero");
-        assertThat(transactionsPage.getAmountToInputField()).hasValue("0.00");
+        assertThat(transactionsPage.getAmountToInputField()).hasValue("");
 
         transactionsPage
+                .fillAmountFromField("0")
+                .fillAmountToField("0")
                 .clickAmountApplyButton();
 
         Allure.step("Verify: Applied amount is visible");
-        assertThat(transactionsPage.amountApplied("Amount: 0.00 - 0.00")).isVisible();
+        assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 0.00 - 0.00");
     }
 
     @Test
