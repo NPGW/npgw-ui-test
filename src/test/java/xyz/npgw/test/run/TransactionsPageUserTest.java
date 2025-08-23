@@ -141,7 +141,7 @@ public class TransactionsPageUserTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
-    @Test(expectedExceptions = AssertionFailedError.class)
+    @Test
     @TmsLink("354")
     @Epic("Transactions")
     @Feature("Amount")
@@ -158,7 +158,7 @@ public class TransactionsPageUserTest extends BaseTest {
                 .fillAmountToField("10300");
 
         Allure.step("Verify: Edited amount is visible");
-        assertThat(transactionsPage.amountApplied("Amount: 500 - 10300")).isVisible();
+        assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 500.00 - 10300.00");
     }
 
     @Test(expectedExceptions = AssertionFailedError.class)

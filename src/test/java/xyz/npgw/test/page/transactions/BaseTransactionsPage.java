@@ -119,20 +119,16 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
 
     @Step("Fill 'From' amount value")
     public CurrentPageT fillAmountFromField(String value) {
-//        amountFromInputField.click();
-//        amountFromInputField.clear();
         amountFromInputField.fill(value);
-//        amountFromField.press("Enter");
+        amountFromField.press("Tab"); //TODO remove this after bug fix
 
         return self();
     }
 
     @Step("Fill 'To' amount value")
     public CurrentPageT fillAmountToField(String value) {
-//        amountToInputField.click();
-//        amountToInputField.clear();
         amountToInputField.fill(value);
-//        amountToField.press("Enter");
+        amountToField.press("Tab"); //TODO remove this after bug fix
 
         return self();
     }
