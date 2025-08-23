@@ -465,23 +465,6 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testVerifyErrorOnCreatingAcquirerWithDuplicateName")
-    @TmsLink("239")
-    @Epic("System/Acquirers")
-    @Feature("Edit acquirer MID")
-    @Description("Verifies that all form field placeholders are set correctly")
-    public void testVerifyPlaceholdersEditForm() {
-        List<String> actualPlaceholders = new SuperDashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER.getAcquirerDisplayName())
-                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerName())
-                .getAllPlaceholders();
-
-        Allure.step("Verify placeholders match expected values for all fields");
-        assertEquals(actualPlaceholders, PLACEHOLDER_LIST);
-    }
-
-    @Test(dependsOnMethods = "testVerifyPlaceholdersEditForm")
     @TmsLink("450")
     @Epic("System/Acquirers")
     @Feature("Edit acquirer MID")
@@ -542,6 +525,23 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = "testEditAcquirerMid")
+    @TmsLink("239")
+    @Epic("System/Acquirers")
+    @Feature("Edit acquirer MID")
+    @Description("Verifies that all form field placeholders are set correctly")
+    public void testVerifyPlaceholdersEditForm() {
+        List<String> actualPlaceholders = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_EDITED.getAcquirerDisplayName())
+                .getTable().clickEditAcquirerMidButton(ACQUIRER_EDITED.getAcquirerName())
+                .getAllPlaceholders();
+
+        Allure.step("Verify placeholders match expected values for all fields");
+        assertEquals(actualPlaceholders, PLACEHOLDER_LIST);
+    }
+
+    @Test(dependsOnMethods = "testVerifyPlaceholdersEditForm")
     @TmsLink("726")
     @Epic("System/Acquirers")
     @Feature("Delete acquirer")
