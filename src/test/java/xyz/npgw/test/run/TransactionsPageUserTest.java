@@ -17,10 +17,8 @@ import xyz.npgw.test.page.dashboard.UserDashboardPage;
 import xyz.npgw.test.page.transactions.UserTransactionsPage;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertEquals;
 import static xyz.npgw.test.common.Constants.CARD_OPTIONS;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
