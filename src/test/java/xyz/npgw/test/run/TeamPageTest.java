@@ -36,7 +36,7 @@ public class TeamPageTest extends BaseTest {
     private static String systemAdminEmail;
     private static String companyAdminEmail;
     private static String companyAnalystEmail;
-    private static final Map<String, String> tooltipsContent = Map.ofEntries(
+    private static final Map<String, String> TOOLTIPSCONTENT = Map.ofEntries(
             Map.entry("circle-plus", "Add user"),
             Map.entry("xmark", "Reset filter"),
             Map.entry("arrows-rotate", "Refresh data"),
@@ -703,31 +703,37 @@ public class TeamPageTest extends BaseTest {
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
-        List<Locator> commonIconBtns = teamPage.getCommonIconBtn().all();
-        for (Locator icon : commonIconBtns) {
+        List<Locator> commonIconButtons = teamPage.getCommonIconBtn().all();
+        for (Locator icon : commonIconButtons) {
             Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon");
             icon.hover();
 
-            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '" + teamPage.getIconBtnModal().last().textContent());
-            assertEquals(tooltipsContent.get(icon.getAttribute("data-icon")), teamPage.getIconBtnModal().last().textContent());
+            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconBtnModal().last().textContent());
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-icon")),
+                    teamPage.getIconBtnModal().last().textContent());
         }
-        List<Locator> rowIconBtns = teamPage.getTable().getRowIconBtn(email).all();
-        for (Locator rowIconBtn : rowIconBtns) {
-            Allure.step("Hover on '" + rowIconBtn.getAttribute("data-icon") + "' icon");
-            rowIconBtn.hover();
+        List<Locator> rowIconButtons = teamPage.getTable().getRowIconBtn(email).all();
+        for (Locator rowIconButton : rowIconButtons) {
+            Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
+            rowIconButton.hover();
 
-            Allure.step("Verify, over '" + rowIconBtn.getAttribute("data-icon") + "' appears '" + teamPage.getIconBtnModal().last().textContent());
-            assertEquals(tooltipsContent.get(rowIconBtn.getAttribute("data-icon")), teamPage.getIconBtnModal().last().textContent());
+            Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconBtnModal().last().textContent());
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
+                    teamPage.getIconBtnModal().last().textContent());
         }
         teamPage.getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton()
                 .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
-        for (Locator rowIconBtn : rowIconBtns) {
-            Allure.step("Hover on " + rowIconBtn.getAttribute("data-icon") + " icon");
-            rowIconBtn.hover();
+        for (Locator rowIconButton : rowIconButtons) {
+            Allure.step("Hover on " + rowIconButton.getAttribute("data-icon") + " icon");
+            rowIconButton.hover();
 
-            Allure.step("Verify, over " + rowIconBtn.getAttribute("data-icon") + " appears '" + teamPage.getIconBtnModal().last().textContent());
-            assertEquals(tooltipsContent.get(rowIconBtn.getAttribute("data-icon")), teamPage.getIconBtnModal().last().textContent());
+            Allure.step("Verify, over " + rowIconButton.getAttribute("data-icon") + " appears '"
+                    + teamPage.getIconBtnModal().last().textContent());
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
+                    teamPage.getIconBtnModal().last().textContent());
         }
     }
 }
