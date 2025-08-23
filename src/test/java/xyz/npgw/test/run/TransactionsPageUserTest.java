@@ -313,16 +313,12 @@ public class TransactionsPageUserTest extends BaseTest {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).hasText("ALL");
     }
 
-    @Test(expectedExceptions = AssertionFailedError.class)
+    @Test
     @TmsLink("668")
     @Epic("Transactions")
     @Feature("Reset filter")
-    @Description("Verify, that 'Reset filter' button change 'Amount' to default value ( AMOUNT)")
+    @Description("Verify, that 'Reset filter' button change 'Amount' to default")
     public void testResetAmountAsUser() {
-        final String amountFrom = "10";
-        final String amountTo = "20";
-        final String chosenAmount = "Amount: " + amountFrom + " - " + amountTo;
-
         UserTransactionsPage transactionsPage = new UserDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
 
@@ -332,13 +328,13 @@ public class TransactionsPageUserTest extends BaseTest {
 
         transactionsPage
                 .clickAmountButton()
-                .fillAmountFromField(amountFrom)
-                .fillAmountToField(amountTo)
+                .fillAmountFromField("10")
+                .fillAmountToField("20")
                 .clickAmountApplyButton();
 
-        Allure.step("Verify: Filter 'Amount' displays 'Amount: {amountFrom} - {amountTo}'");
-        assertThat(transactionsPage.amountApplied(chosenAmount)).isVisible();
-        assertThat(transactionsPage.amountApplied(chosenAmount)).hasText(chosenAmount);
+        Allure.step("Verify: Filter 'Amount' text");
+        assertThat(transactionsPage.getAmountApplied()).isVisible();
+        assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 10.00 - 20.00");
 
         transactionsPage
                 .clickResetFilterButton();
