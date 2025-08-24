@@ -2,6 +2,7 @@ package xyz.npgw.test.page.component.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.acquirer.ActivateAcquirerDialog;
@@ -10,6 +11,8 @@ import xyz.npgw.test.page.dialog.acquirer.DeactivateAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.DeactivateGroupGatewayItemsDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerMidDialog;
 import xyz.npgw.test.page.system.SuperAcquirersPage;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
 public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPage> {
@@ -59,6 +62,9 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
     @Step("Click 'Bulk actions' button")
     public AcquirersTableComponent clickBulkActionsButton(String entityName) {
         getRow(entityName).locator("[data-icon ='wand-magic-sparkles']").click();
+        Locator dialog = getPage().getByRole(AriaRole.DIALOG);
+        dialog.waitFor();
+        assertThat(dialog).isEnabled();
 
         return this;
     }
