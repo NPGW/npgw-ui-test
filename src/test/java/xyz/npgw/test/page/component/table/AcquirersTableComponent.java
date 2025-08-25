@@ -2,6 +2,7 @@ package xyz.npgw.test.page.component.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.dialog.acquirer.ActivateAcquirerDialog;
@@ -10,6 +11,8 @@ import xyz.npgw.test.page.dialog.acquirer.DeactivateAcquirerDialog;
 import xyz.npgw.test.page.dialog.acquirer.DeactivateGroupGatewayItemsDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerMidDialog;
 import xyz.npgw.test.page.system.SuperAcquirersPage;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
 public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPage> {
@@ -58,8 +61,11 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
 
     @Step("Click 'Bulk actions' button")
     public AcquirersTableComponent clickBulkActionsButton(String entityName) {
-        getPage().waitForTimeout(1500);
-        getRow(entityName).locator("[data-icon ='wand-magic-sparkles']").click();
+        Locator bulkButton = getRow(entityName).locator("[data-icon='wand-magic-sparkles']");
+        bulkButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+        assertThat(bulkButton).isEnabled();
+        bulkButton.click();
+        deactivateGatewayConnectionsButton.waitFor();
 
         return this;
     }
@@ -74,7 +80,7 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
 
     @Step("Select 'Deactivate gateway connections'")
     public DeactivateGroupGatewayItemsDialog selectDeactivateGatewayConnections() {
-        deactivateGatewayConnectionsButton.waitFor();
+     //   deactivateGatewayConnectionsButton.waitFor();
         deactivateGatewayConnectionsButton.click();
 
         return new DeactivateGroupGatewayItemsDialog(getPage());
