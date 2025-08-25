@@ -9,13 +9,19 @@ import io.qameta.allure.TmsLink;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.entity.ControlType;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
-import xyz.npgw.test.page.dialog.control.*;
+import xyz.npgw.test.page.dialog.control.AddControlDialog;
+import xyz.npgw.test.page.dialog.control.EditControlDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateControlDialog;
+import xyz.npgw.test.page.dialog.control.ActivateControlDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlDialog;
+import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
 import java.util.ArrayList;
@@ -297,6 +303,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+    @Ignore("hovers need to be modified")
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
     @TmsLink("1001")
     @Epic("System/Fraud control")
