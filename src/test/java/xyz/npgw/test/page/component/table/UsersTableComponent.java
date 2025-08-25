@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import io.qameta.allure.Step;
 
-public class UsersTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
+public abstract class UsersTableComponent<CurrentPageT> extends BaseTableComponent<CurrentPageT> {
 
     public UsersTableComponent(Page page, CurrentPageT currentPage) {
         super(page, currentPage);
@@ -12,6 +12,10 @@ public class UsersTableComponent<CurrentPageT> extends BaseTableComponent<Curren
 
     public Locator getUserActivityIcon(String userEmail) {
         return getRow(userEmail).getByTestId("ChangeUserActivityButton").locator("svg");
+    }
+
+    public Locator getRowIconBtn(String userEmail) {
+        return getRow(userEmail).locator("svg");
     }
 
     @Step("Click 'Edit user' button")

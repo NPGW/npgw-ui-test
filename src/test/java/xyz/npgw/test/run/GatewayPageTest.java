@@ -38,6 +38,7 @@ public class GatewayPageTest extends BaseTest {
             .acquirerDisplayName("acquirer for gateway Movable")
             .acquirerName("%s acquirer for gateway Movable".formatted(RUN_ID))
             .acquirerMidMcc("4321")
+            .currencyList(new Currency[]{Currency.USD})
             .build();
     private static final Acquirer ACQUIRER_EUR = Acquirer.builder()
             .acquirerDisplayName("acquirer for gateway EUR")
@@ -195,11 +196,11 @@ public class GatewayPageTest extends BaseTest {
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
@@ -270,7 +271,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Check that the first created acquirer priority is 0");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer MID")).hasText(ACQUIRER.getAcquirerDisplayName());
@@ -312,7 +313,7 @@ public class GatewayPageTest extends BaseTest {
                 .checkInactiveRadiobutton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
         assertThat(gatewayPage.getTable().getCell(0, "Status")).hasText("Active");
@@ -340,7 +341,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickAddBusinessUnitAcquirerButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone() //TODO remove alert closing BUG workaround
+                .getAlert().clickCloseButton()
                 .getTable().clickDeleteBusinessUnitAcquirer("0")
                 .clickDeleteButton();
 
