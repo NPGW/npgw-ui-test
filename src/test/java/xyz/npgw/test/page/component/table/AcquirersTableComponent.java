@@ -65,6 +65,7 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
         bulkButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         assertThat(bulkButton).isEnabled();
         bulkButton.click();
+        activateGatewayConnectionsButton.waitFor();
         deactivateGatewayConnectionsButton.waitFor();
 
         return this;
@@ -72,7 +73,6 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
 
     @Step("Select 'Activate gateway connections'")
     public ActivateGroupGatewayItemsDialog selectActivateGatewayConnections() {
-        activateGatewayConnectionsButton.waitFor();
         activateGatewayConnectionsButton.click();
 
         return new ActivateGroupGatewayItemsDialog(getPage());
@@ -80,7 +80,6 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
 
     @Step("Select 'Deactivate gateway connections'")
     public DeactivateGroupGatewayItemsDialog selectDeactivateGatewayConnections() {
-     //   deactivateGatewayConnectionsButton.waitFor();
         deactivateGatewayConnectionsButton.click();
 
         return new DeactivateGroupGatewayItemsDialog(getPage());
