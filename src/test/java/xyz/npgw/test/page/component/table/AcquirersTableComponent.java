@@ -65,6 +65,10 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
         bulkButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         assertThat(bulkButton).isEnabled();
         bulkButton.click();
+
+        Locator dropdown = getPage().locator("div[aria-label='Options']");
+        dropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+
         activateGatewayConnectionsButton.waitFor();
         deactivateGatewayConnectionsButton.waitFor();
 
