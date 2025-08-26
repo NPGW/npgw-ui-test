@@ -390,7 +390,7 @@ public class AcquirersPageTest extends BaseTest {
                 .fillFingerprintUrlField(DEFAULT_CONFIG.fingerprintUrl())
                 .fillResourceUrlField(DEFAULT_CONFIG.resourceUrl());
 
-        for (String symbol: invalidSymbols) {
+        for (String symbol : invalidSymbols) {
             String input = "a".repeat(3) + symbol;
             String expectedMessage = "ERRORInvalid name: '" + input + "'. It may only contain letters, digits,"
                     + " ampersands (&), hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
