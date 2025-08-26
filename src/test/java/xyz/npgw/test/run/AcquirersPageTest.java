@@ -372,6 +372,39 @@ public class AcquirersPageTest extends BaseTest {
     }
 
     @Test
+    @TmsLink("1172")
+    @Epic("System/Acquirers")
+    @Feature("Setup acquirer MID")
+    @Description("Verify that the 'Entity name' doesn't accept special symbols except (&), (-), (,), (.), ('), ( )")
+    public void testSpecialSymbolsInEntityNameIsNotAllowed() {
+        List<String> invalidSymbols = Arrays.asList(
+                "@", "#", "$", "%", "*", "=", "/", "\\", ":", "|", "^", "~", "!", "\"", "<", ">", "[", "]", "{", "}",
+                "?", "(", ")", "_", "`", "+", ";"
+        );
+
+        SetupAcquirerMidDialog setupAcquirerMidDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .clickSetupAcquirerMidButton()
+                .fillChallengeUrlField(DEFAULT_CONFIG.challengeUrl())
+                .fillFingerprintUrlField(DEFAULT_CONFIG.fingerprintUrl())
+                .fillResourceUrlField(DEFAULT_CONFIG.resourceUrl());
+
+        for (String symbol: invalidSymbols) {
+            String input = "a".repeat(3) + symbol;
+            String expectedMessage = "ERRORInvalid name: '" + input + "'. It may only contain letters, digits,"
+                    + " ampersands (&), hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
+
+            setupAcquirerMidDialog
+                    .fillAcquirerNameField(input)
+                    .clickCreateButton();
+
+            Allure.step("Verify error message for symbol: " + symbol);
+            assertThat(setupAcquirerMidDialog.getAlert().getMessage()).containsText(expectedMessage);
+        }
+    }
+
+    @Test
     @TmsLink("412")
     @Epic("System/Acquirers")
     @Feature("Setup acquirer MID")
