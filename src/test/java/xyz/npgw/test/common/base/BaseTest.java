@@ -151,6 +151,7 @@ public abstract class BaseTest {
                 new AboutBlankPage(page)
                         .navigate("/")
                         .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
+                return;
 
             case "AsUser":
                 openSite(new Object[]{"USER"});
