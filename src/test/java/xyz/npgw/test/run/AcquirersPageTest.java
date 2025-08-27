@@ -491,11 +491,11 @@ public class AcquirersPageTest extends BaseTest {
         assertThat(acquirersPage.getAlert().getMessage())
                 .hasText("SUCCESSAcquirer was updated successfully");
 
-        Allure.step("Verify: Acquirer display name matches expected");
-        assertThat(acquirersPage.getTable().getCell(ACQUIRER.getAcquirerName(), "Display name"))
-                .hasText(ACQUIRER_EDITED.getAcquirerDisplayName());
+        Locator editedAcquirerRow = acquirersPage.getTable().getRow(ACQUIRER.getAcquirerName());
 
-        Locator editedAcquirerRow = acquirersPage.getTable().getRow(ACQUIRER_EDITED.getAcquirerName());
+        Allure.step("Verify: Acquirer display name matches expected");
+        assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Display name"))
+                .hasText(ACQUIRER_EDITED.getAcquirerDisplayName());
 
         Allure.step("Verify: Acquirer code is 'NGenius' by default");
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Acquirer code"))
