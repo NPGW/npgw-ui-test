@@ -375,11 +375,33 @@ public class AcquirersPageTest extends BaseTest {
     @TmsLink("1172")
     @Epic("System/Acquirers")
     @Feature("Setup acquirer MID")
-    @Description("Verify that the 'Entity name' doesn't accept special symbols except (&), (-), (,), (.), ('), ( )")
-    public void testSpecialSymbolsInEntityNameIsNotAllowed() {
-        List<String> invalidSymbols = Arrays.asList(
-                "@", "#", "$", "%", "*", "=", "/", "\\", ":", "|", "^", "~", "!", "\"", "<", ">", "[", "]", "{", "}",
-                "?", "(", ")", "_", "`", "+", ";"
+    @Description("Verify that the error message is displayed if 'Entity name' contains not allowed special symbol")
+    public void testErrorMessageForNotAllowedSymbolsInEntityName() {
+        String expectedMessage = "ERRORInvalid name: 'AAAA@'. It may only contain letters, digits, ampersands (&),"
+                + " hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
+
+        SuperAcquirersPage setupAcquirerMidDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .clickSetupAcquirerMidButton()
+                .fillChallengeUrlField(DEFAULT_CONFIG.challengeUrl())
+                .fillFingerprintUrlField(DEFAULT_CONFIG.fingerprintUrl())
+                .fillResourceUrlField(DEFAULT_CONFIG.resourceUrl())
+                .fillAcquirerNameField("AAAA@")
+                .clickCreateButton();
+
+            Allure.step("Verify that the error message is displayed");
+            assertThat(setupAcquirerMidDialog.getAlert().getMessage()).containsText(expectedMessage);
+    }
+
+    @Test
+    @TmsLink("1179")
+    @Epic("System/Acquirers")
+    @Feature("Setup acquirer MID")
+    @Description("Verify that the 'Entity name' field except (&), (-), (,), (.), ('), ( ) symbols")
+    public void testAllowedSpecialSymbolsInEntityName() {
+        List<String> validSymbols = Arrays.asList(
+                "&", "-", ",", ".", "'", " "
         );
 
         SetupAcquirerMidDialog setupAcquirerMidDialog = new SuperDashboardPage(getPage())
@@ -390,17 +412,14 @@ public class AcquirersPageTest extends BaseTest {
                 .fillFingerprintUrlField(DEFAULT_CONFIG.fingerprintUrl())
                 .fillResourceUrlField(DEFAULT_CONFIG.resourceUrl());
 
-        for (String symbol : invalidSymbols) {
-            String input = "a".repeat(3) + symbol;
-            String expectedMessage = "ERRORInvalid name: '" + input + "'. It may only contain letters, digits,"
-                    + " ampersands (&), hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
+        for (String symbol : validSymbols) {
+            String input = "A".repeat(3) + symbol;
 
             setupAcquirerMidDialog
-                    .fillAcquirerNameField(input)
-                    .clickCreateButton();
+                    .fillAcquirerNameField(input);
 
-            Allure.step("Verify error message for symbol: " + symbol);
-            assertThat(setupAcquirerMidDialog.getAlert().getMessage()).containsText(expectedMessage);
+            Allure.step("Verify that the 'Create' button is active for symbol: " + symbol);
+            assertThat(setupAcquirerMidDialog.getCreateButton()).isEnabled();
         }
     }
 
