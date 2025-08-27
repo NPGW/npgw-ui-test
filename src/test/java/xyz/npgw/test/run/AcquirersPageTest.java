@@ -390,8 +390,8 @@ public class AcquirersPageTest extends BaseTest {
                 .fillAcquirerNameField("AAAA@")
                 .clickCreateButton();
 
-            Allure.step("Verify that the error message is displayed");
-            assertThat(setupAcquirerMidDialog.getAlert().getMessage()).containsText(expectedMessage);
+        Allure.step("Verify that the error message is displayed");
+        assertThat(setupAcquirerMidDialog.getAlert().getMessage()).containsText(expectedMessage);
     }
 
     @Test
