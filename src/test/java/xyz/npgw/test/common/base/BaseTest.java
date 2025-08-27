@@ -51,7 +51,7 @@ import java.util.stream.Stream;
 public abstract class BaseTest {
 
     protected static final String RUN_ID = TestUtils.now();
-
+    private final HashMap<String, Response> requestMap = new HashMap<>();
     private Playwright playwright;
     private Browser browser;
     private BrowserContext browserContext;
@@ -66,8 +66,6 @@ public abstract class BaseTest {
     @Getter(AccessLevel.PROTECTED)
     private String companyName;
     private BusinessUnit businessUnit;
-
-    private final HashMap<String, Response> requestMap = new HashMap<>();
 
     @BeforeSuite
     protected void beforeSuite() {
@@ -131,7 +129,7 @@ public abstract class BaseTest {
             }
         });
 
-//        initApiRequestContext();
+        initApiRequestContext();
 
         String methodName = method.getName();
         String suffix = Stream.of("Unauthenticated", "AsTestUser", "AsTestAdmin", "AsUser", "AsAdmin")
@@ -147,6 +145,7 @@ public abstract class BaseTest {
                 new AboutBlankPage(page)
                         .navigate("/")
                         .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
+                return;
 
             case "AsTestAdmin":
                 new AboutBlankPage(page)
@@ -155,9 +154,11 @@ public abstract class BaseTest {
 
             case "AsUser":
                 openSite(new Object[]{"USER"});
+                return;
 
             case "AsAdmin":
                 openSite(new Object[]{"ADMIN"});
+                return;
 
             default:
                 openSite(args);
@@ -201,7 +202,9 @@ public abstract class BaseTest {
         if (browser != null) {
             try {
                 browser.close();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+                log.info("Attempt to close the browser that is already closed.");
+            }
         }
 
         if (apiRequestContext != null) {
@@ -209,13 +212,17 @@ public abstract class BaseTest {
                 User.delete(apiRequestContext, "%s.super@email.com".formatted(uid));
                 TestUtils.deleteCompany(apiRequestContext, companyName);
                 apiRequestContext.dispose();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+                log.info("Attempt to dispose the apiRequestContext that is already disposed.");
+            }
         }
 
         if (playwright != null) {
             try {
                 playwright.close();
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+                log.info("Attempt to close the playwright that is already closed.");
+            }
         }
     }
 
