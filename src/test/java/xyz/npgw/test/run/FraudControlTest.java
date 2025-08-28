@@ -18,9 +18,9 @@ import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
 import xyz.npgw.test.page.dialog.control.DeactivateControlDialog;
-import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlDialog;
+import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
 import java.util.Arrays;
