@@ -18,8 +18,11 @@ import xyz.npgw.test.common.entity.SystemConfig;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
+import xyz.npgw.test.page.dialog.acquirer.ActivateGroupGatewayItemsDialog;
+import xyz.npgw.test.page.dialog.acquirer.DeactivateGroupGatewayItemsDialog;
 import xyz.npgw.test.page.dialog.acquirer.SetupAcquirerMidDialog;
 import xyz.npgw.test.page.system.SuperAcquirersPage;
+import xyz.npgw.test.page.system.SuperGatewayPage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +37,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
 
     private static final String[] STATUS_OPTIONS = {"All", "Active", "Inactive"};
     private static final String[] ROWS_PER_PAGE_OPTIONS = {"10", "25", "50", "100"};
+    private static final String COMPANY_NAME_CHANGE_ACTIVITY_TEST = "%s company name change activity".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_NAME = "%s business unit name".formatted(RUN_ID);
     private static final String[] COLUMNS_HEADERS = {
             "Entity name",
             "Display name",
@@ -102,6 +107,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         super.beforeClass();
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER2);
         TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
+        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
+        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST, BUSINESS_UNIT_NAME);
     }
 
     @Test
@@ -369,6 +376,58 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify that the 'Entity name' field has limit of 100 characters");
         Assert.assertEquals(setupAcquirerMidDialog.getAcquirerNameField().inputValue().length(), 100);
+    }
+
+    @Test
+    @TmsLink("1172")
+    @Epic("System/Acquirers")
+    @Feature("Setup acquirer MID")
+    @Description("Verify that the error message is displayed if 'Entity name' contains not allowed special symbol")
+    public void testErrorMessageForNotAllowedSymbolsInEntityName() {
+        String expectedMessage = "ERRORInvalid name: 'AAAA@'. It may only contain letters, digits, ampersands (&),"
+                + " hyphens (-), commas (,), periods (.), apostrophes ('), and spaces.";
+
+        SuperAcquirersPage setupAcquirerMidDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .clickSetupAcquirerMidButton()
+                .fillChallengeUrlField(DEFAULT_CONFIG.challengeUrl())
+                .fillFingerprintUrlField(DEFAULT_CONFIG.fingerprintUrl())
+                .fillResourceUrlField(DEFAULT_CONFIG.resourceUrl())
+                .fillAcquirerNameField("AAAA@")
+                .clickCreateButton();
+
+        Allure.step("Verify that the error message is displayed");
+        assertThat(setupAcquirerMidDialog.getAlert().getMessage()).containsText(expectedMessage);
+    }
+
+    @Test
+    @TmsLink("1179")
+    @Epic("System/Acquirers")
+    @Feature("Setup acquirer MID")
+    @Description("Verify that the 'Entity name' field except (&), (-), (,), (.), ('), ( ) symbols")
+    public void testAllowedSpecialSymbolsInEntityName() {
+        List<String> validSymbols = Arrays.asList(
+                "&", "-", ",", ".", "'", " "
+        );
+
+        SetupAcquirerMidDialog setupAcquirerMidDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickAcquirersTab()
+                .clickSetupAcquirerMidButton()
+                .fillChallengeUrlField(DEFAULT_CONFIG.challengeUrl())
+                .fillFingerprintUrlField(DEFAULT_CONFIG.fingerprintUrl())
+                .fillResourceUrlField(DEFAULT_CONFIG.resourceUrl());
+
+        for (String symbol : validSymbols) {
+            String input = "A".repeat(3) + symbol;
+
+            setupAcquirerMidDialog
+                    .fillAcquirerNameField(input);
+
+            Allure.step("Verify that the 'Create' button is active for symbol: " + symbol);
+            assertThat(setupAcquirerMidDialog.getCreateButton()).isEnabled();
+        }
     }
 
     @Test
@@ -739,6 +798,75 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .hasText("Active");
     }
 
+    @Test(dependsOnMethods = "testAcquirerCanBeActivatedAndDeactivated")
+    @TmsLink("1167")
+    @Epic("System/Acquirers")
+    @Feature("Bulk actions")
+    @Description("Verify that gateway Acquirer MID can be deactivated and then activated via bulk actions")
+    public void testChangeActivityViaBulkActions() {
+        DeactivateGroupGatewayItemsDialog deactivateGroupGatewayItemsDialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME_CHANGE_ACTIVITY_TEST)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .clickAddBusinessUnitAcquirerButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(CHANGE_STATE_ACQUIRER.getAcquirerName())
+                .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSystemMenu().clickAcquirersTab()
+                .getTable().clickBulkActionsButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
+                .selectDeactivateGatewayConnections();
+
+        Allure.step("Verify: Dialog header is correct");
+        assertThat(deactivateGroupGatewayItemsDialog.getDialogHeader())
+                .hasText("Group gateway items activity change");
+
+        Allure.step("Verify: Confirmation question is correct");
+        assertThat(deactivateGroupGatewayItemsDialog.getConfirmationQuestion())
+                .hasText("Are you sure you want to deactivate all gateway items created using %s?"
+                        .formatted(CHANGE_STATE_ACQUIRER.getAcquirerName()));
+
+        SuperAcquirersPage superAcquirersPage = deactivateGroupGatewayItemsDialog
+                .clickDeactivateButton();
+
+        assertThat(superAcquirersPage.getAlert().getSuccessMessage())
+                .hasText("SUCCESSGateway items were deactivated successfully");
+
+        SuperGatewayPage superGatewayPage = superAcquirersPage
+                .getSystemMenu().clickGatewayTab();
+
+        Allure.step("Verify: Acquirer MID status changed to Inactive");
+        assertThat(superGatewayPage.getTable().getCell(CHANGE_STATE_ACQUIRER.getAcquirerDisplayName(), "Status"))
+                .hasText("Inactive");
+
+        ActivateGroupGatewayItemsDialog activateGroupGatewayItemsDialog = superAcquirersPage
+                .getSystemMenu().clickAcquirersTab()
+                .getTable().clickBulkActionsButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
+                .selectActivateGatewayConnections();
+
+        Allure.step("Verify: Dialog header is correct");
+        assertThat(activateGroupGatewayItemsDialog.getDialogHeader())
+                .hasText("Group gateway items activity change");
+
+        Allure.step("Verify: Confirmation question is correct");
+        assertThat(activateGroupGatewayItemsDialog.getConfirmationQuestion())
+                .hasText("Are you sure you want to activate all gateway items created using %s?"
+                        .formatted(CHANGE_STATE_ACQUIRER.getAcquirerName()));
+
+        superAcquirersPage = activateGroupGatewayItemsDialog
+                .clickActivateButton();
+
+        assertThat(superAcquirersPage.getAlert().getSuccessMessage())
+                .hasText("SUCCESSGateway items were activated successfully");
+
+        superGatewayPage = superAcquirersPage
+                .getSystemMenu().clickGatewayTab();
+
+        Allure.step("Verify: Acquirer MID status changed to Active");
+        assertThat(superGatewayPage.getTable().getCell(CHANGE_STATE_ACQUIRER.getAcquirerDisplayName(), "Status"))
+                .hasText("Active");
+    }
+
     @Test(dataProvider = "getAcquirersStatus", dataProviderClass = TestDataProvider.class)
     @TmsLink("708")
     @Epic("System/Acquirers")
@@ -750,9 +878,11 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .getSystemMenu().clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER2.getAcquirerDisplayName())
                 .getSelectStatus().select(status)
+                .getSelectAcquirerCode().selectAcquirerCode("NGenius")
                 .clickResetFilterButton();
 
-        //TODO add 'Select acquirer code' assert when component would be realized
+        Allure.step("Verify: the selected acquirer code filter is cleared");
+        assertThat(acquirersPage.getSelectAcquirerCode().getSelectAcquirerCodeField()).isEmpty();
 
         Allure.step("Verify: the selected acquirer filter is cleared");
         assertThat(acquirersPage.getSelectAcquirerMid().getSelectAcquirerMidField()).isEmpty();
@@ -808,6 +938,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     @Override
     protected void afterClass() {
         TestUtils.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.getAcquirerName());
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
         super.afterClass();
     }
 }
