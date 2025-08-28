@@ -7,6 +7,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
@@ -18,7 +19,7 @@ import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
-public class TransactionDetailsTest extends BaseTest {
+public class TransactionDetailsTest extends BaseTestForSingleLogin {
 
     // TODO - Refactor after will know which Customer details are mandatory for each transaction type
     @Test

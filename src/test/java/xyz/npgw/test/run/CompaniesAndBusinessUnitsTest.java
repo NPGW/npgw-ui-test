@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.User;
@@ -36,7 +37,7 @@ import static org.testng.Assert.assertFalse;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.MERCHANT_ID_FOR_TEST_RUN;
 
-public class CompaniesAndBusinessUnitsTest extends BaseTest {
+public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
 
     private static final String COMPANY_NAME_TEST = "%s company name test".formatted(RUN_ID);
     private static final String COMPANY_DELETION_BLOCKED_NAME = "%s deletion-blocked company".formatted(RUN_ID);

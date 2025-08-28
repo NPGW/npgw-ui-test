@@ -12,6 +12,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
@@ -27,7 +28,7 @@ import java.util.Random;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 
-public class GatewayPageTest extends BaseTest {
+public class GatewayPageTest extends BaseTestForSingleLogin {
 
     private static final Acquirer ACQUIRER = Acquirer.builder()
             .acquirerDisplayName("acquirer for gateway")

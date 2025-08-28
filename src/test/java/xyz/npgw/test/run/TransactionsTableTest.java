@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
 import xyz.npgw.test.common.entity.Currency;
@@ -49,7 +50,7 @@ import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
-public class TransactionsTableTest extends BaseTest {
+public class TransactionsTableTest extends BaseTestForSingleLogin {
 
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final String[] COLUMNS_HEADERS = {
