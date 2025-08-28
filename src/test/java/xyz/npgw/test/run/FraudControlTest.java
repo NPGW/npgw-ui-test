@@ -480,7 +480,7 @@ public class FraudControlTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit",
-            "testDeleteInactiveFraudControlAddedToBusinessUnit"}, invocationCount = 2)
+            "testDeleteInactiveFraudControlAddedToBusinessUnit"})
     @TmsLink("910")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -513,7 +513,7 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
     }
 
-    @Test//(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("967")
     @Epic("System/Fraud control")
     @Feature("Control table")
@@ -572,7 +572,7 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
     }
 
-    @Test//(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("1009")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -673,8 +673,7 @@ public class FraudControlTest extends BaseTest {
                 .hasText("ERROREntity with name {%s} already exists.".formatted(FRAUD_CONTROL_NAME));
     }
 
-    @Test//(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority",
-           // "testChangeBusinessUnitFraudControlActivity", "testChangeBusinessControlPriorityRestrictions"})
+    @Test
     @TmsLink("950")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -704,7 +703,7 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
     }
 
-    @Test//(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("960")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -944,7 +943,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(fraudControlPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
     }
 
-    @Test//(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("1018")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -974,7 +973,7 @@ public class FraudControlTest extends BaseTest {
                 .clickDeleteButton();
     }
 
-    @Test//(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit"})
+    @Test
     @TmsLink("1064")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
