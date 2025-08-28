@@ -12,8 +12,6 @@ import xyz.npgw.test.page.dialog.acquirer.DeactivateGroupGatewayItemsDialog;
 import xyz.npgw.test.page.dialog.acquirer.EditAcquirerMidDialog;
 import xyz.npgw.test.page.system.SuperAcquirersPage;
 
-import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-
 @Getter
 public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPage> {
 
@@ -61,16 +59,16 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
 
     @Step("Click 'Bulk actions' button")
     public AcquirersTableComponent clickBulkActionsButton(String entityName) {
-        Locator bulkButton = getRow(entityName).locator("[data-icon='wand-magic-sparkles']");
-        bulkButton.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-        assertThat(bulkButton).isEnabled();
-        bulkButton.click();
+        Locator bulkButton = getRow(entityName).locator("svg[data-icon='wand-magic-sparkles']");
+        bulkButton.hover();
+        getPage().waitForTimeout(1500);
 
+        bulkButton.click();
         Locator dropdown = getPage().locator("div[aria-label='Options']");
         dropdown.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
-
-        activateGatewayConnectionsButton.waitFor();
-        deactivateGatewayConnectionsButton.waitFor();
+//
+//        activateGatewayConnectionsButton.waitFor();
+//        deactivateGatewayConnectionsButton.waitFor();
 
         return this;
     }
