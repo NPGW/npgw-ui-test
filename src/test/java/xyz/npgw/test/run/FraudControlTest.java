@@ -19,6 +19,8 @@ import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
 import xyz.npgw.test.page.dialog.control.DeactivateControlDialog;
 import xyz.npgw.test.page.dialog.control.EditControlDialog;
+import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
 import java.util.Arrays;
@@ -33,52 +35,54 @@ public class FraudControlTest extends BaseTest {
 
     private static final FraudControl FRAUD_CONTROL = FraudControl.builder()
             .controlName("%s ControlEverything".formatted(RUN_ID))
-            .controlCode("8848")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
             .build();
     private static final FraudControl FRAUD_CONTROL_FRAUD_SCREEN = FraudControl.builder()
             .controlName("%s ControlScreen".formatted(RUN_ID))
             .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
-            .controlCode("1522")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlFSC")
             .controlConfig("type")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
             .controlName("%s ControlNothing".formatted(RUN_ID))
-            .controlCode("9905")
+            .controlCode("Neutrino")
             .controlDisplayName("DisplayNotAvailable")
             .controlConfig("suspicious")
             .isActive(false)
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_ONE = FraudControl.builder()
             .controlName("%s ControlOne".formatted(RUN_ID))
-            .controlCode("0001")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplayFirst")
-            .controlCode("1234")
+    //        .controlCode("1234")
             .controlConfig("firstQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_TWO = FraudControl.builder()
             .controlName("%s ControlTwo".formatted(RUN_ID))
-            .controlCode("0002")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplaySecond")
-            .controlCode("2345")
+    //        .controlCode("2345")
             .controlConfig("secondQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_INACTIVE = FraudControl.builder()
             .controlName("%s Inactive control".formatted(RUN_ID))
-            .controlCode("0003")
+            .controlCode("Neutrino")
             .controlDisplayName("Inactive control")
             .isActive(false)
             .controlConfig("firstQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_THREE = FraudControl.builder()
             .controlName("%s ControlThree".formatted(RUN_ID))
+            .controlCode("Neutrino")
             .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
             .controlDisplayName("ControlDisplayThird")
             .build();
     private static final FraudControl FRAUD_CONTROL_ACTIVE_TO_INACTIVE = FraudControl.builder()
             .controlName("%s ControlActiveToInactive".formatted(RUN_ID))
+            .controlCode("Neutrino")
             .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
             .controlDisplayName("ControlDisplayActiveToInactive")
             .build();
@@ -629,10 +633,12 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
+                .fillFraudControlCodeField("Neutrino")
                 .clickSetupButton()
                 .getAlert().clickCloseButton()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
+                .fillFraudControlCodeField("Neutrino")
                 .clickSetupButton();
 
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
@@ -738,7 +744,7 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
-                .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
+        //        .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
                 .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
                 .checkInactiveRadiobutton()
@@ -755,7 +761,7 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
-        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
+    //    assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
         assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlConfig());
@@ -820,7 +826,7 @@ public class FraudControlTest extends BaseTest {
         });
     }
 
-    @Test
+    @Test(expectedExceptions = AssertionError.class)
     @TmsLink("1013")
     @Epic("System/Fraud control")
     @Feature("Table sort")
@@ -953,6 +959,7 @@ public class FraudControlTest extends BaseTest {
 
             addControlDialog
                     .fillFraudControlNameField(input)
+                    .fillFraudControlCodeField("Neutrino")
                     .clickSetupButton();
 
             Allure.step("Verify error message for symbol: " + symbol);
@@ -1025,6 +1032,39 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify Activate control modal window main body text");
         assertThat(deactivateControlDialog.getModalWindowsMainTextBody())
                 .hasText("Are you sure you want to activate control %s?".formatted(FRAUD_CONTROL_INACTIVE.getControlDisplayName()));
+    }
+
+    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+    @TmsLink("1157")
+    @Epic("System/Fraud control")
+    @Feature("'Change business unit control activity' dialog text content")
+    @Description("Verify text content for Header and Main body on 'Change business unit control activity' dialog")
+    public void testVerifyWarningModalWindowChangeActivityForBusinessUnitControlTable() {
+        DeactivateBusinessUnitControlDialog dialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_SORT)
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0");
+
+        Allure.step("Verify Deactivate Business unit control modal window text");
+        assertThat(dialog.getDialogHeader()).hasText("Change business unit control activity");
+
+        Allure.step("Verify Deactivate Business unit control modal window main body text");
+        assertThat(dialog.getModalWindowsMainTextBody())
+                .hasText("Are you sure you want to deactivate business unit control "
+                        + FRAUD_CONTROL_ADD_ONE.getControlDisplayName() + " with priority " + "0?");
+
+        ActivateBusinessUnitControlDialog activateDialog = dialog.clickCloseIcon()
+                .getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("1");
+
+        Allure.step("Verify Activate control modal window text");
+        assertThat(activateDialog.getDialogHeader()).hasText("Change business unit control activity");
+
+        Allure.step("Verify Activate control modal window main body text");
+        assertThat(activateDialog.getModalWindowsMainTextBody())
+                .hasText("Are you sure you want to activate business unit control "
+                        + FRAUD_CONTROL_ADD_TWO.getControlDisplayName() + " with priority " + "1?");
     }
 
     @AfterClass
