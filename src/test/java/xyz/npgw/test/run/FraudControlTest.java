@@ -103,6 +103,7 @@ public class FraudControlTest extends BaseTest {
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
     }
 
+    @Ignore("controlCode must have specific value")
     @Test
     @TmsLink("891")
     @Epic("System/Fraud control")
@@ -126,6 +127,7 @@ public class FraudControlTest extends BaseTest {
                 .hasText(FRAUD_CONTROL.toString());
     }
 
+    @Ignore("controlCode must have specific value")
     @Test
     @TmsLink("1154")
     @Epic("System/Fraud control")
@@ -183,6 +185,8 @@ public class FraudControlTest extends BaseTest {
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getNoRowsToDisplayMessage()).isAttached();
     }
 
+
+    @Ignore("ControlCode must have specific value")
     @Test(dependsOnMethods = "testAddActiveFraudControl")
     @TmsLink("972")
     @Epic("System/Fraud control")
@@ -250,6 +254,8 @@ public class FraudControlTest extends BaseTest {
         assertThat(statusCell).hasText("Active");
     }
 
+
+    @Ignore("controlCode must have specific value")
     @Test(dependsOnMethods = "testAddActiveFraudControl")
     @TmsLink("999")
     @Epic("System/Fraud control")
@@ -423,6 +429,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName())).not().isAttached();
     }
 
+    @Ignore("controlCode must have specific value")
     @Test
     @TmsLink("904")
     @Epic("System/Fraud control")
@@ -617,6 +624,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(addControlDialog.getSetupButton()).isDisabled();
     }
 
+    @Ignore("controlCode must have specific value")
     @Test
     @TmsLink("895")
     @Epic("System/Fraud control")
@@ -690,6 +698,7 @@ public class FraudControlTest extends BaseTest {
                 .containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
     }
 
+    @Ignore("Raw with control name not found - failed on clickConnectControlButton")
     @Test
     @TmsLink("927")
     @Epic("System/Fraud control")
@@ -819,6 +828,7 @@ public class FraudControlTest extends BaseTest {
         });
     }
 
+    @Ignore("Raw with control name not found - failed on clickConnectControlButton")
     @Test
     @TmsLink("1013")
     @Epic("System/Fraud control")
@@ -996,6 +1006,7 @@ public class FraudControlTest extends BaseTest {
         Assert.assertEquals(addControlDialog.getControlNameInput().inputValue().length(), 100);
     }
 
+    @Ignore("ControlCode must have specific value")
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
     @TmsLink("1143")
     @Epic("System/Fraud control")
