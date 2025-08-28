@@ -10,7 +10,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.LoginPage;
@@ -20,7 +19,10 @@ import xyz.npgw.test.page.dialog.user.SuperEditUserDialog;
 import xyz.npgw.test.page.system.SuperCompaniesAndBusinessUnitsPage;
 import xyz.npgw.test.page.system.SuperTeamPage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;

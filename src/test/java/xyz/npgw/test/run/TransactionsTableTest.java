@@ -16,7 +16,6 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
