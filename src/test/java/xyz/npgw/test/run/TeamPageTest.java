@@ -10,7 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.base.BaseTest;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -30,7 +30,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
-public class TeamPageTest extends BaseTestForSingleLogin {
+public class TeamPageTest extends BaseTest {
 
     private static final String MERCHANT_TITLE = "Business unit 1";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";

@@ -109,36 +109,8 @@ public abstract class BaseTestForSingleLogin {
             }
         });
 
-        createNewPage();
-
-        String testClassName = this.getClass().getSimpleName();
-        String prefix = Stream.of("Unauthenticated", "TestUser", "TestAdmin", "User", "Admin")
-                .filter(testClassName::startsWith)
-                .findFirst()
-                .orElse("");
-
-        switch (prefix) {
-            case "Unauthenticated":
-                return;
-            case "TestUser":
-                new AboutBlankPage(page)
-                        .navigate("/")
-                        .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
-                return;
-            case "TestAdmin":
-                new AboutBlankPage(page)
-                        .navigate("/")
-                        .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
-                return;
-            case "User":
-                openSite(new Object[]{"USER"});
-                return;
-            case "Admin":
-                openSite(new Object[]{"ADMIN"});
-                return;
-            default:
-                openSite(new Object[]{"SUPER"});
-        }
+        createBlankPage();
+        openSiteAccordingRole();
     }
 
     @BeforeMethod
@@ -151,9 +123,9 @@ public abstract class BaseTestForSingleLogin {
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
 
         if (page.isClosed()) {
-            createNewPage();
+            createBlankPage();
+            new AboutBlankPage(page).navigate("/dashboard");
         }
-        new AboutBlankPage(page).navigate("/dashboard");
 
         if (ProjectProperties.isTracingMode()) {
             BrowserUtils.startTracing(browserContext);
@@ -171,17 +143,18 @@ public abstract class BaseTestForSingleLogin {
         if (!page.isClosed()) {
             page.close();
         }
-        attachVideoIfNeeded(page, testId, isNeedArtefacts);
-        if (browserContext != null) {
-            if (ProjectProperties.isTracingMode()) {
-                if (isNeedArtefacts) {
-                    Path traceFilePath = Paths.get(testId + ".zip");
-                    browserContext.tracing().stop(new Tracing.StopOptions().setPath(traceFilePath));
-                    Allure.getLifecycle().addAttachment(
-                            "tracing", "archive/zip", "zip", Files.readAllBytes(traceFilePath));
-                } else {
-                    browserContext.tracing().stop();
-                }
+        if (ProjectProperties.isVideoMode()) {
+            attachVideoIfNeeded(page, testId, isNeedArtefacts);
+        }
+
+        if (ProjectProperties.isTracingMode()) {
+            if (isNeedArtefacts) {
+                Path traceFilePath = Paths.get(testId + ".zip");
+                browserContext.tracing().stop(new Tracing.StopOptions().setPath(traceFilePath));
+                Allure.getLifecycle().addAttachment(
+                        "tracing", "archive/zip", "zip", Files.readAllBytes(traceFilePath));
+            } else {
+                browserContext.tracing().stop();
             }
         }
     }
@@ -309,11 +282,42 @@ public abstract class BaseTestForSingleLogin {
         }
     }
 
-    private void createNewPage() {
+    private void createBlankPage() {
         page = browserContext.newPage();
         page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
         page.addLocatorHandler(page.getByText("Loading..."), locator -> {
         });
+    }
+
+    private void openSiteAccordingRole() {
+        String testClassName = this.getClass().getSimpleName();
+        String prefix = Stream.of("Unauthenticated", "TestUser", "TestAdmin", "User", "Admin")
+                .filter(testClassName::startsWith)
+                .findFirst()
+                .orElse("");
+
+        switch (prefix) {
+            case "Unauthenticated":
+                return;
+            case "TestUser":
+                new AboutBlankPage(page)
+                        .navigate("/")
+                        .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
+                return;
+            case "TestAdmin":
+                new AboutBlankPage(page)
+                        .navigate("/")
+                        .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
+                return;
+            case "User":
+                openSite(new Object[]{"USER"});
+                return;
+            case "Admin":
+                openSite(new Object[]{"ADMIN"});
+                return;
+            default:
+                openSite(new Object[]{"SUPER"});
+        }
     }
 
     private boolean isTestIndependent(Method method) {
