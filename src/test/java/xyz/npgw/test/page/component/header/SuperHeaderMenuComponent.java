@@ -35,8 +35,8 @@ public class SuperHeaderMenuComponent<CurrentPageT> extends BaseHeaderMenuCompon
 
     @Step("Click on 'System administration' in the Header")
     public SuperTeamPage clickSystemAdministrationLink() {
-        clickAndWaitForTable(systemAdministrationButton);
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
+        systemAdministrationButton.click();
+        clickTeamTabAndWaitForTable();
 
         return new SuperTeamPage(getPage());
     }
