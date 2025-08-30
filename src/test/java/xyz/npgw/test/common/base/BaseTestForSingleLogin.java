@@ -193,18 +193,8 @@ public abstract class BaseTestForSingleLogin {
         }
     }
 
-    private void openSite(Object[] args) {
-        UserRole userRole = UserRole.SUPER;
-        if (args.length != 0 && (args[0] instanceof String)) {
-            try {
-                userRole = UserRole.valueOf((String) args[0]);
-            } catch (IllegalArgumentException e) {
-                if (args[0].equals("UNAUTHORISED")) {
-//                    new AboutBlankPage(page).navigate("/");
-                    return;
-                }
-            }
-        }
+    private void openSite(String role) {
+        UserRole userRole = UserRole.valueOf(role);
 
         if (userRole == UserRole.USER && businessUnit == null) {
             businessUnit = TestUtils.createBusinessUnit(apiRequestContext, companyName, "default");
@@ -310,13 +300,13 @@ public abstract class BaseTestForSingleLogin {
                         .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
                 return;
             case "User":
-                openSite(new Object[]{"USER"});
+                openSite("USER");
                 return;
             case "Admin":
-                openSite(new Object[]{"ADMIN"});
+                openSite("ADMIN");
                 return;
             default:
-                openSite(new Object[]{"SUPER"});
+                openSite("SUPER");
         }
     }
 
