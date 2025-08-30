@@ -42,6 +42,7 @@ public abstract class BaseHeaderMenuComponent<CurrentPageT> extends BaseComponen
 
         assertThat(button).hasAttribute("data-selected", "true");
     }
+
     public boolean isLogoImageLoaded() {
         return (boolean) getLogoImg().evaluate(
                 "img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0"
