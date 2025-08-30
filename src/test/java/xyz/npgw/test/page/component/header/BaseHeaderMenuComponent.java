@@ -34,13 +34,15 @@ public abstract class BaseHeaderMenuComponent<CurrentPageT> extends BaseComponen
 
     protected void clickTeamTabAndWaitForTable() {
         Locator button = getByRole(AriaRole.TAB, "Team");
-        button.click();
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button"))
-                .waitFor();
-        getPage().waitForLoadState(LoadState.NETWORKIDLE);
+        if (button.getAttribute("data-selected") == null) {
+            button.click();
+            getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                    .or(getByRole(AriaRole.BUTTON, "next page button"))
+                    .waitFor();
+            getPage().waitForLoadState(LoadState.NETWORKIDLE);
 
-        assertThat(button).hasAttribute("data-selected", "true");
+            assertThat(button).hasAttribute("data-selected", "true");
+        }
     }
 
     public boolean isLogoImageLoaded() {
