@@ -814,7 +814,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .clickConnectButton()
                 .getAlert().waitUntilSuccessAlertIsGone()
                 .getSystemMenu().clickAcquirersTab()
-                .getTable().clickBulkActionsButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
+                .getTable().clickBulkActionsButton(CHANGE_STATE_ACQUIRER.getAcquirerDisplayName())
                 .selectDeactivateGatewayConnections();
 
         Allure.step("Verify: Dialog header is correct");
