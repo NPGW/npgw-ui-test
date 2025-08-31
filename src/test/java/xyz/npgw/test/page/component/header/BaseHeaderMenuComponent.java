@@ -36,13 +36,12 @@ public abstract class BaseHeaderMenuComponent<CurrentPageT> extends BaseComponen
         Locator button = getByRole(AriaRole.TAB, "Team");
         if (button.getAttribute("data-selected") == null) {
             button.click();
-            getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                    .or(getByRole(AriaRole.BUTTON, "next page button"))
-                    .waitFor();
-            getPage().waitForLoadState(LoadState.NETWORKIDLE);
-
             assertThat(button).hasAttribute("data-selected", "true");
         }
+        getByRole(AriaRole.GRIDCELL, "No rows to display.")
+                .or(getByRole(AriaRole.BUTTON, "next page button"))
+                .waitFor();
+        getPage().waitForLoadState(LoadState.NETWORKIDLE);
     }
 
     public boolean isLogoImageLoaded() {
