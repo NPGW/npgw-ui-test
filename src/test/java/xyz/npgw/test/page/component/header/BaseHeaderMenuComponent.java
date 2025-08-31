@@ -7,6 +7,8 @@ import com.microsoft.playwright.options.LoadState;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseComponent;
 
+import java.util.Objects;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
@@ -32,15 +34,13 @@ public abstract class BaseHeaderMenuComponent<CurrentPageT> extends BaseComponen
         assertThat(button.locator("..")).hasAttribute("data-active", "true");
     }
 
-    protected void clickTeamTabAndWaitForTable() {
+    protected void clickTeamTabAndWait() {
         Locator button = getByRole(AriaRole.TAB, "Team");
-        if (button.getAttribute("data-selected") == null) {
+        button.waitFor();
+        if (Objects.equals(button.getAttribute("aria-selected"), "false")) {
             button.click();
             assertThat(button).hasAttribute("data-selected", "true");
         }
-        getByRole(AriaRole.GRIDCELL, "No rows to display.")
-                .or(getByRole(AriaRole.BUTTON, "next page button"))
-                .waitFor();
         getPage().waitForLoadState(LoadState.NETWORKIDLE);
     }
 

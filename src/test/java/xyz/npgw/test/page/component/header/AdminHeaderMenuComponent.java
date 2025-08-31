@@ -33,7 +33,7 @@ public class AdminHeaderMenuComponent<CurrentPageT> extends BaseHeaderMenuCompon
     @Step("Click on 'System administration' in the Header")
     public AdminTeamPage clickSystemAdministrationLink() {
         systemAdministrationButton.click();
-        clickTeamTabAndWaitForTable();
+        clickTeamTabAndWait();
 
         return new AdminTeamPage(getPage());
     }
