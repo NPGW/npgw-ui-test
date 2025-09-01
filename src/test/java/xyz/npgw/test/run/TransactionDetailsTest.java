@@ -59,6 +59,7 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
     public void testCheckTheHidingOfParameters() {
         TransactionDetailsDialog transactionDetailsDialog = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
@@ -115,6 +116,7 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
     public void testCloseTransactionDetailsDialog() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .getTable().clickOnFirstTransaction()
@@ -139,6 +141,7 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
     public void testDataMatching() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
