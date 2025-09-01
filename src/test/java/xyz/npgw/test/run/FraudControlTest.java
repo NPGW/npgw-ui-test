@@ -841,7 +841,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Epic("System/Fraud control")
     @Feature("Table sort")
     @Description("Verify that 'Integrated third party controls' table can be sorted")
-    public void testControlTableEntriesSorting() {
+    public void testIntegratedTPControlsTableEntriesSorting() {
         SuperFraudControlPage fraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab();
@@ -852,8 +852,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         Allure.step("Entries are by default sorted ascending by Name");
         Assert.assertEquals(defaultColumnValues, defaultColumnValues.stream().sorted().toList());
 
-        List<String> columns = List.of(/*"Type", */"Display name", "Name", "Code", "Config", "Status");
-        //TODO sort by "Type" broken --- atm not sorting - [Fraud Screen, BIN Check, Fraud Screen] on first click
+        List<String> columns = List.of("Type", "Display name", "Name", "Code", "Config", "Status");
 
         columns.forEach(columnName -> {
             List<String> columnValues = fraudControlPage
