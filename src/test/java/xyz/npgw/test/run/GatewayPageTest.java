@@ -530,7 +530,7 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickDeleteButton();
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
