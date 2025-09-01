@@ -593,12 +593,11 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     @Feature("Edit acquirer MID")
     @Description("Verifies that all form field placeholders are set correctly")
     public void testVerifyPlaceholdersEditForm() {
-        String acquirerDisplayName = ACQUIRER.getAcquirerDisplayName();
         List<String> actualPlaceholders = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirerMid().selectAcquirerMid(acquirerDisplayName)
-                .getTable().clickEditAcquirerMidButton(acquirerDisplayName)
+                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_EDITED.getAcquirerDisplayName())
+                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerName())
                 .getAllPlaceholders();
 
         Allure.step("Verify placeholders match expected values for all fields");
