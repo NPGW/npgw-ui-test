@@ -596,8 +596,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         List<String> actualPlaceholders = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickAcquirersTab()
-                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_EDITED.getAcquirerDisplayName())
-                .getTable().clickEditAcquirerMidButton(ACQUIRER_EDITED.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER.getAcquirerDisplayName())
+                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerName())
                 .getAllPlaceholders();
 
         Allure.step("Verify placeholders match expected values for all fields");
