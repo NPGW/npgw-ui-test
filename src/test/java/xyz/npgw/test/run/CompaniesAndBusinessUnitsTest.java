@@ -35,6 +35,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.MERCHANT_ID_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.TOOLTIPSCONTENT;
 
 public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
@@ -65,7 +66,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
             "https://www.editedtest.com", "Catty Smith", "editedtest@yahoo.com",
             false, false
     );
-
 
     @BeforeClass
     @Override
@@ -733,6 +733,55 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
 
         Allure.step("Verify: Dialog 'Edit business unit' is not displayed after clicking on the 'Close' icon");
         assertThat(companiesAndBusinessUnitsPage.getEditBusinessUnitDialog()).isHidden();
+    }
+
+    @Test
+    @TmsLink("1192")
+    @Epic("System/Companies and business units")
+    @Feature("Tooltips")
+    @Description("Verify, that contents of Tooltips, that appear after hovering on the icon-buttons, are correct")
+    public void testTooltipsContent() {
+        SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
+
+        List<Locator> initialCommonIconButtons = companiesAndBusinessUnitsPage.getInitialCommonIconButton().all();
+        for (Locator icon : initialCommonIconButtons) {
+            String iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
+            Allure.step("Hover on '" + iconName + "' icon");
+            icon.hover();
+
+            Allure.step("Verify, over '" + iconName + "' appears '"
+                    + companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent() + "'");
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")),
+                    companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent());
+        }
+        companiesAndBusinessUnitsPage
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN);
+        List<Locator> commonIconButtons = companiesAndBusinessUnitsPage.getCommonIconButton().all();
+        for (Locator icon : commonIconButtons) {
+            String iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
+            Allure.step("Hover on '" + iconName + "' icon");
+            icon.hover();
+
+            Allure.step("Verify, over '" + iconName + "' appears '"
+                    + companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent() + "'");
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")),
+                    companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent());
+        }
+        List<Locator> rowIconButtons = companiesAndBusinessUnitsPage
+                .getTable()
+                .getRowIconBtn(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all();
+        for (Locator rowIconButton : rowIconButtons) {
+            String iconName = companiesAndBusinessUnitsPage.getTable().getRowIconName(rowIconButton);
+            Allure.step("Hover on '" + iconName + "' icon");
+            rowIconButton.hover();
+
+            Allure.step("Verify, over '" + iconName + "' appears '"
+                    + companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent() + "'");
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-testid")),
+                    companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent());
+        }
     }
 
     @AfterClass

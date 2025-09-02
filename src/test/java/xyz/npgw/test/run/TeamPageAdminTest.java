@@ -1,5 +1,6 @@
 package xyz.npgw.test.run;
 
+import com.microsoft.playwright.Locator;
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -26,6 +27,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import static xyz.npgw.test.common.Constants.TOOLTIPSCONTENT;
 
 public class TeamPageAdminTest extends BaseTest {
 
@@ -578,5 +580,57 @@ public class TeamPageAdminTest extends BaseTest {
             Allure.step("Verify: 'Status' filter displays 'All' after reset");
             assertThat(teamPage.getSelectStatus().getStatusValue()).hasText("All");
         });
+    }
+
+    @Test
+    @TmsLink("1188")
+    @Epic("System/Team")
+    @Feature("Tooltips")
+    @Description("For Admin : contents of Tooltips, that appear after hovering on the icon-buttons, are correct")
+    public void testTeamTooltipsContentAsAdmin() {
+        String email = "%s.deactivate.and.activate@gmail.com".formatted(TestUtils.now());
+
+        AdminTeamPage teamPage = new AdminDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("Qwerty123!")
+                .checkCompanyAnalystRadiobutton()
+                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
+                .clickCreateButton()
+                .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
+
+        List<Locator> commonIconButtons = teamPage.getCommonIconButton().all();
+        for (Locator icon : commonIconButtons) {
+            Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon");
+            icon.hover();
+
+            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconButtonModal().last().textContent() + "'");
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-icon")),
+                    teamPage.getIconButtonModal().last().textContent());
+        }
+        List<Locator> rowIconButtons = teamPage.getTable().getRowIconBtn(email).all();
+        for (Locator rowIconButton : rowIconButtons) {
+            Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
+            rowIconButton.hover();
+
+            Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconButtonModal().last().textContent() + "'");
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
+                    teamPage.getIconButtonModal().last().textContent());
+        }
+        teamPage.getTable().clickDeactivateUserButton(email)
+                .clickDeactivateButton()
+                .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
+        for (Locator rowIconButton : rowIconButtons) {
+            Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
+            rowIconButton.hover();
+
+            Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconButtonModal().last().textContent() + "'");
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
+                    teamPage.getIconButtonModal().last().textContent());
+        }
     }
 }

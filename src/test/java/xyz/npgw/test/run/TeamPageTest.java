@@ -26,6 +26,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.TOOLTIPSCONTENT;
 
 public class TeamPageTest extends BaseTest {
 
@@ -36,16 +37,6 @@ public class TeamPageTest extends BaseTest {
     private static String systemAdminEmail;
     private static String companyAdminEmail;
     private static String companyAnalystEmail;
-    private static final Map<String, String> TOOLTIPSCONTENT = Map.ofEntries(
-            Map.entry("circle-plus", "Add user"),
-            Map.entry("xmark", "Reset filter"),
-            Map.entry("arrows-rotate", "Refresh data"),
-            Map.entry("gear", "Settings"),
-            Map.entry("pencil", "Edit user"),
-            Map.entry("ban", "Deactivate user"),
-            Map.entry("circle-exclamation", "Reset user password"),
-            Map.entry("trash", "Delete user"),
-            Map.entry("check", "Activate user"));
 
     @BeforeClass
     @Override
@@ -713,7 +704,10 @@ public class TeamPageTest extends BaseTest {
             assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-icon")),
                     teamPage.getIconButtonModal().last().textContent());
         }
-        List<Locator> rowIconButtons = teamPage.getTable().getRowIconBtn(email).all();
+        List<Locator> rowIconButtons = teamPage
+                .getTable()
+                .getRowIconBtn(email)
+                .all();
         for (Locator rowIconButton : rowIconButtons) {
             Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
             rowIconButton.hover();
