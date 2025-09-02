@@ -5,10 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
 
-@Log4j2
-public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
+public class SelectAcquirerMidComponent<CurrentPageT> extends SelectComponent<CurrentPageT> {
 
     @Getter
     private final Locator selectAcquirerMidField = locator("input[aria-label='Select acquirer MID']");
@@ -23,7 +21,7 @@ public class SelectAcquirerComponent<CurrentPageT> extends SelectComponent<Curre
     private final Locator selectAcquirerClearIcon = selectAcquirerContainer
             .locator("button[aria-label='Show suggestions']:first-child");
 
-    public SelectAcquirerComponent(Page page, CurrentPageT currentPage) {
+    public SelectAcquirerMidComponent(Page page, CurrentPageT currentPage) {
         super(page, currentPage);
     }
 

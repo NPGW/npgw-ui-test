@@ -14,10 +14,9 @@ import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
 import xyz.npgw.test.common.entity.Currency;
@@ -43,14 +42,15 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+import static xyz.npgw.test.common.Constants.AUGUST_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
-import static xyz.npgw.test.common.Constants.CARD_TYPES;
+import static xyz.npgw.test.common.Constants.CARD_OPTIONS;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
-public class TransactionsTableTest extends BaseTest {
+public class TransactionsTableTest extends BaseTestForSingleLogin {
 
     private static final String MERCHANT_TITLE = "%s test transaction table merchant".formatted(RUN_ID);
     private static final String[] COLUMNS_HEADERS = {
@@ -111,13 +111,14 @@ public class TransactionsTableTest extends BaseTest {
     public void testFilterByCardType() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
         Allure.step("Verify: transaction page table has data");
         assertThat(transactionsPage.getTable().getNoRowsToDisplayMessage()).isHidden();
 
-        for (String cardType : Arrays.copyOfRange(CARD_TYPES, 1, CARD_TYPES.length)) {
+        for (String cardType : Arrays.copyOfRange(CARD_OPTIONS, 1, CARD_OPTIONS.length)) {
             List<String> cardTypeList = transactionsPage
                     .selectCardType(cardType)
                     .getTable().getCardTypeColumnValuesAllPages();
@@ -211,6 +212,7 @@ public class TransactionsTableTest extends BaseTest {
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(AUGUST_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -615,8 +617,8 @@ public class TransactionsTableTest extends BaseTest {
         assertEquals(uiTransactionList, excelTransactionList);
     }
 
-    @Ignore("Locator expected to have text: [Status, Creation Date (GMT), Amount, Currency, Actions]\n"
-            + "\tReceived: [Currency, Status, Creation Date (GMT), Amount, Actions]")
+    //    @Ignore("Locator expected to have text: [Status, Creation Date (GMT), Amount, Currency, Actions]\n"
+//            + "\tReceived: [Currency, Status, Creation Date (GMT), Amount, Actions]")
     @Test
     @TmsLink("978")
     @Epic("Transactions")

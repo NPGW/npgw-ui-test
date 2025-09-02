@@ -22,6 +22,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Credentials;
@@ -48,7 +49,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 @Log4j2
-public abstract class BaseTest {
+public abstract class BaseTestForSingleLogin {
 
     protected static final String RUN_ID = TestUtils.now();
     private final HashMap<String, Response> requestMap = new HashMap<>();
@@ -84,34 +85,13 @@ public abstract class BaseTest {
     protected void beforeClass() {
         playwright = BrowserUtils.createPlaywright();
         initApiRequestContext();
-        browser = BrowserUtils.createBrowser(playwright);
 
         uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
         companyName = "%s test run company".formatted(uid);
         TestUtils.createCompany(apiRequestContext, companyName);
-    }
 
-    @BeforeMethod
-    protected void beforeMethod(Method method, ITestResult testResult, Object[] args) {
-        testId = "%s/%s/%s(%d)%s".formatted(
-                ProjectProperties.getArtefactDir(),
-                method.getDeclaringClass().getSimpleName(),
-                method.getName(),
-                testResult.getMethod().getCurrentInvocationCount(),
-                new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
-//        log.info(">>> {}", testId);
-
+        browser = BrowserUtils.createBrowser(playwright);
         browserContext = BrowserUtils.createContext(browser);
-
-        if (ProjectProperties.isTracingMode()) {
-            BrowserUtils.startTracing(browserContext);
-        }
-
-        page = browserContext.newPage();
-        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
-        page.addLocatorHandler(page.getByText("Loading..."), locator -> {
-        });
-
         browserContext.route("**/*", route -> {
             String url = route.request().url();
             if (url.endsWith(".css") || url.endsWith(".js") || url.endsWith(".png")) {
@@ -129,77 +109,65 @@ public abstract class BaseTest {
             }
         });
 
-        initApiRequestContext();
+        createBlankPage();
+        openSiteAccordingRole();
+    }
 
-        String methodName = method.getName();
-        String suffix = Stream.of("Unauthenticated", "AsTestUser", "AsTestAdmin", "AsUser", "AsAdmin")
-                .filter(methodName::endsWith)
-                .findFirst()
-                .orElse("");
+    @BeforeMethod
+    protected void beforeMethod(Method method, ITestResult testResult, Object[] args) {
+        testId = "%s/%s/%s(%d)%s".formatted(
+                ProjectProperties.getArtefactDir(),
+                method.getDeclaringClass().getSimpleName(),
+                method.getName(),
+                testResult.getMethod().getCurrentInvocationCount(),
+                new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
 
-        switch (suffix) {
-            case "Unauthenticated":
-                return;
+        if (page.isClosed()) {
+            createBlankPage();
+            new AboutBlankPage(page).navigate("/dashboard");
+        }
 
-            case "AsTestUser":
-                new AboutBlankPage(page)
-                        .navigate("/")
-                        .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
-                return;
-
-            case "AsTestAdmin":
-                new AboutBlankPage(page)
-                        .navigate("/")
-                        .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
-                return;
-
-            case "AsUser":
-                openSite(new Object[]{"USER"});
-                return;
-
-            case "AsAdmin":
-                openSite(new Object[]{"ADMIN"});
-                return;
-
-            default:
-                openSite(args);
+        if (ProjectProperties.isTracingMode()) {
+            BrowserUtils.startTracing(browserContext);
         }
     }
 
     @AfterMethod
     protected void afterMethod(Method method, ITestResult testResult) throws IOException {
-        if (!testResult.isSuccess() && !ProjectProperties.isCloseBrowserIfError()) {
-            page.pause();
-        }
-
         int resultStatus = testResult.getStatus();
-        long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
+        boolean isNeedArtefacts = Set.of(ITestResult.FAILURE, ITestResult.SKIP).contains(resultStatus);
         if (resultStatus == ITestResult.FAILURE) {
+            long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
             log.info("{} <<< {} in {} s", status(resultStatus), testId, testDuration);
         }
-
         if (!page.isClosed()) {
             page.close();
-            attachVideoIfNeeded(page, testId, resultStatus);
+        }
+        if (ProjectProperties.isVideoMode()) {
+            attachVideoIfNeeded(page, testId, isNeedArtefacts);
         }
 
-        if (browserContext != null) {
-            if (ProjectProperties.isTracingMode()) {
-                if (resultStatus == ITestResult.FAILURE || resultStatus == ITestResult.SKIP) {
-                    Path traceFilePath = Paths.get(testId + ".zip");
-                    browserContext.tracing().stop(new Tracing.StopOptions().setPath(traceFilePath));
-                    Allure.getLifecycle().addAttachment(
-                            "tracing", "archive/zip", "zip", Files.readAllBytes(traceFilePath));
-                } else {
-                    browserContext.tracing().stop();
-                }
+        if (ProjectProperties.isTracingMode()) {
+            if (isNeedArtefacts) {
+                Path traceFilePath = Paths.get(testId + ".zip");
+                browserContext.tracing().stop(new Tracing.StopOptions().setPath(traceFilePath));
+                Allure.getLifecycle().addAttachment(
+                        "tracing", "archive/zip", "zip", Files.readAllBytes(traceFilePath));
+            } else {
+                browserContext.tracing().stop();
             }
-            browserContext.close();
         }
     }
 
     @AfterClass(alwaysRun = true)
     protected void afterClass() {
+        if (browserContext != null) {
+            try {
+                browserContext.close();
+            } catch (Exception ignored) {
+                log.info("Attempt to close the browserContext that is already closed.");
+            }
+        }
         if (browser != null) {
             try {
                 browser.close();
@@ -207,7 +175,6 @@ public abstract class BaseTest {
                 log.info("Attempt to close the browser that is already closed.");
             }
         }
-
         if (apiRequestContext != null) {
             try {
                 User.delete(apiRequestContext, "%s.super@email.com".formatted(uid));
@@ -217,7 +184,6 @@ public abstract class BaseTest {
                 log.info("Attempt to dispose the apiRequestContext that is already disposed.");
             }
         }
-
         if (playwright != null) {
             try {
                 playwright.close();
@@ -227,18 +193,8 @@ public abstract class BaseTest {
         }
     }
 
-    private void openSite(Object[] args) {
-        UserRole userRole = UserRole.SUPER;
-        if (args.length != 0 && (args[0] instanceof String)) {
-            try {
-                userRole = UserRole.valueOf((String) args[0]);
-            } catch (IllegalArgumentException e) {
-                if (args[0].equals("UNAUTHORISED")) {
-//                    new AboutBlankPage(page).navigate("/");
-                    return;
-                }
-            }
-        }
+    private void openSite(String role) {
+        UserRole userRole = UserRole.valueOf(role);
 
         if (userRole == UserRole.USER && businessUnit == null) {
             businessUnit = TestUtils.createBusinessUnit(apiRequestContext, companyName, "default");
@@ -258,7 +214,6 @@ public abstract class BaseTest {
         }
 
         new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getPassword(), userRole.getName());
-//        initPageRequestContext();
     }
 
     private void initApiRequestContext() {
@@ -304,10 +259,10 @@ public abstract class BaseTest {
                         .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
     }
 
-    private void attachVideoIfNeeded(Page page, String testId, int resultStatus) throws IOException {
+    private void attachVideoIfNeeded(Page page, String testId, boolean isNeedArtefacts) throws IOException {
         Video video = page.video();
         if (video != null) {
-            if (Set.of(ITestResult.FAILURE, ITestResult.SKIP).contains(resultStatus)) {
+            if (isNeedArtefacts) {
                 Path videoFilePath = Paths.get(testId + ".webm");
                 video.saveAs(videoFilePath);
                 Allure.getLifecycle().addAttachment(
@@ -315,6 +270,52 @@ public abstract class BaseTest {
             }
             video.delete();
         }
+    }
+
+    private void createBlankPage() {
+        page = browserContext.newPage();
+        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
+        page.addLocatorHandler(page.getByText("Loading..."), locator -> {
+        });
+    }
+
+    private void openSiteAccordingRole() {
+        String testClassName = this.getClass().getSimpleName();
+        String prefix = Stream.of("Unauthenticated", "TestUser", "TestAdmin", "User", "Admin")
+                .filter(testClassName::startsWith)
+                .findFirst()
+                .orElse("");
+
+        switch (prefix) {
+            case "Unauthenticated":
+                return;
+            case "TestUser":
+                new AboutBlankPage(page)
+                        .navigate("/")
+                        .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
+                return;
+            case "TestAdmin":
+                new AboutBlankPage(page)
+                        .navigate("/")
+                        .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
+                return;
+            case "User":
+                openSite("USER");
+                return;
+            case "Admin":
+                openSite("ADMIN");
+                return;
+            default:
+                openSite("SUPER");
+        }
+    }
+
+    private boolean isTestIndependent(Method method) {
+        Test testAnnotation = method.getAnnotation(Test.class);
+        if (testAnnotation == null) {
+            return true;
+        }
+        return testAnnotation.dependsOnMethods().length == 0 && testAnnotation.dependsOnGroups().length == 0;
     }
 
     private String status(int code) {

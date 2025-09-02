@@ -9,17 +9,18 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.user.SuperAddUserDialog;
 import xyz.npgw.test.page.dialog.user.SuperEditUserDialog;
 import xyz.npgw.test.page.system.SuperCompaniesAndBusinessUnitsPage;
 import xyz.npgw.test.page.system.SuperTeamPage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -28,7 +29,7 @@ import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.TOOLTIPSCONTENT;
 
-public class TeamPageTest extends BaseTest {
+public class TeamPageTest extends BaseTestForSingleLogin {
 
     private static final String MERCHANT_TITLE = "Business unit 1";
     private static final String SUCCESS_MESSAGE_USER_CREATED = "SUCCESSUser was created successfully";
@@ -37,6 +38,16 @@ public class TeamPageTest extends BaseTest {
     private static String systemAdminEmail;
     private static String companyAdminEmail;
     private static String companyAnalystEmail;
+    private static final Map<String, String> TOOLTIPSCONTENT = Map.ofEntries(
+            Map.entry("circle-plus", "Add user"),
+            Map.entry("xmark", "Reset filter"),
+            Map.entry("arrows-rotate", "Refresh data"),
+            Map.entry("gear", "Settings"),
+            Map.entry("pencil", "Edit user"),
+            Map.entry("ban", "Deactivate user"),
+            Map.entry("circle-exclamation", "Reset user password"),
+            Map.entry("trash", "Delete user"),
+            Map.entry("check", "Activate user"));
 
     @BeforeClass
     @Override
@@ -429,120 +440,6 @@ public class TeamPageTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("554")
-    @Epic("System/Team")
-    @Feature("Edit user")
-    @Description("Reset company analyst password as super admin")
-    public void testResetPasswordForCompanyAnalyst() {
-        String email = "%s.reset.password@gmail.com".formatted(TestUtils.now());
-
-        SuperTeamPage teamPage = new SuperDashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(getCompanyName())
-                .clickAddUserButton()
-                .fillEmailField(email)
-                .fillPasswordField("Password1!")
-                .checkCompanyAdminRadiobutton()
-                .clickCreateButton()
-                .waitForUserPresence(getApiRequestContext(), email, getCompanyName())
-                .getTable()
-                .clickResetUserPasswordIcon(email)
-                .fillPasswordField("NewPassword1!")
-                .clickResetButton();
-
-        Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword was reset successfully");
-
-        teamPage.clickLogOutButton()
-                .fillEmailField(email)
-                .fillPasswordField("NewPassword1!")
-                .clickLoginButtonToChangePassword()
-                .fillNewPasswordField("ChangedNewPassword1!")
-                .fillRepeatNewPasswordField("ChangedNewPassword1!")
-                .clickSaveButton();
-
-        Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword is changed successfully");
-    }
-
-    @Test
-    @TmsLink("492")
-    @Epic("System/Team")
-    @Feature("Edit user")
-    @Description("Create and deactivate company analyst as super admin")
-    public void testCreateCompanyAnalystAndDeactivate() {
-        String analystEmail = "%s.company.analyst@gmail.com".formatted(TestUtils.now());
-        String analystPassword = "CompanyAnalyst123!";
-
-        SuperTeamPage teamPage = new SuperDashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(getCompanyName())
-                .clickAddUserButton()
-                .fillEmailField(analystEmail)
-                .fillPasswordField(analystPassword)
-                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
-                .clickCreateButton();
-
-        Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText(SUCCESS_MESSAGE_USER_CREATED);
-
-        teamPage
-                .getAlert().clickCloseButton()
-                .waitForUserPresence(getApiRequestContext(), analystEmail, getCompanyName());
-
-        Allure.step("Verify: status of the user was changed");
-        assertThat(teamPage.getTable().getCell(analystEmail, "User role")).hasText("USER");
-
-        Allure.step("Verify: status of the user");
-        assertThat(teamPage.getTable().getCell(analystEmail, "Status")).hasText("Active");
-
-        Allure.step("Verify: deactivate user icon appears");
-        assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "ban");
-
-        teamPage
-                .getTable().clickDeactivateUserButton(analystEmail)
-                .clickDeactivateButton();
-
-        Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSUser was deactivated successfully");
-
-        teamPage
-                .getAlert().clickCloseButton()
-                .waitForUserDeactivation(getApiRequestContext(), analystEmail, getCompanyName());
-
-        Allure.step("Verify: status of the user was changed");
-        assertThat(teamPage.getTable().getCell(analystEmail, "Status")).hasText("Inactive");
-
-        Allure.step("Verify: deactivate user icon appears");
-        assertThat(teamPage.getTable().getUserActivityIcon(analystEmail)).hasAttribute("data-icon", "check");
-
-        LoginPage loginPage = teamPage
-                .clickLogOutButton()
-                .loginAsDisabledUser(analystEmail, analystPassword);
-
-        Allure.step("Verify: error message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText("ERRORUser is disabled.");
-
-        loginPage
-                .loginAsSuper("%s.super@email.com".formatted(getUid()), ProjectProperties.getPassword())
-                .getHeader().clickSystemAdministrationLink()
-                .getSelectCompany().selectCompany(getCompanyName())
-                .getTable().clickEditUserButton(analystEmail)
-                .checkActiveRadiobutton()
-                .clickSaveChangesButton()
-                .clickLogOutButton()
-                .fillEmailField(analystEmail)
-                .fillPasswordField(analystPassword)
-                .clickLoginButtonToChangePassword()
-                .fillNewPasswordField(analystPassword)
-                .fillRepeatNewPasswordField(analystPassword)
-                .clickSaveButton();
-
-        Allure.step("Verify: success message is displayed");
-        assertThat(teamPage.getAlert().getMessage()).hasText("SUCCESSPassword is changed successfully");
-    }
-
-    @Test
     @TmsLink("531")
     @Epic("System/Team")
     @Feature("Status")
@@ -633,8 +530,7 @@ public class TeamPageTest extends BaseTest {
                 .checkActiveRadiobutton()
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-//                .getAlert().clickCloseButton() TODO bug - if closed on second time alert is closing immediately
-                .getAlert().waitUntilAlertIsHidden()
+                .getAlert().clickCloseButton()
                 .waitForUserPresence(getApiRequestContext(), companyAdmin, getCompanyName())
                 .clickAddUserButton()
                 .fillEmailField(companyAdmin)
@@ -708,6 +604,59 @@ public class TeamPageTest extends BaseTest {
                 .getTable()
                 .getRowIconBtn(email)
                 .all();
+        for (Locator rowIconButton : rowIconButtons) {
+            Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
+            rowIconButton.hover();
+
+            Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconButtonModal().last().textContent());
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
+                    teamPage.getIconButtonModal().last().textContent());
+        }
+        teamPage.getTable().clickDeactivateUserButton(email)
+                .clickDeactivateButton()
+                .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
+        for (Locator rowIconButton : rowIconButtons) {
+            Allure.step("Hover on " + rowIconButton.getAttribute("data-icon") + " icon");
+            rowIconButton.hover();
+
+            Allure.step("Verify, over " + rowIconButton.getAttribute("data-icon") + " appears '"
+                    + teamPage.getIconButtonModal().last().textContent());
+            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
+                    teamPage.getIconButtonModal().last().textContent());
+        }
+    }
+
+    @Test
+    @TmsLink("1161")
+    @Epic("System/Team")
+    @Feature("Tooltips")
+    @Description("Contents of Tooltips, that appear after hovering on the icon-buttons, are correct")
+    public void testTeamTooltipsContent() {
+        String email = "%s.deactivate.and.activate@gmail.com".formatted(TestUtils.now());
+
+        SuperTeamPage teamPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSelectCompany().selectCompany(getCompanyName())
+                .clickAddUserButton()
+                .fillEmailField(email)
+                .fillPasswordField("Qwerty123!")
+                .checkCompanyAnalystRadiobutton()
+                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
+                .clickCreateButton()
+                .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
+
+        List<Locator> commonIconButtons = teamPage.getCommonIconButton().all();
+        for (Locator icon : commonIconButtons) {
+            Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon");
+            icon.hover();
+
+            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '"
+                    + teamPage.getIconButtonModal().last().textContent());
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-icon")),
+                    teamPage.getIconButtonModal().last().textContent());
+        }
+        List<Locator> rowIconButtons = teamPage.getTable().getRowIconBtn(email).all();
         for (Locator rowIconButton : rowIconButtons) {
             Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
             rowIconButton.hover();

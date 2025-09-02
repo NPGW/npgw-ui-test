@@ -11,7 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
@@ -27,7 +27,7 @@ import java.util.Random;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 
-public class GatewayPageTest extends BaseTest {
+public class GatewayPageTest extends BaseTestForSingleLogin {
 
     private static final Acquirer ACQUIRER = Acquirer.builder()
             .acquirerDisplayName("acquirer for gateway")
@@ -38,6 +38,7 @@ public class GatewayPageTest extends BaseTest {
             .acquirerDisplayName("acquirer for gateway Movable")
             .acquirerName("%s acquirer for gateway Movable".formatted(RUN_ID))
             .acquirerMidMcc("4321")
+            .currencyList(new Currency[]{Currency.USD})
             .build();
     private static final Acquirer ACQUIRER_EUR = Acquirer.builder()
             .acquirerDisplayName("acquirer for gateway EUR")
@@ -195,11 +196,11 @@ public class GatewayPageTest extends BaseTest {
                 .fillCompanyNameField(company.companyName())
                 .fillCompanyTypeField(company.companyType())
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .clickOnAddBusinessUnitButton()
                 .fillBusinessUnitNameField(company.companyType())
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getSystemMenu().clickGatewayTab()
                 .getSelectCompany().selectCompany(company.companyName())
                 .getSelectBusinessUnit().selectBusinessUnit(company.companyType())
@@ -237,7 +238,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
@@ -265,12 +266,12 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerDisplayName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Check that the first created acquirer priority is 0");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer MID")).hasText(ACQUIRER.getAcquirerDisplayName());
@@ -306,13 +307,13 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[1])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .checkInactiveRadiobutton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerDisplayName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify that new Merchant acquirer is displayed and has Active status");
         assertThat(gatewayPage.getTable().getCell(0, "Status")).hasText("Active");
@@ -338,9 +339,9 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME_DELETION_TEST)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME_DELETION_TEST)
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
-                .getAlert().waitUntilSuccessAlertIsGone() //TODO remove alert closing BUG workaround
+                .getAlert().clickCloseButton()
                 .getTable().clickDeleteBusinessUnitAcquirer("0")
                 .clickDeleteButton();
 
@@ -361,7 +362,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickDeactivateButton();
@@ -392,14 +393,14 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
                 .checkInactiveRadiobutton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_EUR.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_EUR.getAcquirerDisplayName())
                 .clickConnectButton()
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_GBP.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_GBP.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getTable().clickColumnHeader("Status");
 
@@ -493,7 +494,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickCancelButton();
@@ -517,7 +518,7 @@ public class GatewayPageTest extends BaseTest {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
                 .clickAddBusinessUnitAcquirerButton()
-                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerName())
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
                 .clickCloseIcon();
@@ -529,7 +530,7 @@ public class GatewayPageTest extends BaseTest {
                 .clickDeleteButton();
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);

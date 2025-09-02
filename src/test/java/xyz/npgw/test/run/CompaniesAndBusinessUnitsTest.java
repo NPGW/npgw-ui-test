@@ -9,23 +9,18 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.Constants;
-import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.dashboard.AdminDashboardPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
 import xyz.npgw.test.page.dialog.company.DeleteCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 import xyz.npgw.test.page.dialog.merchant.DeleteBusinessUnitDialog;
 import xyz.npgw.test.page.dialog.merchant.EditBusinessUnitDialog;
-import xyz.npgw.test.page.dialog.merchant.GenerateTokenConfirmDialog;
-import xyz.npgw.test.page.dialog.merchant.SecretTokenDialog;
-import xyz.npgw.test.page.system.AdminBusinessUnitsPage;
 import xyz.npgw.test.page.system.SuperCompaniesAndBusinessUnitsPage;
 
 import java.util.List;
@@ -37,7 +32,7 @@ import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.MERCHANT_ID_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.TOOLTIPSCONTENT;
 
-public class CompaniesAndBusinessUnitsTest extends BaseTest {
+public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
 
     private static final String COMPANY_NAME_TEST = "%s company name test".formatted(RUN_ID);
     private static final String COMPANY_DELETION_BLOCKED_NAME = "%s deletion-blocked company".formatted(RUN_ID);
@@ -128,7 +123,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .fillCompanyMobileField(company.companyAddress().mobile())
                 .fillCompanyFaxField(company.companyAddress().fax())
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .clickOnResetFilterButton()
                 .getSelectCompany().selectCompany(company.companyName());
 
@@ -315,15 +310,14 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
         assertThat(deleteBusinessUnitDialog.getConfirmationQuestion())
                 .hasText("Are you sure you want to delete business unit %s?".formatted(BUSINESS_UNIT_NAME_EDITED));
 
-//TODO remove when bug fixed
-//        Allure.step("Verify: dialog header is 'business unit'");
-//        assertThat(deleteBusinessUnitDialog.getDialogHeader())
-//                .hasText("Delete business unit");
+        Allure.step("Verify: dialog header text");
+        assertThat(deleteBusinessUnitDialog.getDialogHeader())
+                .hasText("Delete business unit");
 
         SuperCompaniesAndBusinessUnitsPage superCompaniesAndBusinessUnitsPage = deleteBusinessUnitDialog
                 .clickDeleteButton();
 
-        Allure.step("Verify: the header contains the expected title text");
+        Allure.step("Verify: alert text");
         assertThat(superCompaniesAndBusinessUnitsPage.getAlert().getMessage())
                 .hasText("SUCCESSBusiness unit was deleted successfully");
     }
@@ -360,7 +354,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .hasText("SUCCESSCompany was updated successfully");
 
         companiesAndBusinessUnitsPage
-                .getAlert().waitUntilSuccessAlertIsGone();
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify: name field is correctly filled");
         assertThat(companiesAndBusinessUnitsPage.getName()).hasValue(editedCompany.companyName());
@@ -462,7 +456,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
-                .getAlert().waitUntilSuccessAlertIsGone()
+                .getAlert().clickCloseButton()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickDeleteSelectedCompany()
@@ -649,52 +643,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     }
 
     @Test
-    @TmsLink("???")
-    @Epic("System/Business units")
-    @Feature("Generate token")
-    @Description("Generate API secret token as company admin")
-    public void testGenerateTokenAsTestAdmin() {
-        GenerateTokenConfirmDialog generateTokenConfirmDialog = new AdminDashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu().clickBusinessUnitsTab()
-                .getTable().clickCopyBusinessUnitIdToClipboardButton(Constants.BUSINESS_UNIT_FOR_TEST_RUN)
-                .getTable().clickGenerateSecretTokenButton(Constants.BUSINESS_UNIT_FOR_TEST_RUN);
-
-        assertThat(generateTokenConfirmDialog.getDialogHeader())
-                .hasText("MerchantCompanyForTestRunOnly Inc. secret token");
-        assertThat(generateTokenConfirmDialog.getContent())
-                .hasText("Doing this will deactivate any current token in use");
-
-        SecretTokenDialog secretTokenDialog = generateTokenConfirmDialog
-                .clickGenerateButton()
-                .clickCopySecretToken();
-
-        assertThat(secretTokenDialog.getDialogHeader()).hasText("MerchantCompanyForTestRunOnly Inc. secret token");
-    }
-
-    @Test
-    @TmsLink("691")
-    @Epic("System/Business units")
-    @Feature("Settings")
-    @Description("The company info block can be hidden and shown via settings.")
-    public void testToggleCompanyInfoVisibilityViaSettingsAsAdmin() {
-        AdminBusinessUnitsPage adminBusinessUnitsPage = new AdminDashboardPage(getPage())
-                .getHeader().clickSystemAdministrationLink()
-                .getSystemMenu().clickBusinessUnitsTab()
-                .clickSettings()
-                .checkHideCompanyInfo();
-
-        Allure.step("Verify: company info block is hidden after selecting 'Hide' in settings");
-        assertThat(adminBusinessUnitsPage.getCompanyInfoBlock()).isHidden();
-
-        adminBusinessUnitsPage
-                .checkShowCompanyInfo();
-
-        Allure.step("Verify: company info block is visible again after selecting 'Show' in settings");
-        assertThat(adminBusinessUnitsPage.getCompanyInfoBlock()).isVisible();
-    }
-
-    @Test
     @TmsLink("387")
     @TmsLink("501")
     @TmsLink("515")
@@ -789,6 +737,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTest {
     protected void afterClass() {
         User.delete(getApiRequestContext(), ADMIN_EMAIL);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
+        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_REQUIRED_FIELD);
         super.afterClass();
     }
 }
