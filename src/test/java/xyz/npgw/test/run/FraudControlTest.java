@@ -841,7 +841,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Epic("System/Fraud control")
     @Feature("Table sort")
     @Description("Verify that 'Integrated third party controls' table can be sorted")
-    public void testIntegratedTPControlsTableEntriesSorting() {
+    public void testIntegratedTpControlsTableEntriesSorting() {
         SuperFraudControlPage fraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab();
