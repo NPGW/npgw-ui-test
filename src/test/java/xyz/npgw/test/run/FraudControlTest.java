@@ -871,7 +871,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         });
     }
 
-    @Test(expectedExceptions = AssertionError.class)
+    @Test
     @TmsLink("1013")
     @Epic("System/Fraud control")
     @Feature("Table sort")
@@ -901,9 +901,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         Allure.step("Entries are by default sorted ascending by Priority");
         Assert.assertEquals(defaultColumnValues, defaultColumnValues.stream().sorted().toList());
 
-        List<String> columns = List.of(/*"Type", */"Display name", "Code", "Config", "Priority"/*, "Status"*/);
-        //TODO BUG sort for 'Type' column works only once
-        //TODO BUG wrong(reverse) sort for 'Status' column
+        List<String> columns = List.of("Type", "Display name", "Code", "Config", "Priority", "Status");
 
         columns.forEach(columnName -> {
             List<String> columnValues = fraudControlPage
