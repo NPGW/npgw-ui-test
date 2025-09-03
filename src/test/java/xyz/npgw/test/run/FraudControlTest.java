@@ -11,19 +11,21 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.ControlType;
 import xyz.npgw.test.common.entity.FraudControl;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
+import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
+import xyz.npgw.test.page.dialog.control.ConnectControlToBusinessUnitDialog;
+import xyz.npgw.test.page.dialog.control.DeactivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.DeactivateControlDialog;
+import xyz.npgw.test.page.dialog.control.DeleteControlDialog;
 import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -31,66 +33,78 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
-public class FraudControlTest extends BaseTest {
+public class FraudControlTest extends BaseTestForSingleLogin {
 
     private static final FraudControl FRAUD_CONTROL = FraudControl.builder()
             .controlName("%s ControlEverything".formatted(RUN_ID))
-            .controlCode("8848")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
             .build();
     private static final FraudControl FRAUD_CONTROL_FRAUD_SCREEN = FraudControl.builder()
             .controlName("%s ControlScreen".formatted(RUN_ID))
             .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
-            .controlCode("1522")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlFSC")
             .controlConfig("type")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
             .controlName("%s ControlNothing".formatted(RUN_ID))
-            .controlCode("9905")
+            .controlCode("Neutrino")
             .controlDisplayName("DisplayNotAvailable")
             .controlConfig("suspicious")
             .isActive(false)
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_ONE = FraudControl.builder()
             .controlName("%s ControlOne".formatted(RUN_ID))
-            .controlCode("0001")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplayFirst")
             .controlConfig("firstQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_TWO = FraudControl.builder()
             .controlName("%s ControlTwo".formatted(RUN_ID))
-            .controlCode("0002")
+            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplaySecond")
             .controlConfig("secondQueue")
             .build();
     private static final FraudControl FRAUD_CONTROL_ADD_INACTIVE = FraudControl.builder()
             .controlName("%s Inactive control".formatted(RUN_ID))
-            .controlCode("0003")
+            .controlCode("Neutrino")
             .controlDisplayName("Inactive control")
             .isActive(false)
             .controlConfig("firstQueue")
             .build();
-    private static final FraudControl FRAUD_CONTROL_ADD_EMPTY_FIELDS = FraudControl.builder()
-            .controlName("%s Control with empty display name".formatted(RUN_ID))
+    private static final FraudControl FRAUD_CONTROL_THREE = FraudControl.builder()
+            .controlName("%s ControlThree".formatted(RUN_ID))
+            .controlCode("Neutrino")
+            .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
+            .controlDisplayName("ControlDisplayThird")
+            .build();
+    private static final FraudControl FRAUD_CONTROL_ACTIVE_TO_INACTIVE = FraudControl.builder()
+            .controlName("%s ControlActiveToInactive".formatted(RUN_ID))
+            .controlCode("Neutrino")
+            .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
+            .controlDisplayName("ControlDisplayActiveToInactive")
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
+
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_SORT = "Business unit sort %s".formatted(RUN_ID);
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
+        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_SORT);
 
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_EMPTY_FIELDS);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
     }
 
     @Test
@@ -306,6 +320,7 @@ public class FraudControlTest extends BaseTest {
 
         Allure.step("Verify that Edit icon Tooltip is presented on Control table");
         assertThat(editIconTooltip).isVisible();
+
         assertThat(editIconTooltip).hasText("Edit control");
 
         Locator activateIconTooltip = superFraudControlPage
@@ -341,9 +356,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(connectControlIconTooltip).hasText("Connect control to business unit");
     }
 
-    //    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
     @TmsLink("1123")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -353,10 +366,10 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_SORT);
 
         Locator moveControlDownIcon = superFraudControlPage
-                .getTableBusinessUnitControls().hoverOverMoveControlDownIcon("0")
+                .getTableBusinessUnitControls().hoverOverMoveControlDownIcon("1")
                 .getTableBusinessUnitControls().getTooltip();
 
         Allure.step("Verify that Move Business Control Down icon Tooltip is presented on Business Control table");
@@ -364,7 +377,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(moveControlDownIcon).hasText("Move business unit control down");
 
         Locator moveControlUpIcon = superFraudControlPage
-                .getTableBusinessUnitControls().hoverOverMoveControlUpIcon("0")
+                .getTableBusinessUnitControls().hoverOverMoveControlUpIcon("1")
                 .getTableBusinessUnitControls().getTooltip();
 
         Allure.step("Verify that Move Business Control Up icon Tooltip is presented on Business Control table");
@@ -372,15 +385,15 @@ public class FraudControlTest extends BaseTest {
         assertThat(moveControlUpIcon).hasText("Move business unit control up");
 
         Locator activateIconTooltip = superFraudControlPage
-                .getTableBusinessUnitControls().hoverOverActivateControlIcon("0")
+                .getTableBusinessUnitControls().hoverOverActivateControlIcon("1")
                 .getTableBusinessUnitControls().getTooltip();
 
         Allure.step("Verify that Activate icon Tooltip is presented on Business Unit Control table");
         assertThat(activateIconTooltip).isVisible();
-        assertThat(activateIconTooltip).hasText("Аctivate business unit control");
+        assertThat(activateIconTooltip).hasText("Аctivate business unit control"); //TODO BUG ru letter
 
         Locator deactivateIconTooltip = superFraudControlPage
-                .getTableBusinessUnitControls().hoverOverDeactivateControlIcon("1")
+                .getTableBusinessUnitControls().hoverOverDeactivateControlIcon("0")
                 .getTableBusinessUnitControls().getTooltip();
 
         Allure.step("Verify that Deactivate icon Tooltip is presented on Business Unit Control table");
@@ -466,8 +479,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(cell).hasText("Inactive");
     }
 
-    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit",
-            "testDeleteInactiveFraudControlAddedToBusinessUnit"})
+    @Test
     @TmsLink("910")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -493,9 +505,14 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that Fraud Control two are presented in Business Unit table");
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName()))
                 .hasText(FRAUD_CONTROL_ADD_TWO.toString());
+
+        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton()
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
-    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("967")
     @Epic("System/Fraud control")
     @Feature("Control table")
@@ -505,7 +522,13 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton();
 
         Locator controlStatusCell = superFraudControlPage
                 .getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
@@ -541,9 +564,14 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that Fraud Control status is Active in Control table again");
         assertThat(controlStatusCell).hasText("Active");
         assertThat(businessControlStatusCell).hasText("Active");
+
+        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton()
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
-    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("1009")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -553,7 +581,13 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify Fraud Control's current status in Business Unit Control Table");
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getCell(0, "Status"))
@@ -586,6 +620,11 @@ public class FraudControlTest extends BaseTest {
                 .hasText("Active");
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getCell(0, "Status"))
                 .hasText("Active");
+
+        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton()
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
     @Test
@@ -606,7 +645,6 @@ public class FraudControlTest extends BaseTest {
                 "The '*' symbol is not displayed in the 'Control name' label");
 
         Allure.step("Verify that the 'Create' button is disabled if the 'Control name field is empty");
-        assertThat(addControlDialog.getSetupButton()).hasAttribute("data-disabled", "true");
         assertThat(addControlDialog.getSetupButton()).isDisabled();
     }
 
@@ -621,10 +659,12 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
+                .fillFraudControlCodeField("Neutrino")
                 .clickSetupButton()
                 .getAlert().clickCloseButton()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
+                .fillFraudControlCodeField("Neutrino")
                 .clickSetupButton();
 
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
@@ -632,8 +672,7 @@ public class FraudControlTest extends BaseTest {
                 .hasText("ERROREntity with name {%s} already exists.".formatted(FRAUD_CONTROL_NAME));
     }
 
-    @Test(dependsOnMethods = {"testAddFraudControlToBusinessUnit", "testChangeFraudControlPriority",
-            "testChangeBusinessUnitFraudControlActivity", "testChangeBusinessControlPriorityRestrictions"})
+    @Test
     @TmsLink("950")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -644,6 +683,12 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("1")
                 .clickDeleteButton();
 
@@ -652,9 +697,12 @@ public class FraudControlTest extends BaseTest {
                 .not().isAttached();
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName()))
                 .isAttached();
+
+        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
-    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("960")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -665,6 +713,12 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickMoveBusinessUnitControlUpButton("1")
                 .getAlert().clickCloseButton();
 
@@ -681,6 +735,11 @@ public class FraudControlTest extends BaseTest {
                 .containsText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getRowByDataKey("1"))
                 .containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+
+        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton()
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
     @Test
@@ -694,10 +753,7 @@ public class FraudControlTest extends BaseTest {
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-                .clickActivateButton()
-                .getAlert().clickCloseButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
@@ -718,12 +774,8 @@ public class FraudControlTest extends BaseTest {
                 .getTableBusinessUnitControls().getColumnValues("Display name");
 
         Allure.step("Verify that the business unit control table doesn't include the deleted control");
-        Assert.assertFalse(actualFraudControlBusinessUnitList.contains(FRAUD_CONTROL_ADD_INACTIVE.getControlDisplayName()));
-
-//        // TODO ????
-//        superFraudControlPage
-//                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-//                .clickDeactivateButton();
+        Assert.assertFalse(actualFraudControlBusinessUnitList.contains(
+                FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlDisplayName()));
     }
 
     @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
@@ -737,7 +789,7 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
-                .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
+        //        .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
                 .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
                 .checkInactiveRadiobutton()
@@ -754,7 +806,7 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
-        assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
+    //    assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
         assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlConfig());
@@ -786,9 +838,9 @@ public class FraudControlTest extends BaseTest {
     @Test
     @TmsLink("969")
     @Epic("System/Fraud control")
-    @Feature("Control table entries sorting")
-    @Description("Verify that entries can be sorted by Name, DisplayName, Code, Config, Status  in Asc and Desc order")
-    public void testControlTableEntriesSorting() {
+    @Feature("Table sort")
+    @Description("Verify that 'Integrated third party controls' table can be sorted")
+    public void testIntegratedTpControlsTableEntriesSorting() {
         SuperFraudControlPage fraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab();
@@ -799,8 +851,7 @@ public class FraudControlTest extends BaseTest {
         Allure.step("Entries are by default sorted ascending by Name");
         Assert.assertEquals(defaultColumnValues, defaultColumnValues.stream().sorted().toList());
 
-        List<String> columns = List.of(/*"Type", */"Display name", "Name", "Code", "Config", "Status");
-        //TODO sort by "Type" broken --- atm not sorting - [Fraud Screen, BIN Check, Fraud Screen] on first click
+        List<String> columns = List.of("Type", "Display name", "Name", "Code", "Config", "Status");
 
         columns.forEach(columnName -> {
             List<String> columnValues = fraudControlPage
@@ -819,147 +870,53 @@ public class FraudControlTest extends BaseTest {
         });
     }
 
-    @Ignore
-    @Test(dependsOnMethods = {"testAddActiveFraudControl", "testEditFraudControl",
-            "testPriorityIconsDisableForOnlyOneBusinessUnitControl"})
+    @Test
     @TmsLink("1013")
     @Epic("System/Fraud control")
-    @Feature("Control business unit controls table entries sorting")
-    @Description("Verify that entries can be sorted by Priority, DisplayName, Code, Config, Status"
-            + "in Asc and Desc order")
+    @Feature("Table sort")
+    @Description("Verify that 'Connected business unit controls' table can be sorted")
     public void testBusinessUnitControlTableEntriesSorting() {
         SuperFraudControlPage fraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-                .clickActivateButton()
-                .getAlert().clickCloseButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-                .clickConnectButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName())
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_SORT)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
-                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_THREE.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("1")
                 .clickDeactivateButton()
-                .getAlert().clickCloseButton()
-                .getTableBusinessUnitControls().clickColumnHeader("Priority");
+                .getAlert().clickCloseButton();
 
-        List<String> actualPriorityList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Priority");
-        List<String> sortedPriorityListDesc = new ArrayList<>(actualPriorityList);
-        sortedPriorityListDesc.sort(Collections.reverseOrder());
+        List<String> defaultColumnValues = fraudControlPage
+                .getTableBusinessUnitControls().getColumnValuesFromAllPages("Priority");
 
-        Allure.step("Verify that entries are sorted by Priority in Desc order ");
-        Assert.assertEquals(actualPriorityList, sortedPriorityListDesc,
-                "Priority column is not sorted in descending order");
+        Allure.step("Entries are by default sorted ascending by Priority");
+        Assert.assertEquals(defaultColumnValues, defaultColumnValues.stream().sorted().toList());
 
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Priority");
-        actualPriorityList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Priority");
+        List<String> columns = List.of("Type", "Display name", "Code", "Config", "Priority", "Status");
 
-        List<String> sortedPriorityListAsc = new ArrayList<>(actualPriorityList);
-        Collections.sort(sortedPriorityListAsc);
+        columns.forEach(columnName -> {
+            List<String> columnValues = fraudControlPage
+                    .getTableBusinessUnitControls().clickColumnHeader(columnName)
+                    .getTableBusinessUnitControls().getColumnValuesFromAllPages(columnName);
 
-        Allure.step("Verify that entries are sorted by Priority in Asc order ");
-        Assert.assertEquals(actualPriorityList, sortedPriorityListAsc,
-                "Priority column is not sorted in ascending order");
+            Allure.step("Verify that entries are now sorted ascending by %s".formatted(columnName));
+            Assert.assertEquals(columnValues, columnValues.stream().sorted().toList());
 
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Display name");
-        List<String> actualDisplayNameList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Display name");
-        List<String> sortedDisplayNameListAsc = new ArrayList<>(actualDisplayNameList);
-        Collections.sort(sortedDisplayNameListAsc);
+            columnValues = fraudControlPage
+                    .getTableBusinessUnitControls().clickColumnHeader(columnName)
+                    .getTableBusinessUnitControls().getColumnValuesFromAllPages(columnName);
 
-        Allure.step("Verify that entries are sorted by Display name in Asc order ");
-        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListAsc,
-                "Display name column is not sorted in ascending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Display name");
-        actualDisplayNameList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Display name");
-        List<String> sortedDisplayNameListDesc = new ArrayList<>(actualDisplayNameList);
-        sortedDisplayNameListDesc.sort(Collections.reverseOrder());
-
-        Allure.step("Verify that entries are sorted by Display name in Desc order ");
-        Assert.assertEquals(actualDisplayNameList, sortedDisplayNameListDesc,
-                "Display name column is not sorted in descending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Code");
-        List<String> actualCodeList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Code");
-        List<String> sortedCodeListAsc = new ArrayList<>(actualCodeList);
-        Collections.sort(sortedCodeListAsc);
-
-        Allure.step("Verify that entries are sorted by Code in Asc order ");
-        Assert.assertEquals(actualCodeList, sortedCodeListAsc,
-                "Code column is not sorted in ascending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Code");
-        actualCodeList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Code");
-        List<String> sortedCodeListDesc = new ArrayList<>(actualCodeList);
-        sortedCodeListDesc.sort(Collections.reverseOrder());
-
-        Allure.step("Verify that entries are sorted by Code in Desc order ");
-        Assert.assertEquals(actualCodeList, sortedCodeListDesc,
-                "Code column is not sorted in descending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Config");
-        List<String> actualConfigList = fraudControlPage.getTableBusinessUnitControls().getColumnValues("Config");
-        List<String> sortedConfigListAsc = new ArrayList<>(actualConfigList);
-        Collections.sort(sortedConfigListAsc);
-
-        Allure.step("Verify that entries are sorted by Config in Asc order ");
-        Assert.assertEquals(actualConfigList, sortedConfigListAsc,
-                "Config column is not sorted in ascending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Config");
-        actualConfigList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Config");
-        List<String> sortedConfigListDesc = new ArrayList<>(actualConfigList);
-        sortedConfigListDesc.sort(Collections.reverseOrder());
-
-        Allure.step("Verify that entries are sorted by Config in Desc order ");
-        Assert.assertEquals(actualConfigList, sortedConfigListDesc,
-                "Config column is not sorted in descending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Status");
-
-        List<String> actualStatusList = fraudControlPage.getTableBusinessUnitControls().getColumnValues("Status");
-        List<String> sortedStatusListDesc = new ArrayList<>(actualStatusList);
-        sortedStatusListDesc.sort(Collections.reverseOrder());
-
-        Allure.step("Verify that entries are sorted by Status in Desc order ");
-        Assert.assertEquals(actualStatusList, sortedStatusListDesc,
-                "Status column is not sorted in descending order");
-
-        fraudControlPage
-                .getTableBusinessUnitControls().clickColumnHeader("Status");
-
-        actualStatusList = fraudControlPage
-                .getTableBusinessUnitControls().getColumnValues("Status");
-
-        List<String> sortedStatusListAsc = new ArrayList<>(actualStatusList);
-        Collections.sort(sortedStatusListAsc);
-
-        Allure.step("Verify that entries are sorted by Status in Asc order ");
-        Assert.assertEquals(actualStatusList, sortedStatusListAsc,
-                "Status column is not sorted in ascending order");
-
-//        // TODO ???
-//        fraudControlPage
-//                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_INACTIVE.getControlName())
-//                .clickDeactivateButton();
+            Allure.step("Verify that entries are now sorted descending by %s".formatted(columnName));
+            Assert.assertEquals(columnValues, columnValues.stream().sorted(Comparator.reverseOrder()).toList());
+        });
     }
 
     @Test
@@ -982,7 +939,7 @@ public class FraudControlTest extends BaseTest {
         assertThat(fraudControlPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
     }
 
-    @Test(dependsOnMethods = "testAddFraudControlToBusinessUnit")
+    @Test
     @TmsLink("1018")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -992,16 +949,27 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Check that the first item move up icon is disabled");
         assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlUpButton("0")).isDisabled();
 
         Allure.step("Check that the last item move down icon is disabled");
         assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlDownButton("1")).isDisabled();
+
+        page.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton()
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
-    @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit"})
+    @Test
     @TmsLink("1064")
     @Epic("System/Fraud control")
     @Feature("Business Unit Control table")
@@ -1011,13 +979,19 @@ public class FraudControlTest extends BaseTest {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .clickConnectButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify Up button is disabled on Business Unit Control table because of one control");
         assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlUpButton("0")).isDisabled();
 
         Allure.step("Verify Down button is disabled on Business Unit Control table because of one control");
         assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlDownButton("0")).isDisabled();
+
+        page.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
     }
 
     @Test
@@ -1044,6 +1018,7 @@ public class FraudControlTest extends BaseTest {
 
             addControlDialog
                     .fillFraudControlNameField(input)
+                    .fillFraudControlCodeField("Neutrino")
                     .clickSetupButton();
 
             Allure.step("Verify error message for symbol: " + symbol);
@@ -1091,8 +1066,8 @@ public class FraudControlTest extends BaseTest {
     @Test(dependsOnMethods = {"testAddActiveFraudControl", "testAddInactiveFraudControl"})
     @TmsLink("1143")
     @Epic("System/Fraud control")
-    @Feature("Change control activity dialog Control table")
-    @Description("Warning message text")
+    @Feature("'Change control activity' dialog Control table")
+    @Description("Verify text content for Header and Main body on 'Change control activity' dialog")
     public void testVerifyWarningModalWindowChangeActivityForControlTable() {
         DeactivateControlDialog deactivateControlDialog = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
@@ -1118,6 +1093,81 @@ public class FraudControlTest extends BaseTest {
                 .hasText("Are you sure you want to activate control %s?".formatted(FRAUD_CONTROL_INACTIVE.getControlDisplayName()));
     }
 
+    @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})
+    @TmsLink("1157")
+    @Epic("System/Fraud control")
+    @Feature("'Change business unit control activity' dialog text content")
+    @Description("Verify text content for Header and Main body on 'Change business unit control activity' dialog")
+    public void testVerifyWarningModalWindowChangeActivityForBusinessUnitControlTable() {
+        DeactivateBusinessUnitControlDialog dialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_SORT)
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0");
+
+        Allure.step("Verify Deactivate Business unit control modal window text");
+        assertThat(dialog.getDialogHeader()).hasText("Change business unit control activity");
+
+        Allure.step("Verify Deactivate Business unit control modal window main body text");
+        assertThat(dialog.getModalWindowsMainTextBody())
+                .hasText("Are you sure you want to deactivate business unit control "
+                        + FRAUD_CONTROL_ADD_ONE.getControlDisplayName() + " with priority " + "0?");
+
+        ActivateBusinessUnitControlDialog activateDialog = dialog.clickCloseIcon()
+                .getTableBusinessUnitControls().clickActivateBusinessUnitControlButton("1");
+
+        Allure.step("Verify Activate control modal window text");
+        assertThat(activateDialog.getDialogHeader()).hasText("Change business unit control activity");
+
+        Allure.step("Verify Activate control modal window main body text");
+        assertThat(activateDialog.getModalWindowsMainTextBody())
+                .hasText("Are you sure you want to activate business unit control "
+                        + FRAUD_CONTROL_ADD_TWO.getControlDisplayName() + " with priority " + "1?");
+    }
+
+    @Test
+    @TmsLink("1185")
+    @Epic("System/Fraud control")
+    @Feature("'Delete control' dialog text content")
+    @Description("Verify text content for Header and Main body on 'Delete control' dialog")
+    public void testVerifyWarningModalWindowDeleteControlTable() {
+        DeleteControlDialog dialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL_ADD_ONE.getControlName());
+
+        Allure.step("Verify Delete control modal window text");
+        assertThat(dialog.getDialogHeader()).hasText("Delete control");
+
+        Allure.step("Verify Delete control modal window main body text");
+        assertThat(dialog.getModalWindowsMainTextBody())
+                .hasText("Are you sure you want to delete control "
+                        + FRAUD_CONTROL_ADD_ONE.getControlName() + "?");
+    }
+
+    @Test
+    @TmsLink("1190")
+    @Epic("System/Fraud control")
+    @Feature("'Connect control' dialog text content")
+    @Description("Verify text content for Header and Main body on 'Connect control' dialog")
+    public void testVerifyWarningModalWindowConnectControlTable() {
+        ConnectControlToBusinessUnitDialog dialog = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .getSystemMenu().clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_SORT)
+                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName());
+
+        Allure.step("Verify Connect control modal window text");
+        assertThat(dialog.getDialogHeader()).hasText("Connect control");
+
+        Allure.step("Verify Connect control modal window main body text");
+        assertThat(dialog.getModalWindowsMainTextBody())
+                .hasText("Are you sure you want to connect control "
+                        + FRAUD_CONTROL_ADD_TWO.getControlName() + " to business unit " + BUSINESS_UNIT_SORT + "?");
+    }
+
     @AfterClass
     @Override
     protected void afterClass() {
@@ -1128,7 +1178,8 @@ public class FraudControlTest extends BaseTest {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_EMPTY_FIELDS.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlName());
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();

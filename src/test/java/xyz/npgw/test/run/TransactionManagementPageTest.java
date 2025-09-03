@@ -7,7 +7,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.base.BaseTest;
+import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.adjustment.AddAdjustmentDialog;
 import xyz.npgw.test.page.system.SuperTransactionManagementPage;
@@ -18,7 +18,7 @@ import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
-public class TransactionManagementPageTest extends BaseTest {
+public class TransactionManagementPageTest extends BaseTestForSingleLogin {
 
     @Ignore("Invalid key=value pair (missing equal-sign) in Authorization header ERROR with Create button")
     @Test
@@ -66,7 +66,6 @@ public class TransactionManagementPageTest extends BaseTest {
                 .clickAddAdjustmentButton();
 
         assertThat(page.getCreateButton()).isDisabled();
-//        assertThat(page.getCreateButton()).hasAttribute("data-disabled", "true");
     }
 
     @Ignore("getFirstRowCell(NPGW reference) is not there as for now)")
