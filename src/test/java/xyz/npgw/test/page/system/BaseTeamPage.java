@@ -1,12 +1,12 @@
 package xyz.npgw.test.page.system;
 
+import com.microsoft.playwright.options.AriaRole;
 import lombok.Getter;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.TimeoutError;
 import io.qameta.allure.Step;
-import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
@@ -22,8 +22,8 @@ public abstract class BaseTeamPage<CurrentPageT extends HeaderPage<CurrentPageT>
         implements SelectStatusTrait<CurrentPageT> {
 
     public final Locator addUserButton = getByTestId("AddUserButtonTeamPage");
-    private final Locator commonIconButton = locator("[role='tabpanel']>div>div:first-child button[data-testid] svg");
-    private final Locator iconButtonModal = locator("[data-slot='content']");
+    private final Locator commonPanelIcon = locator("[role='tabpanel']>div>div:first-child button[data-testid] svg");
+    private final Locator tooltip = getByRole(AriaRole.TOOLTIP);
 
     public BaseTeamPage(Page page) {
         super(page);

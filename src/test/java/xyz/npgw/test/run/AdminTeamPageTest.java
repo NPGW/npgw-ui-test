@@ -11,6 +11,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;
 import xyz.npgw.test.page.dialog.user.AdminAddUserDialog;
@@ -486,37 +487,42 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
-        List<Locator> commonIconButtons = teamPage.getCommonIconButton().all();
-        for (Locator icon : commonIconButtons) {
-            Allure.step("Hover on '" + icon.getAttribute("data-icon") + "' icon");
+        String iconAttributeValue;
+        String tooltip;
+        List<Locator> panelIcons = teamPage.getCommonPanelIcon().all();
+        for (Locator icon : panelIcons) {
+            iconAttributeValue = icon.getAttribute("data-icon");
+            Allure.step("Hover on '" + iconAttributeValue + "' icon");
             icon.hover();
 
-            Allure.step("Verify, over '" + icon.getAttribute("data-icon") + "' appears '"
-                    + teamPage.getIconButtonModal().last().textContent() + "'");
-            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-icon")),
-                    teamPage.getIconButtonModal().last().textContent());
+            tooltip = teamPage.getTooltip().last().textContent();
+            Allure.step("Verify, over '" + iconAttributeValue + "' appears '"+ tooltip);
+            assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
-        List<Locator> rowIconButtons = teamPage.getTable().getRowIconBtn(email).all();
-        for (Locator rowIconButton : rowIconButtons) {
-            Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
-            rowIconButton.hover();
 
-            Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
-                    + teamPage.getIconButtonModal().last().textContent() + "'");
-            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
-                    teamPage.getIconButtonModal().last().textContent());
+        List<Locator> rowIcons = teamPage.getTable().getRowIcon(email).all();
+        for (Locator rowIcon : rowIcons) {
+            iconAttributeValue = rowIcon.getAttribute("data-icon");
+            Allure.step("Hover on '" + iconAttributeValue + "' icon");
+            rowIcon.hover();
+
+            tooltip = teamPage.getTooltip().last().textContent();
+            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip);
+            assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
+
         teamPage.getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton()
                 .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
-        for (Locator rowIconButton : rowIconButtons) {
-            Allure.step("Hover on '" + rowIconButton.getAttribute("data-icon") + "' icon");
-            rowIconButton.hover();
+        for (Locator rowIcon : rowIcons) {
+            iconAttributeValue = rowIcon.getAttribute("data-icon");
+            Allure.step("Hover on " + iconAttributeValue + " icon");
+            rowIcon.hover();
 
-            Allure.step("Verify, over '" + rowIconButton.getAttribute("data-icon") + "' appears '"
-                    + teamPage.getIconButtonModal().last().textContent() + "'");
-            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-icon")),
-                    teamPage.getIconButtonModal().last().textContent());
+            tooltip = teamPage.getTooltip().last().textContent();
+            Allure.step("Verify, over " + iconAttributeValue + " appears '" + tooltip);
+            assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
+        User.delete(getApiRequestContext(), email);
     }
 }

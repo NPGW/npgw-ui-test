@@ -9,6 +9,7 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
@@ -719,7 +720,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
         }
         List<Locator> rowIconButtons = companiesAndBusinessUnitsPage
                 .getTable()
-                .getRowIconBtn(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all();
+                .getRowIcon(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all();
         for (Locator rowIconButton : rowIconButtons) {
             String iconName = companiesAndBusinessUnitsPage.getTable().getRowIconName(rowIconButton);
             Allure.step("Hover on '" + iconName + "' icon");
