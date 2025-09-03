@@ -694,7 +694,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
-        String iconName, tooltip;
+        String iconName;
+        String tooltip;
         List<Locator> initialCommonIcons = companiesAndBusinessUnitsPage.getInitialCommonIcon().all();
         for (Locator icon : initialCommonIcons) {
             iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
