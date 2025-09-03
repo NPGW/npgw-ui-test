@@ -37,7 +37,7 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
     private final Locator addBusinessUnitButton = getByTestId("ButtonAddMerchant");
     private final Locator resetFilterButton = getByTestId("ResetButtonTeamPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
-    private final Locator initialCommonIconButton = getByRole(AriaRole.TABPANEL).locator(">div>div:first-child [data-testid]:enabled");
+    private final Locator initialCommonIcon = getByRole(AriaRole.TABPANEL).locator(">div>div:first-child [data-testid]:enabled");
 //    private final Locator commonIconButton = getByRole(AriaRole.TABPANEL).locator(">div>div:first-child [data-testid]");
     private final Locator commonIconButton = locator("[role='tabpanel']>div>div:first-child [data-testid]");
 

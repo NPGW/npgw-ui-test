@@ -16,7 +16,7 @@ public class SuperBusinessUnitsTableComponent extends BaseTableComponent<SuperCo
         return getRow(businessUnitName).locator("button:enabled");
     }
 
-    public String getRowIconName(Locator icon) {
+    public String getIconName(Locator icon) {
         return icon.locator("svg").getAttribute("data-icon");
     }
 

@@ -694,42 +694,42 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .getSystemMenu().clickCompaniesAndBusinessUnitsTab();
 
-        List<Locator> initialCommonIconButtons = companiesAndBusinessUnitsPage.getInitialCommonIconButton().all();
-        for (Locator icon : initialCommonIconButtons) {
-            String iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
+        String iconName, tooltip;
+        List<Locator> initialCommonIcons = companiesAndBusinessUnitsPage.getInitialCommonIcon().all();
+        for (Locator icon : initialCommonIcons) {
+            iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
             Allure.step("Hover on '" + iconName + "' icon");
             icon.hover();
 
-            Allure.step("Verify, over '" + iconName + "' appears '"
-                    + companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent() + "'");
-            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")),
-                    companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent());
+            tooltip = companiesAndBusinessUnitsPage.getTooltip().last().textContent();
+            Allure.step("Verify, over '" + iconName + "' appears '" + tooltip + "'");
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")), tooltip);
         }
+
         companiesAndBusinessUnitsPage
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN);
+
         List<Locator> commonIconButtons = companiesAndBusinessUnitsPage.getCommonIconButton().all();
         for (Locator icon : commonIconButtons) {
-            String iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
+            iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
             Allure.step("Hover on '" + iconName + "' icon");
             icon.hover();
 
-            Allure.step("Verify, over '" + iconName + "' appears '"
-                    + companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent() + "'");
-            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")),
-                    companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent());
+            tooltip = companiesAndBusinessUnitsPage.getTooltip().last().textContent();
+            Allure.step("Verify, over '" + iconName + "' appears '" + tooltip + "'");
+            assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")), tooltip);
         }
-        List<Locator> rowIconButtons = companiesAndBusinessUnitsPage
-                .getTable()
-                .getRowIcon(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all();
-        for (Locator rowIconButton : rowIconButtons) {
-            String iconName = companiesAndBusinessUnitsPage.getTable().getRowIconName(rowIconButton);
-            Allure.step("Hover on '" + iconName + "' icon");
-            rowIconButton.hover();
 
-            Allure.step("Verify, over '" + iconName + "' appears '"
-                    + companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent() + "'");
-            assertEquals(TOOLTIPSCONTENT.get(rowIconButton.getAttribute("data-testid")),
-                    companiesAndBusinessUnitsPage.getIconButtonModal().last().textContent());
+        List<Locator> rowIconButtons = companiesAndBusinessUnitsPage
+                .getTable().getRowIcon(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all();
+        for (Locator rowIcon : rowIconButtons) {
+            iconName = companiesAndBusinessUnitsPage.getTable().getIconName(rowIcon);
+            Allure.step("Hover on '" + iconName + "' icon");
+            rowIcon.hover();
+
+            tooltip = companiesAndBusinessUnitsPage.getTooltip().last().textContent();
+            Allure.step("Verify, over '" + iconName + "' appears '" + tooltip + "'");
+            assertEquals(TOOLTIPSCONTENT.get(rowIcon.getAttribute("data-testid")), tooltip);
         }
     }
 

@@ -487,8 +487,7 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
                 .clickCreateButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
-        String iconAttributeValue;
-        String tooltip;
+        String iconAttributeValue, tooltip;
         List<Locator> panelIcons = teamPage.getCommonPanelIcon().all();
         for (Locator icon : panelIcons) {
             iconAttributeValue = icon.getAttribute("data-icon");
