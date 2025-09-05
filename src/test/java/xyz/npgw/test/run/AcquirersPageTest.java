@@ -538,7 +538,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER.getAcquirerDisplayName())
-                .getTable().clickEditAcquirerMidButton()
+                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerName())
                 .fillAcquirerDisplayNameField(ACQUIRER_EDITED.getAcquirerDisplayName())
                 .fillAcquirerMidField(ACQUIRER_EDITED.getAcquirerMid())
                 .fillAcquirerMccField(ACQUIRER_EDITED.getAcquirerMidMcc())
@@ -600,7 +600,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_EDITED.getAcquirerDisplayName())
-                .getTable().clickEditAcquirerMidButton()
+                .getTable().clickEditAcquirerMidButton(ACQUIRER.getAcquirerName())
                 .getAllPlaceholders();
 
         Allure.step("Verify placeholders match expected values for all fields");
@@ -617,7 +617,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_EDITED.getAcquirerDisplayName())
-                .getTable().clickDeleteAcquirerMidButton()
+                .getTable().clickDeleteAcquirerMidButton(ACQUIRER_EDITED.getAcquirerName())
                 .clickDeleteButton();
 
         Allure.step("Verify: a success message appears after deleting the acquirer");
@@ -688,10 +688,10 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .hasText(ACQUIRER2.getStatus());
 
         Allure.step("Verify: Edit button is visible");
-        assertThat(acquirersPage.getTable().getEditAcquirerMidButton()).isVisible();
+        assertThat(acquirersPage.getTable().getEditAcquirerMidButton(acquirer2Name)).isVisible();
 
         Allure.step("Verify: 'Activate acquirer' icon is visible for the acquirer");
-        Locator activityIcon = acquirersPage.getTable().getAcquirerActivityIcon();
+        Locator activityIcon = acquirersPage.getTable().getAcquirerActivityIcon(acquirer2Name);
         assertThat(activityIcon).isVisible();
         assertThat(activityIcon).hasAttribute("data-icon", "ban");
 
@@ -771,7 +771,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(CHANGE_STATE_ACQUIRER.getAcquirerDisplayName())
-                .getTable().clickDeactivateAcquirerMidButton()
+                .getTable().clickDeactivateAcquirerMidButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
                 .clickDeactivateButton();
 
         Allure.step("Verify: Successful message");
@@ -787,7 +787,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirerStatus).hasText("Inactive");
 
         acquirersPage
-                .getTable().clickActivateAcquirerMidButton()
+                .getTable().clickActivateAcquirerMidButton(CHANGE_STATE_ACQUIRER.getAcquirerName())
                 .clickActivateButton();
 
         Allure.step("Verify: Successful message");

@@ -35,23 +35,43 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
         return new SuperAcquirersPage(getPage());
     }
 
+    public Locator getEditAcquirerMidButton(String acquirerName) {
+        return getRow(acquirerName).locator(editAcquirerMidButton);
+    }
+
+    public Locator getActivateAcquirerMidButton(String acquirerName) {
+        return getRow(acquirerName).locator(activateAcquirerMidButton);
+    }
+
+    public Locator getDeactivateAcquirerMidButton(String acquirerName) {
+        return getRow(acquirerName).locator(deactivateAcquirerMidButton);
+    }
+
+    public Locator getAcquirerActivityIcon(String acquirerName) {
+        return getRow(acquirerName).locator(acquirerActivityIcon);
+    }
+
+    public Locator getDeleteAcquirerMidButton(String acquirerName) {
+        return getRow(acquirerName).locator(deleteAcquirerMidButton);
+    }
+
     @Step("Click 'Edit acquirer MID' button to edit acquirer")
-    public EditAcquirerMidDialog clickEditAcquirerMidButton() {
-        editAcquirerMidButton.click();
+    public EditAcquirerMidDialog clickEditAcquirerMidButton(String acquirerName) {
+        getEditAcquirerMidButton(acquirerName).click();
 
         return new EditAcquirerMidDialog(getPage());
     }
 
     @Step("Click 'Activate acquirer MID' button")
-    public ActivateAcquirerDialog clickActivateAcquirerMidButton() {
-        activateAcquirerMidButton.click();
+    public ActivateAcquirerDialog clickActivateAcquirerMidButton(String acquirerName) {
+        getActivateAcquirerMidButton(acquirerName).click();
 
         return new ActivateAcquirerDialog(getPage());
     }
 
     @Step("Click 'Deactivate acquirer MID' button")
-    public DeactivateAcquirerDialog clickDeactivateAcquirerMidButton() {
-        deactivateAcquirerMidButton.click();
+    public DeactivateAcquirerDialog clickDeactivateAcquirerMidButton(String acquirerName) {
+        getDeactivateAcquirerMidButton(acquirerName).click();
 
         return new DeactivateAcquirerDialog(getPage());
     }
@@ -115,8 +135,8 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
     }
 
     @Step("Click 'Delete acquirer MID' button")
-    public DeleteAcquirerDialog clickDeleteAcquirerMidButton() {
-        deleteAcquirerMidButton.click();
+    public DeleteAcquirerDialog clickDeleteAcquirerMidButton(String acquirerName) {
+        getDeleteAcquirerMidButton(acquirerName).click();
 
         return new DeleteAcquirerDialog(getPage());
     }
