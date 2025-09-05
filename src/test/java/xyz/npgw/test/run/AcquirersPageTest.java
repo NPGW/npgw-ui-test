@@ -778,10 +778,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirersPage.getAlert().getMessage())
                 .hasText("SUCCESSAcquirer was deactivated successfully");
 
-        acquirersPage
-                .getAlert().clickCloseButton();
-
-        Locator acquirerStatus = acquirersPage.getTable().getFirstRowCell("Status");
+        Locator acquirerStatus = acquirersPage
+                .getAlert().clickCloseButton()
+                .getTable().getCell(CHANGE_STATE_ACQUIRER.getAcquirerName(), "Status");
 
         Allure.step("Verify: Acquirer status changed to Inactive");
         assertThat(acquirerStatus).hasText("Inactive");
