@@ -941,7 +941,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     @Epic("System/Acquirers")
     @Feature("Setup acquirer MID")
     @Description("Verify: Url fields in the 'Setup acquirer MID' dialog accept Valid URL structures")
-    public void testUrlFieldsAcceptValidUrlStructures () {
+    public void testUrlFieldsAcceptValidUrlStructures() {
         SetupAcquirerMidDialog setupAcquirerMidDialog = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersTab()
@@ -968,10 +968,10 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                     .fillFingerprintUrlField(url)
                     .fillResourceUrlField(url);
 
-            Allure.step("Verify: 'ChallengeUrl' field accept" + url + "URL");
+            Allure.step("Verify: 'Create button' is enabled for URL fields filled with value:" + url);
             Assert.assertTrue(
                     setupAcquirerMidDialog.getCreateButton().isEnabled(),
-                    "Create button is disabled for URL: " + url
+                    "'Create button' is disabled for URL fields filled with value:" + url
             );
         }
     }
