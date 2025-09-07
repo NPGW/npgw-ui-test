@@ -637,6 +637,7 @@ public class TeamPageTest extends BaseTestForSingleLogin {
         }
         User.delete(getApiRequestContext(), email);
     }
+
     @Test
     @TmsLink("1210")
     @Epic("System/Team")
