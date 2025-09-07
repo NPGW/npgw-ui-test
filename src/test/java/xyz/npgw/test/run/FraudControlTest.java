@@ -1047,7 +1047,8 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillFraudControlNameField("a".repeat(3));
+                .fillFraudControlNameField("a".repeat(3))
+                .fillFraudControlCodeField("Neutrino");
 
         Allure.step("Verify that the 'Control Name' field is has attribute aria-invalid set");
         assertThat(addControlDialog.getControlNameInput()).hasAttribute("aria-invalid", "true");
