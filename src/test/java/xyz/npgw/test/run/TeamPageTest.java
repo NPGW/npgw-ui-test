@@ -650,14 +650,7 @@ public class TeamPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickTeamTab()
                 .getSelectCompany()
-                .selectCompany(getCompanyName())
-                .clickAddUserButton()
-                .fillEmailField(email)
-                .fillPasswordField("Qwerty123!")
-                .checkCompanyAnalystRadiobutton()
-                .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
-                .clickCreateButton()
-                .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
+                .selectCompany(COMPANY_NAME_FOR_TEST_RUN);
 
         String  normalTableHeight =  teamPage.getTransactionsTable().evaluate("node => node.clientHeight").toString();
         Integer normalTabRowsCount = teamPage.getTable().getRows().count();
