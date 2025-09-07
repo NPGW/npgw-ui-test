@@ -666,21 +666,21 @@ public class TeamPageTest extends BaseTestForSingleLogin {
 
         String condensedTableHeight =  teamPage.getTransactionsTable().evaluate("node => node.clientHeight").toString();
         Integer condensedTabRowsCount = teamPage.getTable().getRows().count();
-        int normalH= Integer.parseInt(normalTableHeight);
+        int normalH = Integer.parseInt(normalTableHeight);
         int condensedH = Integer.parseInt(condensedTableHeight);
 
         Allure.step("Verify, the view of the Transactions Table is CONDENSED");
-        assertTrue(normalH > condensedH );
+        assertTrue(normalH > condensedH);
         assertEquals(condensedTabRowsCount, normalTabRowsCount);
 
         teamPage.checkNormal();
 
         String  newNormalTableHeight =  teamPage.getTransactionsTable().evaluate("node => node.clientHeight").toString();
         Integer newNormalTabRowsCount = teamPage.getTable().getRows().count();
-        int newNormalH= Integer.parseInt(newNormalTableHeight);
+        int newNormalH = Integer.parseInt(newNormalTableHeight);
 
         Allure.step("Verify, the view of the Transactions Table is NORMAL");
-        assertTrue(newNormalH > condensedH );
+        assertTrue(newNormalH > condensedH);
         assertEquals(condensedTabRowsCount, newNormalTabRowsCount);
 
         User.delete(getApiRequestContext(), email);
