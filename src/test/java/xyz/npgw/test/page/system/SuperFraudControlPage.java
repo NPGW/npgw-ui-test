@@ -22,7 +22,6 @@ public class SuperFraudControlPage extends HeaderPage<SuperFraudControlPage>
         ControlsTableTrait,
         BusinessUnitControlsTableTrait {
 
-
     private final Locator controlTypeSelector = getByLabelExact("Control type");
     @Getter
     private final Locator controlTypeValue = controlTypeSelector.locator("[data-slot='value']");
