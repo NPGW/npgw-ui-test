@@ -94,6 +94,12 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .controlConfig("delete")
             .isActive(false)
             .build();
+    private static final FraudControl FRAUD_CONTROL_CLOSE = FraudControl.builder()
+            .controlName("%s ControlEverythingClosed".formatted(RUN_ID))
+            .controlCode("Neutrino")
+            .controlDisplayName("ControlDisplay")
+            .controlConfig("notDefault")
+            .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
 
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
@@ -1255,6 +1261,54 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         Allure.step("Check if just deleted inactive Fraud Control still presented in the table");
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_INACTIVE_JUST_DELETE.getControlName()))
                 .not().isAttached();
+    }
+
+    @Test
+    @TmsLink("1215")
+    @Epic("System/Fraud control")
+    @Feature("Add control dialog window")
+    @Description("Close window with no changes with filled fields with Close button"
+                + "Close window with no changes with filled fields with 'Cross'"
+                + "Close window with no changes with filled fields with ESC")
+    public void testCancelAddingNewFraudControl() {
+        SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickFraudControlTab()
+                .clickAddFraudControl()
+                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
+                .checkActiveRadiobutton()
+                .clickCloseButton();
+
+        Allure.step("Verify that no data are presented in the row due to Close button");
+        assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
+                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
+
+        superFraudControlPage.clickAddFraudControl()
+                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
+                .checkActiveRadiobutton()
+                .pressEscapeKey();
+
+        Allure.step("Verify that no data are presented in the row due to ESC key");
+        assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
+                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
+
+        superFraudControlPage.clickAddFraudControl()
+                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
+                .checkActiveRadiobutton()
+                .clickCloseIcon();
+
+        Allure.step("Verify that no data are presented in the row due to Cross icon");
+        assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
+                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
     }
 
     @AfterClass
