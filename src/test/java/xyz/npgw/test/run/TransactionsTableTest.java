@@ -42,7 +42,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static xyz.npgw.test.common.Constants.AUGUST_FOR_TABLE;
+import static xyz.npgw.test.common.Constants.CURRENT_MONTH_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CARD_OPTIONS;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
@@ -212,7 +212,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(AUGUST_FOR_TABLE)
+                .getSelectDateRange().setDateRangeFields(CURRENT_MONTH_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
