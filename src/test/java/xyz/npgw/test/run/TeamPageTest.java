@@ -642,7 +642,7 @@ public class TeamPageTest extends BaseTestForSingleLogin {
     @TmsLink("1210")
     @Epic("System/Team")
     @Feature("Settings")
-    @Description("User can choose the view of the Transactions Table (normal or condensed) in Settings dropdown panel")
+    @Description("User can choose the view of the Transactions Table (normal or condensed) in Settings dropdown panel.")
     public void testSettings() {
         String email = "%s.deactivate.and.activate@gmail.com".formatted(TestUtils.now());
 
