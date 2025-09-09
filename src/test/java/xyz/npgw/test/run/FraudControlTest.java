@@ -116,6 +116,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
+        super.openSiteAccordingRole();
     }
 
     @Test

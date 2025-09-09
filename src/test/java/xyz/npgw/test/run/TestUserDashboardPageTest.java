@@ -44,6 +44,7 @@ public class TestUserDashboardPageTest extends BaseTestForSingleLogin {
         super.beforeClass();
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME_FOR_TEST_RUN, MERCHANT_TITLE);
         User.addMerchant(getApiRequestContext(), "testUser@email.com", businessUnit.merchantId());
+        super.openSiteAccordingRole();
     }
 
     @Test
