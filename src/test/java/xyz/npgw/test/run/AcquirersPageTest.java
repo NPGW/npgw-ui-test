@@ -76,7 +76,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
             .build();
 
     private static final Acquirer ACQUIRER_EDITED = Acquirer.builder()
-            .acquirerName(ACQUIRER.getAcquirerDisplayName())
+            .acquirerName(ACQUIRER.getAcquirerName())
             .acquirerDisplayName("%s display acquirer edited".formatted(RUN_ID))
             .acquirerCode("NGenius")
             .acquirerMid("new mid name")
