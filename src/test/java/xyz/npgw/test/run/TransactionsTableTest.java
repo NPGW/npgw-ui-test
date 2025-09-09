@@ -573,7 +573,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         List<Transaction> pdfTransactionList = transactionsPage
                 .parseTransactionsFromPdfText(pdfText);
 
-        Allure.step("Verify: row count between UI and Excel");
+        Allure.step("Verify: row count between UI and PDF");
         assertEquals(uiTransactionList.size(), pdfTransactionList.size());
 
         Allure.step("Verify: the UI transaction list matches the PDF transaction list");
