@@ -76,7 +76,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
             .build();
 
     private static final Acquirer ACQUIRER_EDITED = Acquirer.builder()
-            .acquirerName(ACQUIRER.getAcquirerName())
+            .acquirerName(ACQUIRER.getAcquirerDisplayName())
             .acquirerDisplayName("%s display acquirer edited".formatted(RUN_ID))
             .acquirerCode("NGenius")
             .acquirerMid("new mid name")
@@ -617,7 +617,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickAcquirersTab()
                 .getSelectAcquirerMid().selectAcquirerMid(ACQUIRER_EDITED.getAcquirerDisplayName())
-                .getTable().clickDeleteAcquirerMidButton(ACQUIRER_EDITED.getAcquirerName())
+                .getTable().clickDeleteAcquirerMidButton(ACQUIRER.getAcquirerName())
                 .clickDeleteButton();
 
         Allure.step("Verify: a success message appears after deleting the acquirer");
