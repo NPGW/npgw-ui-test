@@ -119,6 +119,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
+        super.openSiteAccordingRole();
     }
 
     @Test
@@ -1217,33 +1218,34 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Description("Add already added Fraud Control to Business Unit: BU Control Active"
             + "Add already added Fraud Control to Business Unit: BU Control Inactive")
     public void testAddAlreadyAddedFraudControlToBusinessUnit() {
+        final String controlName = FRAUD_CONTROL_ADD_ONE.getControlName();
+
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_REPEAT)
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickConnectControlButton(controlName)
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickConnectControlButton(controlName)
                 .clickConnectButton();
 
         Allure.step("Verify that Warning message is presented");
         assertThat(superFraudControlPage.getAlert().getMessage())
-                .containsText("Control {" + FRAUD_CONTROL_ADD_ONE.getControlName()
-                        + "} is already exists for merchant {id.merchant.");
+                .containsText("Control {%s} is already exists for merchant {id.merchant.".formatted(controlName));
 
         superFraudControlPage
                 .getAlert().clickCloseButton()
                 .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
                 .clickDeactivateButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(controlName)
                 .clickConnectButton();
 
         Allure.step("Verify that Warning message is presented again");
         assertThat(superFraudControlPage.getAlert().getMessage())
-                .containsText("Control {" + FRAUD_CONTROL_ADD_ONE.getControlName()
-                        + "} is already exists for merchant {id.merchant.");
+                .containsText("Control {%s} is already exists for merchant {id.merchant.".formatted(controlName));
 
         superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
                 .clickDeleteButton();
