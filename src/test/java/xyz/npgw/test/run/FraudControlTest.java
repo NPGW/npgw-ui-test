@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.ControlType;
 import xyz.npgw.test.common.entity.FraudControl;
+import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
@@ -31,6 +32,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
@@ -87,11 +90,19 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
             .controlDisplayName("ControlDisplayActiveToInactive")
             .build();
-    private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
+    private static final FraudControl FRAUD_CONTROL_INACTIVE_JUST_DELETE = FraudControl.builder()
+            .controlName("%s Delete me".formatted(RUN_ID))
+            .controlCode("Neutrino")
+            .controlDisplayName("DisplayDelete")
+            .controlConfig("delete")
+            .isActive(false)
+            .build();
 
+    private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
     private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_SORT = "Business unit sort %s".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_REPEAT = "Business unit repeat %s".formatted(RUN_ID);
 
     @BeforeClass
     @Override
@@ -100,12 +111,15 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
         TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_SORT);
+        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_REPEAT);
 
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
+        super.openSiteAccordingRole();
     }
 
     @Test
@@ -775,7 +789,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getTableBusinessUnitControls().getColumnValues("Display name");
 
         Allure.step("Verify that the business unit control table doesn't include the deleted control");
-        Assert.assertFalse(actualFraudControlBusinessUnitList.contains(
+        assertFalse(actualFraudControlBusinessUnitList.contains(
                 FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlDisplayName()));
     }
 
@@ -790,7 +804,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
-        //        .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
+                //        .fillFraudControlCodeField(FRAUD_CONTROL_ADD_TWO.getControlCode())
                 .fillFraudControlConfigField(FRAUD_CONTROL_ADD_TWO.getControlConfig())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL_ADD_TWO.getControlDisplayName())
                 .checkInactiveRadiobutton()
@@ -807,7 +821,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
-    //    assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
+        //    assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
         assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlConfig());
@@ -920,17 +934,19 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         });
     }
 
-    @Test
+    @Test(dataProvider = "getControlType", dataProviderClass = TestDataProvider.class)
     @TmsLink("1005")
     @Epic("System/Fraud control")
     @Feature("Reset filter")
     @Description("'Reset filter' clears selected options")
-    public void testResetFilter() {
+    public void testResetFilter(String type) {
         SuperFraudControlPage fraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .openControlTypeDropdown()
+                .selectTypeValue(type)
                 .clickResetFilterButton();
 
         Allure.step("Verify: the selected company field is empty after reset");
@@ -938,6 +954,9 @@ public class FraudControlTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify: the selected business unit field is empty after reset");
         assertThat(fraudControlPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
+
+        Allure.step("Verify: the selected Control type field is empty after reset");
+        assertThat(fraudControlPage.getControlTypeValue()).hasText("All");
     }
 
     @Test
@@ -1037,7 +1056,8 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillFraudControlNameField("a".repeat(3));
+                .fillFraudControlNameField("a".repeat(3))
+                .fillFraudControlCodeField("Neutrino");
 
         Allure.step("Verify that the 'Control Name' field is has attribute aria-invalid set");
         assertThat(addControlDialog.getControlNameInput()).hasAttribute("aria-invalid", "true");
@@ -1189,6 +1209,93 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(dialog.getModalWindowsMainTextBody())
                 .hasText("Are you sure you want to delete business unit control "
                         + FRAUD_CONTROL_ADD_ONE.getControlDisplayName() + " with priority " + "0?");
+    }
+
+    @Test
+    @TmsLink("1201")
+    @Epic("System/Fraud control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Add already added Fraud Control to Business Unit: BU Control Active"
+            + "Add already added Fraud Control to Business Unit: BU Control Inactive")
+    public void testAddAlreadyAddedFraudControlToBusinessUnit() {
+        final String controlName = FRAUD_CONTROL_ADD_ONE.getControlName();
+
+        SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickFraudControlTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_REPEAT)
+                .getTableControls().clickConnectControlButton(controlName)
+                .clickConnectButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(controlName)
+                .clickConnectButton();
+
+        Allure.step("Verify that Warning message is presented");
+        assertThat(superFraudControlPage.getAlert().getMessage())
+                .containsText("Control {%s} is already exists for merchant {id.merchant.".formatted(controlName));
+
+        superFraudControlPage
+                .getAlert().clickCloseButton()
+                .getTableBusinessUnitControls().clickDeactivateBusinessUnitControlButton("0")
+                .clickDeactivateButton()
+                .getAlert().clickCloseButton()
+                .getTableControls().clickConnectControlButton(controlName)
+                .clickConnectButton();
+
+        Allure.step("Verify that Warning message is presented again");
+        assertThat(superFraudControlPage.getAlert().getMessage())
+                .containsText("Control {%s} is already exists for merchant {id.merchant.".formatted(controlName));
+
+        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+                .clickDeleteButton();
+    }
+
+    @Test
+    @TmsLink("1212")
+    @Epic("System/Fraud control")
+    @Feature("Add/Edit/Delete Fraud Control")
+    @Description("Delete Inactive Fraud Control not added to Business Unit")
+    public void testDeleteInactiveFraudControlNotAddedToBusinessUnit() {
+        SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickFraudControlTab()
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL_INACTIVE_JUST_DELETE.getControlName())
+                .clickDeleteButton();
+
+        Allure.step("Check if just deleted inactive Fraud Control still presented in the table");
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_INACTIVE_JUST_DELETE.getControlName()))
+                .not().isAttached();
+    }
+
+    @Test(dataProvider = "getControlType", dataProviderClass = TestDataProvider.class)
+    @TmsLink("1214")
+    @Epic("System/Fraud control")
+    @Feature("Control table")
+    @Description("Filter controls by type")
+    public void testFilterControlsByType(String type) {
+        SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickFraudControlTab()
+                .openControlTypeDropdown();
+
+        Allure.step("Verify: The 'Control type' dropdown contains options");
+        assertThat(superFraudControlPage.getControlTypeOptions())
+                .hasText(new String[]{"All", "BIN Check", "Fraud Screen"});
+
+        superFraudControlPage
+                .selectTypeValue(type);
+
+        Allure.step("Verify: Control type value matches expected :" + type);
+        assertThat(superFraudControlPage.getControlTypeValue()).hasText(type);
+
+        List<String> values = superFraudControlPage
+                .getTableControls().getColumnValuesFromAllPages("Type");
+
+        assertFalse(values.isEmpty(), "Must not be empty to avoid false positive");
+
+        Allure.step(String.format("Verify: The controls list shows only '%s' type items after filtering.", type));
+        assertTrue(values.stream().allMatch(value -> value.equals(type)));
     }
 
     @AfterClass
