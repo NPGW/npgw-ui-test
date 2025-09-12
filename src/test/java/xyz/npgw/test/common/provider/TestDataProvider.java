@@ -65,7 +65,7 @@ public class TestDataProvider {
                 {"PENDING", "INITIATED"},
                 {"SUCCESS", "FAILED"},
                 {"CANCELLED", "EXPIRED"},
-                {"PARTIAL_REFUND", "REFUNDED"},
+                {"PARTIAL_REFUND", "REFUND"},
         };
     }
 
@@ -75,6 +75,14 @@ public class TestDataProvider {
                 {"CSV"},
                 {"EXCEL"},
                 {"PDF"},
+        };
+    }
+
+    @DataProvider
+    public Object[][] getControlType() {
+        return new Object[][]{
+                {"BIN Check"},
+                {"Fraud Screen"},
         };
     }
 }
