@@ -34,7 +34,7 @@ import static xyz.npgw.test.common.Constants.STATUSES;
 
 public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
 
-    private static final String MERCHANT_TITLE = "%s dashboard business unit".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "%s admin dashboard business unit".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     @BeforeClass
