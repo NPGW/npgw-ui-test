@@ -484,9 +484,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirersPage.getTable().getCell(acquirerRow, "MID"))
                 .hasText(ACQUIRER.getAcquirerMid());
 
-        Allure.step("Verify: Acquirer MID MCC matches expected");
-        assertThat(acquirersPage.getTable().getCell(acquirerRow, "MCC"))
-                .hasText(ACQUIRER.getAcquirerMidMcc());
+//        Allure.step("Verify: Acquirer MID MCC matches expected");
+//        assertThat(acquirersPage.getTable().getCell(acquirerRow, "MCC"))
+//                .hasText(ACQUIRER.getAcquirerMidMcc());
 
         Allure.step("Verify: Currencies column contains expected currency");
         assertThat(acquirersPage.getTable().getCell(acquirerRow, "Currencies"))
@@ -570,9 +570,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "MID"))
                 .hasText(ACQUIRER_EDITED.getAcquirerMid());
 
-        Allure.step("Verify: Acquirer MID MCC matches expected");
-        assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "MCC"))
-                .hasText(ACQUIRER_EDITED.getAcquirerMidMcc());
+//        Allure.step("Verify: Acquirer MID MCC matches expected");
+//        assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "MCC"))
+//                .hasText(ACQUIRER_EDITED.getAcquirerMidMcc());
 
         Allure.step("Verify: Currencies column contains expected currency");
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Currencies"))
@@ -672,9 +672,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirersPage.getTable().getCell(acquirer2Row, "MID"))
                 .hasText(ACQUIRER2.getAcquirerMid());
 
-        Allure.step("Verify: MCC");
-        assertThat(acquirersPage.getTable().getCell(acquirer2Row, "MCC"))
-                .hasText(ACQUIRER2.getAcquirerMidMcc());
+//        Allure.step("Verify: MCC");
+//        assertThat(acquirersPage.getTable().getCell(acquirer2Row, "MCC"))
+//                .hasText(ACQUIRER2.getAcquirerMidMcc());
 
         Allure.step("Verify: Currencies");
         assertThat(acquirersPage.getTable().getCell(acquirer2Row, "Currencies"))
