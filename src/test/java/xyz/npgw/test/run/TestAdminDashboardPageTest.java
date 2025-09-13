@@ -34,7 +34,7 @@ import static xyz.npgw.test.common.Constants.STATUSES;
 
 public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
 
-    private static final String MERCHANT_TITLE = "%s admin dashboard business unit".formatted(RUN_ID);
+    private static final String MERCHANT_TITLE = "%s admin dashboard bu".formatted(RUN_ID);
     private BusinessUnit businessUnit;
 
     @BeforeClass
@@ -247,8 +247,6 @@ public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
     @AfterClass
     @Override
     protected void afterClass() {
-        User.removeMerchant(getApiRequestContext(), "testUser@email.com", businessUnit.merchantId());
-        MerchantAcquirer.delete(getApiRequestContext(), businessUnit.merchantId());
         BusinessUnit.deleteWithTimeout(getApiRequestContext(), COMPANY_NAME_FOR_TEST_RUN, businessUnit);
         super.afterClass();
     }
