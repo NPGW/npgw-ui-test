@@ -502,6 +502,7 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
                 .checkCompanyAnalystRadiobutton()
                 .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .clickCreateButton()
+                .getAlert().clickCloseButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
         String iconAttributeValue;
@@ -530,7 +531,10 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
 
         teamPage.getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton()
+                .getAlert().clickCloseButton()
                 .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
+
+        assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
 
         for (Locator rowIcon : rowIcons) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
