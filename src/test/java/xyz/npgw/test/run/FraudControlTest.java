@@ -1274,44 +1274,49 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 + "Close window with no changes with filled fields with 'Cross'"
                 + "Close window with no changes with filled fields with ESC")
     public void testCancelAddingNewFraudControl() {
+        String controlName = FRAUD_CONTROL_CLOSE.getControlName();
+        String controlCode = FRAUD_CONTROL_CLOSE.getControlCode();
+        String controlDisplayName = FRAUD_CONTROL_CLOSE.getControlDisplayName();
+        String controlConfig = FRAUD_CONTROL_CLOSE.getControlConfig();
+
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
-                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
-                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
-                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
+                .fillFraudControlNameField(controlName)
+                .fillFraudControlCodeField(controlCode)
+                .fillFraudControlDisplayNameField(controlDisplayName)
+                .fillFraudControlConfigField(controlConfig)
                 .checkActiveRadiobutton()
                 .clickCloseButton();
 
         Allure.step("Verify that no data are presented in the row due to Close button");
         assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
-                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
+                .not().hasText(controlName);
 
         superFraudControlPage.clickAddFraudControl()
-                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
-                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
-                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
-                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
+                .fillFraudControlNameField(controlName)
+                .fillFraudControlCodeField(controlCode)
+                .fillFraudControlDisplayNameField(controlDisplayName)
+                .fillFraudControlConfigField(controlConfig)
                 .checkActiveRadiobutton()
                 .pressEscapeKey();
 
         Allure.step("Verify that no data are presented in the row due to ESC key");
         assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
-                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
+                .not().hasText(controlName);
 
         superFraudControlPage.clickAddFraudControl()
-                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
-                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
-                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
-                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
+                .fillFraudControlNameField(controlName)
+                .fillFraudControlCodeField(controlCode)
+                .fillFraudControlDisplayNameField(controlDisplayName)
+                .fillFraudControlConfigField(controlConfig)
                 .checkActiveRadiobutton()
                 .clickCloseIcon();
 
         Allure.step("Verify that no data are presented in the row due to Cross icon");
         assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
-                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
+                .not().hasText(controlName);
     }
 
     @AfterClass
