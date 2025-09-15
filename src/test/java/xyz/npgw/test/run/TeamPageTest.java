@@ -586,7 +586,7 @@ public class TeamPageTest extends BaseTestForSingleLogin {
     @Feature("Tooltips")
     @Description("Contents of Tooltips, that appear after hovering on the icon-buttons, are correct")
     public void testTeamTooltipsContent() {
-        String email = "%s.deactivate.and.activate@gmail.com".formatted(TestUtils.now());
+        String email = "%s.tooltipsContentAsSuper@email.com".formatted(TestUtils.now());
 
         SuperTeamPage teamPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
@@ -598,6 +598,7 @@ public class TeamPageTest extends BaseTestForSingleLogin {
                 .checkCompanyAnalystRadiobutton()
                 .checkAllowedBusinessUnitCheckbox(MERCHANT_TITLE)
                 .clickCreateButton()
+                .getAlert().clickCloseButton()
                 .waitForUserPresence(getApiRequestContext(), email, getCompanyName());
 
         String iconAttributeValue;
@@ -609,7 +610,7 @@ public class TeamPageTest extends BaseTestForSingleLogin {
             icon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip);
+            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip + "'");
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 
@@ -620,22 +621,68 @@ public class TeamPageTest extends BaseTestForSingleLogin {
             rowIcon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip);
+            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip + "'");
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 
         teamPage.getTable().clickDeactivateUserButton(email)
                 .clickDeactivateButton()
+                .getAlert().clickCloseButton()
                 .waitForUserDeactivation(getApiRequestContext(), email, getCompanyName());
-        for (Locator rowIcon : rowIcons) {
+
+        assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
+
+        for (Locator rowIcon : teamPage.getTable().getRowIcon(email).all()) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
             Allure.step("Hover on " + iconAttributeValue + " icon");
             rowIcon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over " + iconAttributeValue + " appears '" + tooltip);
+            Allure.step("Verify, over " + iconAttributeValue + " appears '" + tooltip + "'");
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
+
+        User.delete(getApiRequestContext(), email);
+    }
+
+    @Test
+    @TmsLink("1210")
+    @Epic("System/Team")
+    @Feature("Settings")
+    @Description("User can choose the view of the Transactions Table (normal or condensed) in Settings dropdown panel.")
+    public void testSettings() {
+        String email = "%s.deactivate.and.activate@gmail.com".formatted(TestUtils.now());
+
+        SuperTeamPage teamPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickTeamTab()
+                .getSelectCompany()
+                .selectCompany(COMPANY_NAME_FOR_TEST_RUN);
+
+        String  normalTableHeight =  teamPage.getTransactionsTable().evaluate("node => node.clientHeight").toString();
+        Integer normalTabRowsCount = teamPage.getTable().getRows().count();
+
+        teamPage.clickSettings().checkCondensed();
+
+        String condensedTableHeight =  teamPage.getTransactionsTable().evaluate("node => node.clientHeight").toString();
+        Integer condensedTabRowsCount = teamPage.getTable().getRows().count();
+        int normalH = Integer.parseInt(normalTableHeight);
+        int condensedH = Integer.parseInt(condensedTableHeight);
+
+        Allure.step("Verify, the view of the Transactions Table is CONDENSED");
+        assertTrue(normalH > condensedH);
+        assertEquals(condensedTabRowsCount, normalTabRowsCount);
+
+        teamPage.checkNormal();
+
+        String  newNormalTableHeight =  teamPage.getTransactionsTable().evaluate("node => node.clientHeight").toString();
+        Integer newNormalTabRowsCount = teamPage.getTable().getRows().count();
+        int newNormalH = Integer.parseInt(newNormalTableHeight);
+
+        Allure.step("Verify, the view of the Transactions Table is NORMAL");
+        assertTrue(newNormalH > condensedH);
+        assertEquals(condensedTabRowsCount, newNormalTabRowsCount);
+
         User.delete(getApiRequestContext(), email);
     }
 }
