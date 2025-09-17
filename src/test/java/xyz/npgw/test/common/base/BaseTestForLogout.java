@@ -48,7 +48,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 @Log4j2
-public abstract class BaseTestForLogout {
+public abstract class BaseTestForLogout extends BaseTest {
 
     protected static final String RUN_ID = TestUtils.now();
     private final HashMap<String, Response> requestMap = new HashMap<>();
@@ -89,6 +89,7 @@ public abstract class BaseTestForLogout {
         uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
         companyName = "%s test run company".formatted(uid);
         TestUtils.createCompany(apiRequestContext, companyName);
+        startTime = System.currentTimeMillis();
     }
 
     @BeforeMethod
@@ -225,6 +226,7 @@ public abstract class BaseTestForLogout {
                 log.info("Attempt to close the playwright that is already closed.");
             }
         }
+        classDurations.put(getClass().getSimpleName(), (System.currentTimeMillis() - startTime) / 1000);
     }
 
     private void openSite(Object[] args) {
