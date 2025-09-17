@@ -48,7 +48,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 @Log4j2
-public abstract class BaseTest {
+public abstract class BaseTestForLogout {
 
     protected static final String RUN_ID = TestUtils.now();
     private final HashMap<String, Response> requestMap = new HashMap<>();

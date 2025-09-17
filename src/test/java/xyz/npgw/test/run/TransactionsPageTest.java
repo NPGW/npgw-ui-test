@@ -653,7 +653,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);

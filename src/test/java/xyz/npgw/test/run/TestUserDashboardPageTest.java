@@ -235,10 +235,4 @@ public class TestUserDashboardPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDGBP0.77100,000,000");
     }
-
-    @AfterClass
-    @Override
-    protected void afterClass() {
-        super.afterClass();
-    }
 }

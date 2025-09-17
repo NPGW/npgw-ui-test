@@ -19,6 +19,7 @@ import lombok.extern.log4j.Log4j2;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -41,16 +42,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 @Log4j2
 public abstract class BaseTestForSingleLogin {
 
+    protected static final Map<String, Long> classDurations = new ConcurrentHashMap<>();
     protected static final String RUN_ID = TestUtils.now();
     private final HashMap<String, Response> requestMap = new HashMap<>();
     private Playwright playwright;
@@ -67,6 +73,7 @@ public abstract class BaseTestForSingleLogin {
     @Getter(AccessLevel.PROTECTED)
     private String companyName;
     private BusinessUnit businessUnit;
+    private long startTime;
 
     @BeforeSuite
     protected void beforeSuite() {
@@ -109,6 +116,7 @@ public abstract class BaseTestForSingleLogin {
             }
         });
 
+        startTime = System.currentTimeMillis();
         createBlankPage();
 //        openSiteAccordingRole();
     }
@@ -191,6 +199,21 @@ public abstract class BaseTestForSingleLogin {
                 log.info("Attempt to close the playwright that is already closed.");
             }
         }
+        classDurations.put(getClass().getSimpleName(), (System.currentTimeMillis() - startTime) / 1000);
+    }
+
+    @AfterSuite
+    protected void afterSuite() throws IOException {
+        List<String> lines = new ArrayList<>();
+        lines.add("Class,Duration(s)");
+        lines.addAll(
+                classDurations.entrySet().stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .map(e -> e.getKey() + "," + e.getValue())
+                        .toList()
+        );
+
+        Files.write(Paths.get("durations.csv"), lines);
     }
 
     private void openSite(String role) {
