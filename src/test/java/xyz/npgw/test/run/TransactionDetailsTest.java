@@ -48,7 +48,7 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
         Allure.step("Verify: The dialog box section names");
         assertThat(transactionDetailsDialog.getSectionNames())
                 .hasText(new String[]{"Amount", "Updated on (GMT)", "NPGW reference", "Business unit reference",
-                        "Card details", "Customer details", "3D Secure", "Transaction lifecycle"});
+                        "Card details", "Customer details", "3D Secure", "Transaction lifecycle", "Acquirer details"});
 
         Allure.step("Verify: The Card details labels");
         assertThat(transactionDetailsDialog.getCardDetailsLabels())
