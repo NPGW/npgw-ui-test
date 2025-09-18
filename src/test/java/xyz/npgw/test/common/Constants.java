@@ -30,7 +30,8 @@ public class Constants {
             "AUTHORISED",
             "PARTIAL_CAPTURE",
             "FAILED",
-            "CANCELLED"
+            "CANCELLED",
+            "EXPIRED"
     };
 
     public static final String[] CURRENCY_OPTIONS = {"ALL", "EUR", "USD", "GBP"};
