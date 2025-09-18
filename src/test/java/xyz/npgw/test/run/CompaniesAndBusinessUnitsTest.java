@@ -436,7 +436,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify: the deleted company is no longer present on the page");
         assertThat(companiesAndBusinessUnitsPage.getPageContent())
-                .hasText("Select company name to view merchants");
+                .hasText("Select company name to view business units");
 
         getPage().waitForTimeout(2000);
 
