@@ -503,7 +503,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify: Ensure the prompt appears when no company is selected");
         assertThat(companiesAndBusinessUnitsPage.getPageContent())
-                .hasText("Select company name to view merchants");
+                .hasText("Select company name to view business units");
 
         Allure.step("Verify: the 'Company' input field is empty after reset");
         assertThat(companiesAndBusinessUnitsPage.getSelectCompany().getSelectCompanyField()).isEmpty();
