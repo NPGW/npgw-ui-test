@@ -31,7 +31,7 @@ public class Constants {
             "PARTIAL_CAPTURE",
             "FAILED",
             "CANCELLED",
-            "EXPIRED"
+            "EXPIRED",
             "PARTIAL_REFUND",
             "REFUND",
     };
