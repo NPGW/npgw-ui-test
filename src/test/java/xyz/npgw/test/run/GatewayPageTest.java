@@ -582,44 +582,47 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         assertThat(moveDownButtonTooltip).isVisible();
         assertThat(moveDownButtonTooltip).hasText("Move acquirer MID down");
 
+        String lastRowPriority = page.getTable().getCell(page.getTable().getLastRow(), "Priority").innerText();
         Locator moveUpButtonTooltip = page
-                .getTable().hoverOverMoveAcquirerMidUpButton("1")
+                .getTable().hoverOverMoveAcquirerMidUpButton(lastRowPriority)
                 .getTable().getTooltip();
 
         Allure.step("Verify that 'Move acquirer MID up' button tooltip appears on the Gateway table");
         assertThat(moveUpButtonTooltip).isVisible();
         assertThat(moveUpButtonTooltip).hasText("Move acquirer MID up");
 
-        Locator deactivateButtonTooltip = page
-                .getTable().hoverOverDeactivateAcquirerMidButton("1")
-                .getTable().getTooltip();
-
-        Allure.step("Verify that 'Deactivate acquirer MID' button tooltip appears on the Gateway table");
-        assertThat(deactivateButtonTooltip).isVisible();
-        assertThat(deactivateButtonTooltip).hasText("Deactivate acquirer MID");
-
-        page.getTable().clickDeactivateAcquirerMidButton("1")
-                .clickDeactivateButton();
-
-//        TODO: Now "Activate business unit acquirer" tooltip but "Activate acquirer MID" needed
-        Locator activateButtonTooltip = page
-                .getTable().hoverOverActivateAcquirerMidButton("1")
-                .getTable().getTooltip();
-
-        Allure.step("Verify that 'Activate business unit acquirer' button tooltip is appears on the Gateway table");
-        assertThat(activateButtonTooltip).isVisible();
-        assertThat(activateButtonTooltip).hasText("Activate acquirer MID");
-
         Locator deleteButtonTooltip = page
-                .getTable().hoverOverDeleteAcquirerMidButton("1")
+                .getTable().hoverOverDeleteAcquirerMidButton(lastRowPriority)
                 .getTable().getTooltip();
 
         Allure.step("Verify that 'Delete acquirer MID' button tooltip appears on the Gateway table");
         assertThat(deleteButtonTooltip).isVisible();
         assertThat(deleteButtonTooltip).hasText("Delete acquirer MID");
 
-        page.getTable().clickDeleteAcquirerMidButton("1")
-                .clickDeleteButton();
+        Locator deactivateButtonTooltip = page
+                .getTable().hoverOverDeactivateAcquirerMidButton(lastRowPriority)
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Deactivate acquirer MID' button tooltip appears on the Gateway table");
+        assertThat(deactivateButtonTooltip).isVisible();
+        assertThat(deactivateButtonTooltip).hasText("Deactivate acquirer MID");
+
+        page.getTable().clickDeactivateAcquirerMidButton(lastRowPriority)
+                .clickDeactivateButton();
+
+//        TODO: Now "Activate business unit acquirer" tooltip but "Activate acquirer MID" needed
+        Locator activateButtonTooltip = page
+                .getTable().hoverOverActivateAcquirerMidButton(lastRowPriority)
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Activate business unit acquirer' button tooltip is appears on the Gateway table");
+        assertThat(activateButtonTooltip).isVisible();
+        try {
+            assertThat(activateButtonTooltip).hasText("Activate acquirer MID");
+        } finally {
+            page.getTable().clickDeleteAcquirerMidButton(lastRowPriority)
+                    .clickDeleteButton();
+        }
     }
 
     @AfterClass(alwaysRun = true)
