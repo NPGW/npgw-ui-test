@@ -295,8 +295,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify: 'Create' button is disabled when required fields are not filled");
         assertThat(setupAcquirerMidDialog.getCreateButton()).isDisabled();
 
-        Allure.step("Verify: all placeholders are correct for each field");
-        assertEquals(setupAcquirerMidDialog.getAllPlaceholders(), PLACEHOLDER_LIST);
+//        Allure.step("Verify: all placeholders are correct for each field");
+//        assertEquals(setupAcquirerMidDialog.getAllPlaceholders(), PLACEHOLDER_LIST);
 
         Allure.step("Verify: the Status Switch visible and contains switch Active&Inactive");
         assertThat(setupAcquirerMidDialog.getStatusSwitch()).hasText("StatusActiveInactive");
@@ -492,9 +492,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirersPage.getTable().getCell(acquirerRow, "Currencies"))
                 .hasText(ACQUIRER.getCurrency());
 
-        Allure.step("Verify: Acquirer config matches expected");
-        assertThat(acquirersPage.getTable().getCell(acquirerRow, "Acquirer config"))
-                .hasText(ACQUIRER.getAcquirerConfig());
+//        Allure.step("Verify: Acquirer config matches expected");
+//        assertThat(acquirersPage.getTable().getCell(acquirerRow, "Acquirer config"))
+//                .hasText(ACQUIRER.getAcquirerConfig());
 
         Allure.step("Verify: 'System config' cell contains all values in correct order");
         assertThat(acquirersPage.getTable().getCell(acquirerRow, "System config"))

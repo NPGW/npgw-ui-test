@@ -23,11 +23,13 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     private final Locator fingerprintUrlField = getByPlaceholder("Enter fingerprint URL");
     private final Locator resourceUrlField = getByPlaceholder("Enter resource URL");
     private final Locator notificationQueueField = getByPlaceholder("Enter notification queue");
-    private final Locator acquirerConfigField = getByPlaceholder("Enter acquirer config");
+    private final Locator acquirerConfigFieldEdit = getByTestId("EditConfigButton").last();
+    private final Locator acquirerConfigField = getByPlaceholder("Enter the config");
     private final Locator acquirerCodeField = getByPlaceholder("Enter acquirer code");
     private final Locator acquirerDisplayNameField = getByPlaceholder("Enter display name");
     private final Locator acquirerMidField = getByPlaceholder("Enter MID");
     private final Locator acquirerMccField = getByPlaceholder("Enter MCC");
+    private final Locator saveButton = getByRole(AriaRole.BUTTON, "Save");
 
     public AcquirerDialog(Page page) {
         super(page);
@@ -98,7 +100,10 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
 
     @Step("Enter acquirer config '{acquirerConfig}'")
     public CurrentDialogT fillAcquirerConfigField(String acquirerConfig) {
+        acquirerConfigFieldEdit.click();
+        acquirerConfigField.click();
         acquirerConfigField.fill(acquirerConfig);
+        saveButton.click();
 
         return (CurrentDialogT) this;
     }
