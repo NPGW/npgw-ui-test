@@ -608,7 +608,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         Locator filteredRows1 = transactionsPage
                 .clickSearchTrxIdsButton()
                 .fillNpgwReference(npgwReferenceText1)
-                .clickTrxIdAppliedButton()
+                .clickNpgwReferenceAcceptButton()
                 .getTable().getRows();
 
         Allure.step("Verify: Table has only one row with the N1 NPGW reference");
@@ -619,7 +619,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
                 .clickTrxIdPencilIcon()
                 .clickNpgwReferenceClearIcon()
                 .fillNpgwReference(npgwReferenceText2)
-                .clickTrxIdAppliedButton()
+                .clickNpgwReferenceAcceptButton()
                 .getTable().getRows();
 
         Allure.step("Verify: Table has only one row with the N2 NPGW reference");
@@ -634,7 +634,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
