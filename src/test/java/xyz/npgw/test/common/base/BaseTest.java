@@ -3,13 +3,10 @@ package xyz.npgw.test.common.base;
 import com.google.gson.Gson;
 import com.microsoft.playwright.APIRequest;
 import com.microsoft.playwright.APIRequestContext;
-import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.Route;
-import com.microsoft.playwright.Tracing;
 import com.microsoft.playwright.Video;
 import com.microsoft.playwright.options.Cookie;
 import io.qameta.allure.Allure;
@@ -18,54 +15,58 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.client.Client;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Credentials;
 import xyz.npgw.test.common.entity.Token;
 import xyz.npgw.test.common.entity.User;
-import xyz.npgw.test.common.entity.UserRole;
 import xyz.npgw.test.common.util.BrowserUtils;
 import xyz.npgw.test.common.util.CleanupUtils;
 import xyz.npgw.test.common.util.TestUtils;
-import xyz.npgw.test.page.AboutBlankPage;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Log4j2
 public abstract class BaseTest {
 
     protected static final String RUN_ID = TestUtils.now();
-    private final HashMap<String, Response> requestMap = new HashMap<>();
-    private Playwright playwright;
-    private Browser browser;
-    private BrowserContext browserContext;
+    protected final HashMap<String, BaseTestForSingleLogin.Response> requestMap = new HashMap<>();
     @Getter(AccessLevel.PROTECTED)
-    private Page page;
+    protected Playwright playwright;
+    protected Browser browser;
+    protected BrowserContext browserContext;
     @Getter(AccessLevel.PROTECTED)
-    private APIRequestContext apiRequestContext;
-    private LocalTime bestBefore = LocalTime.now();
-    private String testId;
+    protected Page page;
     @Getter(AccessLevel.PROTECTED)
-    private String uid;
+    protected APIRequestContext apiRequestContext;
+    protected LocalTime bestBefore = LocalTime.now();
+    protected String testId;
     @Getter(AccessLevel.PROTECTED)
-    private String companyName;
-    private BusinessUnit businessUnit;
+    protected String uid;
+    @Getter(AccessLevel.PROTECTED)
+    protected String companyName;
+    protected BusinessUnit businessUnit;
+
+    protected static final Map<String, Long> classDurations = new ConcurrentHashMap<>();
+    protected long startTime;
 
     @BeforeSuite
     protected void beforeSuite() {
@@ -84,118 +85,14 @@ public abstract class BaseTest {
     protected void beforeClass() {
         playwright = BrowserUtils.createPlaywright();
         initApiRequestContext();
-        browser = BrowserUtils.createBrowser(playwright);
 
         uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
         companyName = "%s test run company".formatted(uid);
         TestUtils.createCompany(apiRequestContext, companyName);
-    }
 
-    @BeforeMethod
-    protected void beforeMethod(Method method, ITestResult testResult, Object[] args) {
-        testId = "%s/%s/%s(%d)%s".formatted(
-                ProjectProperties.getArtefactDir(),
-                method.getDeclaringClass().getSimpleName(),
-                method.getName(),
-                testResult.getMethod().getCurrentInvocationCount(),
-                new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
-//        log.info(">>> {}", testId);
+        browser = BrowserUtils.createBrowser(playwright);
 
-        browserContext = BrowserUtils.createContext(browser);
-
-        if (ProjectProperties.isTracingMode()) {
-            BrowserUtils.startTracing(browserContext);
-        }
-
-        page = browserContext.newPage();
-        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
-        page.addLocatorHandler(page.getByText("Loading..."), locator -> {
-        });
-
-        browserContext.route("**/*", route -> {
-            String url = route.request().url();
-            if (url.endsWith(".css") || url.endsWith(".js") || url.endsWith(".png")) {
-                if (requestMap.get(url) == null) {
-                    APIResponse apiResponse = route.fetch();
-                    requestMap.put(url, new Response(apiResponse.status(), apiResponse.headers(), apiResponse.body()));
-                }
-                Response r = requestMap.get(url);
-                route.fulfill(new Route.FulfillOptions()
-                        .setStatus(r.status)
-                        .setHeaders(r.headers)
-                        .setBodyBytes(r.body));
-            } else {
-                route.fallback();
-            }
-        });
-
-        initApiRequestContext();
-
-        String methodName = method.getName();
-        String suffix = Stream.of("Unauthenticated", "AsTestUser", "AsTestAdmin", "AsUser", "AsAdmin")
-                .filter(methodName::endsWith)
-                .findFirst()
-                .orElse("");
-
-        switch (suffix) {
-            case "Unauthenticated":
-                return;
-
-            case "AsTestUser":
-                new AboutBlankPage(page)
-                        .navigate("/")
-                        .loginAsUser("testUser@email.com", ProjectProperties.getPassword());
-                return;
-
-            case "AsTestAdmin":
-                new AboutBlankPage(page)
-                        .navigate("/")
-                        .loginAsAdmin("testAdmin@email.com", ProjectProperties.getPassword());
-                return;
-
-            case "AsUser":
-                openSite(new Object[]{"USER"});
-                return;
-
-            case "AsAdmin":
-                openSite(new Object[]{"ADMIN"});
-                return;
-
-            default:
-                openSite(args);
-        }
-    }
-
-    @AfterMethod
-    protected void afterMethod(Method method, ITestResult testResult) throws IOException {
-        if (!testResult.isSuccess() && !ProjectProperties.isCloseBrowserIfError()) {
-            page.pause();
-        }
-
-        int resultStatus = testResult.getStatus();
-        long testDuration = (testResult.getEndMillis() - testResult.getStartMillis()) / 1000;
-        if (resultStatus == ITestResult.FAILURE) {
-            log.info("{} <<< {} in {} s", status(resultStatus), testId, testDuration);
-        }
-
-        if (!page.isClosed()) {
-            page.close();
-            attachVideoIfNeeded(page, testId, resultStatus);
-        }
-
-        if (browserContext != null) {
-            if (ProjectProperties.isTracingMode()) {
-                if (resultStatus == ITestResult.FAILURE || resultStatus == ITestResult.SKIP) {
-                    Path traceFilePath = Paths.get(testId + ".zip");
-                    browserContext.tracing().stop(new Tracing.StopOptions().setPath(traceFilePath));
-                    Allure.getLifecycle().addAttachment(
-                            "tracing", "archive/zip", "zip", Files.readAllBytes(traceFilePath));
-                } else {
-                    browserContext.tracing().stop();
-                }
-            }
-            browserContext.close();
-        }
+        startTime = System.currentTimeMillis();
     }
 
     @AfterClass(alwaysRun = true)
@@ -225,43 +122,39 @@ public abstract class BaseTest {
                 log.info("Attempt to close the playwright that is already closed.");
             }
         }
+        classDurations.put(getClass().getSimpleName(), (System.currentTimeMillis() - startTime) / 1000);
     }
 
-    private void openSite(Object[] args) {
-        UserRole userRole = UserRole.SUPER;
-        if (args.length != 0 && (args[0] instanceof String)) {
-            try {
-                userRole = UserRole.valueOf((String) args[0]);
-            } catch (IllegalArgumentException e) {
-                if (args[0].equals("UNAUTHORISED")) {
-//                    new AboutBlankPage(page).navigate("/");
-                    return;
-                }
-            }
-        }
+    @AfterSuite
+    protected void afterSuite() throws IOException {
+        List<String> lines = new ArrayList<>();
+        lines.add("Class,Duration(s)");
+        lines.addAll(
+                classDurations.entrySet().stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .map(e -> e.getKey() + "," + e.getValue())
+                        .toList()
+        );
 
-        if (userRole == UserRole.USER && businessUnit == null) {
-            businessUnit = TestUtils.createBusinessUnit(apiRequestContext, companyName, "default");
-        }
-
-        String email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());
-        if (!User.exists(apiRequestContext, email)) {
-            User user = new User(
-                    (userRole == UserRole.SUPER) ? "super" : companyName,
-                    true,
-                    userRole,
-                    (userRole == UserRole.USER) ? new String[]{businessUnit.merchantId()} : new String[]{},
-                    email,
-                    ProjectProperties.getPassword());
-            User.create(apiRequestContext, user);
-            User.passChallenge(apiRequestContext, user.email(), user.password());
-        }
-
-        new AboutBlankPage(page).navigate("/").loginAs(email, ProjectProperties.getPassword(), userRole.getName());
-//        initPageRequestContext();
+        Files.write(Paths.get("durations.csv"), lines);
     }
 
-    private void initApiRequestContext() {
+    protected void createBlankPage() {
+        page = browserContext.newPage();
+        page.setDefaultTimeout(ProjectProperties.getDefaultTimeout());
+        page.addLocatorHandler(page.getByText("Loading..."), locator -> {
+        });
+    }
+
+    private boolean isTestIndependent(Method method) {
+        Test testAnnotation = method.getAnnotation(Test.class);
+        if (testAnnotation == null) {
+            return true;
+        }
+        return testAnnotation.dependsOnMethods().length == 0 && testAnnotation.dependsOnGroups().length == 0;
+    }
+
+    protected void initApiRequestContext() {
         if (LocalTime.now().isBefore(bestBefore)) {
             return;
         }
@@ -271,6 +164,57 @@ public abstract class BaseTest {
             apiRequestContext = getApiRequestContext(playwright, token);
             bestBefore = LocalTime.now().plusSeconds(token.expiresIn()).minusMinutes(3);
         }
+    }
+
+    private APIRequestContext getApiRequestContext(Playwright playwright, Token token) {
+        return playwright.request()
+                .newContext(new APIRequest.NewContextOptions()
+                        .setBaseURL(ProjectProperties.getBaseURL())
+                        .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
+    }
+
+    protected APIRequestContext getApiRequestContext(Playwright playwright, Credentials credentials) {
+        Token token = getTokenFromApiResponse(playwright, credentials);
+        return playwright.request()
+                .newContext(new APIRequest.NewContextOptions()
+                        .setBaseURL(ProjectProperties.getBaseURL())
+                        .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
+    }
+
+    protected APIRequestContext getApiRequestContext(Playwright playwright, String apiKey) {
+        Token token = getTokenFromApiResponse(playwright, apiKey);
+        return playwright.request()
+                .newContext(new APIRequest.NewContextOptions()
+                        .setBaseURL(ProjectProperties.getBaseURL())
+                        .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
+    }
+
+    private Token getTokenFromApiResponse(Playwright playwright) {
+        APIRequestContext context = playwright.request()
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+        Credentials credentials = new Credentials(ProjectProperties.getEmail(), ProjectProperties.getPassword());
+        Token token = User.getTokenResponse(context, credentials).token();
+        context.dispose();
+
+        return token;
+    }
+
+    private Token getTokenFromApiResponse(Playwright playwright, Credentials credentials) {
+        APIRequestContext context = playwright.request()
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+        Token token = User.getTokenResponse(context, credentials).token();
+        context.dispose();
+
+        return token;
+    }
+
+    private Token getTokenFromApiResponse(Playwright playwright, String apiKey) {
+        APIRequestContext context = playwright.request()
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+        Token token = Client.getToken(context, apiKey);
+        context.dispose();
+
+        return token;
     }
 
     private void initPageRequestContext() {
@@ -287,24 +231,20 @@ public abstract class BaseTest {
         }
     }
 
-    private Token getTokenFromApiResponse(Playwright playwright) {
-        APIRequestContext context = playwright.request()
-                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
-        Credentials credentials = new Credentials(ProjectProperties.getEmail(), ProjectProperties.getPassword());
-        Token token = User.getTokenResponse(context, credentials).token();
-        context.dispose();
-
-        return token;
+    protected void attachVideoIfNeeded(Page page, String testId, boolean isNeedArtefacts) throws IOException {
+        Video video = page.video();
+        if (video != null) {
+            if (isNeedArtefacts) {
+                Path videoFilePath = Paths.get(testId + ".webm");
+                video.saveAs(videoFilePath);
+                Allure.getLifecycle().addAttachment(
+                        "video", "video/webm", "webm", Files.readAllBytes(videoFilePath));
+            }
+            video.delete();
+        }
     }
 
-    private APIRequestContext getApiRequestContext(Playwright playwright, Token token) {
-        return playwright.request()
-                .newContext(new APIRequest.NewContextOptions()
-                        .setBaseURL(ProjectProperties.getBaseURL())
-                        .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
-    }
-
-    private void attachVideoIfNeeded(Page page, String testId, int resultStatus) throws IOException {
+    protected void attachVideoIfNeeded(Page page, String testId, int resultStatus) throws IOException {
         Video video = page.video();
         if (video != null) {
             if (Set.of(ITestResult.FAILURE, ITestResult.SKIP).contains(resultStatus)) {
@@ -317,7 +257,7 @@ public abstract class BaseTest {
         }
     }
 
-    private String status(int code) {
+    protected String status(int code) {
         return switch (code) {
             case -1 -> "CREATED";
             case 1 -> "SUCCESS";
@@ -329,16 +269,16 @@ public abstract class BaseTest {
         };
     }
 
-    private record StorageState(Cookie[] cookies, Origin[] origins) {
+    protected record StorageState(Cookie[] cookies, Origin[] origins) {
     }
 
-    private record Origin(String origin, LocalStorage[] localStorage) {
+    protected record Origin(String origin, LocalStorage[] localStorage) {
     }
 
-    private record LocalStorage(String name, String value) {
+    protected record LocalStorage(String name, String value) {
     }
 
-    private record Response(int status, Map<String, String> headers, byte[] body) {
+    protected record Response(int status, Map<String, String> headers, byte[] body) {
 
     }
 }

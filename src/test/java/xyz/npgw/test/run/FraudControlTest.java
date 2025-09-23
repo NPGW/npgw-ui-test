@@ -1294,7 +1294,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .not().hasText(controlName);
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL.getControlName());

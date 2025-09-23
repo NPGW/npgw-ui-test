@@ -60,8 +60,10 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator trxIdClearIcon = getByRoleExact(AriaRole.BUTTON, "close chip");
 
     private final Locator npgwReferenceField = getByLabelExact("NPGW reference");
-    private final Locator npgwReferenceFieldClearIcon = getByRole(AriaRole.BUTTON, "clear input").first();
-
+    private final Locator npgwReferenceAcceptButton = npgwReferenceField.locator("..")
+            .locator("svg[data-icon='circle-check']");
+    private final Locator npgwReferenceFieldClearIcon = npgwReferenceField.locator("..")
+            .locator("svg[data-icon='circle-xmark']");
     private final Locator businessUnitReference = getByLabelExact("Business unit reference");
     private final Locator businessUnitReferenceClear = getByRole(AriaRole.BUTTON, "clear input").last();
 
@@ -299,9 +301,9 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    @Step("Click 'Trx Id' button")
-    public CurrentPageT clickTrxIdAppliedButton() {
-        trxIdAppliedButton.click();
+    @Step("Click NPGW reference acceptation button")
+    public CurrentPageT clickNpgwReferenceAcceptButton() {
+        npgwReferenceAcceptButton.click();
 
         return self();
     }
@@ -436,7 +438,11 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
                 double amount = Double.parseDouble(amountMatcher.group(2).replaceAll(",", ""));
                 String currency = amountMatcher.group(3);
                 String cardType = amountMatcher.group(4);
-                String status = amountMatcher.group(5);
+                String status = switch (amountMatcher.group(5)) {
+                    case "PARTIAL_CAPT" -> "PARTIAL_CAPTURE";
+                    case "PARTIAL_REFU" -> "PARTIAL_REFUND";
+                    default -> amountMatcher.group(5);
+                };
 
                 businessUnitReference = businessUnitReference + buCode;
 
@@ -448,7 +454,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
                         amount,
                         Currency.valueOf(currency),
                         CardType.valueOf(cardType),
-                        Status.valueOf(status.equals("PARTIAL_CAPT") ? "PARTIAL_CAPTURE" : status)
+                        Status.valueOf(status)
                 );
                 transactions.add(transaction);
 
