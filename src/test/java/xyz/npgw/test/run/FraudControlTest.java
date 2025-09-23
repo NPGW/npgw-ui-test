@@ -330,15 +330,6 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME);
 
-        Locator actionsListActive = superFraudControlPage
-                .getTableControls().getActionsList(FRAUD_CONTROL.getControlName());
-
-        Allure.step("Verify Actions list content on Control table for active control");
-        assertThat(actionsListActive).containsText("Edit control");
-        assertThat(actionsListActive).containsText("Deactivate control");
-        assertThat(actionsListActive).containsText("Delete control");
-        assertThat(actionsListActive).containsText("Connect control to business unit");
-
         Locator actionsListInactive = superFraudControlPage
                 .getTableControls().getActionsList(FRAUD_CONTROL_INACTIVE.getControlName());
 
@@ -347,6 +338,15 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(actionsListInactive).containsText("Activate control");
         assertThat(actionsListInactive).containsText("Delete control");
         assertThat(actionsListInactive).containsText("Connect control to business unit");
+
+        Locator actionsListActive = superFraudControlPage
+                .getTableControls().getActionsList(FRAUD_CONTROL.getControlName());
+
+        Allure.step("Verify Actions list content on Control table for active control");
+        assertThat(actionsListActive).containsText("Edit control");
+        assertThat(actionsListActive).containsText("Deactivate control");
+        assertThat(actionsListActive).containsText("Delete control");
+        assertThat(actionsListActive).containsText("Connect control to business unit");
     }
 
     @Test(dependsOnMethods = {"testBusinessUnitControlTableEntriesSorting"})

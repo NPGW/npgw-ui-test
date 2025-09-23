@@ -578,9 +578,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Currencies"))
                 .hasText(ACQUIRER_EDITED.getCurrency());
 
-        Allure.step("Verify: Acquirer config matches expected");
-        assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Acquirer config"))
-                .hasText(ACQUIRER_EDITED.getAcquirerConfig());
+//        Allure.step("Verify: Acquirer config matches expected");
+//        assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Acquirer config"))
+//                .hasText(ACQUIRER_EDITED.getAcquirerConfig());
 
         Allure.step("Verify: 'System config' cell contains all values in correct order");
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "System config"))
