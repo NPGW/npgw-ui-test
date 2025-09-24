@@ -12,14 +12,16 @@ public class EditAcquirerConfigDialog<ReturnPageT extends BaseModel>
 
     private final Locator saveButton = getByRole(AriaRole.BUTTON, "Save");
     private final Locator enterConfigArea = getByLabelExact("Enter the config");
+    private final ReturnPageT returnPage;
 
-    public EditAcquirerConfigDialog(Page page) {
+    public EditAcquirerConfigDialog(Page page, ReturnPageT returnPage) {
         super(page);
+        this.returnPage = returnPage;
     }
 
     @Override
     protected ReturnPageT getReturnPage() {
-        return (ReturnPageT) new SetupAcquirerMidDialog(getPage());
+        return returnPage;
     }
 
     @Step("Click on the 'Save' button")

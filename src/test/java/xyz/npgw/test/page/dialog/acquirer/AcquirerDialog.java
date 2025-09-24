@@ -101,7 +101,7 @@ public abstract class AcquirerDialog<CurrentDialogT extends AcquirerDialog<Curre
     public EditAcquirerConfigDialog<CurrentDialogT> clickEditAcquirerConfigButton() {
         editAcquirerConfigButton.click();
 
-        return new EditAcquirerConfigDialog<>(getPage());
+        return new EditAcquirerConfigDialog<>(getPage(), (CurrentDialogT) this);
     }
 
     @Step("Enter acquirer config '{acquirerConfig}'")
