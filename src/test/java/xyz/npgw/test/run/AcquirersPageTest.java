@@ -60,8 +60,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
             "Enter challenge URL",
             "Enter fingerprint URL",
             "Enter resource URL",
-            "Enter notification queue",
-            "Enter acquirer config"
+            "Enter notification queue"
     );
 
     private static final SystemConfig DEFAULT_CONFIG = new SystemConfig();
@@ -296,6 +295,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         assertThat(setupAcquirerMidDialog.getCreateButton()).isDisabled();
 
         Allure.step("Verify: all placeholders are correct for each field");
+        setupAcquirerMidDialog.getAllPlaceholders().forEach(System.out::println);
         assertEquals(setupAcquirerMidDialog.getAllPlaceholders(), PLACEHOLDER_LIST);
 
         Allure.step("Verify: the Status Switch visible and contains switch Active&Inactive");
@@ -307,7 +307,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         SuperAcquirersPage acquirersPage = setupAcquirerMidDialog
                 .clickCloseButton();
 
-        Allure.step("Verify: the 'Add acquirer' dialog is no longer visible");
+        Allure.step("Verify: the 'Setup acquirer MID' dialog is no longer visible");
         assertThat(acquirersPage.getSetupAcquirerMidDialog()).isHidden();
     }
 

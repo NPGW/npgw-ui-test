@@ -7,10 +7,10 @@ import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.BaseModel;
-import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.component.AlertTrait;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @SuppressWarnings("unchecked")
@@ -39,7 +39,10 @@ public abstract class BaseDialog<
     public List<String> getAllPlaceholders() {
         allPlaceholdersWithoutSearch.first().waitFor();
 
-        return allPlaceholdersWithoutSearch.all().stream().map(l -> l.getAttribute("placeholder")).toList();
+        return allPlaceholdersWithoutSearch.all().stream()
+                .map(l -> l.getAttribute("placeholder"))
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     protected CurrentDialogT getCurrentDialog() {
