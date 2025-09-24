@@ -453,7 +453,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .fillResourceUrlField(ACQUIRER.getSystemConfig().resourceUrl())
                 .fillNotificationQueueField(ACQUIRER.getSystemConfig().notificationQueue())
                 .clickCheckboxCurrency(ACQUIRER.getCurrency())
-                .fillAcquirerConfigField(ACQUIRER.getAcquirerConfig())
+                .clickEditAcquirerConfigButton()
+                .fillAcquirerConfigArea(ACQUIRER.getAcquirerConfig())
+                .clickSaveButton()
                 .clickCreateButton();
 
         Allure.step("Verify: The 'Add acquirer' dialog is no longer visible");
@@ -493,8 +495,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .hasText(ACQUIRER.getCurrency());
 
         Allure.step("Verify: Acquirer config matches expected");
-        assertThat(acquirersPage.getTable().getCell(acquirerRow, "Acquirer config"))
-                .hasText(ACQUIRER.getAcquirerConfig());
+        assertEquals(acquirersPage.getTable().getCellInputValue(acquirerRow, "Acquirer config"), ACQUIRER.getAcquirerConfig());
 
         Allure.step("Verify: 'System config' cell contains all values in correct order");
         assertThat(acquirersPage.getTable().getCell(acquirerRow, "System config"))

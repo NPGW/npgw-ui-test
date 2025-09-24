@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @SuppressWarnings("unchecked")
 public abstract class BaseDialog<
-        ReturnPageT extends BasePage,
+        ReturnPageT extends BaseModel,
         CurrentDialogT extends BaseDialog<ReturnPageT, CurrentDialogT>>
         extends BaseModel implements AlertTrait<CurrentDialogT> {
 
@@ -31,7 +31,7 @@ public abstract class BaseDialog<
 
     public BaseDialog(Page page) {
         super(page);
-        dialog.waitFor();
+//        dialog.waitFor();
     }
 
     protected abstract ReturnPageT getReturnPage();
