@@ -548,7 +548,9 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .fillFingerprintUrlField(ACQUIRER_EDITED.getSystemConfig().fingerprintUrl())
                 .fillResourceUrlField(ACQUIRER_EDITED.getSystemConfig().resourceUrl())
                 .fillNotificationQueueField(ACQUIRER_EDITED.getSystemConfig().notificationQueue())
-                .fillAcquirerConfigField(ACQUIRER_EDITED.getAcquirerConfig())
+                .clickEditAcquirerConfigButton()
+                .fillAcquirerConfigArea(ACQUIRER_EDITED.getAcquirerConfig())
+                .clickSaveButton()
                 .clickStatusRadiobutton(ACQUIRER_EDITED.getStatus())
                 .clickCheckboxCurrency(ACQUIRER_EDITED.getCurrency())
                 .clickSaveChangesButton();
@@ -580,8 +582,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .hasText(ACQUIRER_EDITED.getCurrency());
 
         Allure.step("Verify: Acquirer config matches expected");
-        assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "Acquirer config"))
-                .hasText(ACQUIRER_EDITED.getAcquirerConfig());
+        assertEquals(acquirersPage.getTable().getCellInputValue(editedAcquirerRow, "Acquirer config"),
+                ACQUIRER_EDITED.getAcquirerConfig());
 
         Allure.step("Verify: 'System config' cell contains all values in correct order");
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "System config"))
