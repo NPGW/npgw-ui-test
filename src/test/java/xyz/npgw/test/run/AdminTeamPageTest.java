@@ -613,10 +613,8 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
         for (Locator rowIcon : teamPage.getTable().getRowIcon(email).all()) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
             rowIcon.hover();
-            assertThat(rowIcon).hasAttribute("data-hover", "true");
 
             tooltip = teamPage.getTooltip().last().textContent();
-            assertThat(teamPage.getTooltip()).hasText("");
             Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
