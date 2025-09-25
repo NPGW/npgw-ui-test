@@ -495,7 +495,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .hasText(ACQUIRER.getCurrency());
 
         Allure.step("Verify: Acquirer config matches expected");
-        assertEquals(acquirersPage.getTable().getCellInputValue(acquirerRow, "Acquirer config"), ACQUIRER.getAcquirerConfig());
+        assertThat(acquirersPage.getTable().getCellInput(acquirerRow, "Acquirer config"))
+                .hasValue(ACQUIRER.getAcquirerConfig());
 
         Allure.step("Verify: 'System config' cell contains all values in correct order");
         assertThat(acquirersPage.getTable().getCell(acquirerRow, "System config"))
@@ -582,8 +583,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 .hasText(ACQUIRER_EDITED.getCurrency());
 
         Allure.step("Verify: Acquirer config matches expected");
-        assertEquals(acquirersPage.getTable().getCellInputValue(editedAcquirerRow, "Acquirer config"),
-                ACQUIRER_EDITED.getAcquirerConfig());
+        assertThat(acquirersPage.getTable().getCellInput(editedAcquirerRow, "Acquirer config"))
+                .hasValue(ACQUIRER_EDITED.getAcquirerConfig());
 
         Allure.step("Verify: 'System config' cell contains all values in correct order");
         assertThat(acquirersPage.getTable().getCell(editedAcquirerRow, "System config"))

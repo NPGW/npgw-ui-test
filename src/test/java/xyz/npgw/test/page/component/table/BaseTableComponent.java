@@ -261,8 +261,8 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
         return tooltip;
     }
 
-    public String getCellInputValue(Locator row, String columnHeader) {
-        return getCell(row, columnHeader).locator("input").inputValue();
+    public Locator getCellInput(Locator row, String columnHeader) {
+        return getCell(row, columnHeader).locator("input");
     }
 
     protected CurrentPageT getCurrentPage() {
