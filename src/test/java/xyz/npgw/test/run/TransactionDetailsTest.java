@@ -51,10 +51,15 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
                 .hasText(new String[]{"External ID", "E-Mail", "Name", "Address", "City", "State", "ZIP", "Country",
                         "Phone", "Date of birth"});
 
-        Allure.step("Verify: The Customer details labels");
-        assertThat(transactionDetailsDialog.getAcquirerDetailsLabels())
+        Allure.step("Verify: The Gateway labels");
+        assertThat(transactionDetailsDialog.getGatewayLabels())
                 .hasText(new String[]{"Response code", "Response message", "Auth code", "Acquirer reference", "Acquirer code",
                         "Acquirer MID", "Acquirer MCC"});
+
+        Allure.step("Verify: The Merchant labels");
+        assertThat(transactionDetailsDialog.getMerchantLabels())
+                .hasText(new String[]{"Business unit reference", "Business unit name", "Redirect URL Success",
+                        "Redirect URL Cancel", "Redirect URL Fail", "Notification URL"});
     }
 
     @Test
