@@ -1,6 +1,7 @@
 package xyz.npgw.test.run;
 
 import com.google.gson.Gson;
+import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
@@ -17,15 +18,24 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.client.TransactionResponse;
+import xyz.npgw.test.common.entity.Acquirer;
+import xyz.npgw.test.common.entity.AddMerchantAcquirerItem;
 import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.CardType;
+import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.Status;
+import xyz.npgw.test.common.entity.TempMerchantAcquirer;
 import xyz.npgw.test.common.entity.Transaction;
 import xyz.npgw.test.common.entity.Type;
+import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.entity.UserRole;
+import xyz.npgw.test.common.util.AuthTransactionUtils;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
+import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 import java.io.IOException;
@@ -652,4 +662,87 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getTable().getColumnHeaders())
                 .hasText(new String[]{status, creationDate, amount, currency, "Actions"});
     }
+
+    @Test
+    @TmsLink("1280")
+    @Epic("Transactions")
+    @Feature("Actions")
+    @Description("Cancel an authorized transaction and verify the updated status in table and details dialog.")
+    public void testCancelAuthorizedTransaction() {
+        final String company = "%s company for authorized transaction".formatted(RUN_ID);
+        final String merchant = "%s new merch".formatted(RUN_ID);
+        final String acquirerName = "%s acquirer for authorized transactions".formatted(RUN_ID);
+        final Acquirer acquirer = Acquirer.builder()
+                .acquirerName(acquirerName)
+                .acquirerDisplayName(acquirerName)
+                .currencyList(new Currency[]{Currency.EUR})
+                .build();
+        final User admin = User.builder()
+                .companyName(company)
+                .userRole(UserRole.ADMIN)
+                .email("%s.admin.new@email.com".formatted(RUN_ID))
+                .build();
+
+        TestUtils.createCompany(getApiRequestContext(), company);
+
+        User.create(getApiRequestContext(), admin);
+        User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
+
+        BusinessUnit businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), company, merchant);
+        String apiKey = BusinessUnit.getNewApikey(
+                getApiRequestContext(getPlaywright(), admin.getCredentials()),
+                company,
+                businessUnit);
+
+        APIRequestContext apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
+
+        TestUtils.createAcquirer(getApiRequestContext(), acquirer);
+        AddMerchantAcquirerItem.create(getApiRequestContext(), businessUnit, acquirer);
+
+        TransactionResponse transactionResponse = AuthTransactionUtils.createAuthorisedTransaction(
+                getPlaywright(), apiRequestContext, 2000, businessUnit, "AUTHORISED1234");
+
+        String transactionId = transactionResponse.transactionId();
+
+        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickTransactionsLink();
+
+        getPage().reload();
+
+        transactionsPage
+                .getSelectCompany().selectCompany(company)
+                .getSelectBusinessUnit().selectBusinessUnit(merchant);
+
+        transactionsPage
+                .getTable().clickCancelTransactionButton(transactionId)
+                .clickCancelButton();
+
+        Allure.step("Verify: Success message is shown");
+        assertThat(transactionsPage.getAlert().getSuccessMessage())
+                .containsText("SUCCESSTransaction was cancelled successfully");
+
+        getPage().waitForTimeout(3000);
+        transactionsPage
+                .clickRefreshDataButton();
+
+        Allure.step("Verify: transaction status in the table is changed");
+        assertThat(transactionsPage.getTable().getCellByTransactionId(transactionId, "Status"))
+                .hasText("CANCELLED");
+
+        TransactionDetailsDialog transactionDetailsDialog = transactionsPage
+                .getTable().clickTransactionId(transactionId);
+
+        Allure.step("Verify: 'Status' value is the same as in the table");
+        assertThat(transactionDetailsDialog.getStatusValue()).hasText("CANCELLED");
+
+        Allure.step("Verify: final 'Status' value is the same in lifecycle as in the table");
+        assertThat(transactionDetailsDialog.getLastLifecycleStatus()).hasText("CANCELLED");
+
+        TempMerchantAcquirer.delete(getApiRequestContext(), businessUnit.merchantId());
+        Acquirer.delete(getApiRequestContext(), acquirerName);
+        User.delete(getApiRequestContext(), admin.getEmail());
+        BusinessUnit.delete(getApiRequestContext(), company, businessUnit);
+        Company.delete(getApiRequestContext(), company);
+    }
 }
+
