@@ -73,7 +73,7 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
     @Step("Click 'List icon' button")
     public void clickListIconButton(String controlName) {
         Locator button = getRow(controlName).locator("//*[@data-icon='list']/..");
-        assertThat(button).hasAttribute("aria-expanded", "true");
+        assertThat(button).hasAttribute("aria-expanded", "false");
         button.waitFor();
         button.click();
         assertThat(button).hasAttribute("aria-expanded", "true");
