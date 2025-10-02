@@ -312,6 +312,7 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
+                .getAlert().clickCloseButton()
                 .clickConnectAcquirerMidButton()
                 .checkInactiveRadiobutton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerDisplayName())
@@ -324,10 +325,10 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify that new Merchant acquirer is displayed and has Inactive status");
         assertThat(gatewayPage.getTable().getCell(1, "Status")).hasText("Inactive");
 
-        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
-                .clickDeleteButton();
-        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
-                .clickDeleteButton();
+//        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
+//                .clickDeleteButton();
+//        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
+//                .clickDeleteButton();
     }
 
     @Test
