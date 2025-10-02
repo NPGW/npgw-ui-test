@@ -526,7 +526,6 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     }
 
     private void dragAndDrop(Locator source, Locator target) {
-        getPage().waitForTimeout(500);
         source.dragTo(target);
     }
 
