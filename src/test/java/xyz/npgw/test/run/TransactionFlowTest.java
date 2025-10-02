@@ -8,7 +8,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.base.BaseTestForLogout;
 import xyz.npgw.test.common.entity.Acquirer;
 import xyz.npgw.test.common.entity.AddMerchantAcquirerItem;
 import xyz.npgw.test.common.entity.BusinessUnit;
@@ -23,7 +23,7 @@ import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class TransactionFlowTest extends BaseTestForSingleLogin {
+public class TransactionFlowTest extends BaseTestForLogout {
 
     private final String company = "A transaction flow";
     private final String merchant = "The merchant";
@@ -61,8 +61,6 @@ public class TransactionFlowTest extends BaseTestForSingleLogin {
 
         TestUtils.createAcquirer(getApiRequestContext(), acquirer);
         AddMerchantAcquirerItem.create(getApiRequestContext(), businessUnit, acquirer);
-
-        super.openSiteAccordingRole();
     }
 
     @Test
