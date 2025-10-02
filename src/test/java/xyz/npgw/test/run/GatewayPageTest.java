@@ -57,8 +57,13 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private static final String COMPANY_NAME_DELETION_TEST = "%s company 112173".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME_DELETION_TEST = "BU-1";
-    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
-            "MerchantAcquirer"};
+    private final String[] expectedBusinessUnitsList = new String[]{
+            "Merchant 0",
+            "Merchant 1",
+            "MerchantAcquirer",
+            "testSelectAcquirer",
+            "testMoveMerchantAcquirerDownAndUpButtons",
+    };
 
     @BeforeClass
     @Override
@@ -239,13 +244,14 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[3])
                 .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
-                .clickConnectButton();
+                .clickConnectButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
-        assertThat(page.getTable().getCell(0, "Business unit")).hasText(expectedBusinessUnitsList[2]);
+        assertThat(page.getTable().getCell(0, "Business unit")).hasText(expectedBusinessUnitsList[3]);
         assertThat(page.getTable().getCell(0, "Acquirer code")).hasText(ACQUIRER.getAcquirerCode());
         assertThat(page.getTable().getCell(0, "Acquirer config")).hasText(ACQUIRER.getAcquirerConfig());
         assertThat(page.getTable().getCell(0, "Status")).hasText("Active");
@@ -267,10 +273,11 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[4])
                 .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
+                .getAlert().clickCloseButton()
                 .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerDisplayName())
                 .clickConnectButton()
@@ -291,11 +298,6 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         Allure.step("Check that the first created acquirer priority is 0 again");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer MID")).hasText(ACQUIRER.getAcquirerDisplayName());
         assertThat(gatewayPage.getTable().getCell(1, "Acquirer MID")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
-
-        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
-                .clickDeleteButton();
-        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
-                .clickDeleteButton();
     }
 
     @Test
