@@ -102,10 +102,10 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
                 getPlaywright(), apiRequestContext, 3456, businessUnit, "REF0FULL3FAILED");
 
         SaleTransactionUtils.createFailedFullRefundAttemptTransaction(
-        getPlaywright(), apiRequestContext, 4567, businessUnit, "REFUND0FULLFAILED");
+                getPlaywright(), apiRequestContext, 4567, businessUnit, "REFUND0FULLFAILED");
 
         SaleTransactionUtils.createOneFailedPartialRefundTransaction(
-        getPlaywright(), apiRequestContext, 5678, businessUnit, "REFUND0HALFFAILED");
+                getPlaywright(), apiRequestContext, 5678, businessUnit, "REFUND0HALFFAILED");
 
         //---
 
