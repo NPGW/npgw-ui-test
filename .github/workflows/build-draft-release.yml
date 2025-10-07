@@ -52,10 +52,9 @@ jobs:
 
       - name: Upload built JAR to draft release
         run: |
-          RELEASE_VERSION=${{ env.RELEASE_VERSION }}
-          ARTIFACT=$(ls target/*.jar | head -n 1)
-          echo "Uploading artifact: $ARTIFACT"
-          gh release upload "$RELEASE_VERSION" "$ARTIFACT" --clobber
+          ARTIFACT=$(ls target/*-with-dependencies.jar | head -n 1)
+          echo "Uploading build artifact: $ARTIFACT"
+          gh release upload ${{ env.RELEASE_VERSION }} "$ARTIFACT" --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
