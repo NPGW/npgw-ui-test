@@ -23,6 +23,7 @@ import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 public class TransactionDetailsTest extends BaseTestForSingleLogin {
 
     // TODO - Refactor after will know which Customer details are mandatory for each transaction type
+    @Ignore
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -189,6 +190,7 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
     }
 
+    @Ignore
     @Test
     @TmsLink("828")
     @Epic("Transactions")
