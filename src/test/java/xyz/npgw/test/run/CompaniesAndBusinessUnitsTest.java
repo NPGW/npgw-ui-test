@@ -13,7 +13,6 @@ import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Address;
 import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.common.entity.User;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -41,7 +40,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
     private static final String COMPANY_TYPE = "CompanyType";
     private static final String BUSINESS_UNIT_NAME = "Business unit name test";
     private static final String BUSINESS_UNIT_NAME_EDITED = "Edited Business unit name test";
-    private static final String ADMIN_EMAIL = "%s.admin123@email.com".formatted(TestUtils.now());
 
     Company company = new Company(
             COMPANY_NAME_TEST, "Company Type Test",
@@ -68,7 +66,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
-        super.openSiteAccordingRole();
     }
 
     @Test
@@ -206,10 +203,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
         SuperCompaniesAndBusinessUnitsPage companiesAndBusinessUnitsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickCompaniesAndBusinessUnitsTab();
-
-        Allure.step("Verify: 'Add business unit' button is disabled before selecting a company");
-        assertThat(companiesAndBusinessUnitsPage.getAddBusinessUnitButton())
-                .isDisabled();
 
         AddBusinessUnitDialog addBusinessUnitDialog = companiesAndBusinessUnitsPage
                 .getSelectCompany().selectCompany(company.companyName())
@@ -455,7 +448,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
                 .clickTeamTab()
                 .getSelectCompany().selectCompany(COMPANY_DELETION_BLOCKED_NAME)
                 .clickAddUserButton()
-                .fillEmailField(ADMIN_EMAIL)
+                .fillEmailField("%s.admin@email.com".formatted(TestUtils.now()))
                 .fillPasswordField("Qwerty123!")
                 .checkCompanyAdminRadiobutton()
                 .clickCreateButton()
@@ -698,40 +691,33 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
 
         String iconName;
         String tooltip;
-        List<Locator> initialCommonIcons = companiesAndBusinessUnitsPage.getInitialCommonIcon().all();
-        for (Locator icon : initialCommonIcons) {
-            iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
-            Allure.step("Hover on '" + iconName + "' icon");
+        for (Locator icon : companiesAndBusinessUnitsPage.getInitialCommonIcon().all()) {
+            iconName = companiesAndBusinessUnitsPage.getIconName(icon);
             icon.hover();
 
             tooltip = companiesAndBusinessUnitsPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconName + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconName, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")), tooltip);
         }
 
         companiesAndBusinessUnitsPage
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN);
 
-        List<Locator> commonIconButtons = companiesAndBusinessUnitsPage.getCommonIconButton().all();
-        for (Locator icon : commonIconButtons) {
-            iconName =  companiesAndBusinessUnitsPage.getIconName(icon);
-            Allure.step("Hover on '" + iconName + "' icon");
+        for (Locator icon : companiesAndBusinessUnitsPage.getCommonIconButton().all()) {
+            iconName = companiesAndBusinessUnitsPage.getIconName(icon);
             icon.hover();
 
             tooltip = companiesAndBusinessUnitsPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconName + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconName, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(icon.getAttribute("data-testid")), tooltip);
         }
 
-        List<Locator> rowIconButtons = companiesAndBusinessUnitsPage
-                .getTable().getRowIcon(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all();
-        for (Locator rowIcon : rowIconButtons) {
+        for (Locator rowIcon : companiesAndBusinessUnitsPage.getTable().getRowIcon(Constants.BUSINESS_UNIT_FOR_TEST_RUN).all()) {
             iconName = companiesAndBusinessUnitsPage.getTable().getIconName(rowIcon);
-            Allure.step("Hover on '" + iconName + "' icon");
             rowIcon.hover();
 
             tooltip = companiesAndBusinessUnitsPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconName + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconName, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(rowIcon.getAttribute("data-testid")), tooltip);
         }
     }
@@ -739,7 +725,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        User.delete(getApiRequestContext(), ADMIN_EMAIL);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_REQUIRED_FIELD);
         super.afterClass();

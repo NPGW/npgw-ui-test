@@ -23,6 +23,7 @@ public class TransactionDetailsDialog extends BaseDialog<SuperTransactionsPage, 
 
     private final Locator paymentLifecycleTable = getByLabelExact("payment lifecycle table");
     private final Locator paymentLifecycleType = paymentLifecycleTable.getByRole(AriaRole.ROWHEADER);
+    private final Locator lastLifecycleStatus = paymentLifecycleTable.locator("[data-first='true'] span");
 
     private final Locator cardDetailsRegion = getByRole(AriaRole.REGION, "Card details");
     private final Locator cardDetailsLabels = cardDetailsRegion.locator(".labelText");
@@ -32,6 +33,12 @@ public class TransactionDetailsDialog extends BaseDialog<SuperTransactionsPage, 
 
     private final Locator acquirerDetailsRegion = getByRole(AriaRole.REGION, "Acquirer details");
     private final Locator acquirerDetailsLabels = acquirerDetailsRegion.locator(".labelText");
+
+    private final Locator gatewayRegion = getByRole(AriaRole.REGION, "Gateway");
+    private final Locator gatewayLabels = gatewayRegion.locator(".labelText");
+
+    private final Locator merchantRegion = getByRole(AriaRole.REGION, "Merchant");
+    private final Locator merchantLabels = merchantRegion.locator(".labelText");
 
     private final Locator paymentMethodValue = parameter("Payment method", CARD_DETAILS_SECTION);
     private final Locator cardHolderValue = parameter("Card holder", CARD_DETAILS_SECTION);

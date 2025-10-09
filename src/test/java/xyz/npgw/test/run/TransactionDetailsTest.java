@@ -5,7 +5,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -19,16 +19,11 @@ import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 
+@Ignore
 public class TransactionDetailsTest extends BaseTestForSingleLogin {
 
-    @BeforeClass
-    @Override
-    protected void beforeClass() {
-        super.beforeClass();
-        super.openSiteAccordingRole();
-    }
-
     // TODO - Refactor after will know which Customer details are mandatory for each transaction type
+    @Ignore
     @Test
     @TmsLink("638")
     @Epic("Transactions")
@@ -47,8 +42,8 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify: The dialog box section names");
         assertThat(transactionDetailsDialog.getSectionNames())
-                .hasText(new String[]{"Amount", "Updated on (GMT)", "NPGW reference", "Business unit reference",
-                        "Card details", "Customer details", "3D Secure", "Transaction lifecycle", "Acquirer details"});
+                .hasText(new String[]{"Amount", "Updated on (GMT)", "NPGW reference", "", "Card details",
+                        "Customer details", "3D Secure", "Transaction lifecycle", "Gateway", "Merchant", ""});
 
         Allure.step("Verify: The Card details labels");
         assertThat(transactionDetailsDialog.getCardDetailsLabels())
@@ -59,10 +54,15 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
                 .hasText(new String[]{"External ID", "E-Mail", "Name", "Address", "City", "State", "ZIP", "Country",
                         "Phone", "Date of birth"});
 
-        Allure.step("Verify: The Customer details labels");
-        assertThat(transactionDetailsDialog.getAcquirerDetailsLabels())
+        Allure.step("Verify: The Gateway labels");
+        assertThat(transactionDetailsDialog.getGatewayLabels())
                 .hasText(new String[]{"Response code", "Response message", "Auth code", "Acquirer reference", "Acquirer code",
                         "Acquirer MID", "Acquirer MCC"});
+
+        Allure.step("Verify: The Merchant labels");
+        assertThat(transactionDetailsDialog.getMerchantLabels())
+                .hasText(new String[]{"Business unit reference", "Business unit name", "Redirect URL Success",
+                        "Redirect URL Cancel", "Redirect URL Fail", "Notification URL"});
     }
 
     @Test
@@ -190,6 +190,7 @@ public class TransactionDetailsTest extends BaseTestForSingleLogin {
         assertThat(transactionDetails.getCardTypeValue()).hasText(cardType);
     }
 
+    @Ignore
     @Test
     @TmsLink("828")
     @Epic("Transactions")

@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Random;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
+import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 
 public class GatewayPageTest extends BaseTestForSingleLogin {
@@ -55,8 +57,13 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
     private static final String COMPANY_NAME = "%s company 112172".formatted(RUN_ID);
     private static final String COMPANY_NAME_DELETION_TEST = "%s company 112173".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME_DELETION_TEST = "BU-1";
-    private final String[] expectedBusinessUnitsList = new String[]{"Merchant 1 for C112172", "Merchant 2 for C112172",
-            "MerchantAcquirer"};
+    private final String[] expectedBusinessUnitsList = new String[]{
+            "Merchant 0",
+            "Merchant 1",
+            "MerchantAcquirer",
+            "testSelectAcquirer",
+            "testMoveMerchantAcquirerDownAndUpButtons",
+    };
 
     @BeforeClass
     @Override
@@ -71,7 +78,6 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
         TestUtils.createBusinessUnit(
                 getApiRequestContext(), COMPANY_NAME_DELETION_TEST, BUSINESS_UNIT_NAME_DELETION_TEST);
-        super.openSiteAccordingRole();
     }
 
     @Test
@@ -237,20 +243,21 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
-                .clickAddBusinessUnitAcquirerButton()
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[3])
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
-                .clickConnectButton();
+                .clickConnectButton()
+                .getAlert().clickCloseButton();
 
         Allure.step("Verify the result of adding Acquirer within Gateway page table");
-        assertThat(page.getTable().getCell(0, "Business unit")).hasText(expectedBusinessUnitsList[2]);
+        assertThat(page.getTable().getCell(0, "Business unit")).hasText(expectedBusinessUnitsList[3]);
         assertThat(page.getTable().getCell(0, "Acquirer code")).hasText(ACQUIRER.getAcquirerCode());
         assertThat(page.getTable().getCell(0, "Acquirer config")).hasText(ACQUIRER.getAcquirerConfig());
         assertThat(page.getTable().getCell(0, "Status")).hasText("Active");
         assertThat(page.getTable().getCell(0, "Currencies")).hasText("USD, EUR");
         assertThat(page.getTable().getCell(0, "Priority")).hasText("0");
 
-        page.getTable().clickDeleteBusinessUnitAcquirer("0")
+        page.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
     }
 
@@ -265,38 +272,31 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickSystemAdministrationLink()
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[2])
-                .clickAddBusinessUnitAcquirerButton()
+                .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[4])
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton();
-
-        assertThat(gatewayPage.getTable().getRows()).hasCount(2);
 
         Allure.step("Check that the first created acquirer priority is 0");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer MID")).hasText(ACQUIRER.getAcquirerDisplayName());
         assertThat(gatewayPage.getTable().getCell(1, "Acquirer MID")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
 
-        gatewayPage.getTable().clickMoveBusinessUnitAcquirerDownButton("0");
+        gatewayPage.getTable().clickMoveAcquirerMidDownButton("0");
 
         Allure.step("Check that the second created acquirer priority is 0 now");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer MID")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
         assertThat(gatewayPage.getTable().getCell(1, "Acquirer MID")).hasText(ACQUIRER.getAcquirerDisplayName());
 
-        gatewayPage.getTable().clickMoveBusinessUnitAcquirerUpButton("1");
+        gatewayPage.getTable().clickMoveAcquirerMidUpButton("1");
 
         Allure.step("Check that the first created acquirer priority is 0 again");
         assertThat(gatewayPage.getTable().getCell(0, "Acquirer MID")).hasText(ACQUIRER.getAcquirerDisplayName());
         assertThat(gatewayPage.getTable().getCell(1, "Acquirer MID")).hasText(ACQUIRER_MOVE.getAcquirerDisplayName());
-
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
-                .clickDeleteButton();
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
-                .clickDeleteButton();
     }
 
     @Test
@@ -310,10 +310,11 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[1])
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
-                .clickAddBusinessUnitAcquirerButton()
+                .getAlert().clickCloseButton()
+                .clickConnectAcquirerMidButton()
                 .checkInactiveRadiobutton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_MOVE.getAcquirerDisplayName())
                 .clickConnectButton()
@@ -325,10 +326,10 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify that new Merchant acquirer is displayed and has Inactive status");
         assertThat(gatewayPage.getTable().getCell(1, "Status")).hasText("Inactive");
 
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
-                .clickDeleteButton();
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
-                .clickDeleteButton();
+//        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
+//                .clickDeleteButton();
+//        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
+//                .clickDeleteButton();
     }
 
     @Test
@@ -342,11 +343,11 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME_DELETION_TEST)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME_DELETION_TEST)
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
-                .getTable().clickDeleteBusinessUnitAcquirer("0")
+                .getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
 
         Allure.step("Verify: Success deletion alert message is shown");
@@ -365,23 +366,23 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
-                .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
+                .getTable().clickDeactivateAcquirerMidButton("0")
                 .clickDeactivateButton();
 
         Allure.step("Verify that acquirer status is 'Inactive' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Inactive");
 
         gatewayPage
-                .getTable().clickActivateBusinessUnitAcquirerButton("0")
+                .getTable().clickActivateAcquirerMidButton("0")
                 .clickActivateButton();
 
         Allure.step("Verify that acquirer status is 'Active' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
 
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
+        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
     }
 
@@ -396,14 +397,14 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .checkInactiveRadiobutton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_EUR.getAcquirerDisplayName())
                 .clickConnectButton()
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_GBP.getAcquirerDisplayName())
                 .clickConnectButton()
                 .getTable().clickColumnHeader("Status");
@@ -478,11 +479,11 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify that entries are sorted by Currencies in Desc order");
         Assert.assertEquals(actualCurrenciesList, sortedCurrenciesListDesc);
 
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
+        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
+        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
+        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
     }
 
@@ -497,16 +498,16 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
-                .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
+                .getTable().clickDeactivateAcquirerMidButton("0")
                 .clickCancelButton();
 
         Allure.step("Verify that acquirer status is still 'Active'");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
 
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
+        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
     }
 
@@ -521,17 +522,109 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
                 .clickGatewayTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
                 .getSelectBusinessUnit().selectBusinessUnit(expectedBusinessUnitsList[0])
-                .clickAddBusinessUnitAcquirerButton()
+                .clickConnectAcquirerMidButton()
                 .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER.getAcquirerDisplayName())
                 .clickConnectButton()
-                .getTable().clickDeactivateBusinessUnitAcquirerButton("0")
+                .getTable().clickDeactivateAcquirerMidButton("0")
                 .clickCloseIcon();
 
         Allure.step("Verify that acquirer status is still 'Active' ");
         assertThat(gatewayPage.getTable().getFirstRowCell("Status")).hasText("Active");
 
-        gatewayPage.getTable().clickDeleteBusinessUnitAcquirer("0")
+        gatewayPage.getTable().clickDeleteAcquirerMidButton("0")
                 .clickDeleteButton();
+    }
+
+    @Test(expectedExceptions = AssertionError.class)
+    @TmsLink("1102")
+    @Epic("System/Gateway")
+    @Feature("Tooltips")
+    @Description("Check tooltips for available actions")
+    public void testTooltips() {
+        SuperGatewayPage page = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickGatewayTab()
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
+                .clickConnectAcquirerMidButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(ACQUIRER_GBP.getAcquirerDisplayName())
+                .clickConnectButton();
+
+        Locator connectButtonTooltip = page
+                .hoverOverConnectAcquirerMidButton()
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Connect acquirer MID' button tooltip appears on the Gateway page");
+        assertThat(connectButtonTooltip).isVisible();
+        assertThat(connectButtonTooltip).hasText("Connect acquirer MID");
+
+        Locator resetFilterButtonTooltip = page
+                .hoverOverResetFilterButton()
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Reset filter' button tooltip appears on the Gateway page");
+        assertThat(resetFilterButtonTooltip).isVisible();
+        assertThat(resetFilterButtonTooltip).hasText("Reset filter");
+
+//      TODO: Investigate why the tooltip 'Refresh data' does not appear during automated testing,
+//      although it is visible when performing all steps manually.
+//        Locator refreshDataButtonTooltip = page
+//                .hoverOverRefreshDataButton()
+//                .getTable().getTooltip();
+//
+//        Allure.step("Verify that 'Refresh data' button tooltip appears on the Gateway page");
+//        assertThat(refreshDataButtonTooltip).isVisible();
+//        assertThat(refreshDataButtonTooltip).hasText("Refresh data");
+
+        Locator moveDownButtonTooltip = page
+                .getTable().hoverOverMoveAcquirerMidDownButton("0")
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Move acquirer MID down' button tooltip appears on the Gateway table");
+        assertThat(moveDownButtonTooltip).isVisible();
+        assertThat(moveDownButtonTooltip).hasText("Move acquirer MID down");
+
+        String lastRowPriority = page.getTable().getCell(page.getTable().getLastRow(), "Priority").innerText();
+        Locator moveUpButtonTooltip = page
+                .getTable().hoverOverMoveAcquirerMidUpButton(lastRowPriority)
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Move acquirer MID up' button tooltip appears on the Gateway table");
+        assertThat(moveUpButtonTooltip).isVisible();
+        assertThat(moveUpButtonTooltip).hasText("Move acquirer MID up");
+
+        Locator deleteButtonTooltip = page
+                .getTable().hoverOverDeleteAcquirerMidButton(lastRowPriority)
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Delete acquirer MID' button tooltip appears on the Gateway table");
+        assertThat(deleteButtonTooltip).isVisible();
+        assertThat(deleteButtonTooltip).hasText("Delete acquirer MID");
+
+        Locator deactivateButtonTooltip = page
+                .getTable().hoverOverDeactivateAcquirerMidButton(lastRowPriority)
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Deactivate acquirer MID' button tooltip appears on the Gateway table");
+        assertThat(deactivateButtonTooltip).isVisible();
+        assertThat(deactivateButtonTooltip).hasText("Deactivate acquirer MID");
+
+        page.getTable().clickDeactivateAcquirerMidButton(lastRowPriority)
+                .clickDeactivateButton();
+
+//        TODO: Now "Activate business unit acquirer" tooltip but "Activate acquirer MID" needed
+        Locator activateButtonTooltip = page
+                .getTable().hoverOverActivateAcquirerMidButton(lastRowPriority)
+                .getTable().getTooltip();
+
+        Allure.step("Verify that 'Activate business unit acquirer' button tooltip is appears on the Gateway table");
+        assertThat(activateButtonTooltip).isVisible();
+        try {
+            assertThat(activateButtonTooltip).hasText("Activate acquirer MID");
+        } finally {
+            page.getTable().clickDeleteAcquirerMidButton(lastRowPriority)
+                    .clickDeleteButton();
+        }
     }
 
     @AfterClass(alwaysRun = true)

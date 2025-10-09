@@ -44,7 +44,6 @@ public class TeamPageTest extends BaseTestForSingleLogin {
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
-        super.openSiteAccordingRole();
     }
 
     @Test
@@ -606,22 +605,20 @@ public class TeamPageTest extends BaseTestForSingleLogin {
         List<Locator> panelIcons = teamPage.getCommonPanelIcon().all();
         for (Locator icon : panelIcons) {
             iconAttributeValue = icon.getAttribute("data-icon");
-            Allure.step("Hover on '" + iconAttributeValue + "' icon");
             icon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 
         List<Locator> rowIcons = teamPage.getTable().getRowIcon(email).all();
         for (Locator rowIcon : rowIcons) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
-            Allure.step("Hover on '" + iconAttributeValue + "' icon");
             rowIcon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 
@@ -634,11 +631,10 @@ public class TeamPageTest extends BaseTestForSingleLogin {
 
         for (Locator rowIcon : teamPage.getTable().getRowIcon(email).all()) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
-            Allure.step("Hover on " + iconAttributeValue + " icon");
             rowIcon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over " + iconAttributeValue + " appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 

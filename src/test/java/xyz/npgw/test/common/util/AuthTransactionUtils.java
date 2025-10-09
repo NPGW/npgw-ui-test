@@ -33,6 +33,10 @@ public class AuthTransactionUtils {
         TransactionResponse transactionResponse = createPendingTransaction(
                 request, amount, businessUnit, externalTransactionId);
 
+        if (transactionResponse.paymentUrl() == null) {
+            throw new RuntimeException("create pending AUTH transaction returned null paymentUrl");
+        }
+
         TestUtils.pay(playwright, transactionResponse);
 
         return Transaction.getTransactionById(request, transactionResponse);
@@ -89,6 +93,58 @@ public class AuthTransactionUtils {
                 playwright, request, amount, businessUnit, externalTransactionId);
 
         Transaction.capture(request, transactionResponse, amount / 2);
+
+        return WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
+    }
+
+    @SneakyThrows
+    public static TransactionResponse createPartialCaptureByTwoPartialCaptureTransaction(Playwright playwright, APIRequestContext request,
+                                                                                         int amount, BusinessUnit businessUnit,
+                                                                                         String externalTransactionId) {
+
+        TransactionResponse transactionResponse = createAuthorisedTransaction(
+                playwright, request, amount, businessUnit, externalTransactionId);
+
+        Transaction.capture(request, transactionResponse, amount / 5);
+
+        WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
+
+        Transaction.capture(request, transactionResponse, amount / 3);
+
+        return WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
+    }
+
+    @SneakyThrows
+    public static TransactionResponse createPartialCaptureByThreePartialCaptureTransaction(Playwright playwright, APIRequestContext request,
+                                                                                           int amount, BusinessUnit businessUnit,
+                                                                                           String externalTransactionId) {
+
+        TransactionResponse transactionResponse = createAuthorisedTransaction(
+                playwright, request, amount, businessUnit, externalTransactionId);
+
+        Transaction.capture(request, transactionResponse, amount / 2);
+
+        WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
+
+        Transaction.capture(request, transactionResponse, amount / 8);
+
+        WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
+
+        Transaction.capture(request, transactionResponse, amount / 3);
+
+        return WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
+    }
+
+    //only for settled transactions
+    @SneakyThrows
+    public static TransactionResponse createFailedAttemptPartialRefundTransaction(Playwright playwright, APIRequestContext request,
+                                                                                  int amount, BusinessUnit businessUnit,
+                                                                                  String externalTransactionId) {
+
+        TransactionResponse transactionResponse = createPartialCaptureTransaction(
+                playwright, request, amount, businessUnit, externalTransactionId);
+
+        Transaction.refundCapture(request, transactionResponse, transactionResponse.operationList()[0].operationId());
 
         return WaitUtils.waitUntil(request, transactionResponse, Status.PARTIAL_CAPTURE);
     }

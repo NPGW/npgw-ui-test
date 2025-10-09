@@ -2,6 +2,7 @@ package xyz.npgw.test.page.component.table;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
 import xyz.npgw.test.page.dialog.control.ActivateControlDialog;
 import xyz.npgw.test.page.dialog.control.ConnectControlToBusinessUnitDialog;
@@ -10,7 +11,11 @@ import xyz.npgw.test.page.dialog.control.DeleteControlDialog;
 import xyz.npgw.test.page.dialog.control.EditControlDialog;
 import xyz.npgw.test.page.system.SuperFraudControlPage;
 
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
 public class ControlsTableComponent extends BaseTableComponent<SuperFraudControlPage> {
+
+    private final Locator actionsList = getByRole(AriaRole.DIALOG);
 
     public ControlsTableComponent(Page page, SuperFraudControlPage currentPage) {
         super(page, currentPage,
@@ -23,54 +28,24 @@ public class ControlsTableComponent extends BaseTableComponent<SuperFraudControl
         return new SuperFraudControlPage(getPage());
     }
 
-    @Step("Hover over Edit Control icon to get Tooltip")
-    public SuperFraudControlPage hoverOverEditIcon(String controlName) {
-        Locator row = getRow(controlName);
-        row.hover();
-        row.getByTestId("EditControlButton").hover();
+    @Step("Get Fraud Control available actions list")
+    public Locator getActionsList(String controlName) {
+        clickListIconButton(controlName);
 
-        return getCurrentPage();
-    }
+        actionsList.waitFor();
 
-    @Step("Hover over Deactivate Control icon to get Tooltip")
-    public SuperFraudControlPage hoverOverDeactivateControlIcon(String controlName) {
-        Locator row = getRow(controlName);
-        row.hover();
-        row.locator("//*[@data-icon='ban']/..").hover();
-
-        return getCurrentPage();
-    }
-
-    @Step("Hover over Activate Control icon to get Tooltip")
-    public SuperFraudControlPage hoverOverActivateControlIcon(String controlName) {
-        Locator row = getRow(controlName);
-        row.hover();
-        row.locator("//*[@data-icon='check']/..").hover();
-
-        return getCurrentPage();
-    }
-
-    @Step("Hover over Delete Control icon to get Tooltip")
-    public SuperFraudControlPage hoverOverDeleteIcon(String controlName) {
-        Locator row = getRow(controlName);
-        row.hover();
-        row.getByTestId("DeleteControlButton").hover();
-
-        return getCurrentPage();
-    }
-
-    @Step("Hover over Connect Control icon to get Tooltip")
-    public SuperFraudControlPage hoverOverConnectControlIcon(String controlName) {
-        Locator row = getRow(controlName);
-        row.hover();
-        row.getByTestId("ConnectControlButton").hover();
-
-        return getCurrentPage();
+        return actionsList;
     }
 
     @Step("Click 'List icon' button")
     public void clickListIconButton(String controlName) {
-        getRow(controlName).locator("//*[@data-icon='list']/..").click();
+        Locator button = getRow(controlName).locator("//*[@data-icon='list']/..");
+        assertThat(button).hasAttribute("aria-expanded", "false");
+        button.scrollIntoViewIfNeeded();
+        getPage().waitForTimeout(500);
+        button.waitFor();
+        button.click();
+        assertThat(button).hasAttribute("aria-expanded", "true");
     }
 
     @Step("Click 'Edit control' button")

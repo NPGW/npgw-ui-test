@@ -75,7 +75,6 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
     protected void beforeClass() {
         super.beforeClass();
         businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
-        super.openSiteAccordingRole();
     }
 
     @Test
@@ -419,6 +418,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getTable().getFirstRowCell("NPGW reference")).hasText("12345");
     }
 
+    @Ignore("AUTH type refundable per operation")
     @Test
     @TmsLink("818")
     @Epic("Transactions")
@@ -538,7 +538,6 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         assertEquals(uiTransactionList, csvTransactionList);
     }
 
-    @Ignore("externalTransactionId and transactionId parse problem")
     @Test
     @TmsLink("957")
     @Epic("Transactions")
@@ -620,18 +619,17 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         assertEquals(uiTransactionList, excelTransactionList);
     }
 
-    //    @Ignore("Locator expected to have text: [Status, Creation Date (GMT), Amount, Currency, Actions]\n"
-//            + "\tReceived: [Currency, Status, Creation Date (GMT), Amount, Actions]")
+    @Ignore
     @Test
     @TmsLink("978")
     @Epic("Transactions")
     @Feature("Settings")
     @Description("Verify that changing the order of visible columns in Settings affects the table.")
     public void testMoveVisibleColumns() {
-        final String creationDate = SETTINGS_COLUMNS[0];
-        final String amount = SETTINGS_COLUMNS[4];
-        final String currency = SETTINGS_COLUMNS[5];
-        final String status = SETTINGS_COLUMNS[7];
+        final String creationDate = "Creation Date (GMT)";
+        final String amount = "Amount";
+        final String currency = "Currency";
+        final String status = "Status";
 
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()

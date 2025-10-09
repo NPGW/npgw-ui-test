@@ -38,7 +38,6 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
     private final Locator resetFilterButton = getByTestId("ResetButtonTeamPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
     private final Locator initialCommonIcon = getByRole(AriaRole.TABPANEL).locator(">div>div:first-child [data-testid]:enabled");
-//    private final Locator commonIconButton = getByRole(AriaRole.TABPANEL).locator(">div>div:first-child [data-testid]");
     private final Locator commonIconButton = locator("[role='tabpanel']>div>div:first-child [data-testid]");
 
     public SuperCompaniesAndBusinessUnitsPage(Page page) {
@@ -97,7 +96,10 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
                 throw new TimeoutError("Waiting for company '%s' absence".formatted(companyName));
             }
         }
-        log.info("Company absence wait took {}ms", ProjectProperties.getDefaultTimeout() - timeout);
+        double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
+        if (waitTime > 0) {
+            log.info("Company absence wait took {}ms", waitTime);
+        }
 
         return this;
     }

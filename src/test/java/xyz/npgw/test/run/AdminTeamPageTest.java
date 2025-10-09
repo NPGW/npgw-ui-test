@@ -52,7 +52,6 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
-        super.openSiteAccordingRole();
 
 //        super.initPageRequestContext();
 //        log.info("apiKey of current admin user = {}", BusinessUnit.getNewApikey(getPage().request(), getCompanyName(), businessUnit));
@@ -98,30 +97,53 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
         SaleTransactionUtils.createPendingTransaction(apiRequestContext, 1234, businessUnit, "SALE0PENDING");
         SaleTransactionUtils.createSuccessTransaction(
                 getPlaywright(), apiRequestContext, 2345, businessUnit, "SALE0SUCCESS");
-//        SaleTransactionUtils.createRefundTransaction(
-//        getPlaywright(), apiRequestContext, 3456, businessUnit, "SALE0REFUND0FULL");
-//        SaleTransactionUtils.createPartialRefundTransaction(
-//        getPlaywright(), apiRequestContext, 4567, businessUnit, "SALE0REFUND0HALF");
 
-        AuthTransactionUtils.createPendingTransaction(apiRequestContext, 7891, businessUnit, "AUTH0PENDING");
+        SaleTransactionUtils.createThreeFailedRefundAttemptTransaction(
+                getPlaywright(), apiRequestContext, 3456, businessUnit, "REF0FULL3FAILED");
+
+        SaleTransactionUtils.createFailedFullRefundAttemptTransaction(
+                getPlaywright(), apiRequestContext, 4567, businessUnit, "REFUND0FULLFAILED");
+
+        SaleTransactionUtils.createOneFailedPartialRefundTransaction(
+                getPlaywright(), apiRequestContext, 5678, businessUnit, "REFUND0HALFFAILED");
+
+        //---
+
+        AuthTransactionUtils.createPendingTransaction(
+                apiRequestContext, 7891, businessUnit, "AUTH0PENDING");
+
         AuthTransactionUtils.createAuthorisedTransaction(
                 getPlaywright(), apiRequestContext, 8912, businessUnit, "AUTH0AUTHORISED");
+
         AuthTransactionUtils.createCancelAuthorisedTransaction(
                 getPlaywright(), apiRequestContext, 9123, businessUnit, "AUTH0CANCEL");
+
         AuthTransactionUtils.createSuccessByFullCaptureTransaction(
                 getPlaywright(), apiRequestContext, 1234, businessUnit, "AUTH0SUCCESS0FULL");
+
         AuthTransactionUtils.createSuccessByPartialCaptureTransaction(
                 getPlaywright(), apiRequestContext, 2346, businessUnit, "AUTH0SUCCESS0PARTIAL");
 
         AuthTransactionUtils.createPartialCaptureTransaction(
                 getPlaywright(), apiRequestContext, 4568, businessUnit, "AUTH0PARTIAL0CAPTURE");
-//        AuthTransactionUtils.createPartialRefundTransaction(
-//        getPlaywright(), apiRequestContext, 70000, businessUnit, "AUTH0PARTIAL0CAPTURE0REFUND");
 
+        AuthTransactionUtils.createFailedAttemptPartialRefundTransaction(
+                getPlaywright(), apiRequestContext, 5678, businessUnit, "PART0CAP0REF0BU");
+
+        AuthTransactionUtils.createPartialCaptureByTwoPartialCaptureTransaction(
+                getPlaywright(), apiRequestContext, 6789, businessUnit, "AUTH2PARTIAL0CAPTURE");
+
+        AuthTransactionUtils.createPartialCaptureByThreePartialCaptureTransaction(
+                getPlaywright(), apiRequestContext, 7891, businessUnit, "AUTH3PARTIAL0CAPTURE");
+
+//        AuthTransactionUtils.createPartialRefundTransactionBug(
+//                getPlaywright(), apiRequestContext, 6789, businessUnit, "AUTH0PARTIAL0CAPTURE0REFUND0BUG");
+//
 //        AuthTransactionUtils.createRefundSuccessByFullCaptureTransaction(
-//        getPlaywright(), apiRequestContext, 80000, businessUnit, "AUTH0SUCCESS0FULL0REFUND");
+//                getPlaywright(), apiRequestContext, 7891, businessUnit, "AUTH0SUCCESS0FULL0REFUND");
+
 //        AuthTransactionUtils.createRefundSuccessByPartialCaptureTransaction(
-//        getPlaywright(), apiRequestContext, 90000, businessUnit, "AUTH0SUCCESS0PARTIAL0REFUND");
+//        getPlaywright(), apiRequestContext, 8912, businessUnit, "AUTH0SUCCESS0PARTIAL0REFUND");
     }
 
     @Test
@@ -586,25 +608,21 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
 
         String iconAttributeValue;
         String tooltip;
-        List<Locator> panelIcons = teamPage.getCommonPanelIcon().all();
-        for (Locator icon : panelIcons) {
+        for (Locator icon : teamPage.getCommonPanelIcon().all()) {
             iconAttributeValue = icon.getAttribute("data-icon");
-            Allure.step("Hover on '" + iconAttributeValue + "' icon");
             icon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 
-        List<Locator> rowIcons = teamPage.getTable().getRowIcon(email).all();
-        for (Locator rowIcon : rowIcons) {
+        for (Locator rowIcon : teamPage.getTable().getRowIcon(email).all()) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
-            Allure.step("Hover on '" + iconAttributeValue + "' icon");
             rowIcon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over '" + iconAttributeValue + "' appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 
@@ -615,13 +633,12 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
 
         assertThat(teamPage.getTable().getCell(email, "Status")).hasText("Inactive");
 
-        for (Locator rowIcon : rowIcons) {
+        for (Locator rowIcon : teamPage.getTable().getRowIcon(email).all()) {
             iconAttributeValue = rowIcon.getAttribute("data-icon");
-            Allure.step("Hover on " + iconAttributeValue + " icon");
             rowIcon.hover();
 
             tooltip = teamPage.getTooltip().last().textContent();
-            Allure.step("Verify, over " + iconAttributeValue + " appears '" + tooltip + "'");
+            Allure.step("Verify, over '%s' appears '%s'".formatted(iconAttributeValue, tooltip));
             assertEquals(TOOLTIPSCONTENT.get(iconAttributeValue), tooltip);
         }
 

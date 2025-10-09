@@ -1,11 +1,11 @@
-FROM mcr.microsoft.com/playwright/java:v1.51.0-noble
+FROM mcr.microsoft.com/playwright/java:v1.53.0
 
 # Usage:
 # 1. build jar:
 # mvn clean package -DskipTests
 #
 # 2. build image:
-#   docker build -t ui-test:latest
+#   docker build -t ui-test:latest .
 #
 # 3. run container:
 #   docker run ui-test:latest
