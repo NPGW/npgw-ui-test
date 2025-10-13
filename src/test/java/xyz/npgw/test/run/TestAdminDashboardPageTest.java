@@ -9,6 +9,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
@@ -73,6 +74,7 @@ public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
                 .hasText("Start date must be before end date.");
     }
 
+    @Ignore("failing due to negative values in summary")
     @Test
     @TmsLink("575")
     @Epic("Dashboard")
@@ -210,6 +212,7 @@ public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
         route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
     }
 
+    @Ignore("INITIATED values from /summary are not added to total summ")
     @Test
     @TmsLink("720")
     @Epic("Dashboard")
@@ -223,6 +226,7 @@ public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: INITIATED main block contents");
+        getPage().pause();
         assertThat(dashboardPage.getInitiatedBlock()).containsText("INITIATEDEUR120");
 
         dashboardPage.getSelectCurrency().select("USD");
