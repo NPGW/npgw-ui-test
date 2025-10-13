@@ -26,7 +26,6 @@ import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 import java.util.List;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class TransactionFlowTest extends BaseTestForLogout {
 
