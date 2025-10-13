@@ -9,7 +9,6 @@ import io.qameta.allure.TmsLink;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForLogout;
-import xyz.npgw.test.common.client.TransactionResponse;
 import xyz.npgw.test.common.client.Operation;
 import xyz.npgw.test.common.client.TransactionResponse;
 import xyz.npgw.test.common.entity.Acquirer;
@@ -27,9 +26,8 @@ import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 import java.util.List;
+import java.util.Locale;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.testng.Assert.assertEquals;
