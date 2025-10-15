@@ -87,6 +87,12 @@ public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent
         return getColumnValuesFromAllPages("Status");
     }
 
+    public List<String> getAllTransactionsTypeList() {
+        getPaginationItems().last().waitFor();
+
+        return getColumnValuesFromAllPages("Type");
+    }
+
     public List<Boolean> getRefundButtonVisibilityFromAllPages() {
         selectRowsPerPageOption("100");
         goToFirstPageIfNeeded();
@@ -132,6 +138,13 @@ public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent
     @Step("Click 'Refund transaction'")
     public RefundTransactionDialog clickRefundTransaction(Locator row) {
         row.locator(refundTransactionButtonSelector).click();
+
+        return new RefundTransactionDialog(getPage());
+    }
+
+    @Step("Click Refund button for transaction '{transactionId}'")
+    public RefundTransactionDialog clickRefundTransaction(String transactionId) {
+        getRawByTransactionId(transactionId).getByTestId("RefundTransactionButton").click();
 
         return new RefundTransactionDialog(getPage());
     }
@@ -205,5 +218,14 @@ public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent
         getRawByTransactionId(transactionId).locator(columnSelector("NPGW reference")).click();
 
         return new TransactionDetailsDialog(getPage());
+    }
+
+    public String getCardTypeByTransactionId(String transactionId) {
+        return getCardTypeValue(getRawByTransactionId(transactionId));
+    }
+
+    public Locator getRefundButtonByTransactionId(String transactionId) {
+        return getCellByTransactionId(transactionId, "Actions")
+                .locator(refundTransactionButtonSelector);
     }
 }
