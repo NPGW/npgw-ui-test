@@ -285,7 +285,7 @@ public class UserTransactionsPageTest extends BaseTestForSingleLogin {
         }
     }
 
-//    @Ignore("multistatus not working atm")
+    @Ignore("multistatus not working atm")
     @Test(dataProvider = "getMultiStatus2", dataProviderClass = TestDataProvider.class)
     @TmsLink("655")
     @Epic("Transactions")
