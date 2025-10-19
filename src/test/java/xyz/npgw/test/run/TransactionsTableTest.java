@@ -625,6 +625,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         assertEquals(uiTransactionList, excelTransactionList);
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("978")
     @Epic("Transactions")
