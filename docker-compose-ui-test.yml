@@ -6,3 +6,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
+  test:
+    image: npgw/test:latest
+    container_name: test
+    build:
+      context: .
+      dockerfile: npgw.dockerfile
