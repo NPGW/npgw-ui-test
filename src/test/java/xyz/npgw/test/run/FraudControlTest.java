@@ -88,7 +88,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .controlDisplayName("ControlDisplayActiveToInactive")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE_JUST_DELETE = FraudControl.builder()
-            .controlName("%s Delete me".formatted(RUN_ID))
+            .controlName("%s Delete inactive me".formatted(RUN_ID))
             .controlCode("Neutrino")
             .controlDisplayName("DisplayDelete")
             .controlConfig("delete")
@@ -99,6 +99,13 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .controlCode("Neutrino")
             .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
+            .build();
+    private static final FraudControl FRAUD_CONTROL_ACTIVE_DELETE_TEST = FraudControl.builder()
+            .controlName("%s Delete active me".formatted(RUN_ID))
+            .controlCode("Neutrino")
+            .controlDisplayName("DisplayDelete")
+            .controlConfig("delete")
+            .isActive(true)
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
 
@@ -122,6 +129,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST);
     }
 
     @Test
@@ -403,10 +411,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(deleteIconTooltip).hasText("Delete business unit control");
     }
 
-    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
-            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            /*"testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting",*/
-            "testVerifyWarningModalWindowChangeActivityForControlTable"})
+    @Test
     @TmsLink("949")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -415,11 +420,12 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
-                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName())
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in the table");
-        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName())).not().isAttached();
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName()))
+                .not().isAttached();
     }
 
     @Test
@@ -772,8 +778,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlDisplayName()));
     }
 
-    @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
-            "testChangeBusinessUnitFraudControlActivity"})
+    @Test(dependsOnMethods = {"testChangeBusinessUnitFraudControlActivity"})
     @TmsLink("986")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -1307,6 +1312,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName());
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();

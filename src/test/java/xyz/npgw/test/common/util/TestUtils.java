@@ -137,7 +137,7 @@ public final class TestUtils {
     }
 
     @SneakyThrows
-    public static void waitForCompanyPresent(APIRequestContext request, String companyName) {
+    public static void waitForCompanyPresence(APIRequestContext request, String companyName) {
         double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(Company.getAll(request))
                 .noneMatch(item -> item.companyName().equals(companyName))) {
@@ -149,12 +149,12 @@ public final class TestUtils {
         }
         double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
         if (waitTime > 0) {
-            log.info("Company present wait took {}ms", waitTime);
+            log.info("Company presence wait took {}ms", waitTime);
         }
     }
 
     @SneakyThrows
-    public static void waitForFraudControlPresent(APIRequestContext request, String fraudControlName) {
+    public static void waitForFraudControlPresence(APIRequestContext request, String fraudControlName) {
         double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(FraudControl.getAll(request))
                 .noneMatch(item -> item.getControlName().equals(fraudControlName))) {
@@ -166,7 +166,7 @@ public final class TestUtils {
         }
         double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
         if (waitTime > 0) {
-            log.info("Fraud Control present wait took {}ms", waitTime);
+            log.info("Fraud Control presence wait took {}ms", waitTime);
         }
     }
 
