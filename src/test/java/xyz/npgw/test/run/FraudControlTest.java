@@ -88,7 +88,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .controlDisplayName("ControlDisplayActiveToInactive")
             .build();
     private static final FraudControl FRAUD_CONTROL_INACTIVE_JUST_DELETE = FraudControl.builder()
-            .controlName("%s Delete me".formatted(RUN_ID))
+            .controlName("%s Delete inactive me".formatted(RUN_ID))
             .controlCode("Neutrino")
             .controlDisplayName("DisplayDelete")
             .controlConfig("delete")
@@ -101,7 +101,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .controlConfig("notDefault")
             .build();
     private static final FraudControl FRAUD_CONTROL_ACTIVE_DELETE_TEST = FraudControl.builder()
-            .controlName("%s Delete me".formatted(RUN_ID))
+            .controlName("%s Delete active me".formatted(RUN_ID))
             .controlCode("Neutrino")
             .controlDisplayName("DisplayDelete")
             .controlConfig("delete")
