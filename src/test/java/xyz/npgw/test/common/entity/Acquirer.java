@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.RequestOptions;
 import lombok.Builder;
 import lombok.CustomLog;
 import lombok.Getter;
+import xyz.npgw.test.common.util.TestUtils;
 
 import java.util.Arrays;
 
@@ -47,6 +48,8 @@ public class Acquirer {
     public static void create(APIRequestContext request, Acquirer acquirer) {
         APIResponse response = request.post("portal-v1/acquirer", RequestOptions.create().setData(acquirer));
         log.response(response, "create acquirer %s".formatted(acquirer.acquirerName));
+
+        TestUtils.waitForAcquirerPresence(request, acquirer.acquirerName);
     }
 
     public static Acquirer[] getAll(APIRequestContext request) {

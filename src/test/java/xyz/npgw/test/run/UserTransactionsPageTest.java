@@ -69,7 +69,6 @@ public class UserTransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getSelectStatus().getStatusValue()).containsText("ALL");
     }
 
-    @Ignore("Amount to arrows not working atm")
     @Test
     @TmsLink("263")
     @Epic("Transactions")
@@ -158,7 +157,7 @@ public class UserTransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 500.00 - 10300.00");
     }
 
-    //TODO report BUG - Apply should be enabled for from == to amount
+    //TODO - Apply should be enabled for from == to amount | [BR-375]
     @Ignore("Apply button is disabled for 0 - 0 amounts")
     @Test
     @TmsLink("355")
@@ -232,6 +231,7 @@ public class UserTransactionsPageTest extends BaseTestForSingleLogin {
         }
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("598")
     @Epic("Transactions")

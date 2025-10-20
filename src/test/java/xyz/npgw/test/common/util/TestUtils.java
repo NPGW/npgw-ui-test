@@ -121,6 +121,22 @@ public final class TestUtils {
     }
 
     @SneakyThrows
+    public static void waitForAcquirerPresence(APIRequestContext request, String name) {
+        double timeout = ProjectProperties.getDefaultTimeout();
+        while (Arrays.stream(Acquirer.getAll(request)).noneMatch(acquirer -> acquirer.getAcquirerName().equals(name))) {
+            TimeUnit.MILLISECONDS.sleep(300);
+            timeout -= 300;
+            if (timeout <= 0) {
+                throw new TimeoutError("Waiting for acquirer '%s' presence".formatted(name));
+            }
+        }
+        double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
+        if (waitTime > 0) {
+            log.info("Acquirer presence wait took {}ms", waitTime);
+        }
+    }
+
+    @SneakyThrows
     public static void waitForCompanyPresent(APIRequestContext request, String companyName) {
         double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(Company.getAll(request))
