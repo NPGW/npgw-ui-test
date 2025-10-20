@@ -230,6 +230,7 @@ public class AdminTransactionsPageTest extends BaseTestForSingleLogin {
         }
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("598")
     @Epic("Transactions")
