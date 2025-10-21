@@ -38,7 +38,7 @@ jobs:
           tool_name: 'Checkstyle'
 
       - name: Run tests
-        run: mvn test
+        run: mvn test allure:report
         env:
           PROJECT_PROPERTIES:
             setBaseURL=https://test.npgw.xyz;
@@ -92,33 +92,13 @@ jobs:
           path: target/artefact/
           retention-days: 1
 
-      - name: Get Allure history
-        uses: actions/checkout@v4.2.2
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Build Allure report with history
-        uses: simple-elf/allure-report-action@v1.12
-        if: always()
-        with:
-          allure_results: './target/allure-results'
-          keep_reports: 5
-
-      - name: Queue deployment
-        uses: softprops/turnstyle@v2.3.1
-        with:
-          poll-interval-seconds: 20
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: run-tests
+    steps:
       - name: Deploy Allure report to GitHub pages
-        uses: peaceiris/actions-gh-pages@v4.0.0
-        if: always()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-history
-          force_orphan: true
+        id: deployment
+        uses: actions/deploy-pages@v4
