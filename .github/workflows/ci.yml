@@ -27,7 +27,7 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
-      - name: Run check style
+      - name: Run checkstyle
         uses: nikitasavinov/checkstyle-action@0.6.0
         continue-on-error: true
         with:
@@ -37,7 +37,7 @@ jobs:
           reporter: 'github-pr-check'
           tool_name: 'Checkstyle'
 
-      - name: Run tests
+      - name: Run tests and create allure report
         run: mvn test allure:report
         env:
           PROJECT_PROPERTIES:
@@ -76,15 +76,21 @@ jobs:
             setTitle=
           CI_RUN: true
 
-      - name: Create test report
+      - name: Upload allure report to be published on GitHub pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          name: github-pages
+          path: "./target/site/allure-maven-plugin"
+
+      - name: Create dorny test run report
         if: success() || failure()
         uses: dorny/test-reporter@v2
         with:
-          name: Test Execution Report
+          name: Test execution report
           path: target/surefire-reports/TEST-*.xml
           reporter: java-junit
 
-      - name: Attach artefacts on failure
+      - name: Upload failed tests traces and videos to GitHub artefacts
         uses: actions/upload-artifact@v4
         if: failure()
         with:
@@ -92,13 +98,13 @@ jobs:
           path: target/artefact/
           retention-days: 1
 
-  deploy:
+  Deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: run-tests
     steps:
-      - name: Deploy Allure report to GitHub pages
+      - name: Deploy allure report to GitHub pages
         id: deployment
         uses: actions/deploy-pages@v4
