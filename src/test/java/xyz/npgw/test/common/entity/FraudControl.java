@@ -7,6 +7,7 @@ import com.microsoft.playwright.options.RequestOptions;
 import lombok.Builder;
 import lombok.CustomLog;
 import lombok.Getter;
+import xyz.npgw.test.common.util.TestUtils;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
 
@@ -31,6 +32,8 @@ public class FraudControl {
     public static void create(APIRequestContext request, FraudControl fraudControl) {
         APIResponse response = request.post("portal-v1/control", RequestOptions.create().setData(fraudControl));
         log.response(response, "create control %s".formatted(fraudControl.controlName));
+
+        TestUtils.waitForFraudControlPresence(request, fraudControl.controlName);
     }
 
     public static void delete(APIRequestContext request, String fraudControlName) {
@@ -40,7 +43,7 @@ public class FraudControl {
 
     public static FraudControl[] getAll(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/control");
-        log.response(response, "get all Fraud Control");
+        log.response(response, "get all Fraud Controls");
         return new Gson().fromJson(response.text(), FraudControl[].class);
     }
 
