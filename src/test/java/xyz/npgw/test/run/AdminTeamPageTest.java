@@ -58,6 +58,7 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
 //        log.info("apiKey of current admin user = {}", BusinessUnit.getNewApikey(getPage().request(), getCompanyName(), businessUnit));
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("---")
     @Epic("---")

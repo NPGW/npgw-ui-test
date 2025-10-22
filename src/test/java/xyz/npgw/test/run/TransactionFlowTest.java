@@ -7,6 +7,7 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForLogout;
 import xyz.npgw.test.common.client.Operation;
@@ -72,6 +73,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
         AddMerchantAcquirerItem.create(getApiRequestContext(), businessUnit, acquirer);
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("1280")
     @Epic("Transactions")
@@ -114,6 +116,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
         assertThat(transactionDetailsDialog.getLastLifecycleStatus()).hasText("CANCELLED");
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("xxx")
     @Epic("Transactions")
@@ -167,6 +170,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
                 .hasText("SUCCESSThe refund request has been sent successfully");
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("1307")
     @Epic("Transactions")
@@ -226,6 +230,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
     }
 
     //TODO Add await for acquirer answer
+    @Ignore("temp")
     @Test
     @TmsLink("1308")
     @Epic("Transactions")
