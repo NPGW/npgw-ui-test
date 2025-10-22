@@ -77,14 +77,14 @@ jobs:
           CI_RUN: true
 
       - name: Upload allure report to be published on GitHub pages
-        if: success() || failure()
+        if: always()
         uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages
           path: "./target/site/allure-maven-plugin"
 
       - name: Create dorny test run report
-        if: success() || failure()
+        if: always()
         uses: dorny/test-reporter@v2
         with:
           name: Test execution report
