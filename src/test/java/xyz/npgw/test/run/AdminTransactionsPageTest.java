@@ -383,7 +383,7 @@ public class AdminTransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
 
         Allure.step("Verify: 'Business unit reference' is visible ");
-        assertThat(transactionsPage.getBusinessUnitReference()).isVisible();
+        assertThat(transactionsPage.getBusinessUnitReferenceField()).isVisible();
     }
 
     @AfterClass(alwaysRun = true)
