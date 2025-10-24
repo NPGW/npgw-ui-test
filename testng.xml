@@ -17,6 +17,7 @@
             <class name="xyz.npgw.test.run.AdminTeamPageTest"/>
             <class name="xyz.npgw.test.run.CompaniesAndBusinessUnitsTest"/>
             <class name="xyz.npgw.test.run.TransactionsPageTest"/>
+            <class name="xyz.npgw.test.run.TransactionFlowTest"/>
             <class name="xyz.npgw.test.run.TeamPageLogoutTest"/>
             <class name="xyz.npgw.test.run.HeaderTest"/>
             <class name="xyz.npgw.test.run.TransactionDetailsTest"/>
@@ -29,7 +30,6 @@
             <class name="xyz.npgw.test.run.UnauthenticatedLoginPageTest"/>
             <class name="xyz.npgw.test.run.TestAdminCompaniesAndBusinessUnitsTest"/>
             <class name="xyz.npgw.test.run.TransactionManagementPageTest"/>
-            <class name="xyz.npgw.test.run.TransactionFlowTest"/>
         </classes>
     </test>
 </suite>

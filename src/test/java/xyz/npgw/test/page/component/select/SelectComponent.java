@@ -48,20 +48,26 @@ public abstract class SelectComponent<CurrentPageT> extends BaseComponent {
     }
 
     protected CurrentPageT select(Locator selectInputField, String name) {
-        String lastName = "";
-
         selectInputField.fill(name);
 
-        assertThat(dropdown).not().hasText(NO_RESULTS_FOUND);
+        try {
+            assertThat(dropdown).not().hasText(NO_RESULTS_FOUND);
+        } catch (AssertionError e) {
+            throw new AssertionError("Dropdown is empty. Option '%s' not found".formatted(name));
+        }
 
-        while (dropdownOptions.filter(new Locator.FilterOptions().setHas(getByTextExact(name))).all().isEmpty()) {
-            if (dropdownOptions.last().innerText().equals(lastName)) {
-                throw new NoSuchElementException("Option '%s' not found in dropdown list.".formatted(name));
+        Locator option = dropdownOptions.getByText(name, new Locator.GetByTextOptions().setExact(true));
+        String lastOption = "";
+
+        while (option.count() == 0) {
+            String currentLastOption = dropdownOptions.last().innerText();
+            if (currentLastOption.equals(lastOption)) {
+                throw new NoSuchElementException("Option '%s' not found in dropdown.".formatted(name));
             }
             dropdownOptions.last().scrollIntoViewIfNeeded();
-            lastName = dropdownOptions.last().innerText();
+            lastOption = currentLastOption;
         }
-        dropdownOptions.getByText(name, new Locator.GetByTextOptions().setExact(true)).click();
+        option.click();
 
         return currentPage;
     }
