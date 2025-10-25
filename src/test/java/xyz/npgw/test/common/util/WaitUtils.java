@@ -7,7 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.client.Transaction;
 import xyz.npgw.test.common.client.TransactionResponse;
-import xyz.npgw.test.common.entity.Status;
+import xyz.npgw.test.common.entity.transaction.Status;
 
 import java.util.concurrent.TimeUnit;
 

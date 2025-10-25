@@ -14,9 +14,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.entity.Acquirer;
-import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.acquirer.Acquirer;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.system.SuperGatewayPage;
@@ -34,24 +34,20 @@ import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
 public class GatewayPageTest extends BaseTestForSingleLogin {
 
     private static final Acquirer ACQUIRER = Acquirer.builder()
-            .acquirerDisplayName("%s acquirer for gateway".formatted(RUN_ID))
             .acquirerName("%s acquirer for gateway".formatted(RUN_ID))
             .acquirerMcc(4321)
             .build();
     private static final Acquirer ACQUIRER_MOVE = Acquirer.builder()
-            .acquirerDisplayName("%s acquirer for gateway Movable".formatted(RUN_ID))
             .acquirerName("%s acquirer for gateway Movable".formatted(RUN_ID))
             .acquirerMcc(4321)
             .currencyList(new Currency[]{Currency.USD})
             .build();
     private static final Acquirer ACQUIRER_EUR = Acquirer.builder()
-            .acquirerDisplayName("%s acquirer for gateway EUR".formatted(RUN_ID))
             .acquirerName("%s acquirer for gateway EUR".formatted(RUN_ID))
             .currencyList(new Currency[]{Currency.EUR})
             .acquirerMcc(4321)
             .build();
     private static final Acquirer ACQUIRER_GBP = Acquirer.builder()
-            .acquirerDisplayName("%s acquirer for gateway GBP".formatted(RUN_ID))
             .acquirerName("%s acquirer for gateway GBP".formatted(RUN_ID))
             .currencyList(new Currency[]{Currency.GBP})
             .acquirerMcc(4321)

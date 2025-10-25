@@ -12,7 +12,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.entity.BusinessUnit;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -36,7 +36,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     private static final String COMPANY_NAME = "%s test request company".formatted(RUN_ID);
     private static final String MERCHANT_TITLE = "%s test request merchant".formatted(RUN_ID);
     private final String[] businessUnitNames = new String[]{"Business unit 1", "Business unit 2", "Business unit 3"};
-    private BusinessUnit businessUnit;
+    private Merchant merchant;
 
     @BeforeClass
     @Override
@@ -44,7 +44,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         super.beforeClass();
         TestUtils.createBusinessUnits(getApiRequestContext(), getCompanyName(), businessUnitNames);
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
+        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -340,7 +340,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
                 .getHeader().clickTransactionsLink()
                 .getSelectDateRange().setDateRangeFields("01/05/2025 - 07/05/2025")
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(businessUnit.merchantTitle())
+                .getSelectBusinessUnit().selectBusinessUnit(merchant.merchantTitle())
                 .getSelectCurrency().select("USD")
                 .selectCardType("VISA")
                 .clickAmountButton()
@@ -351,7 +351,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
                 .getRequestData();
 
         Allure.step("Verify: merchant ID is sent to the server");
-        assertTrue(requestData.contains(businessUnit.merchantId()));
+        assertTrue(requestData.contains(merchant.merchantId()));
 
         Allure.step("Verify: dateFrom is sent to the server");
         assertTrue(requestData.contains("2025-05-01T00:00:00.000Z"));
@@ -594,6 +594,10 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
                 .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        Allure.step("Verify: Transaction table has two or more transactions");
+        assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
+        assertThat(transactionsPage.getTable().getRows()).not().hasCount(1);
 
         List<Locator> npgwReference = transactionsPage.getTable().getColumnCells("NPGW reference");
 

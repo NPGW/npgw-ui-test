@@ -1,6 +1,6 @@
 package xyz.npgw.test.common.client;
 
-import xyz.npgw.test.common.entity.CardType;
+import xyz.npgw.test.common.entity.transaction.CardType;
 
 public record PaymentDetails(
         String country, //TODO ask do we need this field

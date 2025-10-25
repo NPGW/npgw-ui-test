@@ -21,10 +21,10 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.client.Client;
-import xyz.npgw.test.common.entity.BusinessUnit;
-import xyz.npgw.test.common.entity.Credentials;
-import xyz.npgw.test.common.entity.Token;
-import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.entity.company.Merchant;
+import xyz.npgw.test.common.entity.user.Credentials;
+import xyz.npgw.test.common.entity.user.Token;
+import xyz.npgw.test.common.entity.user.User;
 import xyz.npgw.test.common.util.BrowserUtils;
 import xyz.npgw.test.common.util.CleanupUtils;
 import xyz.npgw.test.common.util.TestUtils;
@@ -38,7 +38,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -48,7 +47,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class BaseTest {
 
     protected static final String RUN_ID = TestUtils.now();
-    protected final HashMap<String, BaseTestForSingleLogin.Response> requestMap = new HashMap<>();
     @Getter(AccessLevel.PROTECTED)
     protected Playwright playwright;
     protected Browser browser;
@@ -63,7 +61,7 @@ public abstract class BaseTest {
     protected String uid;
     @Getter(AccessLevel.PROTECTED)
     protected String companyName;
-    protected BusinessUnit businessUnit;
+    protected Merchant businessUnit;
 
     protected static final Map<String, Long> classDurations = new ConcurrentHashMap<>();
     protected long startTime;
@@ -276,9 +274,5 @@ public abstract class BaseTest {
     }
 
     protected record LocalStorage(String name, String value) {
-    }
-
-    protected record Response(int status, Map<String, String> headers, byte[] body) {
-
     }
 }

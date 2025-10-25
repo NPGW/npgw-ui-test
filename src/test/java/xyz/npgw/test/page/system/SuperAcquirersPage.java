@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.entity.Acquirer;
+import xyz.npgw.test.common.entity.acquirer.Acquirer;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
 import xyz.npgw.test.page.component.select.SelectAcquirerCodeTrait;
@@ -60,7 +60,7 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerPresence(APIRequestContext request, String acquirerName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Acquirer.getAll(request)).noneMatch(item -> item.getAcquirerName().equals(acquirerName))) {
+        while (Arrays.stream(Acquirer.getAllAcquirers(request)).noneMatch(item -> item.getAcquirerName().equals(acquirerName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {
@@ -79,7 +79,7 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerAbsence(APIRequestContext request, String acquirerName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Acquirer.getAll(request)).anyMatch(item -> item.getAcquirerName().equals(acquirerName))) {
+        while (Arrays.stream(Acquirer.getAllAcquirers(request)).anyMatch(item -> item.getAcquirerName().equals(acquirerName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {

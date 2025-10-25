@@ -9,7 +9,7 @@ import lombok.CustomLog;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.Type;
+import xyz.npgw.test.common.entity.transaction.Type;
 import xyz.npgw.test.common.util.TestUtils;
 
 import java.time.ZonedDateTime;

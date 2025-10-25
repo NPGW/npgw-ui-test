@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common;
 
 public record ApiError(long timestamp, int status, String message, String path, String code) {
 }

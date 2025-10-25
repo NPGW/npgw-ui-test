@@ -38,7 +38,6 @@ public class TransactionManagementPageTest extends BaseTestForSingleLogin {
         assertThat(page.getTransactionsTable()).containsText("id.transaction.");
     }
 
-//    @Ignore("There is no longer a default transaction")
     @Test
     @TmsLink("873")
     @Epic("System/Transaction management")

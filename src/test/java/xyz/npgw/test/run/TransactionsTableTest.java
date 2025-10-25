@@ -18,12 +18,12 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.entity.BusinessUnit;
-import xyz.npgw.test.common.entity.CardType;
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.Status;
-import xyz.npgw.test.common.entity.Transaction;
-import xyz.npgw.test.common.entity.Type;
+import xyz.npgw.test.common.entity.company.Merchant;
+import xyz.npgw.test.common.entity.transaction.CardType;
+import xyz.npgw.test.common.entity.transaction.Status;
+import xyz.npgw.test.common.entity.transaction.Transaction;
+import xyz.npgw.test.common.entity.transaction.Type;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
@@ -68,13 +68,13 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
     private static final String[] SETTINGS_COLUMNS = Arrays.copyOf(COLUMNS_HEADERS, COLUMNS_HEADERS.length - 1);
     private static final String EXPORT_SUCCESS_MESSAGE = "SUCCESSExporting the data";
 
-    private BusinessUnit businessUnit;
+    private Merchant merchant;
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
+        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
     }
 
     @Test
@@ -397,7 +397,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
     @Description("Filter transactions by business unit")
     public void testFilterTransactionsByBusinessUnit() {
         getPage().route("**/status*", route -> {
-            if (route.request().postData().contains(businessUnit.merchantId())) {
+            if (route.request().postData().contains(merchant.merchantId())) {
                 List<Transaction> transactionList = new ArrayList<>();
                 transactionList.add(new Transaction("2025-06-02T04:18:09.047146423Z",
                         Type.SALE,
