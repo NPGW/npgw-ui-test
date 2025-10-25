@@ -1,7 +1,7 @@
 package xyz.npgw.test.common.client;
 
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.Status;
+import xyz.npgw.test.common.entity.transaction.Status;
 
 public record Operation(
         int amount,

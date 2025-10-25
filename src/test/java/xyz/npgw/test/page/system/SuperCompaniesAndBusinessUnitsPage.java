@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.page.component.header.SuperHeaderMenuTrait;
 import xyz.npgw.test.page.component.select.SelectCompanyTrait;
 import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;

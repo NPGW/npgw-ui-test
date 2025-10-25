@@ -1,10 +1,10 @@
 package xyz.npgw.test.common.util;
 
 import com.microsoft.playwright.APIRequestContext;
-import xyz.npgw.test.common.entity.Acquirer;
-import xyz.npgw.test.common.entity.Company;
-import xyz.npgw.test.common.entity.FraudControl;
-import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.entity.acquirer.Acquirer;
+import xyz.npgw.test.common.entity.company.Company;
+import xyz.npgw.test.common.entity.control.Control;
+import xyz.npgw.test.common.entity.user.User;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,12 +33,12 @@ public class CleanupUtils {
     }
 
     public static void deleteAcquirers(APIRequestContext request) {
-        Arrays.stream(Acquirer.getAll(request))
+        Arrays.stream(Acquirer.getAllAcquirers(request))
                 .filter(acquirer -> !ACQUIRER.contains(acquirer.getAcquirerName()))
                 .filter(acquirer -> acquirer.getAcquirerName().matches("^\\d{4}\\.\\d{6}.*$"))
                 .filter(acquirer -> !acquirer.getAcquirerName().startsWith("acquirerName "))
                 .filter(acquirer -> TestUtils.isOneHourOld(acquirer.getAcquirerName()))
-                .forEach(item -> Acquirer.delete(request, item.getAcquirerName()));
+                .forEach(item -> Acquirer.deleteAcquirer(request, item.getAcquirerName()));
     }
 
     private static void deleteUsersFromSuper(APIRequestContext request) {
@@ -50,10 +50,10 @@ public class CleanupUtils {
     }
 
     private static void deleteFraudControls(APIRequestContext request) {
-        Arrays.stream(FraudControl.getAll(request))
+        Arrays.stream(Control.getAll(request))
                 .filter(control -> !CONTROL.contains(control.getControlName()))
                 .filter(control -> control.getControlName().matches("^\\d{4}\\.\\d{6}.*$"))
                 .filter(control -> TestUtils.isOneHourOld(control.getControlName()))
-                .forEach(control -> FraudControl.delete(request, control.getControlName()));
+                .forEach(control -> Control.delete(request, control.getControlName()));
     }
 }

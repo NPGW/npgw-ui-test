@@ -6,7 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.common.entity.UserRole;
+import xyz.npgw.test.common.entity.user.UserRole;
 import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.component.AlertTrait;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;

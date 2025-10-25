@@ -12,8 +12,8 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.Status;
-import xyz.npgw.test.common.entity.TransactionSummary;
+import xyz.npgw.test.common.entity.transaction.Status;
+import xyz.npgw.test.common.entity.transaction.TransactionSummary;
 import xyz.npgw.test.page.dashboard.UserDashboardPage;
 
 import java.util.ArrayList;

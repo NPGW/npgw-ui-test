@@ -13,10 +13,10 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.entity.BusinessUnit;
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.Status;
-import xyz.npgw.test.common.entity.TransactionSummary;
+import xyz.npgw.test.common.entity.company.Merchant;
+import xyz.npgw.test.common.entity.transaction.Status;
+import xyz.npgw.test.common.entity.transaction.TransactionSummary;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 
@@ -35,14 +35,14 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
 
     private static final String COMPANY_NAME = "%s dashboard company".formatted(RUN_ID);
     private static final String MERCHANT_TITLE = "%s dashboard business unit".formatted(RUN_ID);
-    private BusinessUnit businessUnit;
+    private Merchant merchant;
 
     @BeforeClass
     @Override
     protected void beforeClass() {
         super.beforeClass();
         TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
+        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -132,7 +132,7 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
                 .getSelectBusinessUnit().selectBusinessUnit(MERCHANT_TITLE);
 
         Allure.step("Verify: correct merchant ID is sent to the server");
-        assertTrue(dashboardPage.getRequestData().contains(businessUnit.merchantId()));
+        assertTrue(dashboardPage.getRequestData().contains(merchant.merchantId()));
     }
 
     @Test
@@ -190,21 +190,21 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
     public void summaryHandler(Route route) {
         List<TransactionSummary> arr = new ArrayList<>();
 
-        if (route.request().postData().contains(businessUnit.merchantId())
+        if (route.request().postData().contains(merchant.merchantId())
                 && route.request().postData().contains("USD")) {
             arr.add(new TransactionSummary(Currency.USD, Status.INITIATED, 55000000, 100));
             route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
             return;
         }
 
-        if (route.request().postData().contains(businessUnit.merchantId())
+        if (route.request().postData().contains(merchant.merchantId())
                 && route.request().postData().contains("EUR")) {
             arr.add(new TransactionSummary(Currency.EUR, Status.INITIATED, 66000, 100000));
             route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));
             return;
         }
 
-        if (route.request().postData().contains(businessUnit.merchantId())
+        if (route.request().postData().contains(merchant.merchantId())
                 && route.request().postData().contains("GBP")) {
             arr.add(new TransactionSummary(Currency.GBP, Status.INITIATED, 77, 100000000));
             route.fulfill(new Route.FulfillOptions().setBody(new Gson().toJson(arr)));

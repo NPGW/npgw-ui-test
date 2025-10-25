@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.company;
 
 import com.google.gson.Gson;
 import com.microsoft.playwright.APIRequestContext;
@@ -15,17 +15,17 @@ import java.util.concurrent.TimeUnit;
 import static xyz.npgw.test.common.util.TestUtils.encode;
 
 @CustomLog
-public record BusinessUnit(
+public record Merchant(
         String merchantId,
         String merchantTitle) {
 
-    public BusinessUnit(String merchantTitle) {
+    public Merchant(String merchantTitle) {
         this(null, merchantTitle);
     }
 
-    public static BusinessUnit create(APIRequestContext request, String companyName, String merchantTitle) {
+    public static Merchant create(APIRequestContext request, String companyName, String merchantTitle) {
         APIResponse response = request.post("portal-v1/company/%s/merchant".formatted(encode(companyName)),
-                RequestOptions.create().setData(new BusinessUnit(merchantTitle)));
+                RequestOptions.create().setData(new Merchant(merchantTitle)));
         log.response(response, "create merchant for company %s".formatted(companyName));
 
         if (response.status() == 422) {
@@ -35,42 +35,42 @@ public record BusinessUnit(
                     .orElseThrow();
         }
 
-        return new Gson().fromJson(response.text(), BusinessUnit.class);
+        return new Gson().fromJson(response.text(), Merchant.class);
     }
 
-    public static BusinessUnit[] getAll(APIRequestContext request, String companyName) {
+    public static Merchant[] getAll(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company/%s/merchant".formatted(encode(companyName)));
         log.response(response, "get all merchants for company %s".formatted(companyName));
 
         if (response.status() == 404) {
-            return new BusinessUnit[]{};
+            return new Merchant[]{};
         }
-        return new Gson().fromJson(response.text(), BusinessUnit[].class);
+        return new Gson().fromJson(response.text(), Merchant[].class);
     }
 
-    public static String getNewApikey(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
-        APIResponse response = request.post("portal-v1/company/%s/merchant/%s".formatted(encode(companyName), businessUnit.merchantId));
-        log.response(response, "get api key for merchant %s of company %s".formatted(businessUnit.merchantTitle, companyName));
+    public static String getNewApikey(APIRequestContext request, String companyName, Merchant merchant) {
+        APIResponse response = request.post("portal-v1/company/%s/merchant/%s".formatted(encode(companyName), merchant.merchantId));
+        log.response(response, "get api key for merchant %s of company %s".formatted(merchant.merchantTitle, companyName));
 
         return response.text();
     }
 
     @SneakyThrows
-    public static void deleteWithTimeout(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
+    public static void deleteWithTimeout(APIRequestContext request, String companyName, Merchant merchant) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (204 != delete(request, companyName, businessUnit)) {
+        while (204 != delete(request, companyName, merchant)) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {
-                throw new TimeoutError("Delete '%s'".formatted(businessUnit.merchantTitle));
+                throw new TimeoutError("Delete '%s'".formatted(merchant.merchantTitle));
             }
         }
     }
 
-    public static int delete(APIRequestContext request, String companyName, BusinessUnit businessUnit) {
+    public static int delete(APIRequestContext request, String companyName, Merchant merchant) {
         APIResponse response = request.delete(
-                "portal-v1/company/%s/merchant/%s".formatted(encode(companyName), businessUnit.merchantId()));
-        log.response(response, "delete merchant %s".formatted(businessUnit.merchantId()));
+                "portal-v1/company/%s/merchant/%s".formatted(encode(companyName), merchant.merchantId()));
+        log.response(response, "delete merchant %s".formatted(merchant.merchantId()));
         return response.status();
     }
 }

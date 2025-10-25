@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.acquirer;
 
 import com.google.gson.Gson;
 import com.microsoft.playwright.APIRequestContext;
@@ -7,9 +7,11 @@ import com.microsoft.playwright.options.RequestOptions;
 import lombok.Builder;
 import lombok.CustomLog;
 import lombok.Getter;
+import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.util.TestUtils;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
 
@@ -37,6 +39,19 @@ public class Acquirer {
     @Builder.Default
     private int acquirerMcc = 1111;
 
+    public static class AcquirerBuilder {
+
+        public AcquirerBuilder acquirerName(String acquirerName) {
+            this.acquirerName$value = acquirerName;
+            this.acquirerName$set = true;
+
+            if (!this.acquirerDisplayName$set) {
+                acquirerDisplayName(acquirerName);
+            }
+            return this;
+        }
+    }
+
     public String getStatus() {
         return isActive ? "Active" : "Inactive";
     }
@@ -45,21 +60,40 @@ public class Acquirer {
         return String.join(", ", Arrays.stream(currencyList).map(Enum::name).toList());
     }
 
-    public static void create(APIRequestContext request, Acquirer acquirer) {
+    public static List<String> getAcquirerCodes(APIRequestContext request) {
+        record Item(List<String> codes) {
+        }
+
+        APIResponse response = request.get("portal-v1/acquirer/codes");
+        log.response(response, "get acquirer codes");
+
+        return new Gson().fromJson(response.text(), Item.class).codes;
+    }
+
+    public static Acquirer getOneAcquirer(APIRequestContext request, String acquirerName) {
+        APIResponse response = request.get("portal-v1/acquirer/%s".formatted(encode(acquirerName)));
+        log.response(response, "get '%s' acquirer".formatted(acquirerName));
+
+        return new Gson().fromJson(response.text(), Acquirer.class);
+    }
+
+    public static void deleteAcquirer(APIRequestContext request, String acquirerName) {
+        APIResponse response = request.delete("portal-v1/acquirer/%s".formatted(encode(acquirerName)));
+        log.response(response, "delete acquirer %s".formatted(acquirerName));
+    }
+
+    public static void createAcquirer(APIRequestContext request, Acquirer acquirer) {
         APIResponse response = request.post("portal-v1/acquirer", RequestOptions.create().setData(acquirer));
         log.response(response, "create acquirer %s".formatted(acquirer.acquirerName));
 
         TestUtils.waitForAcquirerPresence(request, acquirer.acquirerName);
     }
 
-    public static Acquirer[] getAll(APIRequestContext request) {
+    public static Acquirer[] getAllAcquirers(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/acquirer");
         log.response(response, "get all acquirers");
         return new Gson().fromJson(response.text(), Acquirer[].class);
     }
 
-    public static void delete(APIRequestContext request, String acquirerName) {
-        APIResponse response = request.delete("portal-v1/acquirer/%s".formatted(encode(acquirerName)));
-        log.response(response, "delete acquirer %s".formatted(acquirerName));
-    }
+
 }

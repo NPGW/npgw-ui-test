@@ -1,4 +1,7 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.transaction;
+
+import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.Error;
 
 public record Transaction(
         double amount,
