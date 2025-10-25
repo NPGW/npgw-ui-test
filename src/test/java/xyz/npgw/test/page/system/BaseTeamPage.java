@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
-import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.entity.user.User;
 import xyz.npgw.test.page.base.HeaderPage;
 import xyz.npgw.test.page.component.select.SelectStatusTrait;
 

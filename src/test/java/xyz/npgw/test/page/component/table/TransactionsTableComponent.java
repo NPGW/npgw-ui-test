@@ -4,7 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Step;
-import xyz.npgw.test.common.entity.Transaction;
+import xyz.npgw.test.common.entity.transaction.Transaction;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dialog.transactions.CancelTransactionDialog;
 import xyz.npgw.test.page.dialog.transactions.RefundTransactionDialog;
@@ -31,11 +31,6 @@ public class TransactionsTableComponent<CurrentPageT> extends BaseTableComponent
         this.refundTransactionButtonSelector = "[data-testid='RefundTransactionButton']";
         this.cardTypeImage = locator("img[alt='logo']");
     }
-
-//    @Override
-//    protected CurrentPageT getCurrentPage() {
-//        return currentPage;
-//    }
 
     @Step("Click on the first transaction from the table")
     public TransactionDetailsDialog clickOnFirstTransaction() {

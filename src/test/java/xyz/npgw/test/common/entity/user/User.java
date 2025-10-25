@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.user;
 
 import com.google.gson.Gson;
 import com.microsoft.playwright.APIRequestContext;
@@ -21,7 +21,7 @@ import static xyz.npgw.test.common.util.TestUtils.encode;
 @Getter
 @Builder
 @CustomLog
-public class User {
+public final class User {
 
     @Builder.Default
     private String companyName = "super";
