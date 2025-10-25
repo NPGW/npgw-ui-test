@@ -38,7 +38,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -275,9 +274,5 @@ public abstract class BaseTest {
     }
 
     protected record LocalStorage(String name, String value) {
-    }
-
-    protected record Response(int status, Map<String, String> headers, byte[] body) {
-
     }
 }
