@@ -2,6 +2,7 @@ package xyz.npgw.test.page.system;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.WaitForSelectorState;
 import io.qameta.allure.Step;
 import lombok.Getter;
 import xyz.npgw.test.page.base.HeaderPage;
@@ -12,6 +13,8 @@ import xyz.npgw.test.page.component.select.SelectCurrencyTrait;
 import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;
 import xyz.npgw.test.page.component.table.GatewayTableTrait;
 import xyz.npgw.test.page.dialog.gateway.ConectAcquirerMidDialog;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 @Getter
 public class SuperGatewayPage extends HeaderPage<SuperGatewayPage>
@@ -40,6 +43,7 @@ public class SuperGatewayPage extends HeaderPage<SuperGatewayPage>
     @Step("Click 'Connect acquirer MID' button")
     public ConectAcquirerMidDialog clickConnectAcquirerMidButton() {
         connectAcquirerMidButton.click();
+        getPage().waitForTimeout(200);
 
         return new ConectAcquirerMidDialog(getPage());
     }
