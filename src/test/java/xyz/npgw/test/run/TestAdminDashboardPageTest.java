@@ -90,6 +90,7 @@ public class TestAdminDashboardPageTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify: status chart legend labels are correctly displayed");
         assertThat(dashboardPage.getXAxisTexts()).hasText(STATUSES);
+
 //        Allure.step("Verify: currency legend labels are correctly displayed");
 //        assertThat(dashboardPage.getCurrencyLegendLabels()).hasText(new String[]{"EUR", "USD"}); currently no currency
     }

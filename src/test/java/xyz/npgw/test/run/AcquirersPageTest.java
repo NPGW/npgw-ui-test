@@ -957,15 +957,14 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
                 "https://example.net",
                 "https://example.io",
                 "https://example.lv",
-                /*"https://my-site.net",*/
-                /*"https://x.com",*/
+                /*"https://my-site.net",*/  //TODO Bug '-' in domain name not accepted
+                /*"https://x.com",*/ //TODO Bug one letter domain name not accepted
                 "https://www.example.com",
                 "https://blog.example.com",
                 "https://shop.example.co.uk",
                 "https://example.com/?id=123",
                 "https://www.example.com/path/to/page?ref=google#contact"
         );
-        //    TODO: Delete the comments after bug fix.
 
         for (String url : positiveUrls) {
             setupAcquirerMidDialog

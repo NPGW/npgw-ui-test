@@ -18,9 +18,4 @@ public enum ControlType {
         this.displayText = displayText;
         this.apiValue = apiValue;
     }
-
-//    @Override
-//    public String toString() {
-//        return apiValue;
-//    }
 }

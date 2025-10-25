@@ -46,6 +46,8 @@ public abstract class BaseTestForSingleLogin extends BaseTest {
                 testResult.getMethod().getCurrentInvocationCount(),
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
 
+        log.info(">>> {}", testId);
+
         if (ProjectProperties.isTracingMode()) {
             BrowserUtils.startTracing(browserContext);
         }

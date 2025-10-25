@@ -109,7 +109,6 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         clickLoginButton();
 
         getPage().waitForURL("**/dashboard");
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
     }
 
     public UserDashboardPage loginAsUser(String email, String password) {
