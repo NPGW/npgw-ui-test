@@ -57,13 +57,6 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
         return this;
     }
 
-    @Step("Click 'Refresh data' button")
-    public SuperAcquirersPage clickRefreshDataButton() {
-        refreshDataButton.click();
-
-        return this;
-    }
-
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerPresence(APIRequestContext request, String acquirerName) {
         double timeout = ProjectProperties.getDefaultTimeout();
