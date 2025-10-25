@@ -104,6 +104,7 @@ jobs:
         with:
           name: durations
           path: durations.csv
+          retention-days: 1
 
   deploy:
     name: 'Deploy'
