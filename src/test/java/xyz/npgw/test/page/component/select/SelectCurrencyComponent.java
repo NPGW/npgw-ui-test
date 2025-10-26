@@ -49,5 +49,4 @@ public class SelectCurrencyComponent<CurrentPageT extends HeaderPage<?>> extends
 
         return currentPage;
     }
-
 }
