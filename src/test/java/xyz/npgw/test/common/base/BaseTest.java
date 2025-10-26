@@ -21,6 +21,7 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.client.Client;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.user.Credentials;
 import xyz.npgw.test.common.entity.user.Token;
@@ -86,7 +87,7 @@ public abstract class BaseTest {
 
         uid = "%s.%s".formatted(RUN_ID, Thread.currentThread().getId());
         companyName = "%s test run company".formatted(uid);
-        TestUtils.createCompany(apiRequestContext, companyName);
+        Company.create(apiRequestContext, companyName);
 
         browser = BrowserUtils.createBrowser(playwright);
 
@@ -106,7 +107,7 @@ public abstract class BaseTest {
         if (apiRequestContext != null) {
             try {
                 User.delete(apiRequestContext, "%s.super@email.com".formatted(uid));
-                TestUtils.deleteCompany(apiRequestContext, companyName);
+                Company.delete(apiRequestContext, companyName);
                 apiRequestContext.dispose();
             } catch (Exception ignored) {
                 log.info("Attempt to dispose the apiRequestContext that is already disposed.");

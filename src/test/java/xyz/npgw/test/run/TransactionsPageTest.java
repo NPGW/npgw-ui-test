@@ -11,9 +11,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.TestDataProvider;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.entity.company.Merchant;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
@@ -28,7 +29,6 @@ import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CARD_OPTIONS;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
-import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
 public class TransactionsPageTest extends BaseTestForSingleLogin {
@@ -42,9 +42,9 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createBusinessUnits(getApiRequestContext(), getCompanyName(), businessUnitNames);
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
+        Merchant.create(getApiRequestContext(), getCompanyName(), businessUnitNames);
+        Company.create(getApiRequestContext(), COMPANY_NAME);
+        merchant = Merchant.create(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -273,7 +273,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     public void testPresenceOfDownloadFilesOptions() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickDownloadButton();
@@ -545,7 +545,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @Description("Verify, that date picker contains default value before and after reset filter")
     public void testResetData() {
         final String dateRange = "01/04/2025-30/04/2025";
-        final String defaultRange = TestUtils.getCurrentRange();
+        final String defaultRange = TestUtils.getCurrentMonthRange();
 
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
@@ -591,7 +591,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     public void testTransactionSearchByNpgwReference() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -642,7 +642,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }

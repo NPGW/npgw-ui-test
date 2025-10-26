@@ -20,7 +20,6 @@ import xyz.npgw.test.page.component.system.SuperSystemMenuTrait;
 import xyz.npgw.test.page.component.table.AcquirersTableTrait;
 import xyz.npgw.test.page.dialog.acquirer.SetupAcquirerMidDialog;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
@@ -60,7 +59,8 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerPresence(APIRequestContext request, String acquirerName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Acquirer.getAllAcquirers(request)).noneMatch(item -> item.getAcquirerName().equals(acquirerName))) {
+        while (Acquirer.getAllAcquirers(request).stream()
+                .noneMatch(item -> item.getAcquirerName().equals(acquirerName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {
@@ -79,7 +79,8 @@ public class SuperAcquirersPage extends HeaderPage<SuperAcquirersPage>
     @SneakyThrows
     public SuperAcquirersPage waitForAcquirerAbsence(APIRequestContext request, String acquirerName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Acquirer.getAllAcquirers(request)).anyMatch(item -> item.getAcquirerName().equals(acquirerName))) {
+        while (Acquirer.getAllAcquirers(request).stream()
+                .anyMatch(item -> item.getAcquirerName().equals(acquirerName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {

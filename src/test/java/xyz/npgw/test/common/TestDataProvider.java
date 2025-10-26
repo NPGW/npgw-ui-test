@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.provider;
+package xyz.npgw.test.common;
 
 import org.testng.annotations.DataProvider;
 
