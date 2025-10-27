@@ -1,4 +1,6 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.transaction;
+
+import xyz.npgw.test.common.entity.Currency;
 
 public record TransactionSummary(
         String merchantId,

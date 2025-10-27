@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.company;
 
 import com.google.gson.Gson;
 import com.microsoft.playwright.APIRequestContext;
