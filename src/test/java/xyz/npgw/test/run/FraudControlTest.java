@@ -12,8 +12,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.entity.ControlType;
-import xyz.npgw.test.common.entity.FraudControl;
+import xyz.npgw.test.common.entity.control.Control;
+import xyz.npgw.test.common.entity.control.ControlCode;
+import xyz.npgw.test.common.entity.control.ControlType;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
@@ -36,69 +37,56 @@ import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 
 public class FraudControlTest extends BaseTestForSingleLogin {
 
-    private static final FraudControl FRAUD_CONTROL = FraudControl.builder()
-            .controlName("%s ControlEverything".formatted(RUN_ID))
-            .controlCode("Neutrino")
+    private static final Control FRAUD_CONTROL = Control.builder()
+            .controlName("%s ControlEverythingS".formatted(RUN_ID))
             .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
             .build();
-    private static final FraudControl FRAUD_CONTROL_FRAUD_SCREEN = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_FRAUD_SCREEN = Control.builder()
             .controlName("%s ControlScreen".formatted(RUN_ID))
-            .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
-            .controlCode("Neutrino")
-            .controlDisplayName("ControlFSC")
+            .controlType(ControlType.FRAUD_SCREEN.getApiValue())
             .controlConfig("type")
             .build();
-    private static final FraudControl FRAUD_CONTROL_INACTIVE = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_INACTIVE = Control.builder()
             .controlName("%s ControlNothing".formatted(RUN_ID))
-            .controlCode("Neutrino")
-            .controlDisplayName("DisplayNotAvailable")
             .controlConfig("suspicious")
             .isActive(false)
             .build();
-    private static final FraudControl FRAUD_CONTROL_ADD_ONE = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_ADD_ONE = Control.builder()
             .controlName("%s ControlOne".formatted(RUN_ID))
-            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplayFirst")
             .controlConfig("firstQueue")
             .build();
-    private static final FraudControl FRAUD_CONTROL_ADD_TWO = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_ADD_TWO = Control.builder()
             .controlName("%s ControlTwo".formatted(RUN_ID))
-            .controlCode("Neutrino")
             .controlDisplayName("ControlDisplaySecond")
             .controlConfig("secondQueue")
             .build();
-    private static final FraudControl FRAUD_CONTROL_ADD_INACTIVE = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_ADD_INACTIVE = Control.builder()
             .controlName("%s Inactive control".formatted(RUN_ID))
-            .controlCode("Neutrino")
-            .controlDisplayName("Inactive control")
             .isActive(false)
             .controlConfig("firstQueue")
             .build();
-    private static final FraudControl FRAUD_CONTROL_THREE = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_THREE = Control.builder()
             .controlName("%s ControlThree".formatted(RUN_ID))
-            .controlCode("Neutrino")
-            .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
-            .controlDisplayName("ControlDisplayThird")
+            .controlType(ControlType.FRAUD_SCREEN.getApiValue())
             .build();
-    private static final FraudControl FRAUD_CONTROL_ACTIVE_TO_INACTIVE = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_ACTIVE_TO_INACTIVE = Control.builder()
             .controlName("%s ControlActiveToInactive".formatted(RUN_ID))
-            .controlCode("Neutrino")
-            .controlType(String.valueOf(ControlType.FRAUD_SCREEN))
-            .controlDisplayName("ControlDisplayActiveToInactive")
+            .controlType(ControlType.FRAUD_SCREEN.getApiValue())
             .build();
-    private static final FraudControl FRAUD_CONTROL_INACTIVE_JUST_DELETE = FraudControl.builder()
-            .controlName("%s Delete me".formatted(RUN_ID))
-            .controlCode("Neutrino")
-            .controlDisplayName("DisplayDelete")
+    private static final Control FRAUD_CONTROL_INACTIVE_JUST_DELETE = Control.builder()
+            .controlName("%s Delete inactive me".formatted(RUN_ID))
             .controlConfig("delete")
             .isActive(false)
             .build();
-    private static final FraudControl FRAUD_CONTROL_CLOSE = FraudControl.builder()
+    private static final Control FRAUD_CONTROL_CLOSE = Control.builder()
             .controlName("%s ControlEverythingClosed".formatted(RUN_ID))
-            .controlCode("Neutrino")
-            .controlDisplayName("ControlDisplay")
             .controlConfig("notDefault")
+            .build();
+    private static final Control FRAUD_CONTROL_ACTIVE_DELETE_TEST = Control.builder()
+            .controlName("%s Delete active me".formatted(RUN_ID))
+            .controlConfig("delete")
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
 
@@ -122,6 +110,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
         TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
+        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST);
     }
 
     @Test
@@ -284,7 +273,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .clickFraudControlTab()
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
-                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlCodeField(ControlCode.MAXMIND_SCORE.getName())
                 .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
                 .checkInactiveRadiobutton()
                 .clickCloseButton();
@@ -296,7 +285,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         superFraudControlPage
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
-                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlCodeField(ControlCode.MAXMIND_SCORE.getName())
                 .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
                 .checkInactiveRadiobutton()
                 .clickCloseIcon();
@@ -308,7 +297,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         superFraudControlPage
                 .getTableControls().clickEditControlButton(FRAUD_CONTROL.getControlName())
                 .fillFraudControlDisplayNameField(FRAUD_CONTROL.getControlDisplayName() + " Edited")
-                .fillFraudControlCodeField(FRAUD_CONTROL.getControlCode() + RUN_ID)
+                .fillFraudControlCodeField(ControlCode.MAXMIND_SCORE.getName())
                 .fillFraudControlConfigField(FRAUD_CONTROL.getControlConfig() + "Not applicable")
                 .checkInactiveRadiobutton()
                 .pressEscapeKey();
@@ -403,10 +392,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(deleteIconTooltip).hasText("Delete business unit control");
     }
 
-    @Test(dependsOnMethods = {"testCancelAddingFraudControlToBusinessUnit", "testCancelDeletingFraudControl",
-            "testCancelDeactivationFraudControl", "testCancelEditingFraudControl",
-            /*"testTooltipsForActionsControlTable", "testBusinessUnitControlTableEntriesSorting",*/
-            "testVerifyWarningModalWindowChangeActivityForControlTable"})
+    @Test
     @TmsLink("949")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -415,11 +401,12 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
-                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL.getControlName())
+                .getTableControls().clickDeleteControlButton(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName())
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in the table");
-        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL.getControlName())).not().isAttached();
+        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName()))
+                .not().isAttached();
     }
 
     @Test
@@ -615,7 +602,8 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getCell(0, "Status"))
                 .hasText("Active");
 
-        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
+        superFraudControlPage
+                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
                 .clickDeleteButton()
                 .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
                 .clickDeleteButton();
@@ -653,12 +641,12 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
-                .fillFraudControlCodeField("Neutrino")
+                .fillFraudControlCodeField(ControlCode.NEUTRINO.getName())
                 .clickSetupButton()
                 .getAlert().clickCloseButton()
                 .clickAddFraudControl()
                 .fillFraudControlNameField(FRAUD_CONTROL_NAME)
-                .fillFraudControlCodeField("Neutrino")
+                .fillFraudControlCodeField(ControlCode.NEUTRINO.getName())
                 .clickSetupButton();
 
         Allure.step("Verify that the error message ‘ERROR Entity with name … already exists.’ is displayed.");
@@ -772,8 +760,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlDisplayName()));
     }
 
-    @Test(dependsOnMethods = {"testDeleteActiveFraudControlAddedToBusinessUnit",
-            "testChangeBusinessUnitFraudControlActivity"})
+    @Test(dependsOnMethods = {"testChangeBusinessUnitFraudControlActivity"})
     @TmsLink("986")
     @Epic("System/Fraud control")
     @Feature("Add/Edit/Delete Fraud Control")
@@ -799,7 +786,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify that all the data are changed in the row" + FRAUD_CONTROL_ADD_ONE.getControlName());
 
-        assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlCode());
+        assertThat(row).containsText(String.valueOf(FRAUD_CONTROL_ADD_TWO.getControlCode()));
         //    assertThat(row).not().containsText(FRAUD_CONTROL_ADD_ONE.getControlCode());
 
         assertThat(row).containsText(FRAUD_CONTROL_ADD_TWO.getControlConfig());
@@ -1012,11 +999,14 @@ public class FraudControlTest extends BaseTestForSingleLogin {
 
             addControlDialog
                     .fillFraudControlNameField(input)
-                    .fillFraudControlCodeField("Neutrino")
+                    .fillFraudControlCodeField(ControlCode.NEUTRINO.getName())
                     .clickSetupButton();
 
             Allure.step("Verify error message for symbol: " + symbol);
             assertThat(addControlDialog.getAlert().getMessage()).containsText(expectedMessage);
+
+            addControlDialog
+                    .getAlert().clickCloseButton();
         }
     }
 
@@ -1031,7 +1021,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .clickFraudControlTab()
                 .clickAddFraudControl()
                 .fillFraudControlNameField("a".repeat(3))
-                .fillFraudControlCodeField("Neutrino");
+                .fillFraudControlCodeField(ControlCode.NEUTRINO.getName());
 
         Allure.step("Verify that the 'Control Name' field is has attribute aria-invalid set");
         assertThat(addControlDialog.getControlNameInput()).hasAttribute("aria-invalid", "true");
@@ -1250,49 +1240,44 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 + "Close window with no changes with filled fields with 'Cross'"
                 + "Close window with no changes with filled fields with ESC")
     public void testCancelAddingNewFraudControl() {
-        String controlName = FRAUD_CONTROL_CLOSE.getControlName();
-        String controlCode = FRAUD_CONTROL_CLOSE.getControlCode();
-        String controlDisplayName = FRAUD_CONTROL_CLOSE.getControlDisplayName();
-        String controlConfig = FRAUD_CONTROL_CLOSE.getControlConfig();
-
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .clickAddFraudControl()
-                .fillFraudControlNameField(controlName)
-                .fillFraudControlCodeField(controlCode)
-                .fillFraudControlDisplayNameField(controlDisplayName)
-                .fillFraudControlConfigField(controlConfig)
+                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
                 .checkActiveRadiobutton()
                 .clickCloseButton();
 
         Allure.step("Verify that no data are presented in the row due to Close button");
         assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
-                .not().hasText(controlName);
+                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
 
         superFraudControlPage.clickAddFraudControl()
-                .fillFraudControlNameField(controlName)
-                .fillFraudControlCodeField(controlCode)
-                .fillFraudControlDisplayNameField(controlDisplayName)
-                .fillFraudControlConfigField(controlConfig)
+                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
                 .checkActiveRadiobutton()
                 .pressEscapeKey();
 
         Allure.step("Verify that no data are presented in the row due to ESC key");
         assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
-                .not().hasText(controlName);
+                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
 
         superFraudControlPage.clickAddFraudControl()
-                .fillFraudControlNameField(controlName)
-                .fillFraudControlCodeField(controlCode)
-                .fillFraudControlDisplayNameField(controlDisplayName)
-                .fillFraudControlConfigField(controlConfig)
+                .fillFraudControlNameField(FRAUD_CONTROL_CLOSE.getControlName())
+                .fillFraudControlCodeField(FRAUD_CONTROL_CLOSE.getControlCode())
+                .fillFraudControlDisplayNameField(FRAUD_CONTROL_CLOSE.getControlDisplayName())
+                .fillFraudControlConfigField(FRAUD_CONTROL_CLOSE.getControlConfig())
                 .checkActiveRadiobutton()
                 .clickCloseIcon();
 
         Allure.step("Verify that no data are presented in the row due to Cross icon");
         assertThat(superFraudControlPage.getTableControls().getColumnHeader("Name"))
-                .not().hasText(controlName);
+                .not().hasText(FRAUD_CONTROL_CLOSE.getControlName());
     }
 
     @AfterClass(alwaysRun = true)
@@ -1307,6 +1292,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE.getControlName());
         TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlName());
+        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName());
 
         TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();

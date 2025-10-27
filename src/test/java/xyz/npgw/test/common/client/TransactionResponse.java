@@ -1,8 +1,8 @@
 package xyz.npgw.test.common.client;
 
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.Status;
-import xyz.npgw.test.common.entity.Type;
+import xyz.npgw.test.common.entity.transaction.Status;
+import xyz.npgw.test.common.entity.transaction.Type;
 
 public record TransactionResponse(
         int amount,

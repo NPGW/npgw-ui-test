@@ -10,17 +10,17 @@ import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.client.TransactionResponse;
-import xyz.npgw.test.common.entity.Acquirer;
-import xyz.npgw.test.common.entity.BusinessUnit;
-import xyz.npgw.test.common.entity.CardType;
-import xyz.npgw.test.common.entity.Company;
 import xyz.npgw.test.common.entity.Currency;
-import xyz.npgw.test.common.entity.FraudControl;
-import xyz.npgw.test.common.entity.Status;
-import xyz.npgw.test.common.entity.TempMerchantAcquirer;
-import xyz.npgw.test.common.entity.Transaction;
-import xyz.npgw.test.common.entity.Type;
-import xyz.npgw.test.common.entity.User;
+import xyz.npgw.test.common.entity.acquirer.Acquirer;
+import xyz.npgw.test.common.entity.acquirer.MerchantAcquirer;
+import xyz.npgw.test.common.entity.company.Company;
+import xyz.npgw.test.common.entity.company.Merchant;
+import xyz.npgw.test.common.entity.control.Control;
+import xyz.npgw.test.common.entity.transaction.CardType;
+import xyz.npgw.test.common.entity.transaction.Status;
+import xyz.npgw.test.common.entity.transaction.Transaction;
+import xyz.npgw.test.common.entity.transaction.Type;
+import xyz.npgw.test.common.entity.user.User;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -52,12 +52,12 @@ public final class TestUtils {
         return zonedDateTime.isBefore(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
     }
 
-    public static BusinessUnit createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
-        return BusinessUnit.create(request, companyName, merchantTitle);
+    public static Merchant createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
+        return Merchant.create(request, companyName, merchantTitle);
     }
 
     public static void createBusinessUnits(APIRequestContext request, String company, String[] merchants) {
-        Arrays.stream(merchants).forEach(merchantTitle -> BusinessUnit.create(request, company, merchantTitle));
+        Arrays.stream(merchants).forEach(merchantTitle -> Merchant.create(request, company, merchantTitle));
     }
 
     public static void createCompany(APIRequestContext request, String companyName) {
@@ -71,30 +71,30 @@ public final class TestUtils {
         while (Company.delete(request, companyName) == 409) {
             Arrays.stream(User.getAll(request, companyName))
                     .forEach(user -> User.delete(request, user.getEmail()));
-            Arrays.stream(BusinessUnit.getAll(request, companyName))
-                    .forEach(businessUnit -> {
-//                        BusinessUnit.deleteWithTimeout(request, companyName, businessUnit);
-                        while (BusinessUnit.delete(request, companyName, businessUnit) == 409) {
-                            TempMerchantAcquirer.delete(request, businessUnit.merchantId());
+            Arrays.stream(Merchant.getAll(request, companyName))
+                    .forEach(merchant -> {
+//                        Merchant.deleteWithTimeout(request, companyName, merchant);
+                        while (Merchant.delete(request, companyName, merchant) == 409) {
+                            MerchantAcquirer.deleteMerchantAcquirer(request, merchant);
                         }
                     });
         }
     }
 
     public static void createAcquirer(APIRequestContext request, Acquirer acquirer) {
-        Acquirer.create(request, acquirer);
+        Acquirer.createAcquirer(request, acquirer);
     }
 
     public static void deleteAcquirer(APIRequestContext request, String acquirerName) {
-        Acquirer.delete(request, acquirerName);
+        Acquirer.deleteAcquirer(request, acquirerName);
     }
 
-    public static void createFraudControl(APIRequestContext request, FraudControl fraudControl) {
-        FraudControl.create(request, fraudControl);
+    public static void createFraudControl(APIRequestContext request, Control fraudControl) {
+        Control.create(request, fraudControl);
     }
 
     public static void deleteFraudControl(APIRequestContext request, String fraudControlName) {
-        FraudControl.delete(request, fraudControlName);
+        Control.delete(request, fraudControlName);
     }
 
     public static String getCurrentRange() {
@@ -121,7 +121,23 @@ public final class TestUtils {
     }
 
     @SneakyThrows
-    public static void waitForCompanyPresent(APIRequestContext request, String companyName) {
+    public static void waitForAcquirerPresence(APIRequestContext request, String name) {
+        double timeout = ProjectProperties.getDefaultTimeout();
+        while (Arrays.stream(Acquirer.getAllAcquirers(request)).noneMatch(acquirer -> acquirer.getAcquirerName().equals(name))) {
+            TimeUnit.MILLISECONDS.sleep(300);
+            timeout -= 300;
+            if (timeout <= 0) {
+                throw new TimeoutError("Waiting for acquirer '%s' presence".formatted(name));
+            }
+        }
+        double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
+        if (waitTime > 0) {
+            log.info("Acquirer presence wait took {}ms", waitTime);
+        }
+    }
+
+    @SneakyThrows
+    public static void waitForCompanyPresence(APIRequestContext request, String companyName) {
         double timeout = ProjectProperties.getDefaultTimeout();
         while (Arrays.stream(Company.getAll(request))
                 .noneMatch(item -> item.companyName().equals(companyName))) {
@@ -133,14 +149,14 @@ public final class TestUtils {
         }
         double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
         if (waitTime > 0) {
-            log.info("Company present wait took {}ms", waitTime);
+            log.info("Company presence wait took {}ms", waitTime);
         }
     }
 
     @SneakyThrows
-    public static void waitForFraudControlPresent(APIRequestContext request, String fraudControlName) {
+    public static void waitForFraudControlPresence(APIRequestContext request, String fraudControlName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(FraudControl.getAll(request))
+        while (Arrays.stream(Control.getAll(request))
                 .noneMatch(item -> item.getControlName().equals(fraudControlName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
@@ -150,7 +166,7 @@ public final class TestUtils {
         }
         double waitTime = ProjectProperties.getDefaultTimeout() - timeout;
         if (waitTime > 0) {
-            log.info("Fraud Control present wait took {}ms", waitTime);
+            log.info("Fraud Control presence wait took {}ms", waitTime);
         }
     }
 

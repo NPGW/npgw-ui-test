@@ -6,7 +6,7 @@ import com.microsoft.playwright.options.AriaRole;
 import io.qameta.allure.Param;
 import io.qameta.allure.Step;
 import lombok.Getter;
-import xyz.npgw.test.common.entity.UserRole;
+import xyz.npgw.test.common.entity.user.UserRole;
 import xyz.npgw.test.page.base.BasePage;
 import xyz.npgw.test.page.component.AlertTrait;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;
@@ -109,7 +109,6 @@ public final class LoginPage extends BasePage implements AlertTrait<LoginPage> {
         clickLoginButton();
 
         getPage().waitForURL("**/dashboard");
-//        getPage().waitForCondition(() -> LocalTime.now().isAfter(THREAD_LAST_ACTIVITY.get()));
     }
 
     public UserDashboardPage loginAsUser(String email, String password) {

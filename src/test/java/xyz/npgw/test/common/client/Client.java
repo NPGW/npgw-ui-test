@@ -5,7 +5,7 @@ import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.CustomLog;
-import xyz.npgw.test.common.entity.Token;
+import xyz.npgw.test.common.entity.user.Token;
 
 @CustomLog
 public record Client(String apiKey) {

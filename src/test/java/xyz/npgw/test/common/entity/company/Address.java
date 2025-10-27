@@ -1,4 +1,4 @@
-package xyz.npgw.test.common.entity;
+package xyz.npgw.test.common.entity.company;
 
 public record Address(
         String city,

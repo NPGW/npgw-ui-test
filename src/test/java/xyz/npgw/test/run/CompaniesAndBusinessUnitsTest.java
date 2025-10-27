@@ -11,8 +11,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.entity.Address;
-import xyz.npgw.test.common.entity.Company;
+import xyz.npgw.test.common.entity.company.Address;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
@@ -436,7 +436,6 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
         Allure.step("Verify: the deleted company is no longer present in the dropdown list");
         assertFalse(companiesAndBusinessUnitsPage.getSelectCompany().isCompanyPresent(editedCompany.companyName()));
     }
-
 
     @Test
     @Epic("System/Companies and business units")
