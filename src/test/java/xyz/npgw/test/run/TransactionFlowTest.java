@@ -15,12 +15,12 @@ import xyz.npgw.test.common.client.TransactionResponse;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.acquirer.Acquirer;
 import xyz.npgw.test.common.entity.acquirer.MerchantAcquirer;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.user.User;
 import xyz.npgw.test.common.entity.user.UserRole;
 import xyz.npgw.test.common.util.AuthTransactionUtils;
 import xyz.npgw.test.common.util.SaleTransactionUtils;
-import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.transactions.TransactionDetailsDialog;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
@@ -56,12 +56,12 @@ public class TransactionFlowTest extends BaseTestForLogout {
                 .email("the.admin@email.com")
                 .build();
 
-        TestUtils.createCompany(getApiRequestContext(), company);
+        Company.create(getApiRequestContext(), company);
 
         User.create(getApiRequestContext(), admin);
         User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
 
-        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), company, merchantTitle);
+        merchant = Merchant.create(getApiRequestContext(), company, merchantTitle);
         String apiKey = Merchant.getNewApikey(
                 getApiRequestContext(getPlaywright(), admin.getCredentials()),
                 company,
@@ -69,7 +69,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
 
         apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
 
-        TestUtils.createAcquirer(getApiRequestContext(), acquirer);
+        Acquirer.createAcquirer(getApiRequestContext(), acquirer);
         MerchantAcquirer.addMerchantAcquirerItem(getApiRequestContext(), merchant, acquirer);
     }
 

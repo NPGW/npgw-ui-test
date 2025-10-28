@@ -140,5 +140,4 @@ public class AcquirersTableComponent extends BaseTableComponent<SuperAcquirersPa
 
         return new DeleteAcquirerDialog(getPage());
     }
-
 }

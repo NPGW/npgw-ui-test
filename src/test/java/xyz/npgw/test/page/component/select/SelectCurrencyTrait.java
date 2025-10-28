@@ -9,5 +9,4 @@ public interface SelectCurrencyTrait<CurrentPageT extends HeaderPage<?>> extends
     default SelectCurrencyComponent<CurrentPageT> getSelectCurrency() {
         return new SelectCurrencyComponent<>(getPage(), (CurrentPageT) this);
     }
-
 }

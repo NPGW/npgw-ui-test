@@ -12,10 +12,9 @@ import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.client.TransactionResponse;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.acquirer.Acquirer;
-import xyz.npgw.test.common.entity.acquirer.MerchantAcquirer;
 import xyz.npgw.test.common.entity.company.Company;
-import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.control.Control;
+import xyz.npgw.test.common.entity.info.Info;
 import xyz.npgw.test.common.entity.transaction.CardType;
 import xyz.npgw.test.common.entity.transaction.Status;
 import xyz.npgw.test.common.entity.transaction.Transaction;
@@ -25,11 +24,11 @@ import xyz.npgw.test.common.entity.user.User;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -52,52 +51,14 @@ public final class TestUtils {
         return zonedDateTime.isBefore(ZonedDateTime.now(ZoneOffset.UTC).minusHours(1));
     }
 
-    public static Merchant createBusinessUnit(APIRequestContext request, String companyName, String merchantTitle) {
-        return Merchant.create(request, companyName, merchantTitle);
+    public static String lastBuildDate(APIRequestContext request) {
+        String lastBuildDate = Info.getVersion(request).replaceAll("^.*\\.|-.*$", "");
+
+        return LocalDateTime.parse(lastBuildDate, DateTimeFormatter.ofPattern("yyMMddHHmm"))
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    public static void createBusinessUnits(APIRequestContext request, String company, String[] merchants) {
-        Arrays.stream(merchants).forEach(merchantTitle -> Merchant.create(request, company, merchantTitle));
-    }
-
-    public static void createCompany(APIRequestContext request, String companyName) {
-        Company.create(request, companyName);
-    }
-
-    public static void deleteCompany(APIRequestContext request, String companyName) {
-        if (companyName.equals("super")) {
-            return;
-        }
-        while (Company.delete(request, companyName) == 409) {
-            Arrays.stream(User.getAll(request, companyName))
-                    .forEach(user -> User.delete(request, user.getEmail()));
-            Arrays.stream(Merchant.getAll(request, companyName))
-                    .forEach(merchant -> {
-//                        Merchant.deleteWithTimeout(request, companyName, merchant);
-                        while (Merchant.delete(request, companyName, merchant) == 409) {
-                            MerchantAcquirer.deleteMerchantAcquirer(request, merchant);
-                        }
-                    });
-        }
-    }
-
-    public static void createAcquirer(APIRequestContext request, Acquirer acquirer) {
-        Acquirer.createAcquirer(request, acquirer);
-    }
-
-    public static void deleteAcquirer(APIRequestContext request, String acquirerName) {
-        Acquirer.deleteAcquirer(request, acquirerName);
-    }
-
-    public static void createFraudControl(APIRequestContext request, Control fraudControl) {
-        Control.create(request, fraudControl);
-    }
-
-    public static void deleteFraudControl(APIRequestContext request, String fraudControlName) {
-        Control.delete(request, fraudControlName);
-    }
-
-    public static String getCurrentRange() {
+    public static String getCurrentMonthRange() {
         YearMonth yearMonth = YearMonth.from(LocalDate.now());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -107,7 +68,8 @@ public final class TestUtils {
     @SneakyThrows
     public static void waitForUserPresence(APIRequestContext request, String email, String companyName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(User.getAll(request, companyName)).noneMatch(user -> user.getEmail().equals(email))) {
+        while (User.getAll(request, companyName).stream()
+                .noneMatch(user -> user.getEmail().equals(email))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {
@@ -123,7 +85,8 @@ public final class TestUtils {
     @SneakyThrows
     public static void waitForAcquirerPresence(APIRequestContext request, String name) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Acquirer.getAllAcquirers(request)).noneMatch(acquirer -> acquirer.getAcquirerName().equals(name))) {
+        while (Acquirer.getAllAcquirers(request).stream()
+                .noneMatch(acquirer -> acquirer.getAcquirerName().equals(name))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {
@@ -139,7 +102,7 @@ public final class TestUtils {
     @SneakyThrows
     public static void waitForCompanyPresence(APIRequestContext request, String companyName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Company.getAll(request))
+        while (Company.getAll(request).stream()
                 .noneMatch(item -> item.companyName().equals(companyName))) {
             TimeUnit.MILLISECONDS.sleep(500);
             timeout -= 300;
@@ -156,7 +119,7 @@ public final class TestUtils {
     @SneakyThrows
     public static void waitForFraudControlPresence(APIRequestContext request, String fraudControlName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Control.getAll(request))
+        while (Control.getAll(request).stream()
                 .noneMatch(item -> item.getControlName().equals(fraudControlName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;

@@ -12,10 +12,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.entity.company.Company;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.control.Control;
 import xyz.npgw.test.common.entity.control.ControlCode;
 import xyz.npgw.test.common.entity.control.ControlType;
-import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
@@ -99,18 +100,18 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_SORT);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_REPEAT);
+        Company.create(getApiRequestContext(), COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_NAME);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_SORT);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME, BUSINESS_UNIT_REPEAT);
 
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
-        TestUtils.createFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_THREE);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_INACTIVE_JUST_DELETE);
+        Control.create(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST);
     }
 
     @Test
@@ -1283,18 +1284,18 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_INACTIVE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_NAME);
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_THREE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlName());
-        TestUtils.deleteFraudControl(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_INACTIVE.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_NAME);
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_ADD_ONE.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_ADD_TWO.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_ADD_INACTIVE.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_FRAUD_SCREEN.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_THREE.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_TO_INACTIVE.getControlName());
+        Control.delete(getApiRequestContext(), FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName());
 
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }

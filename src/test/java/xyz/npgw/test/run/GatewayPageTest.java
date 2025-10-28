@@ -17,6 +17,7 @@ import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.acquirer.Acquirer;
 import xyz.npgw.test.common.entity.company.Company;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.system.SuperGatewayPage;
@@ -67,15 +68,14 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createBusinessUnits(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
-        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER);
-        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_MOVE);
-        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_EUR);
-        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_GBP);
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
-        TestUtils.createBusinessUnit(
-                getApiRequestContext(), COMPANY_NAME_DELETION_TEST, BUSINESS_UNIT_NAME_DELETION_TEST);
+        Company.create(getApiRequestContext(), COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME, expectedBusinessUnitsList);
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER);
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER_MOVE);
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER_EUR);
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER_GBP);
+        Company.create(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME_DELETION_TEST, BUSINESS_UNIT_NAME_DELETION_TEST);
     }
 
     @Test
@@ -182,7 +182,7 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         assertThat(superGatewayPage.getSelectBusinessUnit().getDropdownOptionList())
                 .hasText(new String[]{"First", "Second"});
 
-        TestUtils.deleteCompany(getApiRequestContext(), companyName);
+        Company.delete(getApiRequestContext(), companyName);
     }
 
     @Test
@@ -228,7 +228,7 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
         assertThat(gatewayPage.getSelectBusinessUnit().getSelectBusinessUnitField()).isEmpty();
         assertThat(gatewayPage.getSelectCompany().getSelectCompanyField()).isEmpty();
 
-        TestUtils.deleteCompany(getApiRequestContext(), company.companyName());
+        Company.delete(getApiRequestContext(), company.companyName());
     }
 
     @Ignore("temp")
@@ -632,12 +632,12 @@ public class GatewayPageTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER.getAcquirerName());
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_MOVE.getAcquirerName());
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_EUR.getAcquirerName());
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_GBP.getAcquirerName());
+        Company.delete(getApiRequestContext(), COMPANY_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME_DELETION_TEST);
+        Acquirer.deleteAcquirer(getApiRequestContext(), ACQUIRER.getAcquirerName());
+        Acquirer.deleteAcquirer(getApiRequestContext(), ACQUIRER_MOVE.getAcquirerName());
+        Acquirer.deleteAcquirer(getApiRequestContext(), ACQUIRER_EUR.getAcquirerName());
+        Acquirer.deleteAcquirer(getApiRequestContext(), ACQUIRER_GBP.getAcquirerName());
         super.afterClass();
     }
 }
