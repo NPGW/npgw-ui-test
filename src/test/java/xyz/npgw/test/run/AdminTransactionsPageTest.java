@@ -161,7 +161,6 @@ public class AdminTransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 500.00 - 10300.00");
     }
 
-    @Ignore("Apply button is disabled for 0 - 0 amounts | [BR-375]")
     @Test
     @TmsLink("355")
     @Epic("Transactions")
