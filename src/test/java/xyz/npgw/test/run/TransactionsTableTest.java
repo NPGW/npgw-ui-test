@@ -220,9 +220,11 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         Allure.step("Verify: Transactions are present in the table");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
 
-        transactionsPage.getTable().goToLastPage();
+        transactionsPage
+                .getTable().goToLastPage();
 
-        transactionsPage.getSelectCurrency().select("EUR");
+        transactionsPage
+                .getSelectCurrency().select("EUR");
 
         Allure.step("Verify: Transactions are still present then filter is applied on the last page");
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
