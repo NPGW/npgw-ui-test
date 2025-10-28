@@ -336,13 +336,6 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    @Step("Click Search type toggle Pencil Icon")
-    public CurrentPageT clickSearchTypeToggleButton() {
-        searchTypeToggleButton.click();
-
-        return self();
-    }
-
     @Step("Click 'Npgw reference' Clear Icon")
     public CurrentPageT clickNpgwReferenceClearIcon() {
         npgwReferenceFieldClearIcon.click();

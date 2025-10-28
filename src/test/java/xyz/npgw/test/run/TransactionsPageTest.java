@@ -630,7 +630,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     public void testTransactionSearchByBusinessUnitReference() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(CURRENT_MONTH_FOR_TABLE)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -647,7 +647,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         String businessUnitReferenceText2 = businessUnitReference.get(index2).innerText();
 
         Locator filteredRows1 = transactionsPage
-                .clickSearchPencilIcon()
+                .clickSearchButton()
                 .fillBusinessUnitReferenceField(businessUnitReferenceText1)
                 .clickBusinessUnitReferenceAcceptButton()
                 .getTable().getRows();
@@ -657,7 +657,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(filteredRows1).containsText(businessUnitReferenceText1);
 
         Locator filteredRows2 = transactionsPage
-                .clickSearchTypeToggleButton()
+                .clickSearchPencilIcon()
                 .clickBusinessUnitReferenceClearIcon()
                 .fillBusinessUnitReferenceFieldAndClickEnter(businessUnitReferenceText2)
                 .getTable().getRows();
