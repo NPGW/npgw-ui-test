@@ -68,7 +68,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @Epic("Transactions")
     @Feature("Panel")
     @Description("Verify that on the Transactions Page user can see Panel: Company"
-            + " Business unit, Date range, Currency, Card type, Status, Trx Ids, Amount, Reset filter, "
+            + " Business unit, Date range, Currency, Card type, Status, IDs search, Amount, Reset filter, "
             + "Apply data, Download file, Settings.")
     public void testVisibilityOfControlPanelElements() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
@@ -92,8 +92,8 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify: Status selector is visible");
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
-        Allure.step("Verify: Search 'Trx Ids'  is visible");
-        assertThat(transactionsPage.getSearchTrxIdsButton()).isVisible();
+        Allure.step("Verify: Search 'IDs search'  is visible");
+        assertThat(transactionsPage.getSearchButton()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -570,11 +570,11 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @TmsLink("851")
     @Epic("Transactions")
     @Feature("Transactions search")
-    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
-    public void testSearchOptionsVisibleAfterClickingTrxIds() {
+    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear after 'IDs search' click")
+    public void testSearchOptionsVisibleAfterClickingSearch() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .clickSearchTrxIdsButton();
+                .clickSearchButton();
 
         Allure.step("Verify: 'NPGW reference' is visible");
         assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
@@ -587,7 +587,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @TmsLink("853")
     @Epic("Transactions")
     @Feature("Transactions search")
-    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
+    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear after 'IDs search' click")
     public void testTransactionSearchByNpgwReference() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
@@ -611,7 +611,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         String npgwReferenceText2 = npgwReference.get(index2).innerText();
 
         Locator filteredRows1 = transactionsPage
-                .clickSearchTrxIdsButton()
+                .clickSearchButton()
                 .fillNpgwReference(npgwReferenceText1)
                 .clickNpgwReferenceAcceptButton()
                 .getTable().getRows();
@@ -621,7 +621,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(filteredRows1).containsText(npgwReferenceText1);
 
         Locator filteredRows2 = transactionsPage
-                .clickTrxIdPencilIcon()
+                .clickSearchPencilIcon()
                 .clickNpgwReferenceClearIcon()
                 .fillNpgwReference(npgwReferenceText2)
                 .clickNpgwReferenceAcceptButton()
@@ -632,7 +632,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(filteredRows2).containsText(npgwReferenceText2);
 
         Locator tableTransactionNotFiltered = transactionsPage
-                .clickTrxIdClearIcon()
+                .clickSearchClearIcon()
                 .getTable().getRows();
 
         Allure.step("Verify: Table contains more than one row");

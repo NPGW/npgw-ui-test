@@ -379,11 +379,11 @@ public class UserTransactionsPageTest extends BaseTestForSingleLogin {
     @TmsLink("851")
     @Epic("Transactions")
     @Feature("Transactions search")
-    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear when clicking on 'Trx IDs'.")
-    public void testSearchOptionsVisibleAfterClickingTrxIdsAsUser() {
+    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear after 'IDs search' click")
+    public void testSearchOptionsVisibleAfterClickingSearchAsUser() {
         UserTransactionsPage transactionsPage = new UserDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .clickSearchTrxIdsButton();
+                .clickSearchButton();
 
         Allure.step("Verify: 'NPGW reference' is visible ");
         assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
