@@ -40,6 +40,7 @@ public class SuperGatewayPage extends HeaderPage<SuperGatewayPage>
     @Step("Click 'Connect acquirer MID' button")
     public ConectAcquirerMidDialog clickConnectAcquirerMidButton() {
         connectAcquirerMidButton.click();
+        getPage().waitForTimeout(200);
 
         return new ConectAcquirerMidDialog(getPage());
     }

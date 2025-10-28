@@ -42,6 +42,13 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     private static final String[] ROWS_PER_PAGE_OPTIONS = {"10", "25", "50", "100"};
     private static final String COMPANY_NAME_CHANGE_ACTIVITY_TEST = "%s company name change activity".formatted(RUN_ID);
     private static final String BUSINESS_UNIT_NAME = "%s business unit name".formatted(RUN_ID);
+    private static final String FIRST_COMPANY_NAME = "firstCompany";
+    private static final String FIRST_COMPANY_MERCHANT_TITLE = "firstCompany merchant";
+    private static final String SECOND_COMPANY_NAME = "secondCompany";
+    private static final String SECOND_COMPANY_MERCHANT_TITLE = "secondCompany merchant";
+    private static final String THIRD_COMPANY_NAME = "thirdCompany";
+    private static final String THIRD_COMPANY_MERCHANT_TITLE = "thirdCompany merchant";
+
     private static final String[] COLUMNS_HEADERS = {
             "Entity name",
             "Display name",
@@ -103,6 +110,12 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
             .acquirerMcc(4321)
             .build();
 
+    private static final Acquirer ACQUIRER_FOR_CHANGE_ACTIVITY = Acquirer.builder()
+            .acquirerName("acquirerName for bulk")
+            .acquirerDisplayName("bulk bulk bulk displayName")
+            .acquirerMcc(4444)
+            .build();
+
     @BeforeClass
     @Override
     protected void beforeClass() {
@@ -111,6 +124,17 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         Acquirer.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
         Company.create(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
         Merchant.create(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST, BUSINESS_UNIT_NAME);
+
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY);
+
+        Company.create(getApiRequestContext(), FIRST_COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), FIRST_COMPANY_NAME, FIRST_COMPANY_MERCHANT_TITLE);
+
+        Company.create(getApiRequestContext(), SECOND_COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), SECOND_COMPANY_NAME, SECOND_COMPANY_MERCHANT_TITLE);
+
+        Company.create(getApiRequestContext(), THIRD_COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), THIRD_COMPANY_NAME, THIRD_COMPANY_MERCHANT_TITLE);
     }
 
     @Test
@@ -982,11 +1006,106 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         }
     }
 
+    @Test
+    @TmsLink("1271")
+    @Epic("System/Acquirers")
+    @Feature("Bulk actions")
+    @Description("Verify that gateway Acquirer MID can be deactivated and then activated via bulk actions")
+    public void testChangeActivityViaBulkActionsForThreeGateway() {
+        String acquirerDisplayName = ACQUIRER_FOR_CHANGE_ACTIVITY.getAcquirerDisplayName();
+
+        SuperGatewayPage gatewayPage = new SuperDashboardPage(getPage())
+                .getHeader().clickSystemAdministrationLink()
+                .clickGatewayTab()
+                .getSelectCompany().selectCompany(FIRST_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(FIRST_COMPANY_MERCHANT_TITLE)
+                .clickConnectAcquirerMidButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(acquirerDisplayName)
+                .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSelectCompany().selectCompany(SECOND_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(SECOND_COMPANY_MERCHANT_TITLE)
+                .clickConnectAcquirerMidButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(acquirerDisplayName)
+                .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSelectCompany().selectCompany(THIRD_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(THIRD_COMPANY_MERCHANT_TITLE)
+                .clickConnectAcquirerMidButton()
+                .getSelectAcquirerMid().selectAcquirerMidInDialog(acquirerDisplayName)
+                .clickConnectButton()
+                .getAlert().waitUntilSuccessAlertIsGone()
+                .getSystemMenu().clickAcquirersTab()
+                .getTable().clickBulkActionsButton(acquirerDisplayName)
+                .selectDeactivateGatewayConnections()
+                .clickDeactivateButton()
+                .getSystemMenu().clickGatewayTab();
+
+        Allure.step("Verify #3: Acquirer MID status changed to Inactive");
+        assertThat(gatewayPage.getTable().getCell(acquirerDisplayName, "Status"))
+                .hasText("Inactive");
+
+        Allure.step("Verify #1: Acquirer MID status changed to Inactive");
+        assertThat(gatewayPage
+                .getSelectCompany().selectCompany(FIRST_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(FIRST_COMPANY_MERCHANT_TITLE)
+                .getTable().getCell(acquirerDisplayName, "Status"))
+                .hasText("Inactive");
+
+        Allure.step("Verify #2: Acquirer MID status changed to Inactive");
+        assertThat(gatewayPage
+                .getSelectCompany().selectCompany(SECOND_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(SECOND_COMPANY_MERCHANT_TITLE)
+                .getTable().getCell(acquirerDisplayName, "Status"))
+                .hasText("Inactive");
+
+        gatewayPage
+                .getSystemMenu().clickAcquirersTab()
+                .getTable().clickBulkActionsButton(acquirerDisplayName)
+                .selectActivateGatewayConnections()
+                .clickActivateButton()
+                .getSystemMenu().clickGatewayTab();
+
+        Allure.step("Verify #2: Acquirer MID status changed to Active");
+        assertThat(gatewayPage.getTable().getCell(acquirerDisplayName, "Status"))
+                .hasText("Active");
+
+        Allure.step("Verify #3: Acquirer MID status changed to Active");
+        assertThat(gatewayPage
+                .getSelectCompany().selectCompany(THIRD_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(THIRD_COMPANY_MERCHANT_TITLE)
+                .getTable().getCell(acquirerDisplayName, "Status"))
+                .hasText("Active");
+
+        Allure.step("Verify #1: Acquirer MID status changed to Active");
+        assertThat(gatewayPage
+                .getSelectCompany().selectCompany(FIRST_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(FIRST_COMPANY_MERCHANT_TITLE)
+                .getTable().getCell(acquirerDisplayName, "Status"))
+                .hasText("Active");
+
+        gatewayPage
+                .getTable().clickDeleteAcquirerMidButton("0")
+                .clickDeleteButton()
+                .getSelectCompany().selectCompany(SECOND_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(SECOND_COMPANY_MERCHANT_TITLE)
+                .getTable().clickDeleteAcquirerMidButton("0")
+                .clickDeleteButton()
+                .getSelectCompany().selectCompany(THIRD_COMPANY_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(THIRD_COMPANY_MERCHANT_TITLE)
+                .getTable().clickDeleteAcquirerMidButton("0")
+                .clickDeleteButton();
+    }
+
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
         Acquirer.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.getAcquirerName());
         Company.delete(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
+        Acquirer.deleteAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY.getAcquirerName());
+        Company.delete(getApiRequestContext(), FIRST_COMPANY_NAME);
+        Company.delete(getApiRequestContext(), SECOND_COMPANY_NAME);
+        Company.delete(getApiRequestContext(), THIRD_COMPANY_NAME);
         super.afterClass();
     }
 }
