@@ -12,7 +12,8 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
-import xyz.npgw.test.common.util.TestUtils;
+import xyz.npgw.test.common.entity.company.Company;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.page.ReportsPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.reports.ReportsParametersDialog;
@@ -33,8 +34,8 @@ public class ReportsPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
+        Company.create(getApiRequestContext(), COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Ignore("Reports")
@@ -263,7 +264,7 @@ public class ReportsPageTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }

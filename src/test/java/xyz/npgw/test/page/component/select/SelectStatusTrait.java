@@ -9,5 +9,4 @@ public interface SelectStatusTrait<CurrentPageT extends HeaderPage<?>> extends B
     default SelectStatusComponent<CurrentPageT> getSelectStatus() {
         return new SelectStatusComponent<>(getPage(), (CurrentPageT) this);
     }
-
 }

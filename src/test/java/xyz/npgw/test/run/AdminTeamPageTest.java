@@ -17,6 +17,7 @@ import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.acquirer.Acquirer;
 import xyz.npgw.test.common.entity.acquirer.MerchantAcquirer;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.user.User;
 import xyz.npgw.test.common.entity.user.UserRole;
@@ -52,7 +53,7 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
+        Merchant.create(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
 
 //        super.initPageRequestContext();
 //        log.info("apiKey of current admin user = {}", BusinessUnit.getNewApikey(getPage().request(), getCompanyName(), businessUnit));
@@ -80,19 +81,19 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
                 .email("%s.admin@email.com".formatted(RUN_ID))
                 .build();
 
-        TestUtils.createCompany(getApiRequestContext(), company);
+        Company.create(getApiRequestContext(), company);
 
         User.create(getApiRequestContext(), admin);
         User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
 
-        Merchant businessUnit = TestUtils.createBusinessUnit(getApiRequestContext(), company, merchant);
+        Merchant businessUnit = Merchant.create(getApiRequestContext(), company, merchant);
         String apiKey = Merchant.getNewApikey(
                 getApiRequestContext(getPlaywright(), admin.getCredentials()),
                 company,
                 businessUnit);
         APIRequestContext apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
 
-        TestUtils.createAcquirer(getApiRequestContext(), acquirer);
+        Acquirer.createAcquirer(getApiRequestContext(), acquirer);
         MerchantAcquirer.addMerchantAcquirerItem(getApiRequestContext(), businessUnit, acquirer);
 
         SaleTransactionUtils.createPendingTransaction(apiRequestContext, 1234, businessUnit, "SALE0PENDING");

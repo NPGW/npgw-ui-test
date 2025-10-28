@@ -12,11 +12,13 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import xyz.npgw.test.common.TestDataProvider;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.acquirer.Acquirer;
 import xyz.npgw.test.common.entity.acquirer.SystemConfig;
-import xyz.npgw.test.common.provider.TestDataProvider;
+import xyz.npgw.test.common.entity.company.Company;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.acquirer.ActivateGroupGatewayItemsDialog;
@@ -118,6 +120,10 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER2);
+        Acquirer.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
+        Company.create(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
+        Merchant.create(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST, BUSINESS_UNIT_NAME);
         TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER2);
         TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
 
@@ -788,7 +794,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify: Acquirer status");
         assertThat(acquirersPage.getTable().getFirstRowCell("Status")).hasText(status);
 
-        TestUtils.deleteAcquirer(getApiRequestContext(), acquirerName);
+        Acquirer.deleteAcquirer(getApiRequestContext(), acquirerName);
     }
 
     @Test
@@ -1099,8 +1105,8 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.getAcquirerName());
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
+        Acquirer.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.getAcquirerName());
+        Company.delete(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
         TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY.getAcquirerName());
         TestUtils.deleteCompany(getApiRequestContext(), FIRST_COMPANY_NAME);
         TestUtils.deleteCompany(getApiRequestContext(), SECOND_COMPANY_NAME);

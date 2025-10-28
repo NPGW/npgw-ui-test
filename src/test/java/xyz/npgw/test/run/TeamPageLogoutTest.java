@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.ProjectProperties;
 import xyz.npgw.test.common.base.BaseTestForLogout;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.dashboard.AdminDashboardPage;
@@ -27,7 +28,7 @@ public class TeamPageLogoutTest extends BaseTestForLogout {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createBusinessUnit(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
+        Merchant.create(getApiRequestContext(), getCompanyName(), MERCHANT_TITLE);
     }
 
     @Test

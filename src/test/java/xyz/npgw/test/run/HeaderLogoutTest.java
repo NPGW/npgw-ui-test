@@ -7,8 +7,8 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.TestDataProvider;
 import xyz.npgw.test.common.base.BaseTestForLogout;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.page.LoginPage;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 

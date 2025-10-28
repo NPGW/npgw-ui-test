@@ -49,11 +49,9 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator cardTypeSelector = getByLabelExact("Card type");
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
 
-    private final Locator searchTrxIdsButton = getByRole(AriaRole.BUTTON, "Trx IDs");
-    private final Locator trxIdAppliedButton =
-            locator("button").filter(new Locator.FilterOptions().setHasText("Trx Id"));
-    private final Locator trxIdPencil = getByRole(AriaRole.BUTTON, "Trx Id").locator("svg[data-icon='pencil']");
-    private final Locator trxIdClearIcon = getByRoleExact(AriaRole.BUTTON, "close chip");
+    private final Locator searchButton = getByRole(AriaRole.BUTTON, "IDs search");
+    private final Locator searchPencil = locator("svg[data-icon='pencil']");
+    private final Locator searchClearIcon = getByRoleExact(AriaRole.BUTTON, "close chip");
 
     private final Locator npgwReferenceField = getByLabelExact("NPGW reference");
     private final Locator npgwReferenceAcceptButton = npgwReferenceField.locator("..")
@@ -270,9 +268,9 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    @Step("Click Search 'Trx IDs' button")
-    public CurrentPageT clickSearchTrxIdsButton() {
-        searchTrxIdsButton.click();
+    @Step("Click Search 'IDs search' button")
+    public CurrentPageT clickSearchButton() {
+        searchButton.click();
 
         return self();
     }
@@ -290,16 +288,16 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    @Step("Click TrxId Clear Icon")
-    public CurrentPageT clickTrxIdClearIcon() {
-        trxIdClearIcon.click();
+    @Step("Click 'Search Clear' Icon")
+    public CurrentPageT clickSearchClearIcon() {
+        searchClearIcon.click();
 
         return self();
     }
 
-    @Step("Click TrxId Pencil Icon")
-    public CurrentPageT clickTrxIdPencilIcon() {
-        trxIdPencil.click();
+    @Step("Click 'Search Pencil' Icon")
+    public CurrentPageT clickSearchPencilIcon() {
+        searchPencil.click();
 
         return self();
     }
