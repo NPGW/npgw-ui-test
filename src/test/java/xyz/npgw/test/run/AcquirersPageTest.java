@@ -124,22 +124,17 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         Acquirer.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
         Company.create(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
         Merchant.create(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST, BUSINESS_UNIT_NAME);
-        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER2);
-        TestUtils.createAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER);
 
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
-        TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST, BUSINESS_UNIT_NAME);
+        Acquirer.createAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY);
 
-        TestUtils.createAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY);
+        Company.create(getApiRequestContext(), FIRST_COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), FIRST_COMPANY_NAME, FIRST_COMPANY_MERCHANT_TITLE);
 
-        TestUtils.createCompany(getApiRequestContext(), FIRST_COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), FIRST_COMPANY_NAME, FIRST_COMPANY_MERCHANT_TITLE);
+        Company.create(getApiRequestContext(), SECOND_COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), SECOND_COMPANY_NAME, SECOND_COMPANY_MERCHANT_TITLE);
 
-        TestUtils.createCompany(getApiRequestContext(), SECOND_COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), SECOND_COMPANY_NAME, SECOND_COMPANY_MERCHANT_TITLE);
-
-        TestUtils.createCompany(getApiRequestContext(), THIRD_COMPANY_NAME);
-        TestUtils.createBusinessUnit(getApiRequestContext(), THIRD_COMPANY_NAME, THIRD_COMPANY_MERCHANT_TITLE);
+        Company.create(getApiRequestContext(), THIRD_COMPANY_NAME);
+        Merchant.create(getApiRequestContext(), THIRD_COMPANY_NAME, THIRD_COMPANY_MERCHANT_TITLE);
     }
 
     @Test
@@ -1107,10 +1102,10 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
     protected void afterClass() {
         Acquirer.deleteAcquirer(getApiRequestContext(), CHANGE_STATE_ACQUIRER.getAcquirerName());
         Company.delete(getApiRequestContext(), COMPANY_NAME_CHANGE_ACTIVITY_TEST);
-        TestUtils.deleteAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY.getAcquirerName());
-        TestUtils.deleteCompany(getApiRequestContext(), FIRST_COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), SECOND_COMPANY_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), THIRD_COMPANY_NAME);
+        Acquirer.deleteAcquirer(getApiRequestContext(), ACQUIRER_FOR_CHANGE_ACTIVITY.getAcquirerName());
+        Company.delete(getApiRequestContext(), FIRST_COMPANY_NAME);
+        Company.delete(getApiRequestContext(), SECOND_COMPANY_NAME);
+        Company.delete(getApiRequestContext(), THIRD_COMPANY_NAME);
         super.afterClass();
     }
 }
