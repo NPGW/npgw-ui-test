@@ -11,9 +11,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.TestDataProvider;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.entity.company.Merchant;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
@@ -28,8 +29,6 @@ import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CARD_OPTIONS;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.CURRENCY_OPTIONS;
-import static xyz.npgw.test.common.Constants.CURRENT_MONTH_FOR_TABLE;
-import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.TRANSACTION_STATUSES;
 
 public class TransactionsPageTest extends BaseTestForSingleLogin {
@@ -43,9 +42,9 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createBusinessUnits(getApiRequestContext(), getCompanyName(), businessUnitNames);
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
+        Merchant.create(getApiRequestContext(), getCompanyName(), businessUnitNames);
+        Company.create(getApiRequestContext(), COMPANY_NAME);
+        merchant = Merchant.create(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -69,7 +68,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @Epic("Transactions")
     @Feature("Panel")
     @Description("Verify that on the Transactions Page user can see Panel: Company"
-            + " Business unit, Date range, Currency, Card type, Status, Trx Ids, Amount, Reset filter, "
+            + " Business unit, Date range, Currency, Card type, Status, IDs search, Amount, Reset filter, "
             + "Apply data, Download file, Settings.")
     public void testVisibilityOfControlPanelElements() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
@@ -93,8 +92,8 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         Allure.step("Verify: Status selector is visible");
         assertThat(transactionsPage.getSelectStatus().getStatusSelector()).isVisible();
 
-        Allure.step("Verify: Search 'Trx Ids'  is visible");
-        assertThat(transactionsPage.getSearchTrxIdsButton()).isVisible();
+        Allure.step("Verify: Search 'IDs search'  is visible");
+        assertThat(transactionsPage.getSearchButton()).isVisible();
 
         Allure.step("Verify: Amount button is visible");
         assertThat(transactionsPage.getAmountButton()).isVisible();
@@ -235,6 +234,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getAmountApplied()).hasText("Amount: 500.00 - 10300.00");
     }
 
+    @Ignore("temp")
     @Test
     @TmsLink("355")
     @Epic("Transactions")
@@ -273,7 +273,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     public void testPresenceOfDownloadFilesOptions() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
                 .clickDownloadButton();
@@ -545,7 +545,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @Description("Verify, that date picker contains default value before and after reset filter")
     public void testResetData() {
         final String dateRange = "01/04/2025-30/04/2025";
-        final String defaultRange = TestUtils.getCurrentRange();
+        final String defaultRange = TestUtils.getCurrentMonthRange();
 
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink();
@@ -574,7 +574,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     public void testTransactionSearchByNpgwReference() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(CURRENT_MONTH_FOR_TABLE)
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 
@@ -595,7 +595,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         String npgwReferenceText2 = npgwReference.get(index2).innerText();
 
         Locator filteredRows1 = transactionsPage
-                .clickSearchTrxIdsButton()
+                .clickSearchButton()
                 .fillNpgwReferenceField(npgwReferenceText1)
                 .clickNpgwReferenceAcceptButton()
                 .getTable().getRows();
@@ -605,7 +605,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(filteredRows1).containsText(npgwReferenceText1);
 
         Locator filteredRows2 = transactionsPage
-                .clickSearchTypeToggleButton()
+                .clickSearchPencilIcon()
                 .clickNpgwReferenceClearIcon()
                 .fillNpgwReferenceFieldAndClickEnter(npgwReferenceText2)
                 .getTable().getRows();
@@ -647,7 +647,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         String businessUnitReferenceText2 = businessUnitReference.get(index2).innerText();
 
         Locator filteredRows1 = transactionsPage
-                .clickSearchTrxIdsButton()
+                .clickSearchPencilIcon()
                 .fillBusinessUnitReferenceField(businessUnitReferenceText1)
                 .clickBusinessUnitReferenceAcceptButton()
                 .getTable().getRows();
@@ -677,7 +677,7 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }

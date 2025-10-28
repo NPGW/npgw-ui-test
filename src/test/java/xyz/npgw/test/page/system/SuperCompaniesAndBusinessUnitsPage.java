@@ -20,7 +20,6 @@ import xyz.npgw.test.page.dialog.company.DeleteCompanyDialog;
 import xyz.npgw.test.page.dialog.company.EditCompanyDialog;
 import xyz.npgw.test.page.dialog.merchant.AddBusinessUnitDialog;
 
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
@@ -89,7 +88,7 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
     @SneakyThrows
     public SuperCompaniesAndBusinessUnitsPage waitForCompanyAbsence(APIRequestContext request, String companyName) {
         double timeout = ProjectProperties.getDefaultTimeout();
-        while (Arrays.stream(Company.getAll(request)).anyMatch(item -> item.companyName().equals(companyName))) {
+        while (Company.getAll(request).stream().anyMatch(item -> item.companyName().equals(companyName))) {
             TimeUnit.MILLISECONDS.sleep(300);
             timeout -= 300;
             if (timeout <= 0) {
@@ -104,14 +103,7 @@ public class SuperCompaniesAndBusinessUnitsPage extends BaseBusinessUnitsPage<Su
         return this;
     }
 
-//    private final Locator initialCommonIconButton = getByRole(AriaRole.TABPANEL).locator(">div>div:first-child [data-testid]:enabled");
-//    public SuperCompaniesAndBusinessUnitsPage getInitialCommonIconName() {
-//       initialCommonIconButton.locator("");
-//
-//        return this;
-//    }
-
-    public String  getIconName(Locator icon) {
+    public String getIconName(Locator icon) {
         return icon.locator("svg").getAttribute("data-icon");
     }
 }

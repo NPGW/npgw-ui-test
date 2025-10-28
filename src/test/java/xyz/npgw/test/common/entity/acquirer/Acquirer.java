@@ -1,6 +1,7 @@
 package xyz.npgw.test.common.entity.acquirer;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
@@ -11,6 +12,7 @@ import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.util.TestUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
@@ -89,11 +91,13 @@ public class Acquirer {
         TestUtils.waitForAcquirerPresence(request, acquirer.acquirerName);
     }
 
-    public static Acquirer[] getAllAcquirers(APIRequestContext request) {
+    public static List<Acquirer> getAllAcquirers(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/acquirer");
         log.response(response, "get all acquirers");
-        return new Gson().fromJson(response.text(), Acquirer[].class);
+
+        if (!response.ok()) {
+            return Collections.emptyList();
+        }
+        return new Gson().fromJson(response.text(), new TypeToken<List<Acquirer>>(){}.getType());
     }
-
-
 }

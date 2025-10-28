@@ -49,10 +49,10 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator cardTypeSelector = getByLabelExact("Card type");
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
 
-    private final Locator searchTrxIdsButton = getByRole(AriaRole.BUTTON, "Trx IDs");
+    private final Locator searchButton = getByRole(AriaRole.BUTTON, "IDs search");
     private final Locator trxIdAppliedButton =
             locator("button").filter(new Locator.FilterOptions().setHasText("Trx Id"));
-    private final Locator searchTypeToggleButton = getByRole(AriaRole.BUTTON).locator("svg[data-icon='pencil']");
+    private final Locator searchPencil = locator("svg[data-icon='pencil']");
     private final Locator searchClearIcon = getByRoleExact(AriaRole.BUTTON, "close chip");
 
     private final Locator npgwReferenceField = getByLabelExact("NPGW reference");
@@ -271,9 +271,9 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    @Step("Click Search 'Trx IDs' button")
-    public CurrentPageT clickSearchTrxIdsButton() {
-        searchTrxIdsButton.click();
+    @Step("Click Search 'IDs search' button")
+    public CurrentPageT clickSearchButton() {
+        searchButton.click();
 
         return self();
     }
@@ -314,6 +314,14 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
+    @Step("Click 'Search Clear' Icon")
+    public CurrentPageT clickSearchClearIcon() {
+        searchClearIcon.click();
+
+        return self();
+    }
+
+
     @Step("Click 'Business unit reference' acceptation button")
     public CurrentPageT clickBusinessUnitReferenceAcceptButton() {
         businessUnitReferenceField.locator("..").locator("svg[data-icon='circle-check']").click();
@@ -321,9 +329,9 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
         return self();
     }
 
-    @Step("Click Search Clear Icon")
-    public CurrentPageT clickSearchClearIcon() {
-        searchClearIcon.click();
+    @Step("Click 'Search Pencil' Icon")
+    public CurrentPageT clickSearchPencilIcon() {
+        searchPencil.click();
 
         return self();
     }

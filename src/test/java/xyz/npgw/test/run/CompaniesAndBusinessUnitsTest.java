@@ -10,10 +10,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
+import xyz.npgw.test.common.TestDataProvider;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.company.Address;
 import xyz.npgw.test.common.entity.company.Company;
-import xyz.npgw.test.common.provider.TestDataProvider;
 import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.company.AddCompanyDialog;
@@ -65,7 +65,7 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
+        Company.create(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
     }
 
     @Test
@@ -724,8 +724,8 @@ public class CompaniesAndBusinessUnitsTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME_REQUIRED_FIELD);
+        Company.delete(getApiRequestContext(), COMPANY_DELETION_BLOCKED_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME_REQUIRED_FIELD);
         super.afterClass();
     }
 }

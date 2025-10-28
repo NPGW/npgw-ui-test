@@ -1,6 +1,7 @@
 package xyz.npgw.test.common.entity.company;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.TimeoutError;
@@ -10,6 +11,8 @@ import lombok.SneakyThrows;
 import xyz.npgw.test.common.ProjectProperties;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
@@ -29,7 +32,7 @@ public record Merchant(
         log.response(response, "create merchant for company %s".formatted(companyName));
 
         if (response.status() == 422) {
-            return Arrays.stream(getAll(request, companyName))
+            return getAll(request, companyName).stream()
                     .filter(m -> m.merchantTitle.equals(merchantTitle))
                     .findFirst()
                     .orElseThrow();
@@ -38,14 +41,18 @@ public record Merchant(
         return new Gson().fromJson(response.text(), Merchant.class);
     }
 
-    public static Merchant[] getAll(APIRequestContext request, String companyName) {
+    public static void create(APIRequestContext request, String companyName, String[] merchantTitles) {
+        Arrays.stream(merchantTitles).forEach(merchantTitle -> Merchant.create(request, companyName, merchantTitle));
+    }
+
+    public static List<Merchant> getAll(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company/%s/merchant".formatted(encode(companyName)));
         log.response(response, "get all merchants for company %s".formatted(companyName));
 
-        if (response.status() == 404) {
-            return new Merchant[]{};
+        if (!response.ok()) {
+            return Collections.emptyList();
         }
-        return new Gson().fromJson(response.text(), Merchant[].class);
+        return new Gson().fromJson(response.text(), new TypeToken<List<Merchant>>(){}.getType());
     }
 
     public static String getNewApikey(APIRequestContext request, String companyName, Merchant merchant) {
@@ -71,6 +78,7 @@ public record Merchant(
         APIResponse response = request.delete(
                 "portal-v1/company/%s/merchant/%s".formatted(encode(companyName), merchant.merchantId()));
         log.response(response, "delete merchant %s".formatted(merchant.merchantId()));
+
         return response.status();
     }
 }

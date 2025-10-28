@@ -9,5 +9,4 @@ public interface UserHeaderMenuTrait<CurrentPageT extends HeaderPage<?>> extends
     default UserHeaderMenuComponent<CurrentPageT> getHeader() {
         return new UserHeaderMenuComponent<>(getPage(), (CurrentPageT) this);
     }
-
 }
