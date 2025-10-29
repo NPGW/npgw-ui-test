@@ -567,27 +567,10 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
     }
 
     @Test
-    @TmsLink("851")
-    @Epic("Transactions")
-    @Feature("Transactions search")
-    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear after 'IDs search' click")
-    public void testSearchOptionsVisibleAfterClickingSearch() {
-        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
-                .getHeader().clickTransactionsLink()
-                .clickSearchButton();
-
-        Allure.step("Verify: 'NPGW reference' is visible");
-        assertThat(transactionsPage.getNpgwReferenceField()).isVisible();
-
-        Allure.step("Verify: 'Business unit reference' is visible");
-        assertThat(transactionsPage.getBusinessUnitReference()).isVisible();
-    }
-
-    @Test
     @TmsLink("853")
     @Epic("Transactions")
     @Feature("Transactions search")
-    @Description("Verify that 'NPGW reference' and 'Business unit reference' fields appear after 'IDs search' click")
+    @Description("Only matching transaction is displayed on the table when searching by NPGW reference")
     public void testTransactionSearchByNpgwReference() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
@@ -599,7 +582,8 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(0);
         assertThat(transactionsPage.getTable().getRows()).not().hasCount(1);
 
-        List<Locator> npgwReference = transactionsPage.getTable().getColumnCells("NPGW reference");
+        List<Locator> npgwReference = transactionsPage
+                .getTable().getColumnCells("NPGW reference");
 
         int index1 = new Random().nextInt(npgwReference.size());
         int index2;
@@ -612,22 +596,21 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
 
         Locator filteredRows1 = transactionsPage
                 .clickSearchButton()
-                .fillNpgwReference(npgwReferenceText1)
+                .fillNpgwReferenceField(npgwReferenceText1)
                 .clickNpgwReferenceAcceptButton()
                 .getTable().getRows();
 
-        Allure.step("Verify: Table has only one row with the N1 NPGW reference");
+        Allure.step("Verify: Searching by NPGW reference returns exactly one matching row");
         assertThat(filteredRows1).hasCount(1);
         assertThat(filteredRows1).containsText(npgwReferenceText1);
 
         Locator filteredRows2 = transactionsPage
                 .clickSearchPencilIcon()
                 .clickNpgwReferenceClearIcon()
-                .fillNpgwReference(npgwReferenceText2)
-                .clickNpgwReferenceAcceptButton()
+                .fillNpgwReferenceFieldAndClickEnter(npgwReferenceText2)
                 .getTable().getRows();
 
-        Allure.step("Verify: Table has only one row with the N2 NPGW reference");
+        Allure.step("Verify:  After clearing and searching by another NPGW reference, results update correctly");
         assertThat(filteredRows2).hasCount(1);
         assertThat(filteredRows2).containsText(npgwReferenceText2);
 
@@ -635,7 +618,59 @@ public class TransactionsPageTest extends BaseTestForSingleLogin {
                 .clickSearchClearIcon()
                 .getTable().getRows();
 
-        Allure.step("Verify: Table contains more than one row");
+        Allure.step("Verify: Clearing the search field resets the filter and table shows multiple transactions");
+        assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
+    }
+
+    @Test
+    @TmsLink("1324")
+    @Epic("Transactions")
+    @Feature("Transactions search")
+    @Description("Only matching transaction is displayed on the table when searching by Business unit reference")
+    public void testTransactionSearchByBusinessUnitReference() {
+        SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
+                .getHeader().clickTransactionsLink()
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
+                .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
+                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
+
+        List<Locator> businessUnitReference = transactionsPage
+                .getTable().getColumnCells("Business unit reference");
+
+        int index1 = new Random().nextInt(businessUnitReference.size());
+        int index2;
+        do {
+            index2 = new Random().nextInt(businessUnitReference.size());
+        } while (index2 == index1);
+
+        String businessUnitReferenceText1 = businessUnitReference.get(index1).innerText();
+        String businessUnitReferenceText2 = businessUnitReference.get(index2).innerText();
+
+        Locator filteredRows1 = transactionsPage
+                .clickSearchButton()
+                .fillBusinessUnitReferenceField(businessUnitReferenceText1)
+                .clickBusinessUnitReferenceAcceptButton()
+                .getTable().getRows();
+
+        Allure.step("Verify: Searching by Business unit reference returns exactly one matching row");
+        assertThat(filteredRows1).hasCount(1);
+        assertThat(filteredRows1).containsText(businessUnitReferenceText1);
+
+        Locator filteredRows2 = transactionsPage
+                .clickSearchPencilIcon()
+                .clickBusinessUnitReferenceClearIcon()
+                .fillBusinessUnitReferenceFieldAndClickEnter(businessUnitReferenceText2)
+                .getTable().getRows();
+
+        Allure.step("Verify: After clearing and searching by another NPGW reference, results update correctly");
+        assertThat(filteredRows2).hasCount(1);
+        assertThat(filteredRows2).containsText(businessUnitReferenceText2);
+
+        Locator tableTransactionNotFiltered = transactionsPage
+                .clickSearchClearIcon()
+                .getTable().getRows();
+
+        Allure.step("Verify: Clearing the search field resets the filter and table shows multiple transactions");
         assertTrue(tableTransactionNotFiltered.count() > 1, "Expected more than one transaction row");
     }
 

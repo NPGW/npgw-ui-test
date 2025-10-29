@@ -50,6 +50,8 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     private final Locator cardTypeValue = getByRole(AriaRole.BUTTON, "Card type");
 
     private final Locator searchButton = getByRole(AriaRole.BUTTON, "IDs search");
+    private final Locator trxIdAppliedButton =
+            locator("button").filter(new Locator.FilterOptions().setHasText("Trx Id"));
     private final Locator searchPencil = locator("svg[data-icon='pencil']");
     private final Locator searchClearIcon = getByRoleExact(AriaRole.BUTTON, "close chip");
 
@@ -58,8 +60,9 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
             .locator("svg[data-icon='circle-check']");
     private final Locator npgwReferenceFieldClearIcon = npgwReferenceField.locator("..")
             .locator("svg[data-icon='circle-xmark']");
-    private final Locator businessUnitReference = getByLabelExact("Business unit reference");
-    private final Locator businessUnitReferenceClear = getByRole(AriaRole.BUTTON, "clear input").last();
+    private final Locator businessUnitReferenceField = getByLabelExact("Business unit reference");
+    private final Locator businessUnitReferenceClearIcon = businessUnitReferenceField.locator("..")
+            .locator("svg[data-icon='circle-xmark']");
 
     private final Locator resetFilterButton = getByTestId("ResetFilterButtonTransactionsPage");
     private final Locator refreshDataButton = locator("[data-icon='arrows-rotate']");
@@ -276,12 +279,35 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     }
 
     @Step("Fill '{value}' into 'NPGW reference' field")
-    public CurrentPageT fillNpgwReference(String value) {
+    public CurrentPageT fillNpgwReferenceField(String value) {
         npgwReferenceField.fill(value);
         return self();
     }
 
-    @Step("Click NPGW reference acceptation button")
+    @Step("Fill '{value}' into 'NPGW reference' field and click 'Enter'")
+    public CurrentPageT fillNpgwReferenceFieldAndClickEnter(String value) {
+        npgwReferenceField.fill(value);
+        npgwReferenceField.press("Enter");
+
+        return self();
+    }
+
+    @Step("Fill '{value}' into 'Business unit reference' field")
+    public CurrentPageT fillBusinessUnitReferenceField(String value) {
+        businessUnitReferenceField.fill(value);
+
+        return self();
+    }
+
+    @Step("Fill '{value}' into 'Business unit reference' field and click 'Enter'")
+    public CurrentPageT fillBusinessUnitReferenceFieldAndClickEnter(String value) {
+        businessUnitReferenceField.fill(value);
+        businessUnitReferenceField.press("Enter");
+
+        return self();
+    }
+
+    @Step("Click 'NPGW reference' acceptation button")
     public CurrentPageT clickNpgwReferenceAcceptButton() {
         npgwReferenceAcceptButton.click();
 
@@ -291,6 +317,14 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     @Step("Click 'Search Clear' Icon")
     public CurrentPageT clickSearchClearIcon() {
         searchClearIcon.click();
+
+        return self();
+    }
+
+
+    @Step("Click 'Business unit reference' acceptation button")
+    public CurrentPageT clickBusinessUnitReferenceAcceptButton() {
+        businessUnitReferenceField.locator("..").locator("svg[data-icon='circle-check']").click();
 
         return self();
     }
@@ -305,6 +339,13 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     @Step("Click 'Npgw reference' Clear Icon")
     public CurrentPageT clickNpgwReferenceClearIcon() {
         npgwReferenceFieldClearIcon.click();
+
+        return self();
+    }
+
+    @Step("Click 'Business unit reference' Clear Icon")
+    public CurrentPageT clickBusinessUnitReferenceClearIcon() {
+        businessUnitReferenceClearIcon.click();
 
         return self();
     }
