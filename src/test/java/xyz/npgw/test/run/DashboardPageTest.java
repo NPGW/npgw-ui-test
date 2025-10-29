@@ -14,6 +14,7 @@ import org.testng.annotations.Test;
 import xyz.npgw.test.common.Constants;
 import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Currency;
+import xyz.npgw.test.common.entity.company.Company;
 import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.transaction.Status;
 import xyz.npgw.test.common.entity.transaction.TransactionSummary;
@@ -28,7 +29,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.COMPANY_NAME_FOR_TEST_RUN;
-import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.STATUSES;
 
 public class DashboardPageTest extends BaseTestForSingleLogin {
@@ -41,8 +41,8 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
     @Override
     protected void beforeClass() {
         super.beforeClass();
-        TestUtils.createCompany(getApiRequestContext(), COMPANY_NAME);
-        merchant = TestUtils.createBusinessUnit(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
+        Company.create(getApiRequestContext(), COMPANY_NAME);
+        merchant = Merchant.create(getApiRequestContext(), COMPANY_NAME, MERCHANT_TITLE);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
         assertThat(dashboardPage.getYAxisLabels()).hasText(new String[]{"100%", "80%", "60%", "40%", "20%", "0%"});
@@ -146,7 +146,7 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
         SuperDashboardPage dashboardPage = new SuperDashboardPage(getPage())
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);
@@ -260,7 +260,7 @@ public class DashboardPageTest extends BaseTestForSingleLogin {
     @AfterClass(alwaysRun = true)
     @Override
     protected void afterClass() {
-        TestUtils.deleteCompany(getApiRequestContext(), COMPANY_NAME);
+        Company.delete(getApiRequestContext(), COMPANY_NAME);
         super.afterClass();
     }
 }

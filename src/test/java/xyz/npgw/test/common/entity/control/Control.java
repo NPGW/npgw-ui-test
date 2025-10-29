@@ -1,6 +1,7 @@
 package xyz.npgw.test.common.entity.control;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
@@ -8,6 +9,9 @@ import lombok.Builder;
 import lombok.CustomLog;
 import lombok.Getter;
 import xyz.npgw.test.common.util.TestUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
 
@@ -54,11 +58,14 @@ public class Control {
         log.response(response, "delete control %s".formatted(controlName));
     }
 
-    public static Control[] getAll(APIRequestContext request) {
+    public static List<Control> getAll(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/control");
         log.response(response, "get all Fraud Controls");
 
-        return new Gson().fromJson(response.text(), Control[].class);
+        if (!response.ok()) {
+            return Collections.emptyList();
+        }
+        return new Gson().fromJson(response.text(), new TypeToken<List<Control>>(){}.getType());
     }
 
     @Override

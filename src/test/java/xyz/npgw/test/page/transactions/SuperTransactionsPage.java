@@ -13,5 +13,4 @@ public class SuperTransactionsPage extends BaseTransactionsPage<SuperTransaction
     public SuperTransactionsPage(Page page) {
         super(page);
     }
-
 }

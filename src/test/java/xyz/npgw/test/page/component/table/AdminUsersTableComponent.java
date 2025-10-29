@@ -43,5 +43,4 @@ public class AdminUsersTableComponent extends UsersTableComponent<AdminTeamPage>
 
         return new AdminDeleteUserDialog(getPage());
     }
-
 }

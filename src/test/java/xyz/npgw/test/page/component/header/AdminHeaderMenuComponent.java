@@ -43,5 +43,4 @@ public class AdminHeaderMenuComponent<CurrentPageT> extends BaseHeaderMenuCompon
 
         return new AdminDashboardPage(getPage());
     }
-
 }

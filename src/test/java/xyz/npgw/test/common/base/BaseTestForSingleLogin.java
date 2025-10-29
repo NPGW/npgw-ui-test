@@ -9,10 +9,10 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import xyz.npgw.test.common.ProjectProperties;
+import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.user.User;
 import xyz.npgw.test.common.entity.user.UserRole;
 import xyz.npgw.test.common.util.BrowserUtils;
-import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.AboutBlankPage;
 
 import java.io.IOException;
@@ -103,7 +103,7 @@ public abstract class BaseTestForSingleLogin extends BaseTest {
         UserRole userRole = UserRole.valueOf(role);
 
         if (userRole == UserRole.USER && businessUnit == null) {
-            businessUnit = TestUtils.createBusinessUnit(apiRequestContext, companyName, "default");
+            businessUnit = Merchant.create(apiRequestContext, companyName, "default");
         }
 
         String email = "%s.%s@email.com".formatted(uid, userRole.toString().toLowerCase());

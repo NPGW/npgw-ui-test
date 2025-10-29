@@ -14,6 +14,7 @@ import xyz.npgw.test.common.base.BaseTestForSingleLogin;
 import xyz.npgw.test.common.entity.Currency;
 import xyz.npgw.test.common.entity.transaction.Status;
 import xyz.npgw.test.common.entity.transaction.TransactionSummary;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.UserDashboardPage;
 
 import java.util.ArrayList;
@@ -24,7 +25,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import static org.testng.Assert.assertTrue;
 import static xyz.npgw.test.common.Constants.BUSINESS_UNIT_FOR_TEST_RUN;
 import static xyz.npgw.test.common.Constants.MERCHANT_ID_FOR_TEST_RUN;
-import static xyz.npgw.test.common.Constants.ONE_DATE_FOR_TABLE;
 import static xyz.npgw.test.common.Constants.STATUSES;
 
 public class TestUserDashboardPageTest extends BaseTestForSingleLogin {
@@ -68,7 +68,7 @@ public class TestUserDashboardPageTest extends BaseTestForSingleLogin {
     public void testVisibleChartElementsAreDisplayedCorrectlyAsTestUser() {
         UserDashboardPage dashboardPage = new UserDashboardPage(getPage())
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: Y-axis percentage labels are correctly displayed");
         assertThat(dashboardPage.getYAxisLabels()).hasText(new String[]{"100%", "80%", "60%", "40%", "20%", "0%"});
@@ -120,7 +120,7 @@ public class TestUserDashboardPageTest extends BaseTestForSingleLogin {
         Pattern pattern = Pattern.compile("(INITIATED|PENDING|SUCCESS|FAILED)(EUR.*|USD.*|GBP.*)");
         UserDashboardPage dashboardPage = new UserDashboardPage(getPage())
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN)
-                .getSelectDateRange().setDateRangeFields(ONE_DATE_FOR_TABLE);
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()));
 
         Allure.step("Verify: INITIATED main block contents");
         assertThat(dashboardPage.getInitiatedBlock()).containsText(pattern);

@@ -1,13 +1,18 @@
 package xyz.npgw.test.common.entity.company;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.microsoft.playwright.APIRequestContext;
 import com.microsoft.playwright.APIResponse;
 import com.microsoft.playwright.options.RequestOptions;
 import lombok.CustomLog;
 import lombok.SneakyThrows;
 import net.datafaker.Faker;
+import xyz.npgw.test.common.entity.acquirer.MerchantAcquirer;
+import xyz.npgw.test.common.entity.user.User;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static xyz.npgw.test.common.util.TestUtils.encode;
@@ -52,18 +57,41 @@ public record Company(
     public static boolean exists(APIRequestContext request, String companyName) {
         APIResponse response = request.get("portal-v1/company");
         log.response(response, "exists via all companies");
+
         return response.ok() && response.text().contains(companyName);
     }
 
-    public static Company[] getAll(APIRequestContext request) {
+    public static List<Company> getAll(APIRequestContext request) {
         APIResponse response = request.get("portal-v1/company");
         log.response(response, "get all companies");
-        return new Gson().fromJson(response.text(), Company[].class);
+
+        if (!response.ok()) {
+            return Collections.emptyList();
+        }
+        return new Gson().fromJson(response.text(), new TypeToken<List<Company>>() {
+        }.getType());
     }
 
-    public static int delete(APIRequestContext request, String companyName) {
+    public static int deleteCompany(APIRequestContext request, String companyName) {
         APIResponse response = request.delete("portal-v1/company/%s".formatted(encode(companyName)));
         log.response(response, "delete company %s".formatted(companyName));
+
         return response.status();
+    }
+
+    public static void delete(APIRequestContext request, String companyName) {
+        if (companyName.equals("super")) {
+            return;
+        }
+        while (Company.deleteCompany(request, companyName) == 409) {
+            User.getAll(request, companyName)
+                    .forEach(user -> User.delete(request, user.getEmail()));
+            Merchant.getAll(request, companyName)
+                    .forEach(merchant -> {
+                        while (Merchant.delete(request, companyName, merchant) == 409) {
+                            MerchantAcquirer.deleteMerchantAcquirer(request, merchant);
+                        }
+                    });
+        }
     }
 }
