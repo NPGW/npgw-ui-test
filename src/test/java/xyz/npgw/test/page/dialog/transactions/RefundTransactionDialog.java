@@ -8,6 +8,8 @@ import lombok.Getter;
 import xyz.npgw.test.page.dialog.BaseDialog;
 import xyz.npgw.test.page.transactions.SuperTransactionsPage;
 
+import static org.testng.Assert.assertTrue;
+
 @Getter
 public class RefundTransactionDialog
         extends BaseDialog<SuperTransactionsPage, RefundTransactionDialog> {
@@ -32,6 +34,7 @@ public class RefundTransactionDialog
     @Step("Click 'Refund' button")
     public SuperTransactionsPage clickRefundButton() {
         getPage().getByRole(AriaRole.BUTTON).getByText("Refund").click();
+        assertTrue(getByRole(AriaRole.BUTTON).getByText("In progress...").isDisabled());
 
         return new SuperTransactionsPage(getPage());
     }
