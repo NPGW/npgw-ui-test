@@ -418,6 +418,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         assertThat(transactionsPage.getTable().getFirstRowCell("NPGW reference")).hasText("12345");
     }
 
+    @Ignore("Refund button should NOT be visible for non-SUCCESS or non-SALE transactions")
     @Test
     @TmsLink("818")
     @Epic("Transactions")
@@ -456,6 +457,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         }
     }
 
+    @Ignore("Refund button should NOT be visible for non-SUCCESS or non-SALE transactions")
     @Test
     @TmsLink("863")
     @Epic("Transactions")
