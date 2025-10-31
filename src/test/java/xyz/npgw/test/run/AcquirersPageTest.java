@@ -1006,6 +1006,7 @@ public class AcquirersPageTest extends BaseTestForSingleLogin {
         }
     }
 
+    @Ignore("flaky in docker")
     @Test
     @TmsLink("1271")
     @Epic("System/Acquirers")
