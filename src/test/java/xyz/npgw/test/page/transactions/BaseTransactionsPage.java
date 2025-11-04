@@ -116,7 +116,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     @Step("Fill 'From' amount value")
     public CurrentPageT fillAmountFromField(String value) {
         amountFromInputField.fill(value);
-        amountFromField.press("Tab"); //TODO remove this after bug fix
+//        amountFromField.press("Tab"); //TODO remove this after bug fix
 
         return self();
     }
@@ -124,7 +124,7 @@ public abstract class BaseTransactionsPage<CurrentPageT extends BaseTransactions
     @Step("Fill 'To' amount value")
     public CurrentPageT fillAmountToField(String value) {
         amountToInputField.fill(value);
-        amountToField.press("Tab"); //TODO remove this after bug fix
+//        amountToField.press("Tab"); //TODO remove this after bug fix
 
         return self();
     }
