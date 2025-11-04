@@ -59,7 +59,6 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
 //        log.info("apiKey of current admin user = {}", BusinessUnit.getNewApikey(getPage().request(), getCompanyName(), businessUnit));
     }
 
-    @Ignore("temp")
     @Test
     @TmsLink("---")
     @Epic("---")
@@ -87,10 +86,7 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
         User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
 
         Merchant businessUnit = Merchant.create(getApiRequestContext(), company, merchant);
-        String apiKey = Merchant.getNewApikey(
-                getApiRequestContext(getPlaywright(), admin.getCredentials()),
-                company,
-                businessUnit);
+        String apiKey = Merchant.getNewApikey(getApiRequestContext(getPlaywright(), admin.getCredentials()), businessUnit);
         APIRequestContext apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
 
         Acquirer.createAcquirer(getApiRequestContext(), acquirer);

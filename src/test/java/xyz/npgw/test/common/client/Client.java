@@ -11,7 +11,7 @@ import xyz.npgw.test.common.entity.user.Token;
 public record Client(String apiKey) {
 
     public static Token getToken(APIRequestContext request, String apiKey) {
-        APIResponse response = request.post("/merchant-v1/token",
+        APIResponse response = request.post("/merchant-v1/token/access",
                 RequestOptions.create()
                         .setHeader("Content-Type", "text/plain")
                         .setData(apiKey));
