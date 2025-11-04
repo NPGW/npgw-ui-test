@@ -55,7 +55,7 @@ public record Merchant(
         return new Gson().fromJson(response.text(), new TypeToken<List<Merchant>>(){}.getType());
     }
 
-    public static String getNewApikey(APIRequestContext request, Merchant merchant) {
+    public static String createSecretToken(APIRequestContext request, Merchant merchant) {
         APIResponse response = request.post("merchant-v1/token/secret",
                 RequestOptions.create().setQueryParam("merchantId", merchant.merchantId));
         log.response(response, "get api key for merchant %s".formatted(merchant.merchantTitle));

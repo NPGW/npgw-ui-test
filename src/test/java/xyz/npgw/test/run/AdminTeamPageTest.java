@@ -86,7 +86,7 @@ public class AdminTeamPageTest extends BaseTestForSingleLogin {
         User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
 
         Merchant businessUnit = Merchant.create(getApiRequestContext(), company, merchant);
-        String apiKey = Merchant.getNewApikey(getApiRequestContext(getPlaywright(), admin.getCredentials()), businessUnit);
+        String apiKey = Merchant.createSecretToken(getApiRequestContext(getPlaywright(), admin.getCredentials()), businessUnit);
         APIRequestContext apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
 
         Acquirer.createAcquirer(getApiRequestContext(), acquirer);

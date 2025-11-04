@@ -7,7 +7,6 @@ import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.TmsLink;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import xyz.npgw.test.common.base.BaseTestForLogout;
 import xyz.npgw.test.common.client.Operation;
@@ -62,7 +61,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
         User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
 
         merchant = Merchant.create(getApiRequestContext(), company, merchantTitle);
-        String apiKey = Merchant.getNewApikey(getApiRequestContext(getPlaywright(), admin.getCredentials()), merchant);
+        String apiKey = Merchant.createSecretToken(getApiRequestContext(getPlaywright(), admin.getCredentials()), merchant);
 
         apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
 
