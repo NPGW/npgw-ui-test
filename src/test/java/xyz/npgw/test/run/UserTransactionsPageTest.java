@@ -234,7 +234,7 @@ public class UserTransactionsPageTest extends BaseTestForSingleLogin {
         }
     }
 
-    @Ignore("temp")
+//    @Ignore("temp")
     @Test
     @TmsLink("598")
     @Epic("Transactions")
