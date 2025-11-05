@@ -22,15 +22,15 @@ import java.time.format.DateTimeFormatter;
 public class Transaction {
 
     @Builder.Default
-    private String notificationUrl = "https://hkdk.events/yhpys9at0zp7lf";
+    private String notificationUrl = "https://example.com/notification_endpoint";
     @Builder.Default
     private int amount = 1000;
     @Builder.Default
     private String merchantId = "";
     @Builder.Default
-    private String redirectUrlSuccess = "https://hkdk.events/qd8lfp7hqyqc03";
+    private String redirectUrlSuccess = "https://example.com/success.html";
     @Builder.Default
-    private String redirectUrlCancel = "https://hkdk.events/oj03lklkzpdive";
+    private String redirectUrlCancel = "https://example.com/cancel.html";
     @Builder.Default
     private Currency currency = Currency.EUR;
     @Builder.Default
@@ -45,7 +45,7 @@ public class Transaction {
     private String expiresAt = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
             .format(ZonedDateTime.now().plusMinutes(35));
     @Builder.Default
-    private String redirectUrlFail = "https://hkdk.events/zj36a72tes7hhz";
+    private String redirectUrlFail = "https://example.com/fail.html";
 
     public static TransactionResponse create(APIRequestContext request, Transaction transaction) {
         transaction.setExternalTransactionId(TestUtils.now().replace(".", "") + transaction.externalTransactionId);

@@ -165,7 +165,6 @@ public class TransactionFlowTest extends BaseTestForLogout {
                 .hasText("SUCCESSThe refund request has been sent successfully");
     }
 
-    @Ignore("Page URL expected to be: https://hkdk.events/qd8lfp7hqyqc03")
     @Test
     @TmsLink("1307")
     @Epic("Transactions")
@@ -232,8 +231,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
     @Description("SALE type transaction with SUCCESS status can be refunded successfully")
     public void testRefundSaleTypeTransactionWithSuccessStatus() {
         String transactionId = SaleTransactionUtils
-                .createSuccessTransaction(
-                        getPlaywright(), apiRequestContext, 4001, merchant, "SALESUCCESS")
+                .createSuccessTransaction(getPlaywright(), apiRequestContext, 4001, merchant, "SALESUCCESS")
                 .transactionId();
 
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
