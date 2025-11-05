@@ -42,6 +42,7 @@ jobs:
         env:
           PROJECT_PROPERTIES:
             setBaseURL=https://test.npgw.xyz;
+            setBaseApiHostURL://test.npgw.xyz;
             setEmail=${{ secrets.USER_EMAIL }};
             setPassword=${{ secrets.USER_PASSWORD }};
             setTracingMode=true;
@@ -66,6 +67,7 @@ jobs:
             setColorScheme=DARK;
             setViewportSize=1920,964;
             setBaseURL=https://test.npgw.xyz;
+            setBaseApiHostURL://test.npgw.xyz;
             setRecordVideoDir=target/artefact;
             setRecordVideoSize=1920,957
           PLAYWRIGHT_OPTIONS_TRACING:
