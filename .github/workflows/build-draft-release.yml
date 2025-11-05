@@ -50,10 +50,11 @@ jobs:
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload built JAR to draft release
+      - name: Archive all portal-test build files
         run: |
-          ARTIFACT=$(ls target/*-with-dependencies.jar | head -n 1)
-          echo "Uploading build artifact: $ARTIFACT"
-          gh release upload ${{ env.RELEASE_VERSION }} "$ARTIFACT" --clobber
+          tar -cvf portal-test.tar target/ui-test-${RELEASE_VERSION}-with-dependencies.jar testng.xml Dockerfile
+
+      - name: Upload portal-test bundle to draft release
+        run: gh release upload ${{ env.RELEASE_VERSION }} portal-test.tar --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
