@@ -50,11 +50,12 @@ jobs:
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Archive all portal-test build files
+      - name: Attach to release
         run: |
-          tar -cvf portal-test.tar target/ui-test-${RELEASE_VERSION}-with-dependencies.jar testng.xml Dockerfile
-
-      - name: Upload portal-test bundle to draft release
-        run: gh release upload ${{ env.RELEASE_VERSION }} portal-test.tar --clobber
+          export RELEASE_VERSION=${{ env.RELEASE_VERSION }}
+          FILE_LIST=$(jq -r '.[] | select(.dockerContext=="npgw-ui-test") | .files[]' ${{ env.IMAGE_FILE }} | envsubst)
+          
+          tar -cvf portal-test.tar ${FILE_LIST}
+          gh release upload ${{ env.RELEASE_VERSION }} portal-test.tar --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
