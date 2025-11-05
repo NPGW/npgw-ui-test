@@ -50,10 +50,11 @@ jobs:
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload built JAR to draft release
+      - name: Attach to release
         run: |
+          export RELEASE_VERSION=${{ env.RELEASE_VERSION }}
           ARTIFACT=$(ls target/*-with-dependencies.jar | head -n 1)
-          echo "Uploading build artifact: $ARTIFACT"
-          gh release upload ${{ env.RELEASE_VERSION }} "$ARTIFACT" --clobber
+          tar -cvf portal-test.tar "$ARTIFACT" testng.xml Dockerfile
+          gh release upload ${{ env.RELEASE_VERSION }} portal-test.tar --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

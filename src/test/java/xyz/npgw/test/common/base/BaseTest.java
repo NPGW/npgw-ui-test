@@ -168,7 +168,7 @@ public abstract class BaseTest {
     private APIRequestContext getApiRequestContext(Playwright playwright, Token token) {
         return playwright.request()
                 .newContext(new APIRequest.NewContextOptions()
-                        .setBaseURL(ProjectProperties.getBaseURL())
+                        .setBaseURL(ProjectProperties.getBaseApiHostURL())
                         .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
     }
 
@@ -176,7 +176,7 @@ public abstract class BaseTest {
         Token token = getTokenFromApiResponse(playwright, credentials);
         return playwright.request()
                 .newContext(new APIRequest.NewContextOptions()
-                        .setBaseURL(ProjectProperties.getBaseURL())
+                        .setBaseURL(ProjectProperties.getBaseApiHostURL())
                         .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
     }
 
@@ -184,13 +184,13 @@ public abstract class BaseTest {
         Token token = getTokenFromApiResponse(playwright, apiKey);
         return playwright.request()
                 .newContext(new APIRequest.NewContextOptions()
-                        .setBaseURL(ProjectProperties.getBaseURL())
+                        .setBaseURL(ProjectProperties.getBaseApiHostURL())
                         .setExtraHTTPHeaders(Map.of("Authorization", "Bearer %s".formatted(token.idToken()))));
     }
 
     private Token getTokenFromApiResponse(Playwright playwright) {
         APIRequestContext context = playwright.request()
-                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseApiHostURL()));
         Credentials credentials = new Credentials(ProjectProperties.getEmail(), ProjectProperties.getPassword());
         Token token = User.getTokenResponse(context, credentials).token();
         context.dispose();
@@ -200,7 +200,7 @@ public abstract class BaseTest {
 
     private Token getTokenFromApiResponse(Playwright playwright, Credentials credentials) {
         APIRequestContext context = playwright.request()
-                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseApiHostURL()));
         Token token = User.getTokenResponse(context, credentials).token();
         context.dispose();
 
@@ -209,7 +209,7 @@ public abstract class BaseTest {
 
     private Token getTokenFromApiResponse(Playwright playwright, String apiKey) {
         APIRequestContext context = playwright.request()
-                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseURL()));
+                .newContext(new APIRequest.NewContextOptions().setBaseURL(ProjectProperties.getBaseApiHostURL()));
         Token token = Client.getToken(context, apiKey);
         context.dispose();
 
