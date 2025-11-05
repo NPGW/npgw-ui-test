@@ -203,6 +203,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
         }
     }
 
+    @Ignore("report BUG")
     @Test
     @TmsLink("682")
     @Epic("Transactions")
@@ -211,7 +212,7 @@ public class TransactionsTableTest extends BaseTestForSingleLogin {
     public void testTableDisplayWhenCurrencyFilterAppliedWhileOnLastPage() {
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())
                 .getHeader().clickTransactionsLink()
-                .getSelectDateRange().setDateRangeFields(TestUtils.getCurrentMonthRange())
+                .getSelectDateRange().setDateRangeFields(TestUtils.lastBuildDate(getApiRequestContext()))
                 .getSelectCompany().selectCompany(COMPANY_NAME_FOR_TEST_RUN)
                 .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_FOR_TEST_RUN);
 

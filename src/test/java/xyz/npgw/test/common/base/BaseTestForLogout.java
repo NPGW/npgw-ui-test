@@ -34,6 +34,8 @@ public abstract class BaseTestForLogout extends BaseTest {
                 testResult.getMethod().getCurrentInvocationCount(),
                 new SimpleDateFormat("_MMdd_HHmmss").format(new Date()));
 
+        log.info(">>> {}", testId);
+
         browserContext = BrowserUtils.createContext(browser);
 
         if (ProjectProperties.isTracingMode()) {

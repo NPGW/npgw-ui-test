@@ -17,6 +17,7 @@ import xyz.npgw.test.common.entity.company.Merchant;
 import xyz.npgw.test.common.entity.control.Control;
 import xyz.npgw.test.common.entity.control.ControlCode;
 import xyz.npgw.test.common.entity.control.ControlType;
+import xyz.npgw.test.common.util.TestUtils;
 import xyz.npgw.test.page.dashboard.SuperDashboardPage;
 import xyz.npgw.test.page.dialog.control.ActivateBusinessUnitControlDialog;
 import xyz.npgw.test.page.dialog.control.AddControlDialog;
@@ -91,10 +92,10 @@ public class FraudControlTest extends BaseTestForSingleLogin {
             .build();
     private static final String FRAUD_CONTROL_NAME = "%S Test fraudControl name".formatted(RUN_ID);
 
-    private static final String COMPANY_NAME = "%s company to bend Fraud Control".formatted(RUN_ID);
-    private static final String BUSINESS_UNIT_NAME = "Business unit %s".formatted(RUN_ID);
-    private static final String BUSINESS_UNIT_SORT = "Business unit sort %s".formatted(RUN_ID);
-    private static final String BUSINESS_UNIT_REPEAT = "Business unit repeat %s".formatted(RUN_ID);
+    private static final String COMPANY_NAME = "%s Fraud Control".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_NAME = "%s Business unit".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_SORT = "%s Business unit sort".formatted(RUN_ID);
+    private static final String BUSINESS_UNIT_REPEAT = "%s Business unit repeat".formatted(RUN_ID);
 
     @BeforeClass
     @Override
@@ -401,13 +402,17 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     public void testDeleteActiveFraudControlNotAddedToBusinessUnit() {
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .clickFraudControlTab()
+                .clickFraudControlTab();
+
+        Locator fraudControl = superFraudControlPage
+                .getTableControls().getRow(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName());
+
+        superFraudControlPage
                 .getTableControls().clickDeleteControlButton(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName())
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted Fraud Control still presented in the table");
-        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ACTIVE_DELETE_TEST.getControlName()))
-                .not().isAttached();
+        assertThat(fraudControl).isHidden();
     }
 
     @Test
@@ -468,11 +473,15 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Description("Add Fraud Control to Business Unit (No Fraud Control)"
             + "Add Fraud Control to Business Unit (Business unit has Fraud Control)")
     public void testAddFraudControlToBusinessUnit() {
+        Merchant merchant = Merchant.create(getApiRequestContext(),
+                COMPANY_NAME,
+                "%s Add two fraud controls".formatted(TestUtils.now()));
+
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(merchant.merchantTitle())
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
@@ -487,11 +496,6 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         Allure.step("Verify that Fraud Control two are presented in Business Unit table");
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName()))
                 .hasText(FRAUD_CONTROL_ADD_TWO.toString());
-
-        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton();
     }
 
     @Test
@@ -500,20 +504,29 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Feature("Control table")
     @Description("Activate Fraud Control added to Business Unit and Deactivate Fraud Control added to Business Unit")
     public void testChangeControlActivityForFraudControlAddedToBusinessUnit() {
+        Merchant merchant = Merchant.create(getApiRequestContext(),
+                COMPANY_NAME,
+                "%s Change activity for connected control".formatted(TestUtils.now()));
+        Control control = Control.create(getApiRequestContext(), Control.builder()
+                .controlName("%s ControlOne".formatted(TestUtils.now()))
+                .controlDisplayName("ControlDisplayFirst")
+                .controlConfig("firstQueue")
+                .build());
+
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getSelectBusinessUnit().selectBusinessUnit(merchant.merchantTitle())
+                .getTableControls().clickConnectControlButton(control.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
-                .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
+                .getTableControls().clickConnectControlButton(control.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton();
 
         Locator controlStatusCell = superFraudControlPage
-                .getTableControls().getCell(FRAUD_CONTROL_ADD_ONE.getControlName(), "Status");
+                .getTableControls().getCell(control.getControlName(), "Status");
 
         // TODO refactor this
         Locator businessControlRow = superFraudControlPage
@@ -528,7 +541,7 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(controlStatusCell).hasText("Active");
 
         superFraudControlPage
-                .getTableControls().clickDeactivateControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickDeactivateControlButton(control.getControlName())
                 .clickDeactivateButton()
                 .getAlert().clickCloseButton();
 
@@ -539,18 +552,13 @@ public class FraudControlTest extends BaseTestForSingleLogin {
         assertThat(businessControlStatusCell).hasText("Active");
 
         superFraudControlPage
-                .getTableControls().clickActivateControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
+                .getTableControls().clickActivateControlButton(control.getControlName())
                 .clickActivateButton()
                 .getAlert().clickCloseButton();
 
         Allure.step("Verify that Fraud Control status is Active in Control table again");
         assertThat(controlStatusCell).hasText("Active");
         assertThat(businessControlStatusCell).hasText("Active");
-
-        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton();
     }
 
     @Test
@@ -661,28 +669,36 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Feature("Add/Edit/Delete Fraud Control")
     @Description("Delete Active Fraud Control added to Business Unit")
     public void testDeleteActiveFraudControlAddedToBusinessUnit() {
+        Merchant merchant = Merchant.create(getApiRequestContext(),
+                COMPANY_NAME,
+                "%s Delete active connected fraud control".formatted(TestUtils.now()));
+
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(merchant.merchantTitle())
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
                 .clickConnectButton()
-                .getAlert().clickCloseButton()
+                .getAlert().clickCloseButton();
+
+        Allure.step("Verify that there are two rows");
+        assertThat(superFraudControlPage.getTableBusinessUnitControls().getRows()).hasCount(2);
+
+        Locator fraudControl = superFraudControlPage
+                .getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
+
+        superFraudControlPage
                 .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("1")
                 .clickDeleteButton();
 
-        Allure.step("Check if just deleted Fraud Control still presented in both tables");
-        assertThat(superFraudControlPage.getTableBusinessUnitControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlDisplayName()))
-                .not().isAttached();
+        Allure.step("Verify if just deleted Fraud Control still presented in both tables");
+        assertThat(fraudControl).isHidden();
         assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_ADD_TWO.getControlName()))
                 .isAttached();
-
-        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton();
     }
 
     @Test
@@ -691,11 +707,15 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Feature("Business Unit Control table")
     @Description("Move Business unit control up" + "Move Business unit control down")
     public void testChangeFraudControlPriority() {
+        Merchant merchant = Merchant.create(getApiRequestContext(),
+                COMPANY_NAME,
+                "%s Priority change".formatted(TestUtils.now()));
+
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(merchant.merchantTitle())
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_ONE.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton()
@@ -705,7 +725,10 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getTableBusinessUnitControls().clickMoveBusinessUnitControlUpButton("1")
                 .getAlert().clickCloseButton();
 
-        Allure.step("Check that the second Fraud Control is '0' priority now");
+        Allure.step("Verify that there are two rows");
+        assertThat(superFraudControlPage.getTableBusinessUnitControls().getRows()).hasCount(2);
+
+        Allure.step("Verify that the second Fraud Control is '0' priority now");
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getRowByDataKey("0"))
                 .containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
 
@@ -713,16 +736,11 @@ public class FraudControlTest extends BaseTestForSingleLogin {
                 .getTableBusinessUnitControls().clickMoveBusinessUnitControlDownButton("0")
                 .getAlert().clickCloseButton();
 
-        Allure.step("Check that the second Fraud Control is '1' priority again");
+        Allure.step("Verify that the second Fraud Control is '1' priority again");
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getRowByDataKey("0"))
                 .containsText(FRAUD_CONTROL_ADD_ONE.getControlDisplayName());
         assertThat(superFraudControlPage.getTableBusinessUnitControls().getRowByDataKey("1"))
                 .containsText(FRAUD_CONTROL_ADD_TWO.getControlDisplayName());
-
-        superFraudControlPage.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton()
-                .getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton();
     }
 
     @Test
@@ -957,11 +975,15 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     @Feature("Business Unit Control table")
     @Description("Priority icons for only one Business unit control")
     public void testPriorityIconsDisableForOnlyOneBusinessUnitControl() {
+        Merchant merchant = Merchant.create(getApiRequestContext(),
+                COMPANY_NAME,
+                "%s Priority icons state".formatted(TestUtils.now()));
+
         SuperFraudControlPage page = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
                 .clickFraudControlTab()
                 .getSelectCompany().selectCompany(COMPANY_NAME)
-                .getSelectBusinessUnit().selectBusinessUnit(BUSINESS_UNIT_NAME)
+                .getSelectBusinessUnit().selectBusinessUnit(merchant.merchantTitle())
                 .getTableControls().clickConnectControlButton(FRAUD_CONTROL_ADD_TWO.getControlName())
                 .clickConnectButton()
                 .getAlert().clickCloseButton();
@@ -971,9 +993,6 @@ public class FraudControlTest extends BaseTestForSingleLogin {
 
         Allure.step("Verify Down button is disabled on Business Unit Control table because of one control");
         assertThat(page.getTableBusinessUnitControls().getMoveBusinessUnitControlDownButton("0")).isDisabled();
-
-        page.getTableBusinessUnitControls().clickDeleteBusinessUnitControlButton("0")
-                .clickDeleteButton();
     }
 
     @Test
@@ -1224,13 +1243,17 @@ public class FraudControlTest extends BaseTestForSingleLogin {
     public void testDeleteInactiveFraudControlNotAddedToBusinessUnit() {
         SuperFraudControlPage superFraudControlPage = new SuperDashboardPage(getPage())
                 .getHeader().clickSystemAdministrationLink()
-                .clickFraudControlTab()
+                .clickFraudControlTab();
+
+        Locator fraudControl = superFraudControlPage
+                .getTableControls().getRow(FRAUD_CONTROL_INACTIVE_JUST_DELETE.getControlName());
+
+        superFraudControlPage
                 .getTableControls().clickDeleteControlButton(FRAUD_CONTROL_INACTIVE_JUST_DELETE.getControlName())
                 .clickDeleteButton();
 
         Allure.step("Check if just deleted inactive Fraud Control still presented in the table");
-        assertThat(superFraudControlPage.getTableControls().getRow(FRAUD_CONTROL_INACTIVE_JUST_DELETE.getControlName()))
-                .not().isAttached();
+        assertThat(fraudControl).isHidden();
     }
 
     @Test
