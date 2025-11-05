@@ -53,9 +53,7 @@ jobs:
       - name: Attach to release
         run: |
           export RELEASE_VERSION=${{ env.RELEASE_VERSION }}
-          FILE_LIST=$(jq -r '.[] | select(.dockerContext=="npgw-ui-test") | .files[]' ${{ env.IMAGE_FILE }} | envsubst)
-          
-          tar -cvf portal-test.tar ${FILE_LIST}
+          tar -cvf portal-test.tar target/ui-test-${RELEASE_VERSION}-with-dependencies.jar testng.xml Dockerfile
           gh release upload ${{ env.RELEASE_VERSION }} portal-test.tar --clobber
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
