@@ -62,10 +62,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
         User.passChallenge(getApiRequestContext(), admin.getEmail(), admin.getPassword());
 
         merchant = Merchant.create(getApiRequestContext(), company, merchantTitle);
-        String apiKey = Merchant.getNewApikey(
-                getApiRequestContext(getPlaywright(), admin.getCredentials()),
-                company,
-                merchant);
+        String apiKey = Merchant.createSecretToken(getApiRequestContext(getPlaywright(), admin.getCredentials()), merchant);
 
         apiRequestContext = getApiRequestContext(getPlaywright(), apiKey);
 
@@ -73,7 +70,6 @@ public class TransactionFlowTest extends BaseTestForLogout {
         MerchantAcquirer.addMerchantAcquirerItem(getApiRequestContext(), merchant, acquirer);
     }
 
-    @Ignore("temp")
     @Test
     @TmsLink("1280")
     @Epic("Transactions")
@@ -116,7 +112,6 @@ public class TransactionFlowTest extends BaseTestForLogout {
         assertThat(transactionDetailsDialog.getLastLifecycleStatus()).hasText("CANCELLED");
     }
 
-    @Ignore("temp")
     @Test
     @TmsLink("xxx")
     @Epic("Transactions")
@@ -170,7 +165,6 @@ public class TransactionFlowTest extends BaseTestForLogout {
                 .hasText("SUCCESSThe refund request has been sent successfully");
     }
 
-    @Ignore("temp")
     @Test
     @TmsLink("1307")
     @Epic("Transactions")
@@ -230,7 +224,6 @@ public class TransactionFlowTest extends BaseTestForLogout {
     }
 
     //TODO Add await for acquirer answer
-    @Ignore("temp")
     @Test
     @TmsLink("1308")
     @Epic("Transactions")
@@ -238,8 +231,7 @@ public class TransactionFlowTest extends BaseTestForLogout {
     @Description("SALE type transaction with SUCCESS status can be refunded successfully")
     public void testRefundSaleTypeTransactionWithSuccessStatus() {
         String transactionId = SaleTransactionUtils
-                .createSuccessTransaction(
-                        getPlaywright(), apiRequestContext, 4001, merchant, "SALESUCCESS")
+                .createSuccessTransaction(getPlaywright(), apiRequestContext, 4001, merchant, "SALESUCCESS")
                 .transactionId();
 
         SuperTransactionsPage transactionsPage = new SuperDashboardPage(getPage())

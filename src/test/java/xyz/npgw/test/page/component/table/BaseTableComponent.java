@@ -81,6 +81,8 @@ public abstract class BaseTableComponent<CurrentPageT> extends BaseComponent {
     }
 
     public Locator getRow(String content) {
+        getPage().waitForTimeout(2000);
+
         do {
             try {
                 Locator row = rows.filter(new Locator.FilterOptions().setHasText(content));

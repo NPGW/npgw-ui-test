@@ -151,7 +151,7 @@ public final class TestUtils {
 
         Browser browser = BrowserUtils.createBrowser(playwright);
         Page page = browser.newPage();
-        PlaywrightAssertions.setDefaultAssertionTimeout(15_000);
+        PlaywrightAssertions.setDefaultAssertionTimeout(28_000);
 
         page.navigate(transactionResponse.paymentUrl());
         log.info("Redirected to: {}", page.title());

@@ -46,11 +46,13 @@ public class Control {
         }
     }
 
-    public static void create(APIRequestContext request, Control control) {
+    public static Control create(APIRequestContext request, Control control) {
         APIResponse response = request.post("portal-v1/control", RequestOptions.create().setData(control));
         log.response(response, "create control %s".formatted(control.controlName));
 
         TestUtils.waitForFraudControlPresence(request, control.controlName);
+
+        return new Gson().fromJson(response.text(), Control.class);
     }
 
     public static void delete(APIRequestContext request, String controlName) {
