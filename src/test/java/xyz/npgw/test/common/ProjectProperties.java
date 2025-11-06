@@ -17,6 +17,9 @@ public final class ProjectProperties {
     private static String baseURL = "https://test.npgw.xyz";
     @Getter
     @Setter
+    private static String baseApiHostURL = "https://test.npgw.xyz";
+    @Getter
+    @Setter
     private static String email;
     @Getter
     @Setter
